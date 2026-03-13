@@ -24,7 +24,6 @@ ThingsboardClient wires:
   - _AuthManager for JWT/API key authentication and automatic token refresh
   - _RetryingRESTClient for transparent HTTP 429 retry with exponential backoff
 """
-from .api.login_endpoint_api import LoginEndpointApi
 from .api_client import ApiClient
 from .configuration import Configuration
 from .models.login_request import LoginRequest
@@ -114,6 +113,7 @@ class ThingsboardClient:
 
         # JWT eager login
         if username is not None:
+            from .api.login_endpoint_api import LoginEndpointApi
             login_api = LoginEndpointApi(api_client)
             response = login_api.login(LoginRequest(username=username, password=password))
             auth_manager.on_login(username, password, response.token, response.refresh_token)
