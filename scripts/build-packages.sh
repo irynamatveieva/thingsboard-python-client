@@ -43,6 +43,12 @@ ROOT_DIR="$SCRIPT_DIR/.."
 DIST_DIR="$ROOT_DIR/dist"
 EDITIONS=("ce" "pe" "paas")
 
+# Add project venv to PATH so that tools installed via pip install (e.g. poetry)
+# are accessible without requiring a manual `source .venv/bin/activate`.
+if [ -d "$ROOT_DIR/.venv/bin" ]; then
+    export PATH="$ROOT_DIR/.venv/bin:$PATH"
+fi
+
 # ANSI color codes (disabled when not a terminal)
 if [ -t 1 ]; then
     GREEN='\033[0;32m'

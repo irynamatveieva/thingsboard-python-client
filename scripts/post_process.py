@@ -289,7 +289,7 @@ def _generate_root_init(package_name: str, model_map: Dict[str, str]) -> str:
     """Generate lazy-loading root __init__.py content.
 
     Keeps eager imports for small essential runtime classes:
-      - ApiClient, Configuration, exceptions, ApiResponse
+      - ApiClient, Configuration, exceptions, ApiResponse, ThingsboardClient
     Uses __getattr__ lazy loading for models and the API class.
     """
     sorted_models = sorted(model_map.items())
@@ -313,6 +313,12 @@ def _generate_root_init(package_name: str, model_map: Dict[str, str]) -> str:
         "    ApiKeyError,",
         "    ApiException,",
         ")",
+        "# Common module — handwritten client wrapper",
+        "try:",
+        f"    from {package_name}.client import ThingsboardClient",
+        "    __all__ = ['ThingsboardClient']",
+        "except ImportError:",
+        "    pass",
         "",
         "if TYPE_CHECKING:",
     ]
@@ -350,6 +356,7 @@ def _generate_root_init(package_name: str, model_map: Dict[str, str]) -> str:
         '        "ApiClient", "Configuration", "ApiResponse",',
         '        "OpenApiException", "ApiAttributeError", "ApiTypeError",',
         '        "ApiValueError", "ApiKeyError", "ApiException",',
+        '        "ThingsboardClient",',
         "    ]",
         "",
     ])
