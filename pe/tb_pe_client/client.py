@@ -19,11 +19,12 @@ client.py — ThingsboardClient: the public-facing entry point for ThingsBoard P
 This file lives in common/ and is copied verbatim into each edition package directory
 by generate-client.sh. Use only relative imports and stdlib; no edition-specific imports.
 
-ThingsboardClient inherits all 502+ generated API methods from ThingsboardApi and wires:
+Stub client for Phase 4. API method delegation added in Phase 5.
+ThingsboardClient wires:
   - _AuthManager for JWT/API key authentication and automatic token refresh
   - _RetryingRESTClient for transparent HTTP 429 retry with exponential backoff
 """
-from .api.thingsboard_api import ThingsboardApi
+from .api.login_endpoint_api import LoginEndpointApi
 from .api_client import ApiClient
 from .configuration import Configuration
 from .models.login_request import LoginRequest
@@ -31,10 +32,10 @@ from ._auth import _AuthManager
 from ._retry import _RetryingRESTClient
 
 
-class ThingsboardClient(ThingsboardApi):
+class ThingsboardClient:
     """User-facing ThingsBoard client.
 
-    Wraps the generated ThingsboardApi with authentication management and
+    Wraps the generated per-controller APIs with authentication management and
     transparent 429 retry. Supports three authentication modes:
 
     1. Username + password (JWT):
@@ -108,14 +109,13 @@ class ThingsboardClient(ThingsboardApi):
                 max_retry_delay_ms,
             )
 
-        # Wire into parent (ThingsboardApi); all 502+ methods become available
-        super().__init__(api_client=api_client)
-
+        self.api_client = api_client
         self._auth_manager = auth_manager
 
         # JWT eager login
         if username is not None:
-            response = self.login(LoginRequest(username=username, password=password))
+            login_api = LoginEndpointApi(api_client)
+            response = login_api.login(LoginRequest(username=username, password=password))
             auth_manager.on_login(username, password, response.token, response.refresh_token)
 
         # Pre-existing token

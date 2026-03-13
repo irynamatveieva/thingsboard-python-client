@@ -240,7 +240,11 @@ def _collect_model_classes(models_dir: Path, package_name: str) -> Dict[str, str
 
 
 def _collect_api_classes(api_dir: Path, package_name: str) -> Dict[str, str]:
-    """Scan api/*.py files and build {ClassName: "package.api.module"} mapping."""
+    """Scan api/*.py files and build {ClassName: "package.api.module"} mapping.
+
+    Matches both ``class Foo(Bar):`` and ``class Foo:`` definitions because
+    the OpenAPI generator emits API classes without a base class (no parentheses).
+    """
     api_map: Dict[str, str] = {}
 
     for py_file in sorted(api_dir.glob("*.py")):
@@ -249,7 +253,8 @@ def _collect_api_classes(api_dir: Path, package_name: str) -> Dict[str, str]:
 
         module_name = py_file.stem
         content = py_file.read_text(encoding="utf-8")
-        for match in re.finditer(r"^class (\w+)\(", content, re.MULTILINE):
+        # Match "class Foo:" or "class Foo(Bar):" — API classes have no base class
+        for match in re.finditer(r"^class (\w+)[:(]", content, re.MULTILINE):
             cls_name = match.group(1)
             api_map[cls_name] = f"{package_name}.api.{module_name}"
 
