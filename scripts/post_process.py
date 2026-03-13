@@ -422,9 +422,11 @@ def cleanup_generated_files(package_dir: Path) -> List[str]:
         readme_candidate.unlink()
         removed.append(str(readme_candidate))
 
-    # setup.py, setup.cfg, pyproject.toml in parent (shouldn't exist with
-    # generateSourceCodeOnly, but be defensive)
-    for artifact in ("setup.py", "setup.cfg", "pyproject.toml", "tox.ini"):
+    # setup.py, setup.cfg, tox.ini in parent (shouldn't exist with
+    # generateSourceCodeOnly, but be defensive).
+    # NOTE: pyproject.toml is intentionally excluded — each edition directory
+    # now contains a pyproject.toml for Poetry packaging (Phase 3).
+    for artifact in ("setup.py", "setup.cfg", "tox.ini"):
         candidate = parent / artifact
         if candidate.exists():
             candidate.unlink()

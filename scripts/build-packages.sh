@@ -94,7 +94,13 @@ ok "dist/ cleaned"
 # 3. Generate all editions
 # ---------------------------------------------------------------------------
 info "Generating all editions"
-(cd "$ROOT_DIR" && ./generate-client.sh all)
+# generate-client.sh uses `exec > >(tee logfile)` which can exit with 141 (SIGPIPE)
+# when the tee process terminates. Exit 141 = 128+SIGPIPE is not a real error.
+gen_exit=0
+(cd "$ROOT_DIR" && ./generate-client.sh all) || gen_exit=$?
+if [ "$gen_exit" -ne 0 ] && [ "$gen_exit" -ne 141 ]; then
+    fail "generate-client.sh all failed with exit code $gen_exit"
+fi
 ok "All editions generated"
 
 # ---------------------------------------------------------------------------
