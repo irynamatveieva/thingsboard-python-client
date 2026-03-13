@@ -239,6 +239,23 @@ def _collect_model_classes(models_dir: Path, package_name: str) -> Dict[str, str
     return model_map
 
 
+def _collect_api_classes(api_dir: Path, package_name: str) -> Dict[str, str]:
+    """Scan api/*.py files and build {ClassName: "package.api.module"} mapping."""
+    api_map: Dict[str, str] = {}
+
+    for py_file in sorted(api_dir.glob("*.py")):
+        if py_file.name == "__init__.py":
+            continue
+
+        module_name = py_file.stem
+        content = py_file.read_text(encoding="utf-8")
+        for match in re.finditer(r"^class (\w+)\(", content, re.MULTILINE):
+            cls_name = match.group(1)
+            api_map[cls_name] = f"{package_name}.api.{module_name}"
+
+    return api_map
+
+
 def _generate_models_init(package_name: str, model_map: Dict[str, str]) -> str:
     """Generate lazy-loading models/__init__.py content."""
     sorted_items = sorted(model_map.items())
@@ -285,17 +302,65 @@ def _generate_models_init(package_name: str, model_map: Dict[str, str]) -> str:
     return "\n".join(lines)
 
 
-def _generate_root_init(package_name: str, model_map: Dict[str, str]) -> str:
+def _generate_api_init(package_name: str, api_map: Dict[str, str]) -> str:
+    """Generate lazy-loading api/__init__.py content."""
+    sorted_items = sorted(api_map.items())
+
+    lines = [
+        "import importlib",
+        "from typing import TYPE_CHECKING",
+        "",
+        "__all__ = [",
+    ]
+    for cls_name, _ in sorted_items:
+        lines.append(f'    "{cls_name}",')
+    lines.append("]")
+    lines.append("")
+
+    # TYPE_CHECKING block for IDE support
+    lines.append("if TYPE_CHECKING:")
+    for cls_name, mod_path in sorted_items:
+        lines.append(f"    from {mod_path} import {cls_name}")
+    lines.append("")
+
+    # Lazy mapping dict
+    lines.append("_API_CLASSES = {")
+    for cls_name, mod_path in sorted_items:
+        lines.append(f'    "{cls_name}": "{mod_path}",')
+    lines.append("}")
+    lines.append("")
+
+    # __getattr__ for lazy loading
+    lines.extend([
+        "def __getattr__(name: str):",
+        "    if name in _API_CLASSES:",
+        "        module = importlib.import_module(_API_CLASSES[name])",
+        "        cls = getattr(module, name)",
+        "        globals()[name] = cls  # Cache for subsequent access",
+        "        return cls",
+        '    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")',
+        "",
+        "def __dir__():",
+        "    return list(_API_CLASSES.keys())",
+        "",
+    ])
+
+    return "\n".join(lines)
+
+
+def _generate_root_init(
+    package_name: str,
+    model_map: Dict[str, str],
+    api_map: Dict[str, str],
+) -> str:
     """Generate lazy-loading root __init__.py content.
 
     Keeps eager imports for small essential runtime classes:
       - ApiClient, Configuration, exceptions, ApiResponse, ThingsboardClient
-    Uses __getattr__ lazy loading for models and the API class.
+    Uses __getattr__ lazy loading for all controller classes and models.
     """
     sorted_models = sorted(model_map.items())
-
-    # Determine which API classes exist (ThingsboardApi is the expected name)
-    api_class_names = ["ThingsboardApi"]
+    sorted_api = sorted(api_map.items())
 
     lines = [
         "import importlib",
@@ -323,9 +388,9 @@ def _generate_root_init(package_name: str, model_map: Dict[str, str]) -> str:
         "if TYPE_CHECKING:",
     ]
 
-    # API class imports for IDE
-    for cls_name in api_class_names:
-        lines.append(f"    from {package_name}.api.thingsboard_api import {cls_name}")
+    # Controller class imports for IDE (sorted)
+    for cls_name, mod_path in sorted_api:
+        lines.append(f"    from {mod_path} import {cls_name}")
 
     # Model imports for IDE
     for cls_name, mod_path in sorted_models:
@@ -333,10 +398,10 @@ def _generate_root_init(package_name: str, model_map: Dict[str, str]) -> str:
 
     lines.append("")
 
-    # Lazy mapping — API class + all models
+    # Lazy mapping — all controllers first (sorted), then all models (sorted)
     lines.append("_LAZY_CLASSES = {")
-    for cls_name in api_class_names:
-        lines.append(f'    "{cls_name}": "{package_name}.api.thingsboard_api",')
+    for cls_name, mod_path in sorted_api:
+        lines.append(f'    "{cls_name}": "{mod_path}",')
     for cls_name, mod_path in sorted_models:
         lines.append(f'    "{cls_name}": "{mod_path}",')
     lines.append("}")
@@ -364,28 +429,35 @@ def _generate_root_init(package_name: str, model_map: Dict[str, str]) -> str:
     return "\n".join(lines)
 
 
-def rewrite_init_files(package_dir: Path, package_name: str) -> int:
-    """Rewrite both __init__.py files for lazy loading.
+def rewrite_init_files(package_dir: Path, package_name: str) -> Tuple[int, int]:
+    """Rewrite __init__.py files for lazy loading.
 
-    Returns the number of model classes mapped.
+    Returns (model_count, api_count) tuple.
     """
     models_dir = package_dir / "models"
+    api_dir = package_dir / "api"
+
     if not models_dir.exists():
         print(f"  Warning: models/ directory not found in {package_dir}, skipping lazy import rewrite")
-        return 0
+        return 0, 0
 
     model_map = _collect_model_classes(models_dir, package_name)
-    model_count = len(model_map)
+    api_map = _collect_api_classes(api_dir, package_name) if api_dir.exists() else {}
 
     # Rewrite models/__init__.py
     models_init = models_dir / "__init__.py"
     models_init.write_text(_generate_models_init(package_name, model_map), encoding="utf-8")
 
-    # Rewrite root __init__.py
-    root_init = package_dir / "__init__.py"
-    root_init.write_text(_generate_root_init(package_name, model_map), encoding="utf-8")
+    # Rewrite api/__init__.py with lazy loading (if api/ exists)
+    if api_dir.exists():
+        api_init = api_dir / "__init__.py"
+        api_init.write_text(_generate_api_init(package_name, api_map), encoding="utf-8")
 
-    return model_count
+    # Rewrite root __init__.py (passes api_map, not hard-coded ThingsboardApi)
+    root_init = package_dir / "__init__.py"
+    root_init.write_text(_generate_root_init(package_name, model_map, api_map), encoding="utf-8")
+
+    return len(model_map), len(api_map)
 
 
 # ---------------------------------------------------------------------------
@@ -493,8 +565,8 @@ def main(package_dir: Path, package_name: str) -> None:
     # -------------------------------------------------------------------
     # Step 3: Rewrite __init__.py files for lazy imports
     # -------------------------------------------------------------------
-    model_count = rewrite_init_files(package_dir, package_name)
-    print(f"  Step 3 — Lazy import rewrite: {model_count} models mapped")
+    model_count, api_count = rewrite_init_files(package_dir, package_name)
+    print(f"  Step 3 — Lazy import rewrite: {model_count} models, {api_count} controllers mapped")
 
     # -------------------------------------------------------------------
     # Step 4: Apply license headers
@@ -528,6 +600,7 @@ def main(package_dir: Path, package_name: str) -> None:
     print(f"    from_dict() fixed:      {from_dict_fixes}")
     print(f"    to_dict() fixed:        {to_dict_fixes}")
     print(f"  Lazy import models:    {model_count}")
+    print(f"  Lazy import controllers: {api_count}")
     print(f"  License headers added: {headers_applied}")
     print(f"  Files cleaned up:      {len(removed)}")
     print()
