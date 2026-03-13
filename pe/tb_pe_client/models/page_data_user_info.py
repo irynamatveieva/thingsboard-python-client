@@ -1,0 +1,111 @@
+#
+# Copyright 2026 ThingsBoard, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# noqa: E501
+
+
+from __future__ import annotations
+import pprint
+import re  # noqa: F401
+import json
+
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt
+from typing import Any, ClassVar, Dict, List, Optional
+from tb_pe_client.models.user_info import UserInfo
+from typing import Optional, Set
+from typing_extensions import Self
+
+class PageDataUserInfo(BaseModel):
+    """
+    PageDataUserInfo
+    """ # noqa: E501
+    data: Optional[List[UserInfo]] = Field(default=None, description="Array of the entities")
+    total_pages: Optional[StrictInt] = Field(default=None, description="Total number of available pages. Calculated based on the 'pageSize' request parameter and total number of entities that match search criteria", alias="totalPages")
+    total_elements: Optional[StrictInt] = Field(default=None, description="Total number of elements in all available pages", alias="totalElements")
+    has_next: Optional[StrictBool] = Field(default=None, description="'false' value indicates the end of the result set", alias="hasNext")
+    __properties: ClassVar[List[str]] = ["data", "totalPages", "totalElements", "hasNext"]
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        protected_namespaces=(),
+    )
+
+
+    def to_str(self) -> str:
+        """Returns the string representation of the model using alias"""
+        return pprint.pformat(self.model_dump(by_alias=True))
+
+    def to_json(self) -> str:
+        """Returns the JSON representation of the model using alias"""
+        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
+        return json.dumps(self.to_dict())
+
+    @classmethod
+    def from_json(cls, json_str: str) -> Optional[Self]:
+        """Create an instance of PageDataUserInfo from a JSON string"""
+        return cls.from_dict(json.loads(json_str))
+
+    def to_dict(self) -> Dict[str, Any]:
+        """Return the dictionary representation of the model using alias.
+
+        This has the following differences from calling pydantic's
+        `self.model_dump(by_alias=True)`:
+
+        * `None` is only added to the output dict for nullable fields that
+          were set at model initialization. Other fields with value `None`
+          are ignored.
+        * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
+        """
+        excluded_fields: Set[str] = set([
+            "total_pages",
+            "total_elements",
+            "has_next",
+        ])
+
+        _dict = self.model_dump(
+            by_alias=True,
+            exclude=excluded_fields,
+            exclude_none=True,
+        )
+        # override the default output from pydantic by calling `to_dict()` of each item in data (list)
+        _items = []
+        if self.data:
+            for _item_data in self.data:
+                if _item_data:
+                    _items.append(_item_data.to_dict())
+            _dict['data'] = _items
+        return _dict
+
+    @classmethod
+    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+        """Create an instance of PageDataUserInfo from a dict"""
+        if obj is None:
+            return None
+
+        if not isinstance(obj, dict):
+            return cls.model_validate(obj)
+
+        _obj = cls.model_validate({
+            "data": [UserInfo.from_dict(_item) for _item in obj["data"]] if obj.get("data") is not None else None,
+            "totalPages": obj.get("totalPages"),
+            "totalElements": obj.get("totalElements"),
+            "hasNext": obj.get("hasNext")
+        })
+        return _obj
+
+
