@@ -42,7 +42,7 @@
 # What it does:
 #   1. Optionally fetches OpenAPI spec from a running ThingsBoard instance
 #   2. Validates the spec (warns on duplicate operationIds)
-#   3. Runs openapi-generator-cli with Python target (single-class via SET_TAGS_FOR_ALL_OPERATIONS)
+#   3. Runs openapi-generator-cli with Python target (per-tag output, one class per controller)
 #   4. Copies generated tb_{edition}_client/ into the edition's package directory
 #   5. Overlays common/ contents into the package directory
 #   6. Runs scripts/post_process.py (license headers, lazy imports, JsonNode fixes, cleanup)
@@ -147,7 +147,7 @@ generate() {
     echo "These will generate methods with numeric suffixes. Consider fixing @ApiOperation annotations."
   fi
 
-  # --- Python client generation (single class via SET_TAGS_FOR_ALL_OPERATIONS) ---
+  # --- Python client generation (per-controller output (one file per OpenAPI tag)) ---
   echo "Generating Python client for edition: $edition from $spec_file"
   java -jar "$GENERATOR_JAR" generate \
     -i "$spec_file" \
@@ -156,7 +156,6 @@ generate() {
     --package-name "tb_${edition}_client" \
     --additional-properties hideGenerationTimestamp=true,generateSourceCodeOnly=true \
     --global-property apiTests=false,modelTests=false,modelDocs=false,apiDocs=false \
-    --openapi-normalizer SET_TAGS_FOR_ALL_OPERATIONS=Thingsboard \
     2>&1 | if [ "$VERBOSE" = true ]; then cat; else grep -v \
       -e "^\[main\] INFO  o.o.codegen.*writing file" \
       -e "^\[main\] INFO  o.o.c.languages.*Processing operation" \
@@ -205,31 +204,40 @@ generate() {
     total_lines=$(find "$pkg_dir" -name "*.py" -exec wc -l {} + 2>/dev/null | tail -1 | awk '{print $1}')
     echo "  Total lines:  $total_lines"
 
-    # API class file size and line count (look in api/ subdirectory specifically)
-    local api_file
-    api_file=$(find "$pkg_dir/api" -name "thingsboard_api.py" 2>/dev/null | head -1)
-    if [ -n "$api_file" ]; then
-      local api_lines api_size
-      api_lines=$(wc -l < "$api_file" | tr -d ' ')
-      api_size=$(wc -c < "$api_file" | tr -d ' ')
-      echo "  API class:    $(basename "$api_file") — ${api_lines} lines, ${api_size} bytes"
+    # Per-controller metrics (SPLIT-01, SPLIT-03)
+    local api_count
+    api_count=$(find "$pkg_dir/api" -name "*.py" ! -name "__init__.py" 2>/dev/null | wc -l | tr -d ' ')
+    echo "  Controllers:  $api_count files"
+
+    local method_count
+    method_count=$(find "$pkg_dir/api" -name "*.py" ! -name "__init__.py" \
+      -exec grep -c "^    def [^_]" {} + 2>/dev/null | awk -F: '{s+=$2} END {print s+0}')
+    echo "  API methods:  $method_count (public, sync)"
+
+    # Minimum controller threshold assertion (SPLIT-03)
+    local min_count
+    case "$edition" in
+      ce) min_count=55 ;;
+      pe) min_count=78 ;;
+      paas) min_count=83 ;;
+      *) min_count=0 ;;
+    esac
+    if [ -n "$min_count" ] && [ "$api_count" -lt "$min_count" ]; then
+      echo "Error: $edition generated $api_count controller files (minimum: $min_count)"
+      exit 1
     fi
 
     local model_count
     model_count=$(find "$pkg_dir" -path "*/models/*.py" -not -name "__init__.py" 2>/dev/null | wc -l | tr -d ' ')
     echo "  Models:       $model_count"
 
-    # GEN-05: Verify Pydantic v2 patterns (native from generator)
-    # Find a model with ConfigDict (confirms Pydantic v2 model_config usage)
-    # Note: not all models import BaseModel directly (enum models, subclasses) so
-    # we check for model_config = ConfigDict which is the definitive Pydantic v2 marker
+    # GEN-05: Verify Pydantic v2 patterns
     local sample_model
     sample_model=$(grep -rl "model_config = ConfigDict" "$pkg_dir/models" 2>/dev/null || true)
     sample_model=$(echo "$sample_model" | head -1)
     if [ -n "$sample_model" ]; then
       echo "  Pydantic v2:  OK (model_config = ConfigDict confirmed in $(basename "$sample_model"))"
     else
-      # Fallback: check if any model imports from pydantic
       local pydantic_model
       pydantic_model=$(grep -rl "from pydantic import" "$pkg_dir/models" 2>/dev/null || true)
       pydantic_model=$(echo "$pydantic_model" | head -1)
