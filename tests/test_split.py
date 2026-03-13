@@ -62,17 +62,20 @@ def test_no_monolith_file():
 
 def test_lazy_api_init_does_not_load_controllers():
     """Importing tb_ce_client.api should not eagerly load any controller modules."""
-    # Clear any cached controller modules
+    # Evict the api package and all api submodules for a clean import.
+    # We intentionally do NOT evict tb_ce_client.client or tb_ce_client.models
+    # so that test_client.py mocks (which patch module-level class references)
+    # remain valid when both test files run together in one session.
+    # After the Task 1 fix, client.py has no top-level LoginEndpointApi import,
+    # so evicting only the api tree is sufficient to guarantee lazy-load behaviour.
     mods_to_remove = [
         k for k in sys.modules
-        if k.startswith("tb_ce_client.api.") and k != "tb_ce_client.api"
+        if k == "tb_ce_client.api" or k.startswith("tb_ce_client.api.")
     ]
     for m in mods_to_remove:
         del sys.modules[m]
 
-    # Also evict the api package itself so we get a fresh import
-    sys.modules.pop("tb_ce_client.api", None)
-
+    # Import only the api package
     import tb_ce_client.api  # noqa: F401
     loaded = [k for k in sys.modules if k.startswith("tb_ce_client.api.")]
     assert loaded == [], (
@@ -100,13 +103,20 @@ def test_lazy_api_loads_on_access():
 # ---------------------------------------------------------------------------
 
 def test_root_import_does_not_load_controllers():
-    """Importing tb_ce_client should not load any api.* submodules."""
-    # Clear api submodule cache
-    mods_to_remove = [k for k in sys.modules if k.startswith("tb_ce_client.api.")]
+    """Importing tb_ce_client should not load any api.* controller submodules."""
+    # Evict the api package and all api submodules for a clean import.
+    # We intentionally do NOT evict tb_ce_client.client or tb_ce_client.models
+    # so that test_client.py mocks remain valid in a combined test session.
+    # After the Task 1 fix, importing tb_ce_client root no longer pulls in
+    # login_endpoint_api, so this targeted eviction is sufficient.
+    mods_to_remove = [
+        k for k in sys.modules
+        if k == "tb_ce_client.api" or k.startswith("tb_ce_client.api.")
+    ]
     for m in mods_to_remove:
         del sys.modules[m]
 
-    # Re-import root (may already be cached, that's OK — we check submodules)
+    # Re-import root
     importlib.import_module("tb_ce_client")
 
     api_submodules = [k for k in sys.modules if k.startswith("tb_ce_client.api.")]

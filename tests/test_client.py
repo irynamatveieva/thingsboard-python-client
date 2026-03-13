@@ -32,7 +32,10 @@ class TestThingsboardClientJWTLogin(unittest.TestCase):
     def test_jwt_login(self):
         """ThingsboardClient(url, username, password) calls login() and stores tokens."""
         mock_resp = _mock_login_response()
-        with patch.object(LoginEndpointApi, "login", return_value=mock_resp) as mock_login:
+        # Use module-path patch so the mock works even if the module was
+        # evicted and re-imported by test_split.py lazy-load tests.
+        with patch("tb_ce_client.api.login_endpoint_api.LoginEndpointApi.login",
+                   return_value=mock_resp) as mock_login:
             client = ThingsboardClient(URL, "user@tb.io", "pass123")
         mock_login.assert_called_once()
         # Token stored in auth manager
@@ -40,7 +43,7 @@ class TestThingsboardClientJWTLogin(unittest.TestCase):
 
     def test_api_key_auth(self):
         """WRAP-01, AUTH-05: api_key sets header without calling login()."""
-        with patch.object(LoginEndpointApi, "login") as mock_login:
+        with patch("tb_ce_client.api.login_endpoint_api.LoginEndpointApi.login") as mock_login:
             client = ThingsboardClient(URL, api_key="test-key")
         mock_login.assert_not_called()
         cfg = client.api_client.configuration
@@ -49,7 +52,7 @@ class TestThingsboardClientJWTLogin(unittest.TestCase):
 
     def test_preexisting_token(self):
         """WRAP-01, AUTH-06: pre-existing token sets header without login()."""
-        with patch.object(LoginEndpointApi, "login") as mock_login:
+        with patch("tb_ce_client.api.login_endpoint_api.LoginEndpointApi.login") as mock_login:
             client = ThingsboardClient(URL, token="jwt.payload.sig", refresh_token="jwt.payload.sig")
         mock_login.assert_not_called()
         cfg = client.api_client.configuration
@@ -139,14 +142,16 @@ class TestThingsboardClientTokenAccessors(unittest.TestCase):
     def test_get_token_jwt(self):
         """get_token() returns the JWT after successful login."""
         mock_resp = _mock_login_response(token="access.jwt.here")
-        with patch.object(LoginEndpointApi, "login", return_value=mock_resp):
+        with patch("tb_ce_client.api.login_endpoint_api.LoginEndpointApi.login",
+                   return_value=mock_resp):
             client = ThingsboardClient(URL, "u", "p")
         self.assertEqual(client.get_token(), "access.jwt.here")
 
     def test_get_refresh_token_jwt(self):
         """get_refresh_token() returns the refresh JWT after login."""
         mock_resp = _mock_login_response(refresh_token="refresh.jwt.here")
-        with patch.object(LoginEndpointApi, "login", return_value=mock_resp):
+        with patch("tb_ce_client.api.login_endpoint_api.LoginEndpointApi.login",
+                   return_value=mock_resp):
             client = ThingsboardClient(URL, "u", "p")
         self.assertEqual(client.get_refresh_token(), "refresh.jwt.here")
 
