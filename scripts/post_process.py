@@ -121,38 +121,34 @@ def _fix_from_dict(content: str) -> Tuple[str, int]:
 
 # 2c: Fix to_dict calls on object-typed fields.
 #
-# In generated to_dict() methods, Pydantic's model_dump() handles serialization.
-# Lines like:
-#   _dict['fieldName'] = self.field_name.to_dict()
-# should be replaced with:
-#   _dict['fieldName'] = self.field_name
-# (Pydantic/json serialization handles dicts and primitives natively.)
+# When --schema-mappings JsonNode=object was used in older generator invocations,
+# generated to_dict() methods would call self.field.to_dict() on Optional[object]
+# fields (which have no .to_dict() method). Without that schema mapping, JsonNode
+# fields become Optional[Any] and do NOT get .to_dict() overrides, so this step
+# is a no-op for standard generation.
 #
-# We identify these by: after fixing from_dict calls, scan for lines where
-# a field appears in a to_dict() call context AND the field name corresponds
-# to a known object-typed field (i.e., one whose from_dict we just fixed).
+# We only fix to_dict calls where the field was ALSO fixed by from_dict() fix
+# (same files, same fields), to avoid incorrectly stripping valid nested model
+# .to_dict() calls (e.g. self.tenant_id.to_dict() where tenant_id is a Pydantic
+# model — those are valid and should be preserved).
 #
-# Simpler robust approach: any line matching `_dict['x'] = self.y.to_dict()`
-# where 'x' corresponds to an object-typed field that had from_dict fixed.
-# Since identifying per-file is complex, we use the broader pattern:
-# remove .to_dict() suffix from lines in to_dict() method bodies where the
-# assignment target was previously handled via object.from_dict().
-#
-# Pattern: `_dict['anyKey'] = self.snake_field.to_dict()`
-# This catches ALL to_dict() overrides in model files. In Pydantic v2 models,
-# the generated to_dict() is a compatibility shim; model_dump() is preferred.
-# Removing .to_dict() from these assignments is safe: the value is already
-# a dict/primitive stored in self.field.
-_TO_DICT_CALL_RE = re.compile(
-    r"(_dict\[['\"][^'\"]+['\"]\]\s*=\s*self\.\w+)\.to_dict\(\)",
-    re.MULTILINE,
-)
+# Strategy: collect snake_case field names whose from_dict() was fixed, then
+# only fix .to_dict() calls for those specific field names.
+_TO_DICT_CALL_RE_TEMPLATE = r"(_dict\[['\"][^'\"]+['\"]\]\s*=\s*self\.{snake_field})\.to_dict\(\)"
 
 
-def _fix_to_dict(content: str) -> Tuple[str, int]:
-    """Remove .to_dict() suffix from _dict['x'] = self.field.to_dict() lines."""
-    new_content, count = _TO_DICT_CALL_RE.subn(r'\1', content)
-    return new_content, count
+def _fix_to_dict_for_fields(content: str, object_fields: list) -> Tuple[str, int]:
+    """Remove .to_dict() suffix only for known object-typed fields."""
+    count = 0
+    for snake_field in object_fields:
+        pattern = re.compile(
+            _TO_DICT_CALL_RE_TEMPLATE.format(snake_field=re.escape(snake_field)),
+            re.MULTILINE,
+        )
+        new_content, n = pattern.subn(r'\1', content)
+        content = new_content
+        count += n
+    return content, count
 
 
 def fix_jsonnode_references(
@@ -186,14 +182,27 @@ def fix_jsonnode_references(
         if n:
             new_content = re.sub(r'\n{3,}', '\n\n', new_content)
 
-        # 2b: fix from_dict calls
+        # 2b: fix from_dict calls — collect which field names were fixed
+        #     so step 2c can target only those fields
+        fixed_field_names: list = []
+        _with_none = _FROM_DICT_WITH_NONE_CHECK_RE.findall(new_content)
+        _simple = _FROM_DICT_SIMPLE_RE.findall(new_content)
+        for _, field_name in _with_none:
+            # Convert camelCase field name to snake_case for to_dict lookup
+            snake = re.sub(r'(?<!^)(?=[A-Z])', '_', field_name).lower()
+            fixed_field_names.append(snake)
+        for _, field_name in _simple:
+            snake = re.sub(r'(?<!^)(?=[A-Z])', '_', field_name).lower()
+            if snake not in fixed_field_names:
+                fixed_field_names.append(snake)
+
         new_content, n = _fix_from_dict(new_content)
         from_dict_fixes += n
 
-        # 2c: fix to_dict calls (only on files that had from_dict fixes,
-        # or any model file — safe to apply broadly)
-        new_content, n = _fix_to_dict(new_content)
-        to_dict_fixes += n
+        # 2c: fix to_dict calls ONLY for object-typed fields (identified above)
+        if fixed_field_names:
+            new_content, n = _fix_to_dict_for_fields(new_content, fixed_field_names)
+            to_dict_fixes += n
 
         if new_content != original:
             f.write_text(new_content, encoding="utf-8")
