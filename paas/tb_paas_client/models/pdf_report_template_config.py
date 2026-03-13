@@ -39,13 +39,13 @@ class PdfReportTemplateConfig(ReportTemplateConfig):
     """
     PdfReportTemplateConfig
     """ # noqa: E501
-    page_size: Optional[PageSize] = Field(default=None, alias="pageSize")
-    page_orientation: Optional[PageOrientation] = Field(default=None, alias="pageOrientation")
-    page_margins: Optional[Insets] = Field(default=None, alias="pageMargins")
-    page_background: Optional[StrictStr] = Field(default=None, alias="pageBackground")
-    header: Optional[HeaderFooter] = None
     footer: Optional[HeaderFooter] = None
-    __properties: ClassVar[List[str]] = ["format", "entityAliases", "filters", "namePattern", "components", "timeDataPattern", "pageSize", "pageOrientation", "pageMargins", "pageBackground", "header", "footer"]
+    header: Optional[HeaderFooter] = None
+    page_background: Optional[StrictStr] = Field(default=None, alias="pageBackground")
+    page_margins: Optional[Insets] = Field(default=None, alias="pageMargins")
+    page_orientation: Optional[PageOrientation] = Field(default=None, alias="pageOrientation")
+    page_size: Optional[PageSize] = Field(default=None, alias="pageSize")
+    __properties: ClassVar[List[str]] = ["namePattern", "timeDataPattern", "format", "entityAliases", "filters", "components", "footer", "header", "pageBackground", "pageMargins", "pageOrientation", "pageSize"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -107,15 +107,15 @@ class PdfReportTemplateConfig(ReportTemplateConfig):
                 if _item_components:
                     _items.append(_item_components.to_dict())
             _dict['components'] = _items
-        # override the default output from pydantic by calling `to_dict()` of page_margins
-        if self.page_margins:
-            _dict['pageMargins'] = self.page_margins.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of header
-        if self.header:
-            _dict['header'] = self.header.to_dict()
         # override the default output from pydantic by calling `to_dict()` of footer
         if self.footer:
             _dict['footer'] = self.footer.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of header
+        if self.header:
+            _dict['header'] = self.header.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of page_margins
+        if self.page_margins:
+            _dict['pageMargins'] = self.page_margins.to_dict()
         return _dict
 
     @classmethod
@@ -128,18 +128,18 @@ class PdfReportTemplateConfig(ReportTemplateConfig):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "namePattern": obj.get("namePattern"),
+            "timeDataPattern": obj.get("timeDataPattern"),
             "format": obj.get("format"),
             "entityAliases": [EntityAlias.from_dict(_item) for _item in obj["entityAliases"]] if obj.get("entityAliases") is not None else None,
             "filters": [Filter.from_dict(_item) for _item in obj["filters"]] if obj.get("filters") is not None else None,
-            "namePattern": obj.get("namePattern"),
             "components": [ReportComponent.from_dict(_item) for _item in obj["components"]] if obj.get("components") is not None else None,
-            "timeDataPattern": obj.get("timeDataPattern"),
-            "pageSize": obj.get("pageSize"),
-            "pageOrientation": obj.get("pageOrientation"),
-            "pageMargins": Insets.from_dict(obj["pageMargins"]) if obj.get("pageMargins") is not None else None,
-            "pageBackground": obj.get("pageBackground"),
+            "footer": HeaderFooter.from_dict(obj["footer"]) if obj.get("footer") is not None else None,
             "header": HeaderFooter.from_dict(obj["header"]) if obj.get("header") is not None else None,
-            "footer": HeaderFooter.from_dict(obj["footer"]) if obj.get("footer") is not None else None
+            "pageBackground": obj.get("pageBackground"),
+            "pageMargins": Insets.from_dict(obj["pageMargins"]) if obj.get("pageMargins") is not None else None,
+            "pageOrientation": obj.get("pageOrientation"),
+            "pageSize": obj.get("pageSize")
         })
         return _obj
 

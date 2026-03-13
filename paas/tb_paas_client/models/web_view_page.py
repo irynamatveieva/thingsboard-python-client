@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, Field, StrictBool, StrictStr
+from pydantic import ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from tb_paas_client.models.mobile_page import MobilePage
 from tb_paas_client.models.mobile_page_type import MobilePageType
@@ -33,7 +33,6 @@ class WebViewPage(MobilePage):
     WebViewPage
     """ # noqa: E501
     label: Optional[StrictStr] = Field(default=None, description="Page label")
-    visible: StrictBool = Field(description="Indicates if page is visible")
     icon: Optional[StrictStr] = Field(default=None, description="URL of the page icon")
     url: Optional[StrictStr] = Field(default=None, description="Url")
     __properties: ClassVar[List[str]] = ["type", "visible", "label", "icon", "url"]

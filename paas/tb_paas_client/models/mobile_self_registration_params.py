@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, Field, StrictBool, StrictStr
+from pydantic import ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from tb_paas_client.models.captcha_params import CaptchaParams
 from tb_paas_client.models.custom_menu_id import CustomMenuId
@@ -41,23 +41,10 @@ class MobileSelfRegistrationParams(SelfRegistrationParams):
     """
     MobileSelfRegistrationParams
     """ # noqa: E501
-    enabled: Optional[StrictBool] = Field(default=None, description="Indicates if self-registration is allowed via sign-up form")
-    title: StrictStr = Field(description="The text message to appear on login form")
-    captcha: CaptchaParams = Field(description="Captcha site key for 'I'm not a robot' validation")
-    sign_up_fields: List[SignUpField] = Field(description="List of sign-up form fields", alias="signUpFields")
-    show_privacy_policy: Optional[StrictBool] = Field(default=None, description="Show or hide 'Privacy Policy'", alias="showPrivacyPolicy")
-    show_terms_of_use: Optional[StrictBool] = Field(default=None, description="Show or hide 'Terms of Use'", alias="showTermsOfUse")
-    notification_recipient: Optional[NotificationTargetId] = Field(default=None, description="Recipient to use for notifications when new user self-registered.", alias="notificationRecipient")
-    customer_title_prefix: Optional[StrictStr] = Field(default=None, description="Prefix to add to created customer", alias="customerTitlePrefix")
-    customer_group_id: Optional[EntityGroupId] = Field(default=None, description="Id of the customer group customer wil be added to.", alias="customerGroupId")
-    permissions: List[GroupPermission] = Field(description="Group Permissions to assign for the new customer user.")
-    default_dashboard: Optional[DefaultDashboardParams] = Field(default=None, description="Default dashboard params", alias="defaultDashboard")
-    home_dashboard: Optional[HomeDashboardParams] = Field(default=None, description="Home dashboard params", alias="homeDashboard")
-    custom_menu_id: Optional[CustomMenuId] = Field(default=None, description="Custom menu id", alias="customMenuId")
     privacy_policy: Optional[StrictStr] = Field(default=None, description="Privacy policy text. Supports HTML.", alias="privacyPolicy")
-    terms_of_use: Optional[StrictStr] = Field(default=None, description="Terms of User text. Supports HTML.", alias="termsOfUse")
     redirect: MobileRedirectParams = Field(description="Mobile redirect params.")
-    __properties: ClassVar[List[str]] = ["permissions", "type", "showPrivacyPolicy", "showTermsOfUse", "title", "enabled", "homeDashboard", "notificationRecipient", "captcha", "signUpFields", "defaultDashboard", "customerTitlePrefix", "customMenuId", "customerGroupId", "privacyPolicy", "termsOfUse", "redirect"]
+    terms_of_use: Optional[StrictStr] = Field(default=None, description="Terms of User text. Supports HTML.", alias="termsOfUse")
+    __properties: ClassVar[List[str]] = ["type", "enabled", "title", "captcha", "permissions", "notificationRecipient", "signUpFields", "customerTitlePrefix", "showPrivacyPolicy", "showTermsOfUse", "defaultDashboard", "homeDashboard", "customerGroupId", "customMenuId", "privacyPolicy", "redirect", "termsOfUse"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -98,6 +85,9 @@ class MobileSelfRegistrationParams(SelfRegistrationParams):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of captcha
+        if self.captcha:
+            _dict['captcha'] = self.captcha.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each item in permissions (list)
         _items = []
         if self.permissions:
@@ -105,15 +95,9 @@ class MobileSelfRegistrationParams(SelfRegistrationParams):
                 if _item_permissions:
                     _items.append(_item_permissions.to_dict())
             _dict['permissions'] = _items
-        # override the default output from pydantic by calling `to_dict()` of home_dashboard
-        if self.home_dashboard:
-            _dict['homeDashboard'] = self.home_dashboard.to_dict()
         # override the default output from pydantic by calling `to_dict()` of notification_recipient
         if self.notification_recipient:
             _dict['notificationRecipient'] = self.notification_recipient.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of captcha
-        if self.captcha:
-            _dict['captcha'] = self.captcha.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each item in sign_up_fields (list)
         _items = []
         if self.sign_up_fields:
@@ -124,12 +108,15 @@ class MobileSelfRegistrationParams(SelfRegistrationParams):
         # override the default output from pydantic by calling `to_dict()` of default_dashboard
         if self.default_dashboard:
             _dict['defaultDashboard'] = self.default_dashboard.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of custom_menu_id
-        if self.custom_menu_id:
-            _dict['customMenuId'] = self.custom_menu_id.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of home_dashboard
+        if self.home_dashboard:
+            _dict['homeDashboard'] = self.home_dashboard.to_dict()
         # override the default output from pydantic by calling `to_dict()` of customer_group_id
         if self.customer_group_id:
             _dict['customerGroupId'] = self.customer_group_id.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of custom_menu_id
+        if self.custom_menu_id:
+            _dict['customMenuId'] = self.custom_menu_id.to_dict()
         # override the default output from pydantic by calling `to_dict()` of redirect
         if self.redirect:
             _dict['redirect'] = self.redirect.to_dict()
@@ -145,23 +132,23 @@ class MobileSelfRegistrationParams(SelfRegistrationParams):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "permissions": [GroupPermission.from_dict(_item) for _item in obj["permissions"]] if obj.get("permissions") is not None else None,
             "type": obj.get("type"),
+            "enabled": obj.get("enabled"),
+            "title": obj.get("title"),
+            "captcha": CaptchaParams.from_dict(obj["captcha"]) if obj.get("captcha") is not None else None,
+            "permissions": [GroupPermission.from_dict(_item) for _item in obj["permissions"]] if obj.get("permissions") is not None else None,
+            "notificationRecipient": NotificationTargetId.from_dict(obj["notificationRecipient"]) if obj.get("notificationRecipient") is not None else None,
+            "signUpFields": [SignUpField.from_dict(_item) for _item in obj["signUpFields"]] if obj.get("signUpFields") is not None else None,
+            "customerTitlePrefix": obj.get("customerTitlePrefix"),
             "showPrivacyPolicy": obj.get("showPrivacyPolicy"),
             "showTermsOfUse": obj.get("showTermsOfUse"),
-            "title": obj.get("title"),
-            "enabled": obj.get("enabled"),
-            "homeDashboard": HomeDashboardParams.from_dict(obj["homeDashboard"]) if obj.get("homeDashboard") is not None else None,
-            "notificationRecipient": NotificationTargetId.from_dict(obj["notificationRecipient"]) if obj.get("notificationRecipient") is not None else None,
-            "captcha": CaptchaParams.from_dict(obj["captcha"]) if obj.get("captcha") is not None else None,
-            "signUpFields": [SignUpField.from_dict(_item) for _item in obj["signUpFields"]] if obj.get("signUpFields") is not None else None,
             "defaultDashboard": DefaultDashboardParams.from_dict(obj["defaultDashboard"]) if obj.get("defaultDashboard") is not None else None,
-            "customerTitlePrefix": obj.get("customerTitlePrefix"),
-            "customMenuId": CustomMenuId.from_dict(obj["customMenuId"]) if obj.get("customMenuId") is not None else None,
+            "homeDashboard": HomeDashboardParams.from_dict(obj["homeDashboard"]) if obj.get("homeDashboard") is not None else None,
             "customerGroupId": EntityGroupId.from_dict(obj["customerGroupId"]) if obj.get("customerGroupId") is not None else None,
+            "customMenuId": CustomMenuId.from_dict(obj["customMenuId"]) if obj.get("customMenuId") is not None else None,
             "privacyPolicy": obj.get("privacyPolicy"),
-            "termsOfUse": obj.get("termsOfUse"),
-            "redirect": MobileRedirectParams.from_dict(obj["redirect"]) if obj.get("redirect") is not None else None
+            "redirect": MobileRedirectParams.from_dict(obj["redirect"]) if obj.get("redirect") is not None else None,
+            "termsOfUse": obj.get("termsOfUse")
         })
         return _obj
 

@@ -37,23 +37,23 @@ class DashboardInfo(BaseModel):
     """
     DashboardInfo
     """ # noqa: E501
-    title: Optional[StrictStr] = Field(default=None, description="Title of the dashboard.")
-    image: Optional[StrictStr] = Field(default=None, description="Thumbnail picture for rendering of the dashboards in a grid view on mobile devices.")
-    mobile_hide: Optional[StrictBool] = Field(default=None, description="Hide dashboard from mobile devices. Useful if the dashboard is not designed for small screens.", alias="mobileHide")
-    mobile_order: Optional[StrictInt] = Field(default=None, description="Order on mobile devices. Useful to adjust sorting of the dashboards for mobile applications", alias="mobileOrder")
-    configuration: Optional[Any] = None
-    name: Optional[StrictStr] = Field(default=None, description="Same as title of the dashboard. Read-only field. Update the 'title' to change the 'name' of the dashboard.")
-    resources: Optional[List[ResourceExportData]] = None
     id: Optional[DashboardId] = Field(default=None, description="JSON object with the dashboard Id. Specify existing dashboard Id to update the dashboard. Referencing non-existing dashboard id will cause error. Omit this field to create new dashboard.")
     created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the dashboard creation, in milliseconds", alias="createdTime")
     tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id. Tenant Id of the dashboard can't be changed.", alias="tenantId")
     customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id. ", alias="customerId")
+    owner_id: Optional[EntityId] = Field(default=None, description="JSON object with Customer or Tenant Id", alias="ownerId")
+    title: Optional[StrictStr] = Field(default=None, description="Title of the dashboard.")
+    name: Optional[StrictStr] = Field(default=None, description="Same as title of the dashboard. Read-only field. Update the 'title' to change the 'name' of the dashboard.")
+    image: Optional[StrictStr] = Field(default=None, description="Thumbnail picture for rendering of the dashboards in a grid view on mobile devices.")
     assigned_customers: Optional[List[ShortCustomerInfo]] = Field(default=None, description="List of assigned customers with their info.", alias="assignedCustomers")
+    mobile_hide: Optional[StrictBool] = Field(default=None, description="Hide dashboard from mobile devices. Useful if the dashboard is not designed for small screens.", alias="mobileHide")
+    mobile_order: Optional[StrictInt] = Field(default=None, description="Order on mobile devices. Useful to adjust sorting of the dashboards for mobile applications", alias="mobileOrder")
+    configuration: Optional[Any] = None
+    resources: Optional[List[ResourceExportData]] = None
     version: Optional[StrictInt] = None
     owner_name: Optional[StrictStr] = Field(default=None, description="Owner name", alias="ownerName")
     groups: Optional[List[EntityInfo]] = Field(default=None, description="Groups")
-    owner_id: Optional[EntityId] = Field(default=None, description="JSON object with Customer or Tenant Id", alias="ownerId")
-    __properties: ClassVar[List[str]] = ["title", "image", "mobileHide", "mobileOrder", "configuration", "name", "resources", "id", "createdTime", "tenantId", "customerId", "assignedCustomers", "version", "ownerName", "groups", "ownerId"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "customerId", "ownerId", "title", "name", "image", "assignedCustomers", "mobileHide", "mobileOrder", "configuration", "resources", "version", "ownerName", "groups"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -95,14 +95,14 @@ class DashboardInfo(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set([
+            "created_time",
+            "tenant_id",
+            "owner_id",
+            "name",
             "image",
             "mobile_hide",
             "mobile_order",
-            "name",
-            "created_time",
-            "tenant_id",
             "owner_name",
-            "owner_id",
         ])
 
         _dict = self.model_dump(
@@ -110,13 +110,6 @@ class DashboardInfo(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in resources (list)
-        _items = []
-        if self.resources:
-            for _item_resources in self.resources:
-                if _item_resources:
-                    _items.append(_item_resources.to_dict())
-            _dict['resources'] = _items
         # override the default output from pydantic by calling `to_dict()` of id
         if self.id:
             _dict['id'] = self.id.to_dict()
@@ -126,6 +119,9 @@ class DashboardInfo(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of customer_id
         if self.customer_id:
             _dict['customerId'] = self.customer_id.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of owner_id
+        if self.owner_id:
+            _dict['ownerId'] = self.owner_id.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each item in assigned_customers (list)
         _items = []
         if self.assigned_customers:
@@ -133,6 +129,13 @@ class DashboardInfo(BaseModel):
                 if _item_assigned_customers:
                     _items.append(_item_assigned_customers.to_dict())
             _dict['assignedCustomers'] = _items
+        # override the default output from pydantic by calling `to_dict()` of each item in resources (list)
+        _items = []
+        if self.resources:
+            for _item_resources in self.resources:
+                if _item_resources:
+                    _items.append(_item_resources.to_dict())
+            _dict['resources'] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in groups (list)
         _items = []
         if self.groups:
@@ -140,9 +143,6 @@ class DashboardInfo(BaseModel):
                 if _item_groups:
                     _items.append(_item_groups.to_dict())
             _dict['groups'] = _items
-        # override the default output from pydantic by calling `to_dict()` of owner_id
-        if self.owner_id:
-            _dict['ownerId'] = self.owner_id.to_dict()
         # set to None if configuration (nullable) is None
         # and model_fields_set contains the field
         if self.configuration is None and "configuration" in self.model_fields_set:
@@ -160,22 +160,22 @@ class DashboardInfo(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "title": obj.get("title"),
-            "image": obj.get("image"),
-            "mobileHide": obj.get("mobileHide"),
-            "mobileOrder": obj.get("mobileOrder"),
-            "configuration": obj.get("configuration"),
-            "name": obj.get("name"),
-            "resources": [ResourceExportData.from_dict(_item) for _item in obj["resources"]] if obj.get("resources") is not None else None,
             "id": DashboardId.from_dict(obj["id"]) if obj.get("id") is not None else None,
             "createdTime": obj.get("createdTime"),
             "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
             "customerId": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
+            "ownerId": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None,
+            "title": obj.get("title"),
+            "name": obj.get("name"),
+            "image": obj.get("image"),
             "assignedCustomers": [ShortCustomerInfo.from_dict(_item) for _item in obj["assignedCustomers"]] if obj.get("assignedCustomers") is not None else None,
+            "mobileHide": obj.get("mobileHide"),
+            "mobileOrder": obj.get("mobileOrder"),
+            "configuration": obj.get("configuration"),
+            "resources": [ResourceExportData.from_dict(_item) for _item in obj["resources"]] if obj.get("resources") is not None else None,
             "version": obj.get("version"),
             "ownerName": obj.get("ownerName"),
-            "groups": [EntityInfo.from_dict(_item) for _item in obj["groups"]] if obj.get("groups") is not None else None,
-            "ownerId": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None
+            "groups": [EntityInfo.from_dict(_item) for _item in obj["groups"]] if obj.get("groups") is not None else None
         })
         return _obj
 

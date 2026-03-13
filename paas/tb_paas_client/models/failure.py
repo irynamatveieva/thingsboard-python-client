@@ -32,7 +32,6 @@ class Failure(TbChatResponse):
     Failure
     """ # noqa: E501
     error_details: Optional[StrictStr] = Field(default=None, description="A string containing details about the failure", alias="errorDetails")
-    status: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["status", "errorDetails"]
 
     model_config = ConfigDict(

@@ -35,14 +35,14 @@ class AlarmCalculatedFieldConfiguration(CalculatedFieldConfiguration):
     AlarmCalculatedFieldConfiguration
     """ # noqa: E501
     arguments: Dict[str, Argument]
-    create_rules: Dict[str, AlarmRuleDefinition] = Field(alias="createRules")
     clear_rule: Optional[AlarmRuleDefinition] = Field(default=None, alias="clearRule")
+    create_rules: Dict[str, AlarmRuleDefinition] = Field(alias="createRules")
     propagate: Optional[StrictBool] = None
+    propagate_relation_types: Optional[List[StrictStr]] = Field(default=None, alias="propagateRelationTypes")
     propagate_to_owner: Optional[StrictBool] = Field(default=None, alias="propagateToOwner")
     propagate_to_owner_hierarchy: Optional[StrictBool] = Field(default=None, alias="propagateToOwnerHierarchy")
     propagate_to_tenant: Optional[StrictBool] = Field(default=None, alias="propagateToTenant")
-    propagate_relation_types: Optional[List[StrictStr]] = Field(default=None, alias="propagateRelationTypes")
-    __properties: ClassVar[List[str]] = ["aiGenerated", "output", "type", "arguments", "createRules", "clearRule", "propagate", "propagateToOwner", "propagateToOwnerHierarchy", "propagateToTenant", "propagateRelationTypes"]
+    __properties: ClassVar[List[str]] = ["output", "aiGenerated", "type", "arguments", "clearRule", "createRules", "propagate", "propagateRelationTypes", "propagateToOwner", "propagateToOwnerHierarchy", "propagateToTenant"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -93,6 +93,9 @@ class AlarmCalculatedFieldConfiguration(CalculatedFieldConfiguration):
                 if self.arguments[_key_arguments]:
                     _field_dict[_key_arguments] = self.arguments[_key_arguments].to_dict()
             _dict['arguments'] = _field_dict
+        # override the default output from pydantic by calling `to_dict()` of clear_rule
+        if self.clear_rule:
+            _dict['clearRule'] = self.clear_rule.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each value in create_rules (dict)
         _field_dict = {}
         if self.create_rules:
@@ -100,9 +103,6 @@ class AlarmCalculatedFieldConfiguration(CalculatedFieldConfiguration):
                 if self.create_rules[_key_create_rules]:
                     _field_dict[_key_create_rules] = self.create_rules[_key_create_rules].to_dict()
             _dict['createRules'] = _field_dict
-        # override the default output from pydantic by calling `to_dict()` of clear_rule
-        if self.clear_rule:
-            _dict['clearRule'] = self.clear_rule.to_dict()
         return _dict
 
     @classmethod
@@ -115,8 +115,8 @@ class AlarmCalculatedFieldConfiguration(CalculatedFieldConfiguration):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "aiGenerated": obj.get("aiGenerated"),
             "output": Output.from_dict(obj["output"]) if obj.get("output") is not None else None,
+            "aiGenerated": obj.get("aiGenerated"),
             "type": obj.get("type"),
             "arguments": dict(
                 (_k, Argument.from_dict(_v))
@@ -124,18 +124,18 @@ class AlarmCalculatedFieldConfiguration(CalculatedFieldConfiguration):
             )
             if obj.get("arguments") is not None
             else None,
+            "clearRule": AlarmRuleDefinition.from_dict(obj["clearRule"]) if obj.get("clearRule") is not None else None,
             "createRules": dict(
                 (_k, AlarmRuleDefinition.from_dict(_v))
                 for _k, _v in obj["createRules"].items()
             )
             if obj.get("createRules") is not None
             else None,
-            "clearRule": AlarmRuleDefinition.from_dict(obj["clearRule"]) if obj.get("clearRule") is not None else None,
             "propagate": obj.get("propagate"),
+            "propagateRelationTypes": obj.get("propagateRelationTypes"),
             "propagateToOwner": obj.get("propagateToOwner"),
             "propagateToOwnerHierarchy": obj.get("propagateToOwnerHierarchy"),
-            "propagateToTenant": obj.get("propagateToTenant"),
-            "propagateRelationTypes": obj.get("propagateRelationTypes")
+            "propagateToTenant": obj.get("propagateToTenant")
         })
         return _obj
 

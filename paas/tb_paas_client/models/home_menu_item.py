@@ -37,7 +37,6 @@ class HomeMenuItem(MenuItem):
     id: Optional[StrictStr] = Field(default=None, description="Unique identifier for predefined menu items")
     name: Optional[StrictStr] = Field(default=None, description="Name of the menu item")
     icon: Optional[StrictStr] = Field(default=None, description="URL of the menu item icon. Overrides 'materialIcon'")
-    visible: Optional[StrictBool] = Field(default=None, description="Mark if menu item is visible for user")
     pages: Optional[List[DefaultMenuItem]] = Field(default=None, description="List of child menu items")
     home_type: Optional[HomeMenuItemType] = Field(default=None, description="DEFAULT or DASHBOARD. DASHBOARD means default home page presentation changed to refer to dashboard", alias="homeType")
     dashboard_id: Optional[StrictStr] = Field(default=None, description="Id of the Dashboard to open, when user clicks the menu item", alias="dashboardId")

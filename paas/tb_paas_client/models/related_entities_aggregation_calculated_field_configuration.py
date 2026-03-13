@@ -35,14 +35,14 @@ class RelatedEntitiesAggregationCalculatedFieldConfiguration(CalculatedFieldConf
     """
     RelatedEntitiesAggregationCalculatedFieldConfiguration
     """ # noqa: E501
-    relation: RelationPathLevel
     arguments: Dict[str, Argument]
     deduplication_interval_in_sec: Optional[StrictInt] = Field(default=None, alias="deduplicationIntervalInSec")
     metrics: Dict[str, AggMetric]
-    use_latest_ts: Optional[StrictBool] = Field(default=None, alias="useLatestTs")
-    scheduled_update_interval: Optional[StrictInt] = Field(default=None, alias="scheduledUpdateInterval")
+    relation: RelationPathLevel
     scheduled_update_enabled: Optional[StrictBool] = Field(default=None, alias="scheduledUpdateEnabled")
-    __properties: ClassVar[List[str]] = ["aiGenerated", "output", "type", "relation", "arguments", "deduplicationIntervalInSec", "metrics", "useLatestTs", "scheduledUpdateInterval", "scheduledUpdateEnabled"]
+    scheduled_update_interval: Optional[StrictInt] = Field(default=None, alias="scheduledUpdateInterval")
+    use_latest_ts: Optional[StrictBool] = Field(default=None, alias="useLatestTs")
+    __properties: ClassVar[List[str]] = ["output", "aiGenerated", "type", "arguments", "deduplicationIntervalInSec", "metrics", "relation", "scheduledUpdateEnabled", "scheduledUpdateInterval", "useLatestTs"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -86,9 +86,6 @@ class RelatedEntitiesAggregationCalculatedFieldConfiguration(CalculatedFieldConf
         # override the default output from pydantic by calling `to_dict()` of output
         if self.output:
             _dict['output'] = self.output.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of relation
-        if self.relation:
-            _dict['relation'] = self.relation.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each value in arguments (dict)
         _field_dict = {}
         if self.arguments:
@@ -103,6 +100,9 @@ class RelatedEntitiesAggregationCalculatedFieldConfiguration(CalculatedFieldConf
                 if self.metrics[_key_metrics]:
                     _field_dict[_key_metrics] = self.metrics[_key_metrics].to_dict()
             _dict['metrics'] = _field_dict
+        # override the default output from pydantic by calling `to_dict()` of relation
+        if self.relation:
+            _dict['relation'] = self.relation.to_dict()
         return _dict
 
     @classmethod
@@ -115,10 +115,9 @@ class RelatedEntitiesAggregationCalculatedFieldConfiguration(CalculatedFieldConf
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "aiGenerated": obj.get("aiGenerated"),
             "output": Output.from_dict(obj["output"]) if obj.get("output") is not None else None,
+            "aiGenerated": obj.get("aiGenerated"),
             "type": obj.get("type"),
-            "relation": RelationPathLevel.from_dict(obj["relation"]) if obj.get("relation") is not None else None,
             "arguments": dict(
                 (_k, Argument.from_dict(_v))
                 for _k, _v in obj["arguments"].items()
@@ -132,9 +131,10 @@ class RelatedEntitiesAggregationCalculatedFieldConfiguration(CalculatedFieldConf
             )
             if obj.get("metrics") is not None
             else None,
-            "useLatestTs": obj.get("useLatestTs"),
+            "relation": RelationPathLevel.from_dict(obj["relation"]) if obj.get("relation") is not None else None,
+            "scheduledUpdateEnabled": obj.get("scheduledUpdateEnabled"),
             "scheduledUpdateInterval": obj.get("scheduledUpdateInterval"),
-            "scheduledUpdateEnabled": obj.get("scheduledUpdateEnabled")
+            "useLatestTs": obj.get("useLatestTs")
         })
         return _obj
 

@@ -33,6 +33,7 @@ class RuleNodeDebugEventFilter(EventFilter):
     RuleNodeDebugEventFilter
     """ # noqa: E501
     server: Optional[StrictStr] = Field(default=None, description="String value representing the server name, identifier or ip address where the platform is running")
+    is_error: Optional[StrictBool] = Field(default=None, description="Boolean value to filter the errors", alias="isError")
     error_str: Optional[StrictStr] = Field(default=None, description="The case insensitive 'contains' filter based on error message", alias="errorStr")
     msg_direction_type: Optional[StrictStr] = Field(default=None, description="String value representing msg direction type (incoming to entity or outcoming from entity)", alias="msgDirectionType")
     entity_id: Optional[StrictStr] = Field(default=None, description="String value representing the entity id in the event body (originator of the message)", alias="entityId")
@@ -42,9 +43,17 @@ class RuleNodeDebugEventFilter(EventFilter):
     relation_type: Optional[StrictStr] = Field(default=None, description="String value representing the type of message routing", alias="relationType")
     data_search: Optional[StrictStr] = Field(default=None, description="The case insensitive 'contains' filter based on data (key and value) for the message.", alias="dataSearch")
     metadata_search: Optional[StrictStr] = Field(default=None, description="The case insensitive 'contains' filter based on metadata (key and value) for the message.", alias="metadataSearch")
-    is_error: Optional[StrictBool] = Field(default=None, alias="isError")
-    error: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["eventType", "notEmpty", "server", "errorStr", "msgDirectionType", "entityId", "entityType", "msgId", "msgType", "relationType", "dataSearch", "metadataSearch", "isError", "error"]
+    __properties: ClassVar[List[str]] = ["eventType", "notEmpty", "server", "isError", "errorStr", "msgDirectionType", "entityId", "entityType", "msgId", "msgType", "relationType", "dataSearch", "metadataSearch"]
+
+    @field_validator('is_error')
+    def is_error_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['false', 'true']):
+            raise ValueError("must be one of enum values ('false', 'true')")
+        return value
 
     @field_validator('msg_direction_type')
     def msg_direction_type_validate_enum(cls, value):
@@ -120,6 +129,7 @@ class RuleNodeDebugEventFilter(EventFilter):
             "eventType": obj.get("eventType"),
             "notEmpty": obj.get("notEmpty"),
             "server": obj.get("server"),
+            "isError": obj.get("isError"),
             "errorStr": obj.get("errorStr"),
             "msgDirectionType": obj.get("msgDirectionType"),
             "entityId": obj.get("entityId"),
@@ -128,9 +138,7 @@ class RuleNodeDebugEventFilter(EventFilter):
             "msgType": obj.get("msgType"),
             "relationType": obj.get("relationType"),
             "dataSearch": obj.get("dataSearch"),
-            "metadataSearch": obj.get("metadataSearch"),
-            "isError": obj.get("isError"),
-            "error": obj.get("error")
+            "metadataSearch": obj.get("metadataSearch")
         })
         return _obj
 

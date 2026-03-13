@@ -21,18 +21,18 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import ConfigDict
 from typing import Any, ClassVar, Dict, List
-from uuid import UUID
+from tb_paas_client.models.entity_id import EntityId
+from tb_paas_client.models.entity_type import EntityType
 from typing import Optional, Set
 from typing_extensions import Self
 
-class BillingCustomerId(BaseModel):
+class BillingCustomerId(EntityId):
     """
     BillingCustomerId
     """ # noqa: E501
-    id: UUID = Field(description="ID of the entity, time-based UUID v1")
-    __properties: ClassVar[List[str]] = ["id"]
+    __properties: ClassVar[List[str]] = ["id", "entityType"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -85,7 +85,8 @@ class BillingCustomerId(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "id": obj.get("id")
+            "id": obj.get("id"),
+            "entityType": obj.get("entityType")
         })
         return _obj
 

@@ -74,6 +74,7 @@ class EdgeEventType(str, Enum):
     SECRET = 'SECRET'
     REPORT_TEMPLATE = 'REPORT_TEMPLATE'
     AI_MODEL = 'AI_MODEL'
+    API_KEY = 'API_KEY'
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:

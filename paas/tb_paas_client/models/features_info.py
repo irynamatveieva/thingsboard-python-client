@@ -30,13 +30,13 @@ class FeaturesInfo(BaseModel):
     """
     FeaturesInfo
     """ # noqa: E501
-    sms_enabled: Optional[StrictBool] = Field(default=None, alias="smsEnabled")
-    oauth_enabled: Optional[StrictBool] = Field(default=None, alias="oauthEnabled")
-    notification_enabled: Optional[StrictBool] = Field(default=None, alias="notificationEnabled")
     white_labeling_enabled: Optional[StrictBool] = Field(default=None, alias="whiteLabelingEnabled")
-    two_fa_enabled: Optional[StrictBool] = Field(default=None, alias="twoFaEnabled")
     email_enabled: Optional[StrictBool] = Field(default=None, alias="emailEnabled")
-    __properties: ClassVar[List[str]] = ["smsEnabled", "oauthEnabled", "notificationEnabled", "whiteLabelingEnabled", "twoFaEnabled", "emailEnabled"]
+    sms_enabled: Optional[StrictBool] = Field(default=None, alias="smsEnabled")
+    notification_enabled: Optional[StrictBool] = Field(default=None, alias="notificationEnabled")
+    oauth_enabled: Optional[StrictBool] = Field(default=None, alias="oauthEnabled")
+    two_fa_enabled: Optional[StrictBool] = Field(default=None, alias="twoFaEnabled")
+    __properties: ClassVar[List[str]] = ["whiteLabelingEnabled", "emailEnabled", "smsEnabled", "notificationEnabled", "oauthEnabled", "twoFaEnabled"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -89,12 +89,12 @@ class FeaturesInfo(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "smsEnabled": obj.get("smsEnabled"),
-            "oauthEnabled": obj.get("oauthEnabled"),
-            "notificationEnabled": obj.get("notificationEnabled"),
             "whiteLabelingEnabled": obj.get("whiteLabelingEnabled"),
-            "twoFaEnabled": obj.get("twoFaEnabled"),
-            "emailEnabled": obj.get("emailEnabled")
+            "emailEnabled": obj.get("emailEnabled"),
+            "smsEnabled": obj.get("smsEnabled"),
+            "notificationEnabled": obj.get("notificationEnabled"),
+            "oauthEnabled": obj.get("oauthEnabled"),
+            "twoFaEnabled": obj.get("twoFaEnabled")
         })
         return _obj
 

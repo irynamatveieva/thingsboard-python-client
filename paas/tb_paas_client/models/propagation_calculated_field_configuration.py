@@ -34,11 +34,11 @@ class PropagationCalculatedFieldConfiguration(CalculatedFieldConfiguration):
     """
     PropagationCalculatedFieldConfiguration
     """ # noqa: E501
+    apply_expression_to_resolved_arguments: Optional[StrictBool] = Field(default=None, alias="applyExpressionToResolvedArguments")
     arguments: Dict[str, Argument]
     expression: Optional[StrictStr] = None
     relation: RelationPathLevel
-    apply_expression_to_resolved_arguments: Optional[StrictBool] = Field(default=None, alias="applyExpressionToResolvedArguments")
-    __properties: ClassVar[List[str]] = ["aiGenerated", "output", "type", "arguments", "expression", "relation", "applyExpressionToResolvedArguments"]
+    __properties: ClassVar[List[str]] = ["output", "aiGenerated", "type", "applyExpressionToResolvedArguments", "arguments", "expression", "relation"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -104,9 +104,10 @@ class PropagationCalculatedFieldConfiguration(CalculatedFieldConfiguration):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "aiGenerated": obj.get("aiGenerated"),
             "output": Output.from_dict(obj["output"]) if obj.get("output") is not None else None,
+            "aiGenerated": obj.get("aiGenerated"),
             "type": obj.get("type"),
+            "applyExpressionToResolvedArguments": obj.get("applyExpressionToResolvedArguments"),
             "arguments": dict(
                 (_k, Argument.from_dict(_v))
                 for _k, _v in obj["arguments"].items()
@@ -114,8 +115,7 @@ class PropagationCalculatedFieldConfiguration(CalculatedFieldConfiguration):
             if obj.get("arguments") is not None
             else None,
             "expression": obj.get("expression"),
-            "relation": RelationPathLevel.from_dict(obj["relation"]) if obj.get("relation") is not None else None,
-            "applyExpressionToResolvedArguments": obj.get("applyExpressionToResolvedArguments")
+            "relation": RelationPathLevel.from_dict(obj["relation"]) if obj.get("relation") is not None else None
         })
         return _obj
 

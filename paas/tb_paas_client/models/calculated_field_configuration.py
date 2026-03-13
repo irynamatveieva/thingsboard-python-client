@@ -42,10 +42,10 @@ class CalculatedFieldConfiguration(BaseModel):
     """
     CalculatedFieldConfiguration
     """ # noqa: E501
-    ai_generated: Optional[StrictBool] = Field(default=None, alias="aiGenerated")
     output: Optional[Output] = None
+    ai_generated: Optional[StrictBool] = Field(default=None, alias="aiGenerated")
     type: StrictStr
-    __properties: ClassVar[List[str]] = ["aiGenerated", "output", "type"]
+    __properties: ClassVar[List[str]] = ["output", "aiGenerated", "type"]
 
     model_config = ConfigDict(
         populate_by_name=True,

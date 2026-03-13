@@ -35,12 +35,12 @@ class MicrosoftTeamsNotificationTargetConfig(NotificationTargetConfig):
     webhook_url: Annotated[str, Field(min_length=1, strict=True)] = Field(alias="webhookUrl")
     channel_name: Annotated[str, Field(min_length=1, strict=True)] = Field(alias="channelName")
     use_old_api: Optional[StrictBool] = Field(default=None, alias="useOldApi")
-    id: Optional[Any] = None
-    title: Optional[StrictStr] = None
     email: Optional[StrictStr] = None
     first_name: Optional[StrictStr] = Field(default=None, alias="firstName")
+    id: Optional[Any] = None
     last_name: Optional[StrictStr] = Field(default=None, alias="lastName")
-    __properties: ClassVar[List[str]] = ["description", "type", "webhookUrl", "channelName", "useOldApi", "id", "title", "email", "firstName", "lastName"]
+    title: Optional[StrictStr] = None
+    __properties: ClassVar[List[str]] = ["description", "type", "webhookUrl", "channelName", "useOldApi", "email", "firstName", "id", "lastName", "title"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -103,11 +103,11 @@ class MicrosoftTeamsNotificationTargetConfig(NotificationTargetConfig):
             "webhookUrl": obj.get("webhookUrl"),
             "channelName": obj.get("channelName"),
             "useOldApi": obj.get("useOldApi"),
-            "id": obj.get("id"),
-            "title": obj.get("title"),
             "email": obj.get("email"),
             "firstName": obj.get("firstName"),
-            "lastName": obj.get("lastName")
+            "id": obj.get("id"),
+            "lastName": obj.get("lastName"),
+            "title": obj.get("title")
         })
         return _obj
 

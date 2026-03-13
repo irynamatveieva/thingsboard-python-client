@@ -37,11 +37,11 @@ class EntityAggregationCalculatedFieldConfiguration(CalculatedFieldConfiguration
     EntityAggregationCalculatedFieldConfiguration
     """ # noqa: E501
     arguments: Dict[str, Argument]
-    metrics: Dict[str, AggMetric]
     interval: AggInterval
-    watermark: Optional[Watermark] = None
+    metrics: Dict[str, AggMetric]
     produce_intermediate_result: Optional[StrictBool] = Field(default=None, alias="produceIntermediateResult")
-    __properties: ClassVar[List[str]] = ["aiGenerated", "output", "type", "arguments", "metrics", "interval", "watermark", "produceIntermediateResult"]
+    watermark: Optional[Watermark] = None
+    __properties: ClassVar[List[str]] = ["output", "aiGenerated", "type", "arguments", "interval", "metrics", "produceIntermediateResult", "watermark"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -92,6 +92,9 @@ class EntityAggregationCalculatedFieldConfiguration(CalculatedFieldConfiguration
                 if self.arguments[_key_arguments]:
                     _field_dict[_key_arguments] = self.arguments[_key_arguments].to_dict()
             _dict['arguments'] = _field_dict
+        # override the default output from pydantic by calling `to_dict()` of interval
+        if self.interval:
+            _dict['interval'] = self.interval.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each value in metrics (dict)
         _field_dict = {}
         if self.metrics:
@@ -99,9 +102,6 @@ class EntityAggregationCalculatedFieldConfiguration(CalculatedFieldConfiguration
                 if self.metrics[_key_metrics]:
                     _field_dict[_key_metrics] = self.metrics[_key_metrics].to_dict()
             _dict['metrics'] = _field_dict
-        # override the default output from pydantic by calling `to_dict()` of interval
-        if self.interval:
-            _dict['interval'] = self.interval.to_dict()
         # override the default output from pydantic by calling `to_dict()` of watermark
         if self.watermark:
             _dict['watermark'] = self.watermark.to_dict()
@@ -117,8 +117,8 @@ class EntityAggregationCalculatedFieldConfiguration(CalculatedFieldConfiguration
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "aiGenerated": obj.get("aiGenerated"),
             "output": Output.from_dict(obj["output"]) if obj.get("output") is not None else None,
+            "aiGenerated": obj.get("aiGenerated"),
             "type": obj.get("type"),
             "arguments": dict(
                 (_k, Argument.from_dict(_v))
@@ -126,15 +126,15 @@ class EntityAggregationCalculatedFieldConfiguration(CalculatedFieldConfiguration
             )
             if obj.get("arguments") is not None
             else None,
+            "interval": AggInterval.from_dict(obj["interval"]) if obj.get("interval") is not None else None,
             "metrics": dict(
                 (_k, AggMetric.from_dict(_v))
                 for _k, _v in obj["metrics"].items()
             )
             if obj.get("metrics") is not None
             else None,
-            "interval": AggInterval.from_dict(obj["interval"]) if obj.get("interval") is not None else None,
-            "watermark": Watermark.from_dict(obj["watermark"]) if obj.get("watermark") is not None else None,
-            "produceIntermediateResult": obj.get("produceIntermediateResult")
+            "produceIntermediateResult": obj.get("produceIntermediateResult"),
+            "watermark": Watermark.from_dict(obj["watermark"]) if obj.get("watermark") is not None else None
         })
         return _obj
 

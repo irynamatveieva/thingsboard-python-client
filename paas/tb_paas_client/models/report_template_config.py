@@ -40,13 +40,13 @@ class ReportTemplateConfig(BaseModel):
     """
     ReportTemplateConfig
     """ # noqa: E501
+    name_pattern: Optional[StrictStr] = Field(default=None, alias="namePattern")
+    time_data_pattern: Optional[StrictStr] = Field(default=None, alias="timeDataPattern")
     format: TbReportFormat = Field(description="Report format")
     entity_aliases: Optional[List[EntityAlias]] = Field(default=None, alias="entityAliases")
     filters: Optional[List[Filter]] = None
-    name_pattern: Optional[StrictStr] = Field(default=None, alias="namePattern")
     components: Optional[List[ReportComponent]] = None
-    time_data_pattern: Optional[StrictStr] = Field(default=None, alias="timeDataPattern")
-    __properties: ClassVar[List[str]] = ["format", "entityAliases", "filters", "namePattern", "components", "timeDataPattern"]
+    __properties: ClassVar[List[str]] = ["namePattern", "timeDataPattern", "format", "entityAliases", "filters", "components"]
 
     model_config = ConfigDict(
         populate_by_name=True,

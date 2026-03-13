@@ -35,7 +35,7 @@ class ScriptCalculatedFieldConfiguration(CalculatedFieldConfiguration):
     """ # noqa: E501
     arguments: Dict[str, Argument]
     expression: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["aiGenerated", "output", "type", "arguments", "expression"]
+    __properties: ClassVar[List[str]] = ["output", "aiGenerated", "type", "arguments", "expression"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -98,8 +98,8 @@ class ScriptCalculatedFieldConfiguration(CalculatedFieldConfiguration):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "aiGenerated": obj.get("aiGenerated"),
             "output": Output.from_dict(obj["output"]) if obj.get("output") is not None else None,
+            "aiGenerated": obj.get("aiGenerated"),
             "type": obj.get("type"),
             "arguments": dict(
                 (_k, Argument.from_dict(_v))

@@ -34,10 +34,10 @@ class ErrorComponentAllOfException(BaseModel):
     """ # noqa: E501
     cause: Optional[ErrorComponentAllOfExceptionCause] = None
     stack_trace: Optional[List[ErrorComponentAllOfExceptionCauseStackTrace]] = Field(default=None, alias="stackTrace")
+    localized_message: Optional[StrictStr] = Field(default=None, alias="localizedMessage")
     message: Optional[StrictStr] = None
     suppressed: Optional[List[ErrorComponentAllOfExceptionCause]] = None
-    localized_message: Optional[StrictStr] = Field(default=None, alias="localizedMessage")
-    __properties: ClassVar[List[str]] = ["cause", "stackTrace", "message", "suppressed", "localizedMessage"]
+    __properties: ClassVar[List[str]] = ["cause", "stackTrace", "localizedMessage", "message", "suppressed"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -109,9 +109,9 @@ class ErrorComponentAllOfException(BaseModel):
         _obj = cls.model_validate({
             "cause": ErrorComponentAllOfExceptionCause.from_dict(obj["cause"]) if obj.get("cause") is not None else None,
             "stackTrace": [ErrorComponentAllOfExceptionCauseStackTrace.from_dict(_item) for _item in obj["stackTrace"]] if obj.get("stackTrace") is not None else None,
+            "localizedMessage": obj.get("localizedMessage"),
             "message": obj.get("message"),
-            "suppressed": [ErrorComponentAllOfExceptionCause.from_dict(_item) for _item in obj["suppressed"]] if obj.get("suppressed") is not None else None,
-            "localizedMessage": obj.get("localizedMessage")
+            "suppressed": [ErrorComponentAllOfExceptionCause.from_dict(_item) for _item in obj["suppressed"]] if obj.get("suppressed") is not None else None
         })
         return _obj
 

@@ -28,9 +28,9 @@ from tb_paas_client.models.entity_type import EntityType
 from typing import Optional, Set
 from typing_extensions import Self
 
-class SubscriptionPlanId(EntityId):
+class ProductId(EntityId):
     """
-    SubscriptionPlanId
+    ProductId
     """ # noqa: E501
     __properties: ClassVar[List[str]] = ["id", "entityType"]
 
@@ -52,7 +52,7 @@ class SubscriptionPlanId(EntityId):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of SubscriptionPlanId from a JSON string"""
+        """Create an instance of ProductId from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -77,7 +77,7 @@ class SubscriptionPlanId(EntityId):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of SubscriptionPlanId from a dict"""
+        """Create an instance of ProductId from a dict"""
         if obj is None:
             return None
 

@@ -32,9 +32,9 @@ class ErrorComponentAllOfExceptionCause(BaseModel):
     ErrorComponentAllOfExceptionCause
     """ # noqa: E501
     stack_trace: Optional[List[ErrorComponentAllOfExceptionCauseStackTrace]] = Field(default=None, alias="stackTrace")
-    message: Optional[StrictStr] = None
     localized_message: Optional[StrictStr] = Field(default=None, alias="localizedMessage")
-    __properties: ClassVar[List[str]] = ["stackTrace", "message", "localizedMessage"]
+    message: Optional[StrictStr] = None
+    __properties: ClassVar[List[str]] = ["stackTrace", "localizedMessage", "message"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -95,8 +95,8 @@ class ErrorComponentAllOfExceptionCause(BaseModel):
 
         _obj = cls.model_validate({
             "stackTrace": [ErrorComponentAllOfExceptionCauseStackTrace.from_dict(_item) for _item in obj["stackTrace"]] if obj.get("stackTrace") is not None else None,
-            "message": obj.get("message"),
-            "localizedMessage": obj.get("localizedMessage")
+            "localizedMessage": obj.get("localizedMessage"),
+            "message": obj.get("message")
         })
         return _obj
 

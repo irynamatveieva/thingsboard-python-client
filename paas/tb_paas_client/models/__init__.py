@@ -115,6 +115,7 @@ __all__ = [
     "ApiUsageLimitNotificationRuleTriggerConfig",
     "ApiUsageLimitRecipientsConfig",
     "ApiUsageStateFilter",
+    "ApiUsageStateId",
     "ApiUsageStateValue",
     "Argument",
     "ArgumentType",
@@ -374,6 +375,7 @@ __all__ = [
     "EntityGroupFilter",
     "EntityGroupId",
     "EntityGroupInfo",
+    "EntityGroupInfoOwnerIdsInner",
     "EntityGroupListFilter",
     "EntityGroupNameFilter",
     "EntityId",
@@ -588,7 +590,6 @@ __all__ = [
     "Operation",
     "OriginatorEntityOwnerUsersFilter",
     "OtaPackage",
-    "OtaPackageData",
     "OtaPackageExportData",
     "OtaPackageId",
     "OtaPackageInfo",
@@ -681,6 +682,7 @@ __all__ = [
     "PrivacyProtocol",
     "ProcessingStrategy",
     "ProcessingStrategyType",
+    "ProductId",
     "PropagationCalculatedFieldConfiguration",
     "ProtoTransportPayloadConfiguration",
     "QRCodeConfig",
@@ -829,6 +831,7 @@ __all__ = [
     "SubReportComponent",
     "SubmitStrategy",
     "SubmitStrategyType",
+    "SubscriptionAddonId",
     "SubscriptionDetails",
     "SubscriptionEntry",
     "SubscriptionExceptionErrorCode",
@@ -1082,6 +1085,7 @@ if TYPE_CHECKING:
     from tb_paas_client.models.api_usage_limit_notification_rule_trigger_config import ApiUsageLimitNotificationRuleTriggerConfig
     from tb_paas_client.models.api_usage_limit_recipients_config import ApiUsageLimitRecipientsConfig
     from tb_paas_client.models.api_usage_state_filter import ApiUsageStateFilter
+    from tb_paas_client.models.api_usage_state_id import ApiUsageStateId
     from tb_paas_client.models.api_usage_state_value import ApiUsageStateValue
     from tb_paas_client.models.argument import Argument
     from tb_paas_client.models.argument_type import ArgumentType
@@ -1341,6 +1345,7 @@ if TYPE_CHECKING:
     from tb_paas_client.models.entity_group_filter import EntityGroupFilter
     from tb_paas_client.models.entity_group_id import EntityGroupId
     from tb_paas_client.models.entity_group_info import EntityGroupInfo
+    from tb_paas_client.models.entity_group_info_owner_ids_inner import EntityGroupInfoOwnerIdsInner
     from tb_paas_client.models.entity_group_list_filter import EntityGroupListFilter
     from tb_paas_client.models.entity_group_name_filter import EntityGroupNameFilter
     from tb_paas_client.models.entity_id import EntityId
@@ -1555,7 +1560,6 @@ if TYPE_CHECKING:
     from tb_paas_client.models.operation import Operation
     from tb_paas_client.models.originator_entity_owner_users_filter import OriginatorEntityOwnerUsersFilter
     from tb_paas_client.models.ota_package import OtaPackage
-    from tb_paas_client.models.ota_package_data import OtaPackageData
     from tb_paas_client.models.ota_package_export_data import OtaPackageExportData
     from tb_paas_client.models.ota_package_id import OtaPackageId
     from tb_paas_client.models.ota_package_info import OtaPackageInfo
@@ -1648,6 +1652,7 @@ if TYPE_CHECKING:
     from tb_paas_client.models.privacy_protocol import PrivacyProtocol
     from tb_paas_client.models.processing_strategy import ProcessingStrategy
     from tb_paas_client.models.processing_strategy_type import ProcessingStrategyType
+    from tb_paas_client.models.product_id import ProductId
     from tb_paas_client.models.propagation_calculated_field_configuration import PropagationCalculatedFieldConfiguration
     from tb_paas_client.models.proto_transport_payload_configuration import ProtoTransportPayloadConfiguration
     from tb_paas_client.models.qr_code_config import QRCodeConfig
@@ -1796,6 +1801,7 @@ if TYPE_CHECKING:
     from tb_paas_client.models.sub_report_component import SubReportComponent
     from tb_paas_client.models.submit_strategy import SubmitStrategy
     from tb_paas_client.models.submit_strategy_type import SubmitStrategyType
+    from tb_paas_client.models.subscription_addon_id import SubscriptionAddonId
     from tb_paas_client.models.subscription_details import SubscriptionDetails
     from tb_paas_client.models.subscription_entry import SubscriptionEntry
     from tb_paas_client.models.subscription_exception_error_code import SubscriptionExceptionErrorCode
@@ -2048,6 +2054,7 @@ _MODEL_CLASSES = {
     "ApiUsageLimitNotificationRuleTriggerConfig": "tb_paas_client.models.api_usage_limit_notification_rule_trigger_config",
     "ApiUsageLimitRecipientsConfig": "tb_paas_client.models.api_usage_limit_recipients_config",
     "ApiUsageStateFilter": "tb_paas_client.models.api_usage_state_filter",
+    "ApiUsageStateId": "tb_paas_client.models.api_usage_state_id",
     "ApiUsageStateValue": "tb_paas_client.models.api_usage_state_value",
     "Argument": "tb_paas_client.models.argument",
     "ArgumentType": "tb_paas_client.models.argument_type",
@@ -2307,6 +2314,7 @@ _MODEL_CLASSES = {
     "EntityGroupFilter": "tb_paas_client.models.entity_group_filter",
     "EntityGroupId": "tb_paas_client.models.entity_group_id",
     "EntityGroupInfo": "tb_paas_client.models.entity_group_info",
+    "EntityGroupInfoOwnerIdsInner": "tb_paas_client.models.entity_group_info_owner_ids_inner",
     "EntityGroupListFilter": "tb_paas_client.models.entity_group_list_filter",
     "EntityGroupNameFilter": "tb_paas_client.models.entity_group_name_filter",
     "EntityId": "tb_paas_client.models.entity_id",
@@ -2521,7 +2529,6 @@ _MODEL_CLASSES = {
     "Operation": "tb_paas_client.models.operation",
     "OriginatorEntityOwnerUsersFilter": "tb_paas_client.models.originator_entity_owner_users_filter",
     "OtaPackage": "tb_paas_client.models.ota_package",
-    "OtaPackageData": "tb_paas_client.models.ota_package_data",
     "OtaPackageExportData": "tb_paas_client.models.ota_package_export_data",
     "OtaPackageId": "tb_paas_client.models.ota_package_id",
     "OtaPackageInfo": "tb_paas_client.models.ota_package_info",
@@ -2614,6 +2621,7 @@ _MODEL_CLASSES = {
     "PrivacyProtocol": "tb_paas_client.models.privacy_protocol",
     "ProcessingStrategy": "tb_paas_client.models.processing_strategy",
     "ProcessingStrategyType": "tb_paas_client.models.processing_strategy_type",
+    "ProductId": "tb_paas_client.models.product_id",
     "PropagationCalculatedFieldConfiguration": "tb_paas_client.models.propagation_calculated_field_configuration",
     "ProtoTransportPayloadConfiguration": "tb_paas_client.models.proto_transport_payload_configuration",
     "QRCodeConfig": "tb_paas_client.models.qr_code_config",
@@ -2762,6 +2770,7 @@ _MODEL_CLASSES = {
     "SubReportComponent": "tb_paas_client.models.sub_report_component",
     "SubmitStrategy": "tb_paas_client.models.submit_strategy",
     "SubmitStrategyType": "tb_paas_client.models.submit_strategy_type",
+    "SubscriptionAddonId": "tb_paas_client.models.subscription_addon_id",
     "SubscriptionDetails": "tb_paas_client.models.subscription_details",
     "SubscriptionEntry": "tb_paas_client.models.subscription_entry",
     "SubscriptionExceptionErrorCode": "tb_paas_client.models.subscription_exception_error_code",

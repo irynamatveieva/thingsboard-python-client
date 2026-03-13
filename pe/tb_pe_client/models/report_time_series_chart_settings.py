@@ -63,8 +63,8 @@ class ReportTimeSeriesChartSettings(BaseModel):
     legend_label_color: Optional[StrictStr] = Field(default=None, alias="legendLabelColor")
     legend_value_font: Optional[Font] = Field(default=None, alias="legendValueFont")
     legend_value_color: Optional[StrictStr] = Field(default=None, alias="legendValueColor")
-    yaxes: Optional[Dict[str, TimeSeriesChartYAxisSettings]] = None
     xaxis: Optional[TimeSeriesChartXAxisSettings] = None
+    yaxes: Optional[Dict[str, TimeSeriesChartYAxisSettings]] = None
     thresholds: Optional[List[TimeSeriesChartThreshold]] = None
     grid: Optional[TimeSeriesChartGridSettings] = None
     y_axes: Optional[Dict[str, TimeSeriesChartYAxisSettings]] = Field(default=None, alias="yAxes")
@@ -74,7 +74,7 @@ class ReportTimeSeriesChartSettings(BaseModel):
     states: Optional[List[TimeSeriesChartStateSettings]] = None
     comparison_x_axis: Optional[TimeSeriesChartXAxisSettings] = Field(default=None, alias="comparisonXAxis")
     legend_config: Optional[LegendConfig] = Field(default=None, alias="legendConfig")
-    __properties: ClassVar[List[str]] = ["showTitle", "title", "titleFont", "titleColor", "titleAlignment", "stack", "comparisonEnabled", "timeForComparison", "comparisonCustomIntervalValue", "showLegend", "legendColumnTitleFont", "legendColumnTitleColor", "legendLabelFont", "legendLabelColor", "legendValueFont", "legendValueColor", "yaxes", "xaxis", "thresholds", "grid", "yAxes", "xAxis", "barWidthSettings", "noAggregationBarWidthSettings", "states", "comparisonXAxis", "legendConfig"]
+    __properties: ClassVar[List[str]] = ["showTitle", "title", "titleFont", "titleColor", "titleAlignment", "stack", "comparisonEnabled", "timeForComparison", "comparisonCustomIntervalValue", "showLegend", "legendColumnTitleFont", "legendColumnTitleColor", "legendLabelFont", "legendLabelColor", "legendValueFont", "legendValueColor", "xaxis", "yaxes", "thresholds", "grid", "yAxes", "xAxis", "barWidthSettings", "noAggregationBarWidthSettings", "states", "comparisonXAxis", "legendConfig"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -144,6 +144,9 @@ class ReportTimeSeriesChartSettings(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of legend_value_font
         if self.legend_value_font:
             _dict['legendValueFont'] = self.legend_value_font.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of xaxis
+        if self.xaxis:
+            _dict['xaxis'] = self.xaxis.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each value in yaxes (dict)
         _field_dict = {}
         if self.yaxes:
@@ -151,9 +154,6 @@ class ReportTimeSeriesChartSettings(BaseModel):
                 if self.yaxes[_key_yaxes]:
                     _field_dict[_key_yaxes] = self.yaxes[_key_yaxes].to_dict()
             _dict['yaxes'] = _field_dict
-        # override the default output from pydantic by calling `to_dict()` of xaxis
-        if self.xaxis:
-            _dict['xaxis'] = self.xaxis.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each item in thresholds (list)
         _items = []
         if self.thresholds:
