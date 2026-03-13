@@ -1,0 +1,67 @@
+#
+# Copyright 2026 ThingsBoard, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# noqa: E501
+
+
+from __future__ import annotations
+import json
+from enum import Enum
+from typing_extensions import Self
+
+
+class LimitedApi(str, Enum):
+    """
+    LimitedApi
+    """
+
+    """
+    allowed enum values
+    """
+    ENTITY_EXPORT = 'ENTITY_EXPORT'
+    ENTITY_IMPORT = 'ENTITY_IMPORT'
+    NOTIFICATION_REQUESTS = 'NOTIFICATION_REQUESTS'
+    NOTIFICATION_REQUESTS_PER_RULE = 'NOTIFICATION_REQUESTS_PER_RULE'
+    REST_REQUESTS_PER_TENANT = 'REST_REQUESTS_PER_TENANT'
+    REST_REQUESTS_PER_CUSTOMER = 'REST_REQUESTS_PER_CUSTOMER'
+    WS_UPDATES_PER_SESSION = 'WS_UPDATES_PER_SESSION'
+    CASSANDRA_WRITE_QUERIES_CORE = 'CASSANDRA_WRITE_QUERIES_CORE'
+    CASSANDRA_READ_QUERIES_CORE = 'CASSANDRA_READ_QUERIES_CORE'
+    CASSANDRA_WRITE_QUERIES_RULE_ENGINE = 'CASSANDRA_WRITE_QUERIES_RULE_ENGINE'
+    CASSANDRA_READ_QUERIES_RULE_ENGINE = 'CASSANDRA_READ_QUERIES_RULE_ENGINE'
+    CASSANDRA_READ_QUERIES_MONOLITH = 'CASSANDRA_READ_QUERIES_MONOLITH'
+    CASSANDRA_WRITE_QUERIES_MONOLITH = 'CASSANDRA_WRITE_QUERIES_MONOLITH'
+    CASSANDRA_QUERIES = 'CASSANDRA_QUERIES'
+    EDGE_EVENTS = 'EDGE_EVENTS'
+    EDGE_EVENTS_PER_EDGE = 'EDGE_EVENTS_PER_EDGE'
+    EDGE_UPLINK_MESSAGES = 'EDGE_UPLINK_MESSAGES'
+    EDGE_UPLINK_MESSAGES_PER_EDGE = 'EDGE_UPLINK_MESSAGES_PER_EDGE'
+    PASSWORD_RESET = 'PASSWORD_RESET'
+    TWO_FA_VERIFICATION_CODE_SEND = 'TWO_FA_VERIFICATION_CODE_SEND'
+    TWO_FA_VERIFICATION_CODE_CHECK = 'TWO_FA_VERIFICATION_CODE_CHECK'
+    TRANSPORT_MESSAGES_PER_TENANT = 'TRANSPORT_MESSAGES_PER_TENANT'
+    TRANSPORT_MESSAGES_PER_DEVICE = 'TRANSPORT_MESSAGES_PER_DEVICE'
+    TRANSPORT_MESSAGES_PER_GATEWAY = 'TRANSPORT_MESSAGES_PER_GATEWAY'
+    TRANSPORT_MESSAGES_PER_GATEWAY_DEVICE = 'TRANSPORT_MESSAGES_PER_GATEWAY_DEVICE'
+    EMAILS = 'EMAILS'
+    WS_SUBSCRIPTIONS = 'WS_SUBSCRIPTIONS'
+    CALCULATED_FIELD_DEBUG_EVENTS = 'CALCULATED_FIELD_DEBUG_EVENTS'
+
+    @classmethod
+    def from_json(cls, json_str: str) -> Self:
+        """Create an instance of LimitedApi from a JSON string"""
+        return cls(json.loads(json_str))
+
+
