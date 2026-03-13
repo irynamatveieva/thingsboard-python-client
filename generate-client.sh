@@ -45,7 +45,7 @@
 #   3. Runs openapi-generator-cli with Python target (single-class via SET_TAGS_FOR_ALL_OPERATIONS)
 #   4. Copies generated tb_{edition}_client/ into the edition's package directory
 #   5. Overlays common/ contents into the package directory
-#   6. Runs scripts/post_process.py (license headers, lazy imports, cleanup)
+#   6. Runs scripts/post_process.py (license headers, lazy imports, JsonNode fixes, cleanup)
 #
 # Preserved on regeneration:
 #   - <edition>/spec/openapi.json  (only updated when base-url is provided)
@@ -156,8 +156,6 @@ generate() {
     --package-name "tb_${edition}_client" \
     --additional-properties hideGenerationTimestamp=true,generateSourceCodeOnly=true \
     --global-property apiTests=false,modelTests=false,modelDocs=false,apiDocs=false \
-    --schema-mappings JsonNode=object \
-    --import-mappings JsonNode=object \
     --openapi-normalizer SET_TAGS_FOR_ALL_OPERATIONS=Thingsboard \
     2>&1 | if [ "$VERBOSE" = true ]; then cat; else grep -v \
       -e "^\[main\] INFO  o.o.codegen.*writing file" \
@@ -183,12 +181,9 @@ generate() {
       echo "Copied common module overlay to $module_dir/tb_${edition}_client"
     fi
 
-    # --- Post-processing hook (Plan 02 will create scripts/post_process.py) ---
-    if [ -f "$SCRIPT_DIR/scripts/post_process.py" ]; then
-      echo "Running post-processor for $edition..."
-      python3 "$SCRIPT_DIR/scripts/post_process.py" "$module_dir/tb_${edition}_client" "tb_${edition}_client"
-      echo "Post-processing complete for $edition"
-    fi
+    # --- Post-processing (GEN-06, GEN-07, GEN-08) ---
+    echo "Running post-processor for $edition..."
+    python3 "$SCRIPT_DIR/scripts/post_process.py" "$module_dir/tb_${edition}_client" "tb_${edition}_client"
   fi
 
   # --- Metrics output ---
@@ -210,9 +205,9 @@ generate() {
     total_lines=$(find "$pkg_dir" -name "*.py" -exec wc -l {} + 2>/dev/null | tail -1 | awk '{print $1}')
     echo "  Total lines:  $total_lines"
 
-    # API class file size and line count
+    # API class file size and line count (look in api/ subdirectory specifically)
     local api_file
-    api_file=$(find "$pkg_dir" -name "thingsboard_api.py" -o -name "*_api.py" 2>/dev/null | head -1)
+    api_file=$(find "$pkg_dir/api" -name "thingsboard_api.py" 2>/dev/null | head -1)
     if [ -n "$api_file" ]; then
       local api_lines api_size
       api_lines=$(wc -l < "$api_file" | tr -d ' ')
@@ -223,6 +218,27 @@ generate() {
     local model_count
     model_count=$(find "$pkg_dir" -path "*/models/*.py" -not -name "__init__.py" 2>/dev/null | wc -l | tr -d ' ')
     echo "  Models:       $model_count"
+
+    # GEN-05: Verify Pydantic v2 patterns (native from generator)
+    # Find a model with ConfigDict (confirms Pydantic v2 model_config usage)
+    # Note: not all models import BaseModel directly (enum models, subclasses) so
+    # we check for model_config = ConfigDict which is the definitive Pydantic v2 marker
+    local sample_model
+    sample_model=$(grep -rl "model_config = ConfigDict" "$pkg_dir/models" 2>/dev/null || true)
+    sample_model=$(echo "$sample_model" | head -1)
+    if [ -n "$sample_model" ]; then
+      echo "  Pydantic v2:  OK (model_config = ConfigDict confirmed in $(basename "$sample_model"))"
+    else
+      # Fallback: check if any model imports from pydantic
+      local pydantic_model
+      pydantic_model=$(grep -rl "from pydantic import" "$pkg_dir/models" 2>/dev/null || true)
+      pydantic_model=$(echo "$pydantic_model" | head -1)
+      if [ -n "$pydantic_model" ]; then
+        echo "  Pydantic v2:  OK (pydantic imports found in $(basename "$pydantic_model"))"
+      else
+        echo "  Pydantic v2:  WARNING — no Pydantic patterns found in models/"
+      fi
+    fi
 
     echo "  Import time:  time python3 -c \"import tb_${edition}_client\""
     echo ""
