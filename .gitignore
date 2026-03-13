@@ -1,0 +1,25 @@
+.idea/
+.idea/**
+.venv
+*.iml
+.claude
+.planning
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+
+# Generated output (intermediate)
+*/target/
+
+# Build
+dist/
+build/
+
+# OS
+.DS_Store
+
+# Logs
+generate-client.log
