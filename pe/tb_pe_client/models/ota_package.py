@@ -21,11 +21,10 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictBytes, StrictInt, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional, Union
 from tb_pe_client.models.checksum_algorithm import ChecksumAlgorithm
 from tb_pe_client.models.device_profile_id import DeviceProfileId
-from tb_pe_client.models.ota_package_data import OtaPackageData
 from tb_pe_client.models.ota_package_id import OtaPackageId
 from tb_pe_client.models.ota_package_type import OtaPackageType
 from tb_pe_client.models.tenant_id import TenantId
@@ -51,7 +50,7 @@ class OtaPackage(BaseModel):
     checksum_algorithm: Optional[ChecksumAlgorithm] = Field(default=None, description="OTA Package checksum algorithm.", alias="checksumAlgorithm")
     checksum: Optional[StrictStr] = Field(default=None, description="OTA Package checksum.")
     data_size: Optional[StrictInt] = Field(default=None, description="OTA Package data size.", alias="dataSize")
-    data: Optional[OtaPackageData] = None
+    data: Optional[Union[StrictBytes, StrictStr]] = None
     name: Optional[StrictStr] = None
     additional_info: Optional[Any] = Field(default=None, description="OTA Package description.", alias="additionalInfo")
     __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "deviceProfileId", "type", "title", "version", "tag", "url", "hasData", "fileName", "contentType", "checksumAlgorithm", "checksum", "dataSize", "data", "name", "additionalInfo"]
@@ -124,9 +123,6 @@ class OtaPackage(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of device_profile_id
         if self.device_profile_id:
             _dict['deviceProfileId'] = self.device_profile_id.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of data
-        if self.data:
-            _dict['data'] = self.data.to_dict()
         # set to None if additional_info (nullable) is None
         # and model_fields_set contains the field
         if self.additional_info is None and "additional_info" in self.model_fields_set:
@@ -159,7 +155,7 @@ class OtaPackage(BaseModel):
             "checksumAlgorithm": obj.get("checksumAlgorithm"),
             "checksum": obj.get("checksum"),
             "dataSize": obj.get("dataSize"),
-            "data": OtaPackageData.from_dict(obj["data"]) if obj.get("data") is not None else None,
+            "data": obj.get("data"),
             "name": obj.get("name"),
             "additionalInfo": obj.get("additionalInfo")
         })

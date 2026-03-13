@@ -45,21 +45,21 @@ class SelfRegistrationParams(BaseModel):
     """
     SelfRegistrationParams
     """ # noqa: E501
-    permissions: Optional[List[GroupPermission]] = None
     type: SelfRegistrationType
+    enabled: Optional[StrictBool] = None
+    title: Optional[StrictStr] = None
+    captcha: Optional[CaptchaParams] = None
+    permissions: Optional[List[GroupPermission]] = None
+    notification_recipient: Optional[NotificationTargetId] = Field(default=None, alias="notificationRecipient")
+    sign_up_fields: Optional[List[SignUpField]] = Field(default=None, alias="signUpFields")
+    customer_title_prefix: Optional[StrictStr] = Field(default=None, alias="customerTitlePrefix")
     show_privacy_policy: Optional[StrictBool] = Field(default=None, alias="showPrivacyPolicy")
     show_terms_of_use: Optional[StrictBool] = Field(default=None, alias="showTermsOfUse")
-    title: Optional[StrictStr] = None
-    enabled: Optional[StrictBool] = None
-    home_dashboard: Optional[HomeDashboardParams] = Field(default=None, alias="homeDashboard")
-    notification_recipient: Optional[NotificationTargetId] = Field(default=None, alias="notificationRecipient")
-    captcha: Optional[CaptchaParams] = None
-    sign_up_fields: Optional[List[SignUpField]] = Field(default=None, alias="signUpFields")
     default_dashboard: Optional[DefaultDashboardParams] = Field(default=None, alias="defaultDashboard")
-    customer_title_prefix: Optional[StrictStr] = Field(default=None, alias="customerTitlePrefix")
-    custom_menu_id: Optional[CustomMenuId] = Field(default=None, alias="customMenuId")
+    home_dashboard: Optional[HomeDashboardParams] = Field(default=None, alias="homeDashboard")
     customer_group_id: Optional[EntityGroupId] = Field(default=None, alias="customerGroupId")
-    __properties: ClassVar[List[str]] = ["permissions", "type", "showPrivacyPolicy", "showTermsOfUse", "title", "enabled", "homeDashboard", "notificationRecipient", "captcha", "signUpFields", "defaultDashboard", "customerTitlePrefix", "customMenuId", "customerGroupId"]
+    custom_menu_id: Optional[CustomMenuId] = Field(default=None, alias="customMenuId")
+    __properties: ClassVar[List[str]] = ["type", "enabled", "title", "captcha", "permissions", "notificationRecipient", "signUpFields", "customerTitlePrefix", "showPrivacyPolicy", "showTermsOfUse", "defaultDashboard", "homeDashboard", "customerGroupId", "customMenuId"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -117,6 +117,9 @@ class SelfRegistrationParams(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of captcha
+        if self.captcha:
+            _dict['captcha'] = self.captcha.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each item in permissions (list)
         _items = []
         if self.permissions:
@@ -124,15 +127,9 @@ class SelfRegistrationParams(BaseModel):
                 if _item_permissions:
                     _items.append(_item_permissions.to_dict())
             _dict['permissions'] = _items
-        # override the default output from pydantic by calling `to_dict()` of home_dashboard
-        if self.home_dashboard:
-            _dict['homeDashboard'] = self.home_dashboard.to_dict()
         # override the default output from pydantic by calling `to_dict()` of notification_recipient
         if self.notification_recipient:
             _dict['notificationRecipient'] = self.notification_recipient.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of captcha
-        if self.captcha:
-            _dict['captcha'] = self.captcha.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each item in sign_up_fields (list)
         _items = []
         if self.sign_up_fields:
@@ -143,12 +140,15 @@ class SelfRegistrationParams(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of default_dashboard
         if self.default_dashboard:
             _dict['defaultDashboard'] = self.default_dashboard.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of custom_menu_id
-        if self.custom_menu_id:
-            _dict['customMenuId'] = self.custom_menu_id.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of home_dashboard
+        if self.home_dashboard:
+            _dict['homeDashboard'] = self.home_dashboard.to_dict()
         # override the default output from pydantic by calling `to_dict()` of customer_group_id
         if self.customer_group_id:
             _dict['customerGroupId'] = self.customer_group_id.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of custom_menu_id
+        if self.custom_menu_id:
+            _dict['customMenuId'] = self.custom_menu_id.to_dict()
         return _dict
 
     @classmethod

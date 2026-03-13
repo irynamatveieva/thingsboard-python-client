@@ -59,6 +59,7 @@ class EdgeEventType(str, Enum):
     DOMAIN = 'DOMAIN'
     CALCULATED_FIELD = 'CALCULATED_FIELD'
     AI_MODEL = 'AI_MODEL'
+    API_KEY = 'API_KEY'
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:

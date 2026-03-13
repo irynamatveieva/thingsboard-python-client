@@ -34,15 +34,15 @@ class TsKvEntry(BaseModel):
     ts: Optional[StrictInt] = None
     value: Optional[Any] = None
     key: Optional[StrictStr] = None
+    double_value: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, alias="doubleValue")
+    long_value: Optional[StrictInt] = Field(default=None, alias="longValue")
     boolean_value: Optional[StrictBool] = Field(default=None, alias="booleanValue")
     value_as_string: Optional[StrictStr] = Field(default=None, alias="valueAsString")
     data_type: Optional[DataType] = Field(default=None, alias="dataType")
     json_value: Optional[StrictStr] = Field(default=None, alias="jsonValue")
     str_value: Optional[StrictStr] = Field(default=None, alias="strValue")
-    long_value: Optional[StrictInt] = Field(default=None, alias="longValue")
-    double_value: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, alias="doubleValue")
     version: Optional[StrictInt] = None
-    __properties: ClassVar[List[str]] = ["ts", "value", "key", "booleanValue", "valueAsString", "dataType", "jsonValue", "strValue", "longValue", "doubleValue", "version"]
+    __properties: ClassVar[List[str]] = ["ts", "value", "key", "doubleValue", "longValue", "booleanValue", "valueAsString", "dataType", "jsonValue", "strValue", "version"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -103,13 +103,13 @@ class TsKvEntry(BaseModel):
             "ts": obj.get("ts"),
             "value": obj.get("value"),
             "key": obj.get("key"),
+            "doubleValue": obj.get("doubleValue"),
+            "longValue": obj.get("longValue"),
             "booleanValue": obj.get("booleanValue"),
             "valueAsString": obj.get("valueAsString"),
             "dataType": obj.get("dataType"),
             "jsonValue": obj.get("jsonValue"),
             "strValue": obj.get("strValue"),
-            "longValue": obj.get("longValue"),
-            "doubleValue": obj.get("doubleValue"),
             "version": obj.get("version")
         })
         return _obj

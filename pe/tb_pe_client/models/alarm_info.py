@@ -53,6 +53,7 @@ class AlarmInfo(BaseModel):
     ack_ts: Optional[StrictInt] = Field(default=None, description="Timestamp of the alarm acknowledgement, in milliseconds", alias="ackTs")
     clear_ts: Optional[StrictInt] = Field(default=None, description="Timestamp of the alarm clearing, in milliseconds", alias="clearTs")
     assign_ts: Optional[StrictInt] = Field(default=None, description="Timestamp of the alarm assignment, in milliseconds", alias="assignTs")
+    details: Optional[Any] = Field(default=None, description="JSON object with alarm details")
     propagate: Optional[StrictBool] = Field(default=None, description="Propagation flag to specify if alarm should be propagated to parent entities of alarm originator")
     propagate_to_owner: Optional[StrictBool] = Field(default=None, description="Propagation flag to specify if alarm should be propagated to the owner (tenant or customer) of alarm originator", alias="propagateToOwner")
     propagate_to_owner_hierarchy: Optional[StrictBool] = Field(default=None, description="Propagation flag to specify if alarm should be propagated to the owner (tenant or customer) and all parent owners in the customer hierarchy", alias="propagateToOwnerHierarchy")
@@ -64,8 +65,7 @@ class AlarmInfo(BaseModel):
     assignee: Optional[AlarmAssignee] = Field(default=None, description="Alarm assignee")
     name: StrictStr = Field(description="representing type of the Alarm")
     status: AlarmStatus = Field(description="status of the Alarm")
-    details: Optional[Any] = None
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "customerId", "type", "originator", "severity", "acknowledged", "cleared", "assigneeId", "startTs", "endTs", "ackTs", "clearTs", "assignTs", "propagate", "propagateToOwner", "propagateToOwnerHierarchy", "propagateToTenant", "propagateRelationTypes", "originatorName", "originatorLabel", "originatorDisplayName", "assignee", "name", "status", "details"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "customerId", "type", "originator", "severity", "acknowledged", "cleared", "assigneeId", "startTs", "endTs", "ackTs", "clearTs", "assignTs", "details", "propagate", "propagateToOwner", "propagateToOwnerHierarchy", "propagateToTenant", "propagateRelationTypes", "originatorName", "originatorLabel", "originatorDisplayName", "assignee", "name", "status"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -166,6 +166,7 @@ class AlarmInfo(BaseModel):
             "ackTs": obj.get("ackTs"),
             "clearTs": obj.get("clearTs"),
             "assignTs": obj.get("assignTs"),
+            "details": obj.get("details"),
             "propagate": obj.get("propagate"),
             "propagateToOwner": obj.get("propagateToOwner"),
             "propagateToOwnerHierarchy": obj.get("propagateToOwnerHierarchy"),
@@ -176,8 +177,7 @@ class AlarmInfo(BaseModel):
             "originatorDisplayName": obj.get("originatorDisplayName"),
             "assignee": AlarmAssignee.from_dict(obj["assignee"]) if obj.get("assignee") is not None else None,
             "name": obj.get("name"),
-            "status": obj.get("status"),
-            "details": obj.get("details")
+            "status": obj.get("status")
         })
         return _obj
 

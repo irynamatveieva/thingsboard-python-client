@@ -36,6 +36,7 @@ class RelationsQueryFilter(EntityFilter):
     RelationsQueryFilter
     """ # noqa: E501
     root_entity: Optional[AliasEntityId] = Field(default=None, alias="rootEntity")
+    multi_root: Optional[StrictBool] = Field(default=None, alias="multiRoot")
     multi_root_entities_type: Optional[EntityType] = Field(default=None, alias="multiRootEntitiesType")
     multi_root_entity_ids: Optional[List[StrictStr]] = Field(default=None, alias="multiRootEntityIds")
     direction: Optional[EntitySearchDirection] = None
@@ -45,8 +46,7 @@ class RelationsQueryFilter(EntityFilter):
     negate: Optional[StrictBool] = None
     root_state_entity: Optional[StrictBool] = Field(default=None, alias="rootStateEntity")
     default_state_entity: Optional[AliasEntityId] = Field(default=None, alias="defaultStateEntity")
-    multi_root: Optional[StrictBool] = Field(default=None, alias="multiRoot")
-    __properties: ClassVar[List[str]] = ["type", "rootEntity", "multiRootEntitiesType", "multiRootEntityIds", "direction", "filters", "maxLevel", "fetchLastLevelOnly", "negate", "rootStateEntity", "defaultStateEntity", "multiRoot"]
+    __properties: ClassVar[List[str]] = ["type", "rootEntity", "multiRoot", "multiRootEntitiesType", "multiRootEntityIds", "direction", "filters", "maxLevel", "fetchLastLevelOnly", "negate", "rootStateEntity", "defaultStateEntity"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -114,6 +114,7 @@ class RelationsQueryFilter(EntityFilter):
         _obj = cls.model_validate({
             "type": obj.get("type"),
             "rootEntity": AliasEntityId.from_dict(obj["rootEntity"]) if obj.get("rootEntity") is not None else None,
+            "multiRoot": obj.get("multiRoot"),
             "multiRootEntitiesType": obj.get("multiRootEntitiesType"),
             "multiRootEntityIds": obj.get("multiRootEntityIds"),
             "direction": obj.get("direction"),
@@ -122,8 +123,7 @@ class RelationsQueryFilter(EntityFilter):
             "fetchLastLevelOnly": obj.get("fetchLastLevelOnly"),
             "negate": obj.get("negate"),
             "rootStateEntity": obj.get("rootStateEntity"),
-            "defaultStateEntity": AliasEntityId.from_dict(obj["defaultStateEntity"]) if obj.get("defaultStateEntity") is not None else None,
-            "multiRoot": obj.get("multiRoot")
+            "defaultStateEntity": AliasEntityId.from_dict(obj["defaultStateEntity"]) if obj.get("defaultStateEntity") is not None else None
         })
         return _obj
 

@@ -50,7 +50,7 @@ class Alarm(BaseModel):
     ack_ts: Optional[StrictInt] = Field(default=None, description="Timestamp of the alarm acknowledgement, in milliseconds", alias="ackTs")
     clear_ts: Optional[StrictInt] = Field(default=None, description="Timestamp of the alarm clearing, in milliseconds", alias="clearTs")
     assign_ts: Optional[StrictInt] = Field(default=None, description="Timestamp of the alarm assignment, in milliseconds", alias="assignTs")
-    details: Optional[Any] = None
+    details: Optional[Any] = Field(default=None, description="JSON object with alarm details")
     propagate: Optional[StrictBool] = Field(default=None, description="Propagation flag to specify if alarm should be propagated to parent entities of alarm originator")
     propagate_to_owner: Optional[StrictBool] = Field(default=None, description="Propagation flag to specify if alarm should be propagated to the owner (tenant or customer) of alarm originator", alias="propagateToOwner")
     propagate_to_owner_hierarchy: Optional[StrictBool] = Field(default=None, description="Propagation flag to specify if alarm should be propagated to the owner (tenant or customer) and all parent owners in the customer hierarchy", alias="propagateToOwnerHierarchy")

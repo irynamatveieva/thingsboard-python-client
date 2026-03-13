@@ -47,8 +47,9 @@ class CalculatedFieldInfo(BaseModel):
     configuration_version: Optional[StrictInt] = Field(default=None, description="Version of calculated field configuration.", alias="configurationVersion")
     configuration: CalculatedFieldConfiguration
     version: Optional[StrictInt] = None
+    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the calculated field", alias="additionalInfo")
     entity_name: Optional[StrictStr] = Field(default=None, alias="entityName")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "entityId", "type", "name", "debugMode", "debugSettings", "configurationVersion", "configuration", "version", "entityName"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "entityId", "type", "name", "debugMode", "debugSettings", "configurationVersion", "configuration", "version", "additionalInfo", "entityName"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -106,6 +107,11 @@ class CalculatedFieldInfo(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of configuration
         if self.configuration:
             _dict['configuration'] = self.configuration.to_dict()
+        # set to None if additional_info (nullable) is None
+        # and model_fields_set contains the field
+        if self.additional_info is None and "additional_info" in self.model_fields_set:
+            _dict['additionalInfo'] = None
+
         return _dict
 
     @classmethod
@@ -129,6 +135,7 @@ class CalculatedFieldInfo(BaseModel):
             "configurationVersion": obj.get("configurationVersion"),
             "configuration": CalculatedFieldConfiguration.from_dict(obj["configuration"]) if obj.get("configuration") is not None else None,
             "version": obj.get("version"),
+            "additionalInfo": obj.get("additionalInfo"),
             "entityName": obj.get("entityName")
         })
         return _obj

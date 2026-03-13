@@ -35,7 +35,7 @@ class CsvReportTemplateConfig(ReportTemplateConfig):
     """
     CsvReportTemplateConfig
     """ # noqa: E501
-    __properties: ClassVar[List[str]] = ["format", "entityAliases", "filters", "namePattern", "components", "timeDataPattern"]
+    __properties: ClassVar[List[str]] = ["namePattern", "timeDataPattern", "format", "entityAliases", "filters", "components"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -109,12 +109,12 @@ class CsvReportTemplateConfig(ReportTemplateConfig):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "namePattern": obj.get("namePattern"),
+            "timeDataPattern": obj.get("timeDataPattern"),
             "format": obj.get("format"),
             "entityAliases": [EntityAlias.from_dict(_item) for _item in obj["entityAliases"]] if obj.get("entityAliases") is not None else None,
             "filters": [Filter.from_dict(_item) for _item in obj["filters"]] if obj.get("filters") is not None else None,
-            "namePattern": obj.get("namePattern"),
-            "components": [ReportComponent.from_dict(_item) for _item in obj["components"]] if obj.get("components") is not None else None,
-            "timeDataPattern": obj.get("timeDataPattern")
+            "components": [ReportComponent.from_dict(_item) for _item in obj["components"]] if obj.get("components") is not None else None
         })
         return _obj
 

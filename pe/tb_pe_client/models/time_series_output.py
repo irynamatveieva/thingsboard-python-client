@@ -22,10 +22,9 @@ import re  # noqa: F401
 import json
 
 from pydantic import ConfigDict
-from typing import Any, ClassVar, Dict, List, Optional
+from typing import Any, ClassVar, Dict, List
 from tb_pe_client.models.attribute_scope import AttributeScope
 from tb_pe_client.models.output import Output
-from tb_pe_client.models.time_series_output_strategy import TimeSeriesOutputStrategy
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -33,7 +32,6 @@ class TimeSeriesOutput(Output):
     """
     TimeSeriesOutput
     """ # noqa: E501
-    strategy: Optional[TimeSeriesOutputStrategy] = None
     __properties: ClassVar[List[str]] = ["name", "scope", "decimalsByDefault", "strategy", "type"]
 
     model_config = ConfigDict(
@@ -75,9 +73,11 @@ class TimeSeriesOutput(Output):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of strategy
-        if self.strategy:
-            _dict['strategy'] = self.strategy.to_dict()
+        # set to None if strategy (nullable) is None
+        # and model_fields_set contains the field
+        if self.strategy is None and "strategy" in self.model_fields_set:
+            _dict['strategy'] = None
+
         return _dict
 
     @classmethod
@@ -93,7 +93,7 @@ class TimeSeriesOutput(Output):
             "name": obj.get("name"),
             "scope": obj.get("scope"),
             "decimalsByDefault": obj.get("decimalsByDefault"),
-            "strategy": TimeSeriesOutputStrategy.from_dict(obj["strategy"]) if obj.get("strategy") is not None else None,
+            "strategy": obj.get("strategy"),
             "type": obj.get("type")
         })
         return _obj

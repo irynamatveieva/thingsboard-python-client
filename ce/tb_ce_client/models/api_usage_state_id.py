@@ -21,24 +21,18 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from pydantic import ConfigDict
+from typing import Any, ClassVar, Dict, List
+from tb_ce_client.models.entity_id import EntityId
+from tb_ce_client.models.entity_type import EntityType
 from typing import Optional, Set
 from typing_extensions import Self
 
-class OtaPackageData(BaseModel):
+class ApiUsageStateId(EntityId):
     """
-    OtaPackageData
+    ApiUsageStateId
     """ # noqa: E501
-    short: Optional[StrictInt] = None
-    char: Optional[StrictStr] = None
-    int: Optional[StrictInt] = None
-    long: Optional[StrictInt] = None
-    var_float: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, alias="float")
-    double: Optional[Union[StrictFloat, StrictInt]] = None
-    direct: Optional[StrictBool] = None
-    read_only: Optional[StrictBool] = Field(default=None, alias="readOnly")
-    __properties: ClassVar[List[str]] = ["short", "char", "int", "long", "float", "double", "direct", "readOnly"]
+    __properties: ClassVar[List[str]] = ["entityType", "id"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -58,7 +52,7 @@ class OtaPackageData(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of OtaPackageData from a JSON string"""
+        """Create an instance of ApiUsageStateId from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -83,7 +77,7 @@ class OtaPackageData(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of OtaPackageData from a dict"""
+        """Create an instance of ApiUsageStateId from a dict"""
         if obj is None:
             return None
 
@@ -91,14 +85,8 @@ class OtaPackageData(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "short": obj.get("short"),
-            "char": obj.get("char"),
-            "int": obj.get("int"),
-            "long": obj.get("long"),
-            "float": obj.get("float"),
-            "double": obj.get("double"),
-            "direct": obj.get("direct"),
-            "readOnly": obj.get("readOnly")
+            "entityType": obj.get("entityType"),
+            "id": obj.get("id")
         })
         return _obj
 

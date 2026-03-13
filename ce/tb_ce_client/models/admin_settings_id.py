@@ -21,20 +21,18 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import ConfigDict
 from typing import Any, ClassVar, Dict, List
-from uuid import UUID
+from tb_ce_client.models.entity_id import EntityId
 from tb_ce_client.models.entity_type import EntityType
 from typing import Optional, Set
 from typing_extensions import Self
 
-class AdminSettingsId(BaseModel):
+class AdminSettingsId(EntityId):
     """
     AdminSettingsId
     """ # noqa: E501
-    id: UUID = Field(description="ID of the entity, time-based UUID v1")
-    entity_type: EntityType = Field(description="string", alias="entityType")
-    __properties: ClassVar[List[str]] = ["id", "entityType"]
+    __properties: ClassVar[List[str]] = ["entityType", "id"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -87,8 +85,8 @@ class AdminSettingsId(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "id": obj.get("id"),
-            "entityType": obj.get("entityType")
+            "entityType": obj.get("entityType"),
+            "id": obj.get("id")
         })
         return _obj
 

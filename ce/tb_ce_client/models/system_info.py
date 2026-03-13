@@ -32,7 +32,7 @@ class SystemInfo(BaseModel):
     SystemInfo
     """ # noqa: E501
     system_data: Optional[List[SystemInfoData]] = Field(default=None, description="System data.", alias="systemData")
-    monolith: Optional[StrictBool] = None
+    monolith: Optional[StrictBool] = Field(default=None, description="Is monolith.")
     __properties: ClassVar[List[str]] = ["systemData", "monolith"]
 
     model_config = ConfigDict(

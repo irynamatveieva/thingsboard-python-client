@@ -30,12 +30,12 @@ class FeaturesInfo(BaseModel):
     """
     FeaturesInfo
     """ # noqa: E501
+    email_enabled: Optional[StrictBool] = Field(default=None, alias="emailEnabled")
     sms_enabled: Optional[StrictBool] = Field(default=None, alias="smsEnabled")
+    notification_enabled: Optional[StrictBool] = Field(default=None, alias="notificationEnabled")
     oauth_enabled: Optional[StrictBool] = Field(default=None, alias="oauthEnabled")
     two_fa_enabled: Optional[StrictBool] = Field(default=None, alias="twoFaEnabled")
-    email_enabled: Optional[StrictBool] = Field(default=None, alias="emailEnabled")
-    notification_enabled: Optional[StrictBool] = Field(default=None, alias="notificationEnabled")
-    __properties: ClassVar[List[str]] = ["smsEnabled", "oauthEnabled", "twoFaEnabled", "emailEnabled", "notificationEnabled"]
+    __properties: ClassVar[List[str]] = ["emailEnabled", "smsEnabled", "notificationEnabled", "oauthEnabled", "twoFaEnabled"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -88,11 +88,11 @@ class FeaturesInfo(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "smsEnabled": obj.get("smsEnabled"),
-            "oauthEnabled": obj.get("oauthEnabled"),
-            "twoFaEnabled": obj.get("twoFaEnabled"),
             "emailEnabled": obj.get("emailEnabled"),
-            "notificationEnabled": obj.get("notificationEnabled")
+            "smsEnabled": obj.get("smsEnabled"),
+            "notificationEnabled": obj.get("notificationEnabled"),
+            "oauthEnabled": obj.get("oauthEnabled"),
+            "twoFaEnabled": obj.get("twoFaEnabled")
         })
         return _obj
 

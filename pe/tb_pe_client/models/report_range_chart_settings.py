@@ -53,7 +53,7 @@ class ReportRangeChartSettings(ReportTimeSeriesChartSettings):
     line_settings: Optional[LineSeriesSettings] = Field(default=None, alias="lineSettings")
     range_units: Optional[StrictStr] = Field(default=None, alias="rangeUnits")
     range_decimals: Optional[StrictInt] = Field(default=None, alias="rangeDecimals")
-    __properties: ClassVar[List[str]] = ["showTitle", "title", "titleFont", "titleColor", "titleAlignment", "stack", "comparisonEnabled", "timeForComparison", "comparisonCustomIntervalValue", "showLegend", "legendColumnTitleFont", "legendColumnTitleColor", "legendLabelFont", "legendLabelColor", "legendValueFont", "legendValueColor", "xaxis", "yaxes", "thresholds", "grid", "yAxes", "xAxis", "barWidthSettings", "noAggregationBarWidthSettings", "states", "comparisonXAxis", "legendConfig", "rangeColors", "outOfRangeColor", "showRangeThresholds", "rangeThreshold", "fillArea", "fillAreaOpacity", "lineSettings", "rangeUnits", "rangeDecimals"]
+    __properties: ClassVar[List[str]] = ["showTitle", "title", "titleFont", "titleColor", "titleAlignment", "stack", "comparisonEnabled", "timeForComparison", "comparisonCustomIntervalValue", "showLegend", "legendColumnTitleFont", "legendColumnTitleColor", "legendLabelFont", "legendLabelColor", "legendValueFont", "legendValueColor", "yaxes", "xaxis", "thresholds", "grid", "yAxes", "xAxis", "barWidthSettings", "noAggregationBarWidthSettings", "states", "comparisonXAxis", "legendConfig", "rangeColors", "outOfRangeColor", "showRangeThresholds", "rangeThreshold", "fillArea", "fillAreaOpacity", "lineSettings", "rangeUnits", "rangeDecimals"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -106,9 +106,6 @@ class ReportRangeChartSettings(ReportTimeSeriesChartSettings):
         # override the default output from pydantic by calling `to_dict()` of legend_value_font
         if self.legend_value_font:
             _dict['legendValueFont'] = self.legend_value_font.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of xaxis
-        if self.xaxis:
-            _dict['xaxis'] = self.xaxis.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each value in yaxes (dict)
         _field_dict = {}
         if self.yaxes:
@@ -116,6 +113,9 @@ class ReportRangeChartSettings(ReportTimeSeriesChartSettings):
                 if self.yaxes[_key_yaxes]:
                     _field_dict[_key_yaxes] = self.yaxes[_key_yaxes].to_dict()
             _dict['yaxes'] = _field_dict
+        # override the default output from pydantic by calling `to_dict()` of xaxis
+        if self.xaxis:
+            _dict['xaxis'] = self.xaxis.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each item in thresholds (list)
         _items = []
         if self.thresholds:
@@ -196,13 +196,13 @@ class ReportRangeChartSettings(ReportTimeSeriesChartSettings):
             "legendLabelColor": obj.get("legendLabelColor"),
             "legendValueFont": Font.from_dict(obj["legendValueFont"]) if obj.get("legendValueFont") is not None else None,
             "legendValueColor": obj.get("legendValueColor"),
-            "xaxis": TimeSeriesChartXAxisSettings.from_dict(obj["xaxis"]) if obj.get("xaxis") is not None else None,
             "yaxes": dict(
                 (_k, TimeSeriesChartYAxisSettings.from_dict(_v))
                 for _k, _v in obj["yaxes"].items()
             )
             if obj.get("yaxes") is not None
             else None,
+            "xaxis": TimeSeriesChartXAxisSettings.from_dict(obj["xaxis"]) if obj.get("xaxis") is not None else None,
             "thresholds": [TimeSeriesChartThreshold.from_dict(_item) for _item in obj["thresholds"]] if obj.get("thresholds") is not None else None,
             "grid": TimeSeriesChartGridSettings.from_dict(obj["grid"]) if obj.get("grid") is not None else None,
             "yAxes": dict(

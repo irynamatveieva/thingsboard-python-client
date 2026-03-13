@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, Field, StrictBool, StrictStr
+from pydantic import ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from tb_pe_client.models.event_filter import EventFilter
 from tb_pe_client.models.event_type import EventType
@@ -33,14 +33,23 @@ class DebugConverterEventFilter(EventFilter):
     DebugConverterEventFilter
     """ # noqa: E501
     server: Optional[StrictStr] = Field(default=None, description="String value representing the server name, identifier or ip address where the platform is running")
+    is_error: Optional[StrictBool] = Field(default=None, description="Boolean value to filter the errors", alias="isError")
     error_str: Optional[StrictStr] = Field(default=None, description="The case insensitive 'contains' filter based on error message", alias="errorStr")
     type: Optional[StrictStr] = None
     var_in: Optional[StrictStr] = Field(default=None, alias="in")
     out: Optional[StrictStr] = None
     metadata: Optional[StrictStr] = None
-    is_error: Optional[StrictBool] = Field(default=None, alias="isError")
-    error: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["eventType", "notEmpty", "server", "errorStr", "type", "in", "out", "metadata", "isError", "error"]
+    __properties: ClassVar[List[str]] = ["eventType", "notEmpty", "server", "isError", "errorStr", "type", "in", "out", "metadata"]
+
+    @field_validator('is_error')
+    def is_error_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['false', 'true']):
+            raise ValueError("must be one of enum values ('false', 'true')")
+        return value
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -96,13 +105,12 @@ class DebugConverterEventFilter(EventFilter):
             "eventType": obj.get("eventType"),
             "notEmpty": obj.get("notEmpty"),
             "server": obj.get("server"),
+            "isError": obj.get("isError"),
             "errorStr": obj.get("errorStr"),
             "type": obj.get("type"),
             "in": obj.get("in"),
             "out": obj.get("out"),
-            "metadata": obj.get("metadata"),
-            "isError": obj.get("isError"),
-            "error": obj.get("error")
+            "metadata": obj.get("metadata")
         })
         return _obj
 

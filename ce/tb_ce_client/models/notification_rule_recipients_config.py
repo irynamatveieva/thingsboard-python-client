@@ -23,7 +23,7 @@ import json
 
 from importlib import import_module
 from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List, Union
+from typing import Any, ClassVar, Dict, List, Optional, Union
 from tb_ce_client.models.notification_rule_trigger_type import NotificationRuleTriggerType
 from typing import Optional, Set
 from typing_extensions import Self
@@ -49,7 +49,7 @@ class NotificationRuleRecipientsConfig(BaseModel):
     """
     NotificationRuleRecipientsConfig
     """ # noqa: E501
-    trigger_type: NotificationRuleTriggerType = Field(alias="triggerType")
+    trigger_type: Optional[NotificationRuleTriggerType] = Field(default=None, alias="triggerType")
     __properties: ClassVar[List[str]] = ["triggerType"]
 
     model_config = ConfigDict(

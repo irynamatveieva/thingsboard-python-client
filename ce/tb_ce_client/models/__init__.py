@@ -108,6 +108,7 @@ __all__ = [
     "ApiUsageLimitNotificationRuleTriggerConfig",
     "ApiUsageLimitRecipientsConfig",
     "ApiUsageStateFilter",
+    "ApiUsageStateId",
     "ApiUsageStateValue",
     "Argument",
     "ArgumentType",
@@ -451,7 +452,6 @@ __all__ = [
     "OpenAiProviderConfig",
     "OriginatorEntityOwnerUsersFilter",
     "OtaPackage",
-    "OtaPackageData",
     "OtaPackageExportData",
     "OtaPackageId",
     "OtaPackageInfo",
@@ -800,6 +800,7 @@ if TYPE_CHECKING:
     from tb_ce_client.models.api_usage_limit_notification_rule_trigger_config import ApiUsageLimitNotificationRuleTriggerConfig
     from tb_ce_client.models.api_usage_limit_recipients_config import ApiUsageLimitRecipientsConfig
     from tb_ce_client.models.api_usage_state_filter import ApiUsageStateFilter
+    from tb_ce_client.models.api_usage_state_id import ApiUsageStateId
     from tb_ce_client.models.api_usage_state_value import ApiUsageStateValue
     from tb_ce_client.models.argument import Argument
     from tb_ce_client.models.argument_type import ArgumentType
@@ -1143,7 +1144,6 @@ if TYPE_CHECKING:
     from tb_ce_client.models.open_ai_provider_config import OpenAiProviderConfig
     from tb_ce_client.models.originator_entity_owner_users_filter import OriginatorEntityOwnerUsersFilter
     from tb_ce_client.models.ota_package import OtaPackage
-    from tb_ce_client.models.ota_package_data import OtaPackageData
     from tb_ce_client.models.ota_package_export_data import OtaPackageExportData
     from tb_ce_client.models.ota_package_id import OtaPackageId
     from tb_ce_client.models.ota_package_info import OtaPackageInfo
@@ -1491,6 +1491,7 @@ _MODEL_CLASSES = {
     "ApiUsageLimitNotificationRuleTriggerConfig": "tb_ce_client.models.api_usage_limit_notification_rule_trigger_config",
     "ApiUsageLimitRecipientsConfig": "tb_ce_client.models.api_usage_limit_recipients_config",
     "ApiUsageStateFilter": "tb_ce_client.models.api_usage_state_filter",
+    "ApiUsageStateId": "tb_ce_client.models.api_usage_state_id",
     "ApiUsageStateValue": "tb_ce_client.models.api_usage_state_value",
     "Argument": "tb_ce_client.models.argument",
     "ArgumentType": "tb_ce_client.models.argument_type",
@@ -1834,7 +1835,6 @@ _MODEL_CLASSES = {
     "OpenAiProviderConfig": "tb_ce_client.models.open_ai_provider_config",
     "OriginatorEntityOwnerUsersFilter": "tb_ce_client.models.originator_entity_owner_users_filter",
     "OtaPackage": "tb_ce_client.models.ota_package",
-    "OtaPackageData": "tb_ce_client.models.ota_package_data",
     "OtaPackageExportData": "tb_ce_client.models.ota_package_export_data",
     "OtaPackageId": "tb_ce_client.models.ota_package_id",
     "OtaPackageInfo": "tb_ce_client.models.ota_package_info",

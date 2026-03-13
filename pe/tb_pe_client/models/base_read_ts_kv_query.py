@@ -39,9 +39,9 @@ class BaseReadTsKvQuery(BaseModel):
     agg_parameters: Optional[AggregationParams] = Field(default=None, alias="aggParameters")
     limit: Optional[StrictInt] = None
     order: Optional[StrictStr] = None
-    interval: Optional[StrictInt] = None
     aggregation: Optional[Aggregation] = None
-    __properties: ClassVar[List[str]] = ["id", "key", "startTs", "endTs", "aggParameters", "limit", "order", "interval", "aggregation"]
+    interval: Optional[StrictInt] = None
+    __properties: ClassVar[List[str]] = ["id", "key", "startTs", "endTs", "aggParameters", "limit", "order", "aggregation", "interval"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -104,8 +104,8 @@ class BaseReadTsKvQuery(BaseModel):
             "aggParameters": AggregationParams.from_dict(obj["aggParameters"]) if obj.get("aggParameters") is not None else None,
             "limit": obj.get("limit"),
             "order": obj.get("order"),
-            "interval": obj.get("interval"),
-            "aggregation": obj.get("aggregation")
+            "aggregation": obj.get("aggregation"),
+            "interval": obj.get("interval")
         })
         return _obj
 

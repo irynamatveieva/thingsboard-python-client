@@ -134,6 +134,7 @@ if TYPE_CHECKING:
     from tb_pe_client.models.api_usage_limit_notification_rule_trigger_config import ApiUsageLimitNotificationRuleTriggerConfig
     from tb_pe_client.models.api_usage_limit_recipients_config import ApiUsageLimitRecipientsConfig
     from tb_pe_client.models.api_usage_state_filter import ApiUsageStateFilter
+    from tb_pe_client.models.api_usage_state_id import ApiUsageStateId
     from tb_pe_client.models.api_usage_state_value import ApiUsageStateValue
     from tb_pe_client.models.argument import Argument
     from tb_pe_client.models.argument_type import ArgumentType
@@ -384,6 +385,7 @@ if TYPE_CHECKING:
     from tb_pe_client.models.entity_group_filter import EntityGroupFilter
     from tb_pe_client.models.entity_group_id import EntityGroupId
     from tb_pe_client.models.entity_group_info import EntityGroupInfo
+    from tb_pe_client.models.entity_group_info_owner_ids_inner import EntityGroupInfoOwnerIdsInner
     from tb_pe_client.models.entity_group_list_filter import EntityGroupListFilter
     from tb_pe_client.models.entity_group_name_filter import EntityGroupNameFilter
     from tb_pe_client.models.entity_id import EntityId
@@ -599,7 +601,6 @@ if TYPE_CHECKING:
     from tb_pe_client.models.operation import Operation
     from tb_pe_client.models.originator_entity_owner_users_filter import OriginatorEntityOwnerUsersFilter
     from tb_pe_client.models.ota_package import OtaPackage
-    from tb_pe_client.models.ota_package_data import OtaPackageData
     from tb_pe_client.models.ota_package_export_data import OtaPackageExportData
     from tb_pe_client.models.ota_package_id import OtaPackageId
     from tb_pe_client.models.ota_package_info import OtaPackageInfo
@@ -1084,6 +1085,7 @@ _LAZY_CLASSES = {
     "ApiUsageLimitNotificationRuleTriggerConfig": "tb_pe_client.models.api_usage_limit_notification_rule_trigger_config",
     "ApiUsageLimitRecipientsConfig": "tb_pe_client.models.api_usage_limit_recipients_config",
     "ApiUsageStateFilter": "tb_pe_client.models.api_usage_state_filter",
+    "ApiUsageStateId": "tb_pe_client.models.api_usage_state_id",
     "ApiUsageStateValue": "tb_pe_client.models.api_usage_state_value",
     "Argument": "tb_pe_client.models.argument",
     "ArgumentType": "tb_pe_client.models.argument_type",
@@ -1334,6 +1336,7 @@ _LAZY_CLASSES = {
     "EntityGroupFilter": "tb_pe_client.models.entity_group_filter",
     "EntityGroupId": "tb_pe_client.models.entity_group_id",
     "EntityGroupInfo": "tb_pe_client.models.entity_group_info",
+    "EntityGroupInfoOwnerIdsInner": "tb_pe_client.models.entity_group_info_owner_ids_inner",
     "EntityGroupListFilter": "tb_pe_client.models.entity_group_list_filter",
     "EntityGroupNameFilter": "tb_pe_client.models.entity_group_name_filter",
     "EntityId": "tb_pe_client.models.entity_id",
@@ -1549,7 +1552,6 @@ _LAZY_CLASSES = {
     "Operation": "tb_pe_client.models.operation",
     "OriginatorEntityOwnerUsersFilter": "tb_pe_client.models.originator_entity_owner_users_filter",
     "OtaPackage": "tb_pe_client.models.ota_package",
-    "OtaPackageData": "tb_pe_client.models.ota_package_data",
     "OtaPackageExportData": "tb_pe_client.models.ota_package_export_data",
     "OtaPackageId": "tb_pe_client.models.ota_package_id",
     "OtaPackageInfo": "tb_pe_client.models.ota_package_info",

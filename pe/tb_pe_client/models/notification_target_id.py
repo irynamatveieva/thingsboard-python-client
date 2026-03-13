@@ -21,19 +21,17 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import ConfigDict
 from typing import Any, ClassVar, Dict, List
-from uuid import UUID
+from tb_pe_client.models.entity_id import EntityId
 from tb_pe_client.models.entity_type import EntityType
 from typing import Optional, Set
 from typing_extensions import Self
 
-class NotificationTargetId(BaseModel):
+class NotificationTargetId(EntityId):
     """
     NotificationTargetId
     """ # noqa: E501
-    id: UUID = Field(description="ID of the entity, time-based UUID v1")
-    entity_type: EntityType = Field(description="string", alias="entityType")
     __properties: ClassVar[List[str]] = ["id", "entityType"]
 
     model_config = ConfigDict(

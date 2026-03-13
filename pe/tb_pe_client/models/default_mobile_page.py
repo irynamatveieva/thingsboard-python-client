@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, Field, StrictBool, StrictStr
+from pydantic import ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from tb_pe_client.models.default_page_id import DefaultPageId
 from tb_pe_client.models.mobile_page import MobilePage
@@ -34,7 +34,6 @@ class DefaultMobilePage(MobilePage):
     DefaultMobilePage
     """ # noqa: E501
     label: Optional[StrictStr] = Field(default=None, description="Page label")
-    visible: StrictBool = Field(description="Indicates if page is visible")
     icon: Optional[StrictStr] = Field(default=None, description="URL of the page icon")
     id: Optional[DefaultPageId] = Field(default=None, description="Identifier for default page")
     __properties: ClassVar[List[str]] = ["type", "visible", "label", "icon", "id"]

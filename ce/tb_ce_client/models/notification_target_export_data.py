@@ -21,26 +21,21 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List, Optional
-from tb_ce_client.models.attribute_export_data import AttributeExportData
+from pydantic import ConfigDict
+from typing import Any, ClassVar, Dict, List
 from tb_ce_client.models.calculated_field import CalculatedField
+from tb_ce_client.models.entity_export_data import EntityExportData
 from tb_ce_client.models.entity_relation import EntityRelation
 from tb_ce_client.models.entity_type import EntityType
 from tb_ce_client.models.exportable_entity import ExportableEntity
 from typing import Optional, Set
 from typing_extensions import Self
 
-class NotificationTargetExportData(BaseModel):
+class NotificationTargetExportData(EntityExportData):
     """
     NotificationTargetExportData
     """ # noqa: E501
-    entity: Optional[ExportableEntity] = None
-    entity_type: EntityType = Field(alias="entityType")
-    relations: Optional[List[EntityRelation]] = None
-    attributes: Optional[Dict[str, List[AttributeExportData]]] = Field(default=None, description="Map of attributes where key is the scope of attributes and value is the list of attributes for that scope")
-    calculated_fields: Optional[List[CalculatedField]] = Field(default=None, alias="calculatedFields")
-    __properties: ClassVar[List[str]] = ["entity", "entityType", "relations", "attributes", "calculatedFields"]
+    __properties: ClassVar[List[str]] = ["entityType", "entity", "relations", "attributes", "calculatedFields"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -119,8 +114,8 @@ class NotificationTargetExportData(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "entity": ExportableEntity.from_dict(obj["entity"]) if obj.get("entity") is not None else None,
             "entityType": obj.get("entityType"),
+            "entity": ExportableEntity.from_dict(obj["entity"]) if obj.get("entity") is not None else None,
             "relations": [EntityRelation.from_dict(_item) for _item in obj["relations"]] if obj.get("relations") is not None else None,
             "attributes": dict(
                 (_k,

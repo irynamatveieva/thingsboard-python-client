@@ -33,6 +33,7 @@ class CalculatedFieldDebugEventFilter(EventFilter):
     CalculatedFieldDebugEventFilter
     """ # noqa: E501
     server: Optional[StrictStr] = Field(default=None, description="String value representing the server name, identifier or ip address where the platform is running")
+    is_error: Optional[StrictBool] = Field(default=None, description="Boolean value to filter the errors", alias="isError")
     error_str: Optional[StrictStr] = Field(default=None, description="The case insensitive 'contains' filter based on error message", alias="errorStr")
     entity_id: Optional[StrictStr] = Field(default=None, description="String value representing the entity id in the event body", alias="entityId")
     entity_type: Optional[StrictStr] = Field(default=None, description="String value representing the entity type", alias="entityType")
@@ -40,9 +41,17 @@ class CalculatedFieldDebugEventFilter(EventFilter):
     msg_type: Optional[StrictStr] = Field(default=None, description="String value representing the message type", alias="msgType")
     arguments: Optional[StrictStr] = Field(default=None, description="String value representing the arguments that were used in the calculation performed")
     result: Optional[StrictStr] = Field(default=None, description="String value representing the result of a calculation")
-    is_error: Optional[StrictBool] = Field(default=None, alias="isError")
-    error: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["eventType", "notEmpty", "server", "errorStr", "entityId", "entityType", "msgId", "msgType", "arguments", "result", "isError", "error"]
+    __properties: ClassVar[List[str]] = ["eventType", "notEmpty", "server", "isError", "errorStr", "entityId", "entityType", "msgId", "msgType", "arguments", "result"]
+
+    @field_validator('is_error')
+    def is_error_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['false', 'true']):
+            raise ValueError("must be one of enum values ('false', 'true')")
+        return value
 
     @field_validator('entity_type')
     def entity_type_validate_enum(cls, value):
@@ -108,15 +117,14 @@ class CalculatedFieldDebugEventFilter(EventFilter):
             "eventType": obj.get("eventType"),
             "notEmpty": obj.get("notEmpty"),
             "server": obj.get("server"),
+            "isError": obj.get("isError"),
             "errorStr": obj.get("errorStr"),
             "entityId": obj.get("entityId"),
             "entityType": obj.get("entityType"),
             "msgId": obj.get("msgId"),
             "msgType": obj.get("msgType"),
             "arguments": obj.get("arguments"),
-            "result": obj.get("result"),
-            "isError": obj.get("isError"),
-            "error": obj.get("error")
+            "result": obj.get("result")
         })
         return _obj
 

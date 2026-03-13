@@ -33,9 +33,8 @@ class ShortCustomerInfo(BaseModel):
     """ # noqa: E501
     customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with the customer Id.", alias="customerId")
     title: Optional[StrictStr] = Field(default=None, description="Title of the customer.")
-    is_public: Optional[StrictBool] = Field(default=None, alias="isPublic")
-    public: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["customerId", "title", "isPublic", "public"]
+    is_public: Optional[StrictBool] = Field(default=None, description="Indicates special 'Public' customer used to embed dashboards on public websites.", alias="isPublic")
+    __properties: ClassVar[List[str]] = ["customerId", "title", "isPublic"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -93,8 +92,7 @@ class ShortCustomerInfo(BaseModel):
         _obj = cls.model_validate({
             "customerId": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
             "title": obj.get("title"),
-            "isPublic": obj.get("isPublic"),
-            "public": obj.get("public")
+            "isPublic": obj.get("isPublic")
         })
         return _obj
 
