@@ -279,3 +279,170 @@ def test_rewrite_init_files_writes_controller_map(tmp_path):
     map_content = controller_map_path.read_text(encoding="utf-8")
     assert "_CONTROLLER_MAP" in map_content
     assert "_CONTROLLER_ATTR_MAP" in map_content
+
+
+# ---------------------------------------------------------------------------
+# Fixtures for _generate_client_pyi tests
+# ---------------------------------------------------------------------------
+
+@pytest.fixture
+def mock_api_dir_with_methods(tmp_path):
+    """Create a temporary api/ directory with controllers that have method signatures."""
+    api_dir = tmp_path / "api"
+    api_dir.mkdir()
+
+    (api_dir / "device_controller_api.py").write_text(
+        "from typing import Optional\n"
+        "from typing_extensions import Annotated\n"
+        "from tb_ce_client.models.device import Device\n"
+        "from tb_ce_client.models.page_data_device import PageDataDevice\n"
+        "\n"
+        "class DeviceControllerApi:\n"
+        "    def __init__(self, api_client=None) -> None:\n"
+        "        self.api_client = api_client\n"
+        "\n"
+        "    def get_device_by_id(\n"
+        "        self,\n"
+        "        device_id: str,\n"
+        "    ) -> Device:\n"
+        "        pass\n"
+        "\n"
+        "    def get_tenant_devices(\n"
+        "        self,\n"
+        "        page_size: int,\n"
+        "        page: int,\n"
+        "    ) -> PageDataDevice:\n"
+        "        pass\n",
+        encoding="utf-8",
+    )
+    (api_dir / "alarm_controller_api.py").write_text(
+        "from tb_ce_client.models.alarm import Alarm\n"
+        "\n"
+        "class AlarmControllerApi:\n"
+        "    def __init__(self, api_client=None) -> None:\n"
+        "        self.api_client = api_client\n"
+        "\n"
+        "    def get_alarm_by_id(\n"
+        "        self,\n"
+        "        alarm_id: str,\n"
+        "    ) -> Alarm:\n"
+        "        pass\n",
+        encoding="utf-8",
+    )
+    # __init__.py should be skipped
+    (api_dir / "__init__.py").write_text("# auto-generated\n", encoding="utf-8")
+
+    return api_dir
+
+
+@pytest.fixture
+def mock_client_py(tmp_path):
+    """Create a minimal client.py for _generate_client_pyi to read."""
+    client_py = tmp_path / "client.py"
+    client_py.write_text(
+        "class ThingsboardClient:\n"
+        "    def __init__(self, url: str, username: str = None) -> None:\n"
+        "        pass\n",
+        encoding="utf-8",
+    )
+    return client_py
+
+
+# ---------------------------------------------------------------------------
+# Tests for _generate_client_pyi
+# ---------------------------------------------------------------------------
+
+def test_generate_client_pyi_class(mock_api_dir_with_methods, mock_client_py):
+    """_generate_client_pyi output contains 'class ThingsboardClient:'."""
+    content, stub_count = post_process._generate_client_pyi(
+        mock_api_dir_with_methods, "tb_ce_client", mock_client_py
+    )
+    assert "class ThingsboardClient:" in content, (
+        "Expected 'class ThingsboardClient:' in generated .pyi content"
+    )
+
+
+def test_generate_client_pyi_method_stub(mock_api_dir_with_methods, mock_client_py):
+    """_generate_client_pyi output contains a method stub for get_device_by_id."""
+    content, stub_count = post_process._generate_client_pyi(
+        mock_api_dir_with_methods, "tb_ce_client", mock_client_py
+    )
+    assert "def get_device_by_id" in content, (
+        "Expected 'def get_device_by_id' stub in generated .pyi content"
+    )
+
+
+def test_generate_client_pyi_controller_property(mock_api_dir_with_methods, mock_client_py):
+    """_generate_client_pyi output contains @property and named controller attributes."""
+    content, stub_count = post_process._generate_client_pyi(
+        mock_api_dir_with_methods, "tb_ce_client", mock_client_py
+    )
+    assert "@property" in content, "Expected '@property' decorator in generated .pyi content"
+    assert "def device_controller" in content, (
+        "Expected 'def device_controller' property in generated .pyi content"
+    )
+
+
+def test_generate_client_pyi_imports(mock_api_dir_with_methods, mock_client_py):
+    """_generate_client_pyi output contains controller class import lines."""
+    content, stub_count = post_process._generate_client_pyi(
+        mock_api_dir_with_methods, "tb_ce_client", mock_client_py
+    )
+    assert "DeviceControllerApi" in content, (
+        "Expected DeviceControllerApi import in generated .pyi content"
+    )
+    assert "AlarmControllerApi" in content, (
+        "Expected AlarmControllerApi import in generated .pyi content"
+    )
+
+
+def test_generate_client_pyi_returns_stub_count(mock_api_dir_with_methods, mock_client_py):
+    """_generate_client_pyi returns (content, stub_count) where stub_count > 0."""
+    content, stub_count = post_process._generate_client_pyi(
+        mock_api_dir_with_methods, "tb_ce_client", mock_client_py
+    )
+    assert stub_count > 0, f"Expected stub_count > 0, got {stub_count}"
+
+
+def test_generate_client_pyi_existing_methods(mock_api_dir_with_methods, mock_client_py):
+    """_generate_client_pyi includes get_token, get_refresh_token, close, __enter__, __exit__."""
+    content, stub_count = post_process._generate_client_pyi(
+        mock_api_dir_with_methods, "tb_ce_client", mock_client_py
+    )
+    for method_name in ("get_token", "get_refresh_token", "close", "__enter__", "__exit__"):
+        assert f"def {method_name}" in content, (
+            f"Expected 'def {method_name}' in generated .pyi content"
+        )
+
+
+def test_rewrite_init_files_writes_pyi(tmp_path):
+    """rewrite_init_files writes client.pyi to package_dir."""
+    pkg_dir = tmp_path / "tb_test_client"
+    pkg_dir.mkdir()
+    (pkg_dir / "__init__.py").write_text("", encoding="utf-8")
+    (pkg_dir / "client.py").write_text(
+        "class ThingsboardClient:\n    pass\n", encoding="utf-8"
+    )
+
+    models_dir = pkg_dir / "models"
+    models_dir.mkdir()
+    (models_dir / "__init__.py").write_text("", encoding="utf-8")
+    (models_dir / "device.py").write_text(
+        "class Device(BaseModel):\n    pass\n", encoding="utf-8"
+    )
+
+    api_dir = pkg_dir / "api"
+    api_dir.mkdir()
+    (api_dir / "__init__.py").write_text("", encoding="utf-8")
+    (api_dir / "device_controller_api.py").write_text(
+        "class DeviceControllerApi:\n"
+        "    def get_device(self, device_id: str) -> None:\n"
+        "        pass\n",
+        encoding="utf-8",
+    )
+
+    post_process.rewrite_init_files(pkg_dir, "tb_test_client")
+    pyi_path = pkg_dir / "client.pyi"
+    assert pyi_path.exists(), "client.pyi must be written to package_dir after rewrite_init_files"
+    pyi_content = pyi_path.read_text(encoding="utf-8")
+    assert "class ThingsboardClient:" in pyi_content
