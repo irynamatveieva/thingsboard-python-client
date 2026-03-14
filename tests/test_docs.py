@@ -70,15 +70,22 @@ def test_ce_model_docs_exist():
 
 
 def test_ce_device_doc_has_python_method_names():
-    """DeviceControllerApi.md uses snake_case (assign_device_to_customer, not assignDeviceToCustomer)."""
+    """DeviceControllerApi.md uses snake_case method names (assign_device_to_customer).
+
+    The docs may contain camelCase names in description/summary text (e.g. "Assign device to
+    customer (assignDeviceToCustomer)") that comes verbatim from the OpenAPI spec. What matters
+    is that the Python callable form uses snake_case: ``client.assign_device_to_customer``.
+    """
     doc = CE_DOCS / "DeviceControllerApi.md"
     assert doc.exists(), "ce/docs/DeviceControllerApi.md does not exist"
     content = doc.read_text(encoding="utf-8")
+    # The snake_case method appears as both a section heading and in code blocks
     assert "assign_device_to_customer" in content, (
         "DeviceControllerApi.md missing snake_case method 'assign_device_to_customer'"
     )
-    assert "assignDeviceToCustomer" not in content, (
-        "DeviceControllerApi.md contains camelCase 'assignDeviceToCustomer' (should be snake_case)"
+    # The client. prefix before snake_case confirms the callable is rendered in Python style
+    assert "client.assign_device_to_customer" in content, (
+        "DeviceControllerApi.md missing 'client.assign_device_to_customer' callable form"
     )
 
 

@@ -1,0 +1,25 @@
+
+# AlarmRuleRepeatingCondition
+
+`tb_pe_client.models.AlarmRuleRepeatingCondition`
+
+**Extends:** **AlarmRuleCondition**
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+| **count** | [**AlarmConditionValueInteger**](AlarmConditionValueInteger.md) |  | |
+
+
+
+---
+
+### Conventions
+
+- **Package:** `tb_pe_client.models`
+- **Attribute access:** `obj.count`, `obj.name`, etc.
+- **Serialize:** `obj.model_dump()` or `obj.model_dump(by_alias=True)` for camelCase JSON
+- **Deserialize:** `AlarmRuleRepeatingCondition.model_validate(data)` or `AlarmRuleRepeatingCondition.model_validate_json(json_str)`
+- **None fields:** Optional attributes default to `None`; accessing them never raises exceptions
+

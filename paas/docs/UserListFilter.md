@@ -1,0 +1,25 @@
+
+# UserListFilter
+
+`tb_paas_client.models.UserListFilter`
+
+**Extends:** **UsersFilter**
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+| **users_ids** | **List[UUID]** |  | |
+
+
+
+---
+
+### Conventions
+
+- **Package:** `tb_paas_client.models`
+- **Attribute access:** `obj.users_ids`, `obj.name`, etc.
+- **Serialize:** `obj.model_dump()` or `obj.model_dump(by_alias=True)` for camelCase JSON
+- **Deserialize:** `UserListFilter.model_validate(data)` or `UserListFilter.model_validate_json(json_str)`
+- **None fields:** Optional attributes default to `None`; accessing them never raises exceptions
+

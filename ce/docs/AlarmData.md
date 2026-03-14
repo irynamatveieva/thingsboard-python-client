@@ -1,0 +1,50 @@
+
+# AlarmData
+
+`tb_ce_client.models.AlarmData`
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+| **entity_id** | [**EntityId**](EntityId.md) |  | [optional] |
+| **latest** | **Dict[str, Dict[str, TsValue]]** |  | [optional] |
+| **id** | [**AlarmId**](AlarmId.md) | JSON object with the alarm Id. Specify this field to update the alarm. Referencing non-existing alarm Id will cause error. Omit this field to create new alarm. | [optional] |
+| **created_time** | **int** | Timestamp of the alarm creation, in milliseconds | [optional] [readonly] |
+| **tenant_id** | [**TenantId**](TenantId.md) | JSON object with Tenant Id | [optional] [readonly] |
+| **customer_id** | [**CustomerId**](CustomerId.md) | JSON object with Customer Id | [optional] [readonly] |
+| **type** | **str** | representing type of the Alarm | |
+| **originator** | [**EntityId**](EntityId.md) | JSON object with alarm originator id | |
+| **severity** | [**AlarmSeverity**](AlarmSeverity.md) | Alarm severity | |
+| **acknowledged** | **bool** | Acknowledged | |
+| **cleared** | **bool** | Cleared | |
+| **assignee_id** | [**UserId**](UserId.md) | Alarm assignee user id | [optional] |
+| **start_ts** | **int** | Timestamp of the alarm start time, in milliseconds | [optional] |
+| **end_ts** | **int** | Timestamp of the alarm end time(last time update), in milliseconds | [optional] |
+| **ack_ts** | **int** | Timestamp of the alarm acknowledgement, in milliseconds | [optional] |
+| **clear_ts** | **int** | Timestamp of the alarm clearing, in milliseconds | [optional] |
+| **assign_ts** | **int** | Timestamp of the alarm assignment, in milliseconds | [optional] |
+| **details** | **object** | JSON object with alarm details | [optional] |
+| **propagate** | **bool** | Propagation flag to specify if alarm should be propagated to parent entities of alarm originator | [optional] |
+| **propagate_to_owner** | **bool** | Propagation flag to specify if alarm should be propagated to the owner (tenant or customer) of alarm originator | [optional] |
+| **propagate_to_tenant** | **bool** | Propagation flag to specify if alarm should be propagated to the tenant entity | [optional] |
+| **propagate_relation_types** | **List[str]** | JSON array of relation types that should be used for propagation. By default, 'propagateRelationTypes' array is empty which means that the alarm will be propagated based on any relation type to parent entities. This parameter should be used only in case when 'propagate' parameter is set to true, otherwise, 'propagateRelationTypes' array will be ignored. | [optional] |
+| **originator_name** | **str** | Alarm originator name | [optional] |
+| **originator_label** | **str** | Alarm originator label | [optional] |
+| **originator_display_name** | **str** | Originator display name | [optional] |
+| **assignee** | [**AlarmAssignee**](AlarmAssignee.md) | Alarm assignee | [optional] |
+| **name** | **str** | representing type of the Alarm | [readonly] |
+| **status** | [**AlarmStatus**](AlarmStatus.md) | status of the Alarm | [readonly] |
+
+
+
+---
+
+### Conventions
+
+- **Package:** `tb_ce_client.models`
+- **Attribute access:** `obj.entity_id`, `obj.name`, etc.
+- **Serialize:** `obj.model_dump()` or `obj.model_dump(by_alias=True)` for camelCase JSON
+- **Deserialize:** `AlarmData.model_validate(data)` or `AlarmData.model_validate_json(json_str)`
+- **None fields:** Optional attributes default to `None`; accessing them never raises exceptions
+

@@ -1,0 +1,34 @@
+
+# Role
+
+`tb_pe_client.models.Role`
+
+A JSON value representing the role.
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+| **tenant_id** | [**TenantId**](TenantId.md) | JSON object with Tenant Id. | [readonly] |
+| **customer_id** | [**CustomerId**](CustomerId.md) | JSON object with Customer Id.  | [optional] [readonly] |
+| **name** | **str** | Role Name | |
+| **type** | [**RoleType**](RoleType.md) | Type of the role: generic or group | |
+| **permissions** | **object** |  | [optional] |
+| **version** | **int** |  | [optional] |
+| **id** | [**RoleId**](RoleId.md) | JSON object with the Role Id. Specify this field to update the Role. Referencing non-existing Role Id will cause error. Omit this field to create new Role. | [optional] |
+| **created_time** | **int** | Timestamp of the role creation, in milliseconds | [optional] [readonly] |
+| **owner_id** | [**EntityId**](EntityId.md) | JSON object with Customer or Tenant Id | [optional] [readonly] |
+| **additional_info** | **object** | Additional parameters of the role. May include: 'description' (string). | [optional] |
+
+
+
+---
+
+### Conventions
+
+- **Package:** `tb_pe_client.models`
+- **Attribute access:** `obj.tenant_id`, `obj.name`, etc.
+- **Serialize:** `obj.model_dump()` or `obj.model_dump(by_alias=True)` for camelCase JSON
+- **Deserialize:** `Role.model_validate(data)` or `Role.model_validate_json(json_str)`
+- **None fields:** Optional attributes default to `None`; accessing them never raises exceptions
+

@@ -1,0 +1,68 @@
+
+# QuickTimeInterval
+
+`tb_paas_client.models.QuickTimeInterval`
+
+## Enum Values
+
+
+* `YESTERDAY` (value: `'YESTERDAY'`)
+
+* `DAY_BEFORE_YESTERDAY` (value: `'DAY_BEFORE_YESTERDAY'`)
+
+* `THIS_DAY_LAST_WEEK` (value: `'THIS_DAY_LAST_WEEK'`)
+
+* `PREVIOUS_WEEK` (value: `'PREVIOUS_WEEK'`)
+
+* `PREVIOUS_WEEK_ISO` (value: `'PREVIOUS_WEEK_ISO'`)
+
+* `PREVIOUS_MONTH` (value: `'PREVIOUS_MONTH'`)
+
+* `PREVIOUS_QUARTER` (value: `'PREVIOUS_QUARTER'`)
+
+* `PREVIOUS_HALF_YEAR` (value: `'PREVIOUS_HALF_YEAR'`)
+
+* `PREVIOUS_YEAR` (value: `'PREVIOUS_YEAR'`)
+
+* `CURRENT_HOUR` (value: `'CURRENT_HOUR'`)
+
+* `CURRENT_DAY` (value: `'CURRENT_DAY'`)
+
+* `CURRENT_DAY_SO_FAR` (value: `'CURRENT_DAY_SO_FAR'`)
+
+* `CURRENT_WEEK` (value: `'CURRENT_WEEK'`)
+
+* `CURRENT_WEEK_ISO` (value: `'CURRENT_WEEK_ISO'`)
+
+* `CURRENT_WEEK_SO_FAR` (value: `'CURRENT_WEEK_SO_FAR'`)
+
+* `CURRENT_WEEK_ISO_SO_FAR` (value: `'CURRENT_WEEK_ISO_SO_FAR'`)
+
+* `CURRENT_MONTH` (value: `'CURRENT_MONTH'`)
+
+* `CURRENT_MONTH_SO_FAR` (value: `'CURRENT_MONTH_SO_FAR'`)
+
+* `CURRENT_QUARTER` (value: `'CURRENT_QUARTER'`)
+
+* `CURRENT_QUARTER_SO_FAR` (value: `'CURRENT_QUARTER_SO_FAR'`)
+
+* `CURRENT_HALF_YEAR` (value: `'CURRENT_HALF_YEAR'`)
+
+* `CURRENT_HALF_YEAR_SO_FAR` (value: `'CURRENT_HALF_YEAR_SO_FAR'`)
+
+* `CURRENT_YEAR` (value: `'CURRENT_YEAR'`)
+
+* `CURRENT_YEAR_SO_FAR` (value: `'CURRENT_YEAR_SO_FAR'`)
+
+
+
+---
+
+### Conventions
+
+- **Package:** `tb_paas_client.models`
+- **Attribute access:** `obj.`, `obj.name`, etc.
+- **Serialize:** `obj.model_dump()` or `obj.model_dump(by_alias=True)` for camelCase JSON
+- **Deserialize:** `QuickTimeInterval.model_validate(data)` or `QuickTimeInterval.model_validate_json(json_str)`
+- **None fields:** Optional attributes default to `None`; accessing them never raises exceptions
+

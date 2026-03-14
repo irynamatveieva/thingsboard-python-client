@@ -1,0 +1,25 @@
+
+# ShortCustomerInfo
+
+`tb_paas_client.models.ShortCustomerInfo`
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+| **customer_id** | [**CustomerId**](CustomerId.md) | JSON object with the customer Id. | [optional] |
+| **title** | **str** | Title of the customer. | [optional] |
+| **is_public** | **bool** | Indicates special 'Public' customer used to embed dashboards on public websites. | [optional] |
+
+
+
+---
+
+### Conventions
+
+- **Package:** `tb_paas_client.models`
+- **Attribute access:** `obj.customer_id`, `obj.name`, etc.
+- **Serialize:** `obj.model_dump()` or `obj.model_dump(by_alias=True)` for camelCase JSON
+- **Deserialize:** `ShortCustomerInfo.model_validate(data)` or `ShortCustomerInfo.model_validate_json(json_str)`
+- **None fields:** Optional attributes default to `None`; accessing them never raises exceptions
+

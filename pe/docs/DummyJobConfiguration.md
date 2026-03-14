@@ -1,0 +1,35 @@
+
+# DummyJobConfiguration
+
+`tb_pe_client.models.DummyJobConfiguration`
+
+Dummy job configuration
+
+**Extends:** **JobConfiguration**
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+| **task_processing_time_ms** | **int** |  | [optional] |
+| **successful_tasks_count** | **int** |  | [optional] |
+| **failed_tasks_count** | **int** |  | [optional] |
+| **permanently_failed_tasks_count** | **int** |  | [optional] |
+| **errors** | **List[str]** |  | [optional] |
+| **retries** | **int** |  | [optional] |
+| **task_processing_timeout_ms** | **int** |  | [optional] |
+| **general_error** | **str** |  | [optional] |
+| **submitted_tasks_before_general_error** | **int** |  | [optional] |
+
+
+
+---
+
+### Conventions
+
+- **Package:** `tb_pe_client.models`
+- **Attribute access:** `obj.task_processing_time_ms`, `obj.name`, etc.
+- **Serialize:** `obj.model_dump()` or `obj.model_dump(by_alias=True)` for camelCase JSON
+- **Deserialize:** `DummyJobConfiguration.model_validate(data)` or `DummyJobConfiguration.model_validate_json(json_str)`
+- **None fields:** Optional attributes default to `None`; accessing them never raises exceptions
+
