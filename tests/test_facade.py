@@ -269,3 +269,43 @@ class TestGetAttrEdgeCases:
         del client.__dict__["_controllers"]
         with pytest.raises(AttributeError):
             _ = client.some_method
+
+
+# ---------------------------------------------------------------------------
+# FAC-04: Type stubs (.pyi validation)
+# ---------------------------------------------------------------------------
+
+class TestTypeStub:
+    """FAC-04: client.pyi provides IDE autocompletion and mypy compatibility."""
+
+    _PYI_PATH = _REPO_ROOT / "ce" / "tb_ce_client" / "client.pyi"
+
+    def test_client_pyi_exists(self):
+        """ce/tb_ce_client/client.pyi exists after generation."""
+        assert self._PYI_PATH.exists(), (
+            f"client.pyi not found at {self._PYI_PATH}. "
+            "Run: python3 scripts/post_process.py ce/tb_ce_client tb_ce_client"
+        )
+
+    def test_client_pyi_has_method_stubs(self):
+        """client.pyi contains def get_device_by_id method stub."""
+        content = self._PYI_PATH.read_text(encoding="utf-8")
+        assert "def get_device_by_id" in content, (
+            "Expected 'def get_device_by_id' in client.pyi"
+        )
+
+    def test_client_pyi_has_controller_properties(self):
+        """client.pyi contains @property and def device_controller."""
+        content = self._PYI_PATH.read_text(encoding="utf-8")
+        assert "@property" in content, "Expected '@property' in client.pyi"
+        assert "def device_controller" in content, (
+            "Expected 'def device_controller' property in client.pyi"
+        )
+
+    def test_client_pyi_is_valid_python(self):
+        """client.pyi compiles as valid Python (no syntax errors)."""
+        content = self._PYI_PATH.read_text(encoding="utf-8")
+        try:
+            compile(content, "client.pyi", "exec")
+        except SyntaxError as e:
+            pytest.fail(f"client.pyi has syntax error: {e}")

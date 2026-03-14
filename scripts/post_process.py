@@ -719,9 +719,16 @@ def _generate_client_pyi(
         lines.append("    @property")
         lines.append(f"    def {short_name}(self) -> {cls_name}: ...")
         for method_name, params_clean, return_type in methods:
+            # Strip leading 'self' from params_clean (it's always the first param
+            # from the source but we emit it explicitly as the method receiver)
+            params_no_self = params_clean
+            if params_no_self.startswith("self, "):
+                params_no_self = params_no_self[len("self, "):]
+            elif params_no_self == "self":
+                params_no_self = ""
             # Build stub line
-            if params_clean:
-                stub_line = f"    def {method_name}(self, {params_clean}) -> {return_type}: ..."
+            if params_no_self:
+                stub_line = f"    def {method_name}(self, {params_no_self}) -> {return_type}: ..."
             else:
                 stub_line = f"    def {method_name}(self) -> {return_type}: ..."
             lines.append(stub_line)
