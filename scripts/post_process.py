@@ -499,6 +499,239 @@ def _generate_controller_map(api_dir: Path, package_name: str) -> "Tuple[str, in
     return file_content, len(method_map), len(attr_map)
 
 
+# ---------------------------------------------------------------------------
+# Step 7: Generate client.pyi type stub
+# ---------------------------------------------------------------------------
+
+def _extract_method_signatures(content: str) -> "List[Tuple[str, str, str]]":
+    """Extract all public instance method signatures from a Python source file.
+
+    Returns a list of (method_name, params_str, return_type_str) tuples.
+    Skips __init__.
+
+    For multi-line signatures (with nested brackets in Tuple[...], Dict[...]),
+    we use a paren-depth scanner to find the complete parameter block.
+    """
+    results = []
+
+    # Find all method definitions at 4-space indent (instance methods)
+    # We scan for "    def method_name(" positions
+    method_start_re = re.compile(r"^    def ([a-zA-Z_][a-zA-Z0-9_]*)\(", re.MULTILINE)
+
+    for m in method_start_re.finditer(content):
+        method_name = m.group(1)
+        if method_name == "__init__":
+            continue
+
+        # Start scanning from the opening paren
+        paren_start = m.start() + m.group(0).index("(")
+        pos = paren_start + 1
+        depth = 1
+        length = len(content)
+
+        # Walk forward until we close the parameter paren (handling nesting)
+        while pos < length and depth > 0:
+            ch = content[pos]
+            if ch == "(":
+                depth += 1
+            elif ch == ")":
+                depth -= 1
+            pos += 1
+
+        # pos is now just past the closing ")"
+        params_inner = content[paren_start + 1:pos - 1]
+
+        # Now look for return type annotation "-> RetType" up to ":"
+        rest = content[pos:]
+        ret_match = re.match(r"\s*->\s*([^:\n]+?)\s*:", rest, re.DOTALL)
+        return_type = ret_match.group(1).strip() if ret_match else "Any"
+
+        # Strip whitespace/newlines from params to build a clean stub
+        # Replace default values with ... (Ellipsis notation for .pyi)
+        params_clean = _clean_params_for_stub(params_inner)
+
+        results.append((method_name, params_clean, return_type))
+
+    return results
+
+
+def _clean_params_for_stub(params: str) -> str:
+    """Clean up a parameter string for use in a .pyi stub.
+
+    - Collapse whitespace/newlines to single spaces
+    - Replace default values (= something) with = ...
+    - Preserve type annotations
+    """
+    # Collapse all whitespace sequences to single space
+    cleaned = re.sub(r"\s+", " ", params).strip()
+
+    # Replace default values: "= <value>" -> "= ..."
+    # We handle this by finding "= " not followed by "..." and replacing the value
+    # This is tricky because default values can be complex (e.g. = None, = 0, = True)
+    # Strategy: use a simple state-machine approach - split by comma at depth 0,
+    # then process each param
+    result_params = []
+    # Split parameters by comma at depth 0
+    parts = _split_at_depth_zero(cleaned)
+    for part in parts:
+        part = part.strip()
+        if not part:
+            continue
+        # Find "= value" at the end of the param (at depth 0)
+        # If param has a default, replace with "= ..."
+        param_with_ellipsis = _replace_default_value(part)
+        result_params.append(param_with_ellipsis)
+
+    return ", ".join(result_params)
+
+
+def _split_at_depth_zero(s: str) -> "List[str]":
+    """Split string by commas at bracket depth 0."""
+    parts = []
+    depth = 0
+    current = []
+    for ch in s:
+        if ch in "([{":
+            depth += 1
+            current.append(ch)
+        elif ch in ")]}":
+            depth -= 1
+            current.append(ch)
+        elif ch == "," and depth == 0:
+            parts.append("".join(current))
+            current = []
+        else:
+            current.append(ch)
+    if current:
+        parts.append("".join(current))
+    return parts
+
+
+def _replace_default_value(param: str) -> str:
+    """Replace a parameter's default value with '...' for .pyi stubs.
+
+    E.g. 'x: int = 0' -> 'x: int = ...'
+         'y = None'    -> 'y = ...'
+    Leaves params with no default unchanged.
+    """
+    # Find the position of "=" at depth 0
+    depth = 0
+    for i, ch in enumerate(param):
+        if ch in "([{":
+            depth += 1
+        elif ch in ")]}":
+            depth -= 1
+        elif ch == "=" and depth == 0:
+            # Make sure it's not "=="
+            if i + 1 < len(param) and param[i + 1] == "=":
+                continue
+            # Check it's not preceded by !, <, > (comparison operators)
+            if i > 0 and param[i - 1] in "!<>":
+                continue
+            # Replace everything from "= " to end with "= ..."
+            return param[:i].rstrip() + " = ..."
+    return param
+
+
+def _generate_client_pyi(
+    api_dir: Path, package_name: str, client_py_path: Path
+) -> "Tuple[str, int]":
+    """Generate client.pyi type stub content.
+
+    Extracts method signatures from all controller files and builds a .pyi
+    stub declaring every delegated method so IDEs can provide autocompletion.
+
+    Returns (pyi_content, stub_count).
+    """
+    # Collect all controller classes and their methods
+    controller_classes: "List[Tuple[str, str, str, List[Tuple[str, str, str]]]]" = []
+    # (short_name, cls_name, module_path, [(method_name, params, return_type), ...])
+
+    for py_file in sorted(api_dir.glob("*.py")):
+        if py_file.name == "__init__.py":
+            continue
+
+        content = py_file.read_text(encoding="utf-8")
+        cls_match = re.search(r"^class (\w+)[:(]", content, re.MULTILINE)
+        if not cls_match:
+            continue
+
+        cls_name = cls_match.group(1)
+        module_path = f"{package_name}.api.{py_file.stem}"
+
+        # Derive short name (same as _generate_controller_map)
+        short_name = re.sub(r"(?<=[a-z0-9])(?=[A-Z])", "_", cls_name).lower()
+        if short_name.endswith("_api"):
+            short_name = short_name[:-4]
+
+        methods = _extract_method_signatures(content)
+        controller_classes.append((short_name, cls_name, module_path, methods))
+
+    # Build the .pyi content
+    lines = [
+        f"# {package_name}/client.pyi  (GENERATED -- do not edit manually)",
+        "from typing import Optional, Union, Tuple, Dict, Any, List",
+        "from typing_extensions import Annotated",
+        "from pydantic import Field, StrictStr, StrictInt, StrictFloat, StrictBool",
+        "",
+        f"from {package_name}.api_client import ApiClient",
+        "",
+        "# Controller class imports",
+    ]
+    for short_name, cls_name, module_path, _methods in controller_classes:
+        lines.append(f"from {module_path} import {cls_name}")
+
+    lines.extend([
+        "",
+        f"from {package_name}.models import *  # noqa: F401, F403",
+        "",
+        "class ThingsboardClient:",
+        "    api_client: ApiClient",
+        "    _controllers: dict",
+        "    _auth_manager: Any",
+        "",
+        "    def __init__(",
+        "        self,",
+        "        url: str,",
+        "        username: Optional[str] = ...,",
+        "        password: Optional[str] = ...,",
+        "        api_key: Optional[str] = ...,",
+        "        token: Optional[str] = ...,",
+        "        refresh_token: Optional[str] = ...,",
+        "        max_retries: int = ...,",
+        "        initial_retry_delay_ms: int = ...,",
+        "        max_retry_delay_ms: int = ...,",
+        "        retry_on_rate_limit: bool = ...,",
+        "    ) -> None: ...",
+        "    def _get_or_create_controller(self, cls_name: str, module_path: str) -> Any: ...",
+        "    def get_token(self) -> Optional[str]: ...",
+        "    def get_refresh_token(self) -> Optional[str]: ...",
+        "    def close(self) -> None: ...",
+        "    def __enter__(self) -> ThingsboardClient: ...",
+        "    def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> bool: ...",
+    ])
+
+    # Add controller property stubs and method stubs grouped by controller
+    stub_count = 0
+    for short_name, cls_name, module_path, methods in controller_classes:
+        lines.append("")
+        lines.append(f"    # --- {cls_name} ---")
+        lines.append("    @property")
+        lines.append(f"    def {short_name}(self) -> {cls_name}: ...")
+        for method_name, params_clean, return_type in methods:
+            # Build stub line
+            if params_clean:
+                stub_line = f"    def {method_name}(self, {params_clean}) -> {return_type}: ..."
+            else:
+                stub_line = f"    def {method_name}(self) -> {return_type}: ..."
+            lines.append(stub_line)
+            stub_count += 1
+
+    lines.append("")
+
+    return "\n".join(lines), stub_count
+
+
 def rewrite_init_files(package_dir: Path, package_name: str) -> "Tuple[int, int, int]":
     """Rewrite __init__.py files for lazy loading.
 
@@ -533,6 +766,13 @@ def rewrite_init_files(package_dir: Path, package_name: str) -> "Tuple[int, int,
         map_content, method_count, _ctrl_count = _generate_controller_map(api_dir, package_name)
         controller_map_path = package_dir / "_controller_map.py"
         controller_map_path.write_text(LICENSE_HEADER + map_content, encoding="utf-8")
+
+    # Step 7: Generate client.pyi type stub
+    if api_dir.exists():
+        client_py_path = package_dir / "client.py"
+        pyi_content, _stub_count = _generate_client_pyi(api_dir, package_name, client_py_path)
+        pyi_path = package_dir / "client.pyi"
+        pyi_path.write_text(LICENSE_HEADER + pyi_content, encoding="utf-8")
 
     return len(model_map), len(api_map), method_count
 
