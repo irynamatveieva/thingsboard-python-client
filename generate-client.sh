@@ -46,6 +46,7 @@
 #   4. Copies generated tb_{edition}_client/ into the edition's package directory
 #   5. Overlays common/ contents into the package directory
 #   6. Runs scripts/post_process.py (license headers, lazy imports, JsonNode fixes, cleanup)
+#   7. Runs openapi-generator docs pass with custom templates to produce {edition}/docs/
 #
 # Preserved on regeneration:
 #   - <edition>/spec/openapi.json  (only updated when base-url is provided)
@@ -249,6 +250,65 @@ generate() {
     fi
 
     echo "  Import time:  time python3 -c \"import tb_${edition}_client\""
+    echo ""
+  fi
+
+  # --- Run 2: Per-controller/model documentation (DGEN-01) ---
+  local docs_output_dir="$SCRIPT_DIR/$edition/target/generated-docs"
+  rm -rf "$docs_output_dir"
+
+  echo "Generating per-controller and per-model docs for edition: $edition"
+  java -jar "$GENERATOR_JAR" generate \
+    -i "$spec_file" \
+    -g python \
+    -o "$docs_output_dir" \
+    --package-name "tb_${edition}_client" \
+    --additional-properties hideGenerationTimestamp=true,generateSourceCodeOnly=true \
+    --global-property apis,models,supportingFiles=false,apiTests=false,modelTests=false \
+    -t "$SCRIPT_DIR/openapi" \
+    2>&1 | if [ "$VERBOSE" = true ]; then cat; else grep -v \
+      -e "^\[main\] INFO  o.o.codegen.*writing file" \
+      -e "^\[main\] INFO  o.o.c.languages.*Processing operation" \
+      -e "Unknown scheme.*loginPassword" \
+      -e "Skipped by.*options supplied by user" \
+      -e "^\[main\] INFO  o.o.c.DefaultGenerator"; fi
+
+  if [ "$DRY_RUN" = false ]; then
+    rm -rf "$module_dir/docs"
+    cp -r "$docs_output_dir/tb_${edition}_client/docs" "$module_dir/docs"
+    echo "Copied docs to $module_dir/docs"
+  fi
+
+  local docs_dir
+  if [ "$DRY_RUN" = true ]; then
+    docs_dir="$docs_output_dir/tb_${edition}_client/docs"
+  else
+    docs_dir="$module_dir/docs"
+  fi
+
+  if [ -d "$docs_dir" ]; then
+    local doc_count api_doc_count model_doc_count
+    doc_count=$(find "$docs_dir" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+    api_doc_count=$(find "$docs_dir" -name "*Api.md" 2>/dev/null | wc -l | tr -d ' ')
+    model_doc_count=$((doc_count - api_doc_count))
+    echo ""
+    echo "=== Doc Metrics: $edition ==="
+    echo "  Total docs:       $doc_count markdown files"
+    echo "  Controller docs:  $api_doc_count"
+    echo "  Model docs:       $model_doc_count"
+
+    # Minimum doc count assertion (analogous to controller threshold)
+    local min_doc_count
+    case "$edition" in
+      ce) min_doc_count=700 ;;
+      pe) min_doc_count=900 ;;
+      paas) min_doc_count=900 ;;
+      *) min_doc_count=0 ;;
+    esac
+    if [ "$min_doc_count" -gt 0 ] && [ "$doc_count" -lt "$min_doc_count" ]; then
+      echo "Error: $edition generated $doc_count doc files (minimum: $min_doc_count)"
+      exit 1
+    fi
     echo ""
   fi
 }
