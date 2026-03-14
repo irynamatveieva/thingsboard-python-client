@@ -167,11 +167,11 @@ def test_generate_root_init_with_api_map():
 
 
 # ---------------------------------------------------------------------------
-# Tests for updated rewrite_init_files (Tuple[int, int] return)
+# Tests for updated rewrite_init_files (Tuple[int, int, int] return)
 # ---------------------------------------------------------------------------
 
 def test_rewrite_init_files_returns_tuple(tmp_path):
-    """rewrite_init_files returns (model_count, api_count) tuple."""
+    """rewrite_init_files returns (model_count, api_count, method_count) tuple."""
     pkg_dir = tmp_path / "tb_test_client"
     pkg_dir.mkdir()
     (pkg_dir / "__init__.py").write_text("", encoding="utf-8")
@@ -185,12 +185,97 @@ def test_rewrite_init_files_returns_tuple(tmp_path):
     api_dir.mkdir()
     (api_dir / "__init__.py").write_text("", encoding="utf-8")
     (api_dir / "device_controller_api.py").write_text(
-        "class DeviceControllerApi(ApiClient):\n    pass\n", encoding="utf-8"
+        "class DeviceControllerApi(ApiClient):\n    def get_device(self):\n        pass\n",
+        encoding="utf-8",
     )
 
     result = post_process.rewrite_init_files(pkg_dir, "tb_test_client")
     assert isinstance(result, tuple), f"Expected tuple, got {type(result)}"
-    assert len(result) == 2, f"Expected 2-tuple, got {len(result)}-tuple"
-    model_count, api_count = result
+    assert len(result) == 3, f"Expected 3-tuple, got {len(result)}-tuple"
+    model_count, api_count, method_count = result
     assert model_count == 1, f"Expected 1 model, got {model_count}"
     assert api_count == 1, f"Expected 1 api class, got {api_count}"
+    assert method_count >= 1, f"Expected >=1 method, got {method_count}"
+
+
+# ---------------------------------------------------------------------------
+# Tests for _generate_controller_map
+# ---------------------------------------------------------------------------
+
+_CE_API_DIR = Path(__file__).parent.parent / "ce" / "tb_ce_client" / "api"
+
+
+def test_generate_controller_map_content():
+    """_generate_controller_map returns content with both map dicts."""
+    content, method_count, controller_count = post_process._generate_controller_map(
+        _CE_API_DIR, "tb_ce_client"
+    )
+    assert "_CONTROLLER_MAP" in content
+    assert "_CONTROLLER_ATTR_MAP" in content
+
+
+def test_generate_controller_map_method_count():
+    """_generate_controller_map produces >= 1500 method entries for CE."""
+    content, method_count, controller_count = post_process._generate_controller_map(
+        _CE_API_DIR, "tb_ce_client"
+    )
+    assert method_count >= 1500, f"Expected >= 1500 methods, got {method_count}"
+
+
+def test_generate_controller_map_attr_count():
+    """_generate_controller_map produces exactly 57 controller attr entries for CE."""
+    content, method_count, controller_count = post_process._generate_controller_map(
+        _CE_API_DIR, "tb_ce_client"
+    )
+    assert controller_count == 57, f"Expected 57 controllers, got {controller_count}"
+
+
+def test_generate_controller_map_login_routing():
+    """'login' method key maps to LoginEndpointApi in _CONTROLLER_MAP."""
+    content, _, _ = post_process._generate_controller_map(_CE_API_DIR, "tb_ce_client")
+    # Evaluate the generated content to inspect the dicts
+    ns = {}
+    exec(content, ns)
+    assert "login" in ns["_CONTROLLER_MAP"], "'login' must be in _CONTROLLER_MAP"
+    module_path, cls_name = ns["_CONTROLLER_MAP"]["login"]
+    assert cls_name == "LoginEndpointApi", f"Expected LoginEndpointApi, got {cls_name}"
+    assert "login_endpoint_api" in module_path
+
+
+def test_generate_controller_map_short_name():
+    """'device_controller' key maps to DeviceControllerApi in _CONTROLLER_ATTR_MAP."""
+    content, _, _ = post_process._generate_controller_map(_CE_API_DIR, "tb_ce_client")
+    ns = {}
+    exec(content, ns)
+    assert "device_controller" in ns["_CONTROLLER_ATTR_MAP"], (
+        "'device_controller' must be in _CONTROLLER_ATTR_MAP"
+    )
+    module_path, cls_name = ns["_CONTROLLER_ATTR_MAP"]["device_controller"]
+    assert cls_name == "DeviceControllerApi", f"Expected DeviceControllerApi, got {cls_name}"
+
+
+def test_rewrite_init_files_writes_controller_map(tmp_path):
+    """rewrite_init_files writes _controller_map.py into package_dir."""
+    pkg_dir = tmp_path / "tb_test_client"
+    pkg_dir.mkdir()
+    (pkg_dir / "__init__.py").write_text("", encoding="utf-8")
+
+    models_dir = pkg_dir / "models"
+    models_dir.mkdir()
+    (models_dir / "__init__.py").write_text("", encoding="utf-8")
+    (models_dir / "device.py").write_text("class Device(BaseModel):\n    pass\n", encoding="utf-8")
+
+    api_dir = pkg_dir / "api"
+    api_dir.mkdir()
+    (api_dir / "__init__.py").write_text("", encoding="utf-8")
+    (api_dir / "device_controller_api.py").write_text(
+        "class DeviceControllerApi(ApiClient):\n    def get_device(self):\n        pass\n",
+        encoding="utf-8",
+    )
+
+    post_process.rewrite_init_files(pkg_dir, "tb_test_client")
+    controller_map_path = pkg_dir / "_controller_map.py"
+    assert controller_map_path.exists(), "_controller_map.py must be written to package_dir"
+    map_content = controller_map_path.read_text(encoding="utf-8")
+    assert "_CONTROLLER_MAP" in map_content
+    assert "_CONTROLLER_ATTR_MAP" in map_content
