@@ -1,34 +1,21 @@
-#
-# Copyright 2026 ThingsBoard, Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
 """
 client.py — ThingsboardClient: the public-facing entry point for ThingsBoard Python clients.
 
 This file lives in common/ and is copied verbatim into each edition package directory
 by generate-client.sh. Use only relative imports and stdlib; no edition-specific imports.
 
-Stub client for Phase 4. API method delegation added in Phase 5.
 ThingsboardClient wires:
   - _AuthManager for JWT/API key authentication and automatic token refresh
   - _RetryingRESTClient for transparent HTTP 429 retry with exponential backoff
+  - __getattr__ delegation to per-controller API classes via _CONTROLLER_MAP
 """
+import importlib
 from .api_client import ApiClient
 from .configuration import Configuration
 from .models.login_request import LoginRequest
 from ._auth import _AuthManager
 from ._retry import _RetryingRESTClient
+from ._controller_map import _CONTROLLER_MAP, _CONTROLLER_ATTR_MAP
 
 
 class ThingsboardClient:
@@ -82,6 +69,10 @@ class ThingsboardClient:
             retry_on_rate_limit: If True (default), wraps rest_client with
                 _RetryingRESTClient. If False, uses plain RESTClientObject.
         """
+        # Must be the very first assignment — prevents __getattr__ infinite recursion
+        # if __init__ raises partway through (before self.api_client is set).
+        self._controllers: dict = {}
+
         configuration = Configuration(host=url)
 
         # Determine auth type
@@ -123,6 +114,51 @@ class ThingsboardClient:
             auth_manager.set_external_token(token, refresh_token)
             configuration.api_key["ApiKeyForm"] = token
             configuration.api_key_prefix["ApiKeyForm"] = "Bearer"
+
+    # ------------------------------------------------------------------
+    # Controller delegation
+    # ------------------------------------------------------------------
+
+    def _get_or_create_controller(self, cls_name: str, module_path: str):
+        """Return (and cache) the controller instance for the given class.
+
+        All controllers share self.api_client so they use the same auth/retry
+        configuration as the ThingsboardClient that created them.
+        """
+        if cls_name not in self._controllers:
+            module = importlib.import_module(module_path)
+            cls = getattr(module, cls_name)
+            self._controllers[cls_name] = cls(self.api_client)
+        return self._controllers[cls_name]
+
+    def __getattr__(self, name: str):
+        """Delegate attribute/method access to the correct per-controller API.
+
+        Lookup order:
+          1. _CONTROLLER_ATTR_MAP — named controller shorthand (e.g. device_controller)
+          2. _CONTROLLER_MAP — individual API method delegation
+
+        Raises AttributeError for anything not in either map.
+        """
+        # Guard against infinite recursion if _controllers was not yet set
+        # (can happen if __init__ raises before self._controllers = {}).
+        if "_controllers" not in self.__dict__:
+            raise AttributeError(name)
+
+        # 1. Named controller attribute (e.g. client.device_controller)
+        if name in _CONTROLLER_ATTR_MAP:
+            module_path, cls_name = _CONTROLLER_ATTR_MAP[name]
+            return self._get_or_create_controller(cls_name, module_path)
+
+        # 2. Method delegation (e.g. client.get_tenant_devices)
+        if name in _CONTROLLER_MAP:
+            module_path, cls_name = _CONTROLLER_MAP[name]
+            controller = self._get_or_create_controller(cls_name, module_path)
+            return getattr(controller, name)
+
+        raise AttributeError(
+            f"'{type(self).__name__}' object has no attribute {name!r}"
+        )
 
     # ------------------------------------------------------------------
     # Token accessors

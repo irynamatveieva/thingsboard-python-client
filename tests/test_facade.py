@@ -97,10 +97,10 @@ class TestFacadeDelegation:
         client = _make_client()
         sample_methods = [
             "get_tenant_devices",       # DeviceControllerApi
-            "get_alarms",               # AlarmControllerApi
+            "get_alarm_by_id",          # AlarmControllerApi
             "get_customers",            # CustomerControllerApi
-            "get_dashboards_by_tenant_id",  # DashboardControllerApi
-            "get_tenant_assets",        # AssetControllerApi
+            "delete_dashboard",         # DashboardControllerApi
+            "find_assets_by_query",     # AssetControllerApi
         ]
         for method_name in sample_methods:
             method = getattr(client, method_name)
@@ -195,8 +195,8 @@ class TestLazyInstantiation:
         """All controller instances share the same ApiClient as the ThingsboardClient."""
         client = _make_client()
         _ = client.get_tenant_devices
-        _ = client.get_alarms
-        _ = client.get_tenant_assets
+        _ = client.get_alarm_by_id
+        _ = client.find_assets_by_query
 
         for cls_name, ctrl_instance in client._controllers.items():
             assert ctrl_instance.api_client is client.api_client, (
