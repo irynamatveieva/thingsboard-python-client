@@ -172,12 +172,15 @@ generate() {
     # With generateSourceCodeOnly=true, the package is directly in output_dir/tb_${edition}_client
     rm -rf "$module_dir/tb_${edition}_client"
     cp -r "$output_dir/tb_${edition}_client" "$module_dir/tb_${edition}_client"
+    rm -rf "$module_dir/tb_${edition}_client/docs"
     echo "Copied generated package to $module_dir/tb_${edition}_client"
 
-    # --- Common module overlay (GEN-10) ---
+    # --- Common module overlay (GEN-10), excluding docs/ (handled separately) ---
     local common_dir="$SCRIPT_DIR/common"
     if [ -d "$common_dir" ] && [ -n "$(ls -A "$common_dir" 2>/dev/null)" ]; then
-      cp -r "$common_dir/"* "$module_dir/tb_${edition}_client/"
+      find "$common_dir" -maxdepth 1 -mindepth 1 -not -name docs | while read -r item; do
+        cp -r "$item" "$module_dir/tb_${edition}_client/"
+      done
       echo "Copied common module overlay to $module_dir/tb_${edition}_client"
     fi
 
