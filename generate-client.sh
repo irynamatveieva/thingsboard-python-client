@@ -277,6 +277,12 @@ generate() {
     rm -rf "$module_dir/docs"
     cp -r "$docs_output_dir/tb_${edition}_client/docs" "$module_dir/docs"
     echo "Copied docs to $module_dir/docs"
+    # --- Common docs overlay ---
+    local common_docs_dir="$SCRIPT_DIR/common/docs"
+    if [ -d "$common_docs_dir" ] && [ -n "$(ls -A "$common_docs_dir" 2>/dev/null)" ]; then
+      cp "$common_docs_dir/"* "$module_dir/docs/"
+      echo "Copied common/docs overlay to $module_dir/docs"
+    fi
   fi
 
   local docs_dir
