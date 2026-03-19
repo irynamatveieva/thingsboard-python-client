@@ -20,8 +20,8 @@
 | **title** | **str** | Title of the customer | |
 | **tenant_id** | [**TenantId**](TenantId.md) | JSON object with Tenant Id | [optional] |
 | **version** | **int** |  | [optional] |
-| **name** | **str** | Name of the customer. Read-only, duplicated from title for backward compatibility | [optional] [readonly] |
 | **additional_info** | **object** | Additional parameters of the customer. May include: 'description' (string), 'homeDashboardId' (string, UUID of the home dashboard), 'homeDashboardHideToolbar' (boolean, whether to hide the dashboard toolbar), 'isPublic' (boolean, whether this is a public customer). | [optional] |
+| **name** | **str** | Name of the customer. Read-only, duplicated from title for backward compatibility | [optional] [readonly] |
 
 
 

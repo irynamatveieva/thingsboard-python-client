@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -39,11 +39,11 @@ class ResourceExportData(BaseModel):
     resource_key: Optional[StrictStr] = Field(default=None, alias="resourceKey")
     file_name: Optional[StrictStr] = Field(default=None, alias="fileName")
     public_resource_key: Optional[StrictStr] = Field(default=None, alias="publicResourceKey")
-    is_public: Optional[StrictBool] = Field(default=None, alias="isPublic")
     media_type: Optional[StrictStr] = Field(default=None, alias="mediaType")
     data: Optional[StrictStr] = None
+    is_public: Optional[StrictBool] = Field(default=None, alias="isPublic")
     public: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["link", "title", "type", "subType", "resourceKey", "fileName", "publicResourceKey", "isPublic", "mediaType", "data", "public"]
+    __properties: ClassVar[List[str]] = ["link", "title", "type", "subType", "resourceKey", "fileName", "publicResourceKey", "mediaType", "data", "isPublic", "public"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -103,9 +103,9 @@ class ResourceExportData(BaseModel):
             "resourceKey": obj.get("resourceKey"),
             "fileName": obj.get("fileName"),
             "publicResourceKey": obj.get("publicResourceKey"),
-            "isPublic": obj.get("isPublic"),
             "mediaType": obj.get("mediaType"),
             "data": obj.get("data"),
+            "isPublic": obj.get("isPublic"),
             "public": obj.get("public")
         })
         return _obj

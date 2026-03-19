@@ -12,9 +12,9 @@
 | **type** | **str** | String value of relation type. | |
 | **type_group** | [**RelationTypeGroup**](RelationTypeGroup.md) | Represents the type group of the relation. | |
 | **version** | **int** |  | [optional] |
+| **additional_info** | **object** | Additional parameters of the relation. | [optional] |
 | **from_name** | **str** | Name of the entity for [from] direction. | [optional] [readonly] |
 | **to_name** | **str** | Name of the entity for [to] direction. | [optional] [readonly] |
-| **additional_info** | **object** | Additional parameters of the relation. | [optional] |
 
 
 

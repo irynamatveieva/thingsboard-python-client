@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,9 +31,9 @@ class Palette(BaseModel):
     Palette
     """ # noqa: E501
     type: StrictStr = Field(description="Name of the pre-defined palette, or 'custom'")
-    colors: Optional[Dict[str, StrictStr]] = Field(default=None, description="Mapping of hue identifier number to the rgb(a) color code")
     extends: Optional[StrictStr] = Field(default=None, description="Pre-defined palette name that the custom palette extends")
-    __properties: ClassVar[List[str]] = ["type", "colors", "extends"]
+    colors: Optional[Dict[str, StrictStr]] = Field(default=None, description="Mapping of hue identifier number to the rgb(a) color code")
+    __properties: ClassVar[List[str]] = ["type", "extends", "colors"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -87,8 +87,8 @@ class Palette(BaseModel):
 
         _obj = cls.model_validate({
             "type": obj.get("type"),
-            "colors": obj.get("colors"),
-            "extends": obj.get("extends")
+            "extends": obj.get("extends"),
+            "colors": obj.get("colors")
         })
         return _obj
 

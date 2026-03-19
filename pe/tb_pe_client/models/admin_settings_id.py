@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ class AdminSettingsId(EntityId):
     """
     AdminSettingsId
     """ # noqa: E501
-    __properties: ClassVar[List[str]] = ["id", "entityType"]
+    __properties: ClassVar[List[str]] = ["entityType", "id"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -85,8 +85,8 @@ class AdminSettingsId(EntityId):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "id": obj.get("id"),
-            "entityType": obj.get("entityType")
+            "entityType": obj.get("entityType"),
+            "id": obj.get("id")
         })
         return _obj
 

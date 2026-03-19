@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,9 +31,9 @@ class SystemInfo(BaseModel):
     """
     SystemInfo
     """ # noqa: E501
-    system_data: Optional[List[SystemInfoData]] = Field(default=None, description="System data.", alias="systemData")
     monolith: Optional[StrictBool] = Field(default=None, description="Is monolith.")
-    __properties: ClassVar[List[str]] = ["systemData", "monolith"]
+    system_data: Optional[List[SystemInfoData]] = Field(default=None, description="System data.", alias="systemData")
+    __properties: ClassVar[List[str]] = ["monolith", "systemData"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -93,8 +93,8 @@ class SystemInfo(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "systemData": [SystemInfoData.from_dict(_item) for _item in obj["systemData"]] if obj.get("systemData") is not None else None,
-            "monolith": obj.get("monolith")
+            "monolith": obj.get("monolith"),
+            "systemData": [SystemInfoData.from_dict(_item) for _item in obj["systemData"]] if obj.get("systemData") is not None else None
         })
         return _obj
 

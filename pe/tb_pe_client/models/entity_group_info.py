@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -44,10 +44,10 @@ class EntityGroupInfo(BaseModel):
     configuration: Optional[Any] = Field(default=None, description="JSON with the configuration for UI components: list of columns, settings, actions, etc ")
     version: Optional[StrictInt] = None
     owner_ids: List[EntityGroupInfoOwnerIdsInner] = Field(description="List of the entity group owners.", alias="ownerIds")
-    group_all: Optional[StrictBool] = Field(default=None, description="Indicates special group 'All' that contains all entities and can't be deleted.", alias="groupAll")
     edge_group_all: Optional[StrictBool] = Field(default=None, description="Indicates special edge group 'All' that contains all entities and can't be deleted.", alias="edgeGroupAll")
+    group_all: Optional[StrictBool] = Field(default=None, description="Indicates special group 'All' that contains all entities and can't be deleted.", alias="groupAll")
     tenant_id: Optional[TenantId] = Field(default=None, alias="tenantId")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "type", "name", "ownerId", "additionalInfo", "configuration", "version", "ownerIds", "groupAll", "edgeGroupAll", "tenantId"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "type", "name", "ownerId", "additionalInfo", "configuration", "version", "ownerIds", "edgeGroupAll", "groupAll", "tenantId"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -146,8 +146,8 @@ class EntityGroupInfo(BaseModel):
             "configuration": obj.get("configuration"),
             "version": obj.get("version"),
             "ownerIds": [EntityGroupInfoOwnerIdsInner.from_dict(_item) for _item in obj["ownerIds"]] if obj.get("ownerIds") is not None else None,
-            "groupAll": obj.get("groupAll"),
             "edgeGroupAll": obj.get("edgeGroupAll"),
+            "groupAll": obj.get("groupAll"),
             "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None
         })
         return _obj

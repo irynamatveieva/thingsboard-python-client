@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ class DeviceExportData(EntityExportData):
     DeviceExportData
     """ # noqa: E501
     credentials: Optional[DeviceCredentials] = None
-    __properties: ClassVar[List[str]] = ["entityType", "entity", "relations", "attributes", "calculatedFields", "credentials"]
+    __properties: ClassVar[List[str]] = ["entity", "relations", "attributes", "calculatedFields", "entityType", "credentials"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -119,7 +119,6 @@ class DeviceExportData(EntityExportData):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "entityType": obj.get("entityType"),
             "entity": ExportableEntity.from_dict(obj["entity"]) if obj.get("entity") is not None else None,
             "relations": [EntityRelation.from_dict(_item) for _item in obj["relations"]] if obj.get("relations") is not None else None,
             "attributes": dict(
@@ -131,6 +130,7 @@ class DeviceExportData(EntityExportData):
                 for _k, _v in obj.get("attributes", {}).items()
             ),
             "calculatedFields": [CalculatedField.from_dict(_item) for _item in obj["calculatedFields"]] if obj.get("calculatedFields") is not None else None,
+            "entityType": obj.get("entityType"),
             "credentials": DeviceCredentials.from_dict(obj["credentials"]) if obj.get("credentials") is not None else None
         })
         return _obj

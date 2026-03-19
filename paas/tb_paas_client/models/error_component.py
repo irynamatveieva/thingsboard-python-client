@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ class ErrorComponent(ReportComponent):
     """ # noqa: E501
     error_message: Optional[StrictStr] = Field(default=None, alias="errorMessage")
     exception: Optional[ErrorComponentAllOfException] = None
-    __properties: ClassVar[List[str]] = ["type", "subType", "errorMessage", "exception"]
+    __properties: ClassVar[List[str]] = ["subType", "type", "errorMessage", "exception"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -92,8 +92,8 @@ class ErrorComponent(ReportComponent):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "type": obj.get("type"),
             "subType": obj.get("subType"),
+            "type": obj.get("type"),
             "errorMessage": obj.get("errorMessage"),
             "exception": ErrorComponentAllOfException.from_dict(obj["exception"]) if obj.get("exception") is not None else None
         })

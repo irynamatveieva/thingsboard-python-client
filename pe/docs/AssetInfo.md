@@ -9,6 +9,7 @@
 |------------ | ------------- | ------------- | -------------|
 | **id** | [**AssetId**](AssetId.md) | JSON object with the asset Id. Specify this field to update the asset. Referencing non-existing asset Id will cause error. Omit this field to create new asset. | [optional] |
 | **created_time** | **int** | Timestamp of the asset creation, in milliseconds | [optional] [readonly] |
+| **additional_info** | **object** | Additional parameters of the asset. May include: 'description' (string). | [optional] |
 | **tenant_id** | [**TenantId**](TenantId.md) | JSON object with Tenant Id. | [optional] [readonly] |
 | **customer_id** | [**CustomerId**](CustomerId.md) | JSON object with Customer Id. Use 'assignAssetToCustomer' to change the Customer Id. | [optional] [readonly] |
 | **name** | **str** | Unique Asset Name in scope of Tenant | |
@@ -19,7 +20,6 @@
 | **owner_name** | **str** | Owner name | [optional] [readonly] |
 | **groups** | [**List[EntityInfo]**](EntityInfo.md) | Groups | [optional] |
 | **owner_id** | [**EntityId**](EntityId.md) | JSON object with Customer or Tenant Id | [optional] [readonly] |
-| **additional_info** | **object** | Additional parameters of the asset. May include: 'description' (string). | [optional] |
 
 
 

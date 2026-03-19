@@ -23,8 +23,8 @@ A JSON value representing the tenant.
 | **region** | **str** | Geo region of the tenant | [optional] |
 | **tenant_profile_id** | [**TenantProfileId**](TenantProfileId.md) | JSON object with Tenant Profile Id | [optional] |
 | **version** | **int** |  | [optional] |
-| **name** | **str** | Name of the tenant. Read-only, duplicated from title for backward compatibility | [optional] [readonly] |
 | **additional_info** | **object** | Additional parameters of the tenant. May include: 'description' (string), 'homeDashboardId' (string, UUID of the home dashboard), 'homeDashboardHideToolbar' (boolean, whether to hide the dashboard toolbar). | [optional] |
+| **name** | **str** | Name of the tenant. Read-only, duplicated from title for backward compatibility | [optional] [readonly] |
 
 
 

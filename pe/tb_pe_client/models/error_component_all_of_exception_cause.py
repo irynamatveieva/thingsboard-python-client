@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,9 +32,9 @@ class ErrorComponentAllOfExceptionCause(BaseModel):
     ErrorComponentAllOfExceptionCause
     """ # noqa: E501
     stack_trace: Optional[List[ErrorComponentAllOfExceptionCauseStackTrace]] = Field(default=None, alias="stackTrace")
-    localized_message: Optional[StrictStr] = Field(default=None, alias="localizedMessage")
     message: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["stackTrace", "localizedMessage", "message"]
+    localized_message: Optional[StrictStr] = Field(default=None, alias="localizedMessage")
+    __properties: ClassVar[List[str]] = ["stackTrace", "message", "localizedMessage"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -95,8 +95,8 @@ class ErrorComponentAllOfExceptionCause(BaseModel):
 
         _obj = cls.model_validate({
             "stackTrace": [ErrorComponentAllOfExceptionCauseStackTrace.from_dict(_item) for _item in obj["stackTrace"]] if obj.get("stackTrace") is not None else None,
-            "localizedMessage": obj.get("localizedMessage"),
-            "message": obj.get("message")
+            "message": obj.get("message"),
+            "localizedMessage": obj.get("localizedMessage")
         })
         return _obj
 

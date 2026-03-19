@@ -12,7 +12,6 @@
 | **rule_chain_id** | [**RuleChainId**](RuleChainId.md) | JSON object with the Rule Chain Id.  | [optional] [readonly] |
 | **type** | **str** | Full Java Class Name of the rule node implementation.  | [optional] |
 | **name** | **str** | User defined name of the rule node. Used on UI and for logging.  | [optional] |
-| **debug_mode** | **bool** |  | [optional] |
 | **debug_settings** | [**DebugSettings**](DebugSettings.md) | Debug settings object. | [optional] |
 | **singleton_mode** | **bool** | Enable/disable singleton mode.  | [optional] |
 | **queue_name** | **str** | Queue name.  | [optional] |
@@ -20,6 +19,7 @@
 | **configuration** | **object** | JSON with the rule node configuration. Structure depends on the rule node implementation. | [optional] |
 | **external_id** | [**RuleNodeId**](RuleNodeId.md) |  | [optional] |
 | **additional_info** | **object** | Additional parameters of the rule node. May include: 'layoutX' (number, X coordinate for visualization), 'layoutY' (number, Y coordinate for visualization), 'description' (string). | [optional] |
+| **debug_mode** | **bool** |  | [optional] |
 
 
 

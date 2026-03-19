@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -47,9 +47,9 @@ class TenantInfo(BaseModel):
     tenant_profile_id: Optional[TenantProfileId] = Field(default=None, description="JSON object with Tenant Profile Id", alias="tenantProfileId")
     version: Optional[StrictInt] = None
     tenant_profile_name: Optional[StrictStr] = Field(default=None, description="Tenant Profile name", alias="tenantProfileName")
-    name: Optional[StrictStr] = Field(default=None, description="Name of the tenant. Read-only, duplicated from title for backward compatibility")
     additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the tenant. May include: 'description' (string), 'homeDashboardId' (string, UUID of the home dashboard), 'homeDashboardHideToolbar' (boolean, whether to hide the dashboard toolbar).", alias="additionalInfo")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "country", "state", "city", "address", "address2", "zip", "phone", "email", "title", "region", "tenantProfileId", "version", "tenantProfileName", "name", "additionalInfo"]
+    name: Optional[StrictStr] = Field(default=None, description="Name of the tenant. Read-only, duplicated from title for backward compatibility")
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "country", "state", "city", "address", "address2", "zip", "phone", "email", "title", "region", "tenantProfileId", "version", "tenantProfileName", "additionalInfo", "name"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -132,8 +132,8 @@ class TenantInfo(BaseModel):
             "tenantProfileId": TenantProfileId.from_dict(obj["tenantProfileId"]) if obj.get("tenantProfileId") is not None else None,
             "version": obj.get("version"),
             "tenantProfileName": obj.get("tenantProfileName"),
-            "name": obj.get("name"),
-            "additionalInfo": obj.get("additionalInfo")
+            "additionalInfo": obj.get("additionalInfo"),
+            "name": obj.get("name")
         })
         return _obj
 

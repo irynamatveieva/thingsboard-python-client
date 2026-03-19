@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -51,14 +51,14 @@ class DeviceProfile(BaseModel):
     default_rule_chain_id: Optional[RuleChainId] = Field(default=None, description="Reference to the rule chain. If present, the specified rule chain will be used to process all messages related to device, including telemetry, attribute updates, etc. Otherwise, the root rule chain will be used to process those messages.", alias="defaultRuleChainId")
     default_dashboard_id: Optional[DashboardId] = Field(default=None, description="Reference to the dashboard. Used in the mobile application to open the default dashboard when user navigates to device details.", alias="defaultDashboardId")
     default_queue_name: Optional[StrictStr] = Field(default=None, description="Rule engine queue name. If present, the specified queue will be used to store all unprocessed messages related to device, including telemetry, attribute updates, etc. Otherwise, the 'Main' queue will be used to store those messages.", alias="defaultQueueName")
+    profile_data: Optional[DeviceProfileData] = Field(default=None, description="Complex JSON object that includes addition device profile configuration (transport, alarm rules, etc).", alias="profileData")
     provision_device_key: Optional[StrictStr] = Field(default=None, description="Unique provisioning key used by 'Device Provisioning' feature.", alias="provisionDeviceKey")
     firmware_id: Optional[OtaPackageId] = Field(default=None, description="Reference to the firmware OTA package. If present, the specified package will be used as default device firmware. ", alias="firmwareId")
     software_id: Optional[OtaPackageId] = Field(default=None, description="Reference to the software OTA package. If present, the specified package will be used as default device software. ", alias="softwareId")
     default_edge_rule_chain_id: Optional[RuleChainId] = Field(default=None, description="Reference to the edge rule chain. If present, the specified edge rule chain will be used on the edge to process all messages related to device, including telemetry, attribute updates, etc. Otherwise, the edge root rule chain will be used to process those messages.", alias="defaultEdgeRuleChainId")
     version: Optional[StrictInt] = None
     default: Optional[StrictBool] = Field(default=None, description="Used to mark the default profile. Default profile is used when the device profile is not specified during device creation.")
-    profile_data: Optional[DeviceProfileData] = Field(default=None, description="Complex JSON object that includes addition device profile configuration (transport, alarm rules, etc).", alias="profileData")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "name", "description", "image", "type", "transportType", "provisionType", "defaultRuleChainId", "defaultDashboardId", "defaultQueueName", "provisionDeviceKey", "firmwareId", "softwareId", "defaultEdgeRuleChainId", "version", "default", "profileData"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "name", "description", "image", "type", "transportType", "provisionType", "defaultRuleChainId", "defaultDashboardId", "defaultQueueName", "profileData", "provisionDeviceKey", "firmwareId", "softwareId", "defaultEdgeRuleChainId", "version", "default"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -115,6 +115,9 @@ class DeviceProfile(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of default_dashboard_id
         if self.default_dashboard_id:
             _dict['defaultDashboardId'] = self.default_dashboard_id.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of profile_data
+        if self.profile_data:
+            _dict['profileData'] = self.profile_data.to_dict()
         # override the default output from pydantic by calling `to_dict()` of firmware_id
         if self.firmware_id:
             _dict['firmwareId'] = self.firmware_id.to_dict()
@@ -124,9 +127,6 @@ class DeviceProfile(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of default_edge_rule_chain_id
         if self.default_edge_rule_chain_id:
             _dict['defaultEdgeRuleChainId'] = self.default_edge_rule_chain_id.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of profile_data
-        if self.profile_data:
-            _dict['profileData'] = self.profile_data.to_dict()
         return _dict
 
     @classmethod
@@ -151,13 +151,13 @@ class DeviceProfile(BaseModel):
             "defaultRuleChainId": RuleChainId.from_dict(obj["defaultRuleChainId"]) if obj.get("defaultRuleChainId") is not None else None,
             "defaultDashboardId": DashboardId.from_dict(obj["defaultDashboardId"]) if obj.get("defaultDashboardId") is not None else None,
             "defaultQueueName": obj.get("defaultQueueName"),
+            "profileData": DeviceProfileData.from_dict(obj["profileData"]) if obj.get("profileData") is not None else None,
             "provisionDeviceKey": obj.get("provisionDeviceKey"),
             "firmwareId": OtaPackageId.from_dict(obj["firmwareId"]) if obj.get("firmwareId") is not None else None,
             "softwareId": OtaPackageId.from_dict(obj["softwareId"]) if obj.get("softwareId") is not None else None,
             "defaultEdgeRuleChainId": RuleChainId.from_dict(obj["defaultEdgeRuleChainId"]) if obj.get("defaultEdgeRuleChainId") is not None else None,
             "version": obj.get("version"),
-            "default": obj.get("default"),
-            "profileData": DeviceProfileData.from_dict(obj["profileData"]) if obj.get("profileData") is not None else None
+            "default": obj.get("default")
         })
         return _obj
 

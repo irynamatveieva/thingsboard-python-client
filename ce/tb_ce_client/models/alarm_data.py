@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -39,8 +39,6 @@ class AlarmData(BaseModel):
     """
     AlarmData
     """ # noqa: E501
-    entity_id: Optional[EntityId] = Field(default=None, alias="entityId")
-    latest: Optional[Dict[str, Dict[str, TsValue]]] = None
     id: Optional[AlarmId] = Field(default=None, description="JSON object with the alarm Id. Specify this field to update the alarm. Referencing non-existing alarm Id will cause error. Omit this field to create new alarm.")
     created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the alarm creation, in milliseconds", alias="createdTime")
     tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id", alias="tenantId")
@@ -65,9 +63,11 @@ class AlarmData(BaseModel):
     originator_label: Optional[StrictStr] = Field(default=None, description="Alarm originator label", alias="originatorLabel")
     originator_display_name: Optional[StrictStr] = Field(default=None, description="Originator display name", alias="originatorDisplayName")
     assignee: Optional[AlarmAssignee] = Field(default=None, description="Alarm assignee")
+    entity_id: Optional[EntityId] = Field(default=None, alias="entityId")
+    latest: Optional[Dict[str, Dict[str, TsValue]]] = None
     name: StrictStr = Field(description="representing type of the Alarm")
     status: AlarmStatus = Field(description="status of the Alarm")
-    __properties: ClassVar[List[str]] = ["entityId", "latest", "id", "createdTime", "tenantId", "customerId", "type", "originator", "severity", "acknowledged", "cleared", "assigneeId", "startTs", "endTs", "ackTs", "clearTs", "assignTs", "details", "propagate", "propagateToOwner", "propagateToTenant", "propagateRelationTypes", "originatorName", "originatorLabel", "originatorDisplayName", "assignee", "name", "status"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "customerId", "type", "originator", "severity", "acknowledged", "cleared", "assigneeId", "startTs", "endTs", "ackTs", "clearTs", "assignTs", "details", "propagate", "propagateToOwner", "propagateToTenant", "propagateRelationTypes", "originatorName", "originatorLabel", "originatorDisplayName", "assignee", "entityId", "latest", "name", "status"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -118,16 +118,6 @@ class AlarmData(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of entity_id
-        if self.entity_id:
-            _dict['entityId'] = self.entity_id.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of each value in latest (dict)
-        _field_dict = {}
-        if self.latest:
-            for _key_latest in self.latest:
-                if self.latest[_key_latest]:
-                    _field_dict[_key_latest] = self.latest[_key_latest].to_dict()
-            _dict['latest'] = _field_dict
         # override the default output from pydantic by calling `to_dict()` of id
         if self.id:
             _dict['id'] = self.id.to_dict()
@@ -146,6 +136,16 @@ class AlarmData(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of assignee
         if self.assignee:
             _dict['assignee'] = self.assignee.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of entity_id
+        if self.entity_id:
+            _dict['entityId'] = self.entity_id.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each value in latest (dict)
+        _field_dict = {}
+        if self.latest:
+            for _key_latest in self.latest:
+                if self.latest[_key_latest]:
+                    _field_dict[_key_latest] = self.latest[_key_latest].to_dict()
+            _dict['latest'] = _field_dict
         # set to None if details (nullable) is None
         # and model_fields_set contains the field
         if self.details is None and "details" in self.model_fields_set:
@@ -163,19 +163,6 @@ class AlarmData(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "entityId": EntityId.from_dict(obj["entityId"]) if obj.get("entityId") is not None else None,
-            "latest": dict(
-                (_k, dict(
-                    (_ik, TsValue.from_dict(_iv))
-                        for _ik, _iv in _v.items()
-                    )
-                    if _v is not None
-                    else None
-                )
-                for _k, _v in obj.get("latest").items()
-            )
-            if obj.get("latest") is not None
-            else None,
             "id": AlarmId.from_dict(obj["id"]) if obj.get("id") is not None else None,
             "createdTime": obj.get("createdTime"),
             "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
@@ -200,6 +187,19 @@ class AlarmData(BaseModel):
             "originatorLabel": obj.get("originatorLabel"),
             "originatorDisplayName": obj.get("originatorDisplayName"),
             "assignee": AlarmAssignee.from_dict(obj["assignee"]) if obj.get("assignee") is not None else None,
+            "entityId": EntityId.from_dict(obj["entityId"]) if obj.get("entityId") is not None else None,
+            "latest": dict(
+                (_k, dict(
+                    (_ik, TsValue.from_dict(_iv))
+                        for _ik, _iv in _v.items()
+                    )
+                    if _v is not None
+                    else None
+                )
+                for _k, _v in obj.get("latest").items()
+            )
+            if obj.get("latest") is not None
+            else None,
             "name": obj.get("name"),
             "status": obj.get("status")
         })

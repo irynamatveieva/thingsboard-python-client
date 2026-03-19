@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,6 +35,8 @@ class EntityView(BaseModel):
     """
     A JSON object representing the entity view.
     """ # noqa: E501
+    id: Optional[EntityViewId] = Field(default=None, description="JSON object with the Entity View Id. Specify this field to update the Entity View. Referencing non-existing Entity View Id will cause error. Omit this field to create new Entity View.")
+    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the Entity View creation, in milliseconds", alias="createdTime")
     entity_id: EntityId = Field(description="JSON object with the referenced Entity Id (Device or Asset).", alias="entityId")
     tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id.", alias="tenantId")
     customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id. Use 'assignEntityViewToCustomer' to change the Customer Id.", alias="customerId")
@@ -44,10 +46,8 @@ class EntityView(BaseModel):
     start_time_ms: Optional[StrictInt] = Field(default=None, description="Represents the start time of the interval that is used to limit access to target device telemetry. Customer will not be able to see entity telemetry that is outside the specified interval;", alias="startTimeMs")
     end_time_ms: Optional[StrictInt] = Field(default=None, description="Represents the end time of the interval that is used to limit access to target device telemetry. Customer will not be able to see entity telemetry that is outside the specified interval;", alias="endTimeMs")
     version: Optional[StrictInt] = None
-    id: Optional[EntityViewId] = Field(default=None, description="JSON object with the Entity View Id. Specify this field to update the Entity View. Referencing non-existing Entity View Id will cause error. Omit this field to create new Entity View.")
-    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the Entity View creation, in milliseconds", alias="createdTime")
     additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the entity view. May include: 'description' (string).", alias="additionalInfo")
-    __properties: ClassVar[List[str]] = ["entityId", "tenantId", "customerId", "name", "type", "keys", "startTimeMs", "endTimeMs", "version", "id", "createdTime", "additionalInfo"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "entityId", "tenantId", "customerId", "name", "type", "keys", "startTimeMs", "endTimeMs", "version", "additionalInfo"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -84,9 +84,9 @@ class EntityView(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set([
+            "created_time",
             "tenant_id",
             "customer_id",
-            "created_time",
         ])
 
         _dict = self.model_dump(
@@ -94,6 +94,9 @@ class EntityView(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of id
+        if self.id:
+            _dict['id'] = self.id.to_dict()
         # override the default output from pydantic by calling `to_dict()` of entity_id
         if self.entity_id:
             _dict['entityId'] = self.entity_id.to_dict()
@@ -106,9 +109,6 @@ class EntityView(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of keys
         if self.keys:
             _dict['keys'] = self.keys.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of id
-        if self.id:
-            _dict['id'] = self.id.to_dict()
         # set to None if additional_info (nullable) is None
         # and model_fields_set contains the field
         if self.additional_info is None and "additional_info" in self.model_fields_set:
@@ -126,6 +126,8 @@ class EntityView(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "id": EntityViewId.from_dict(obj["id"]) if obj.get("id") is not None else None,
+            "createdTime": obj.get("createdTime"),
             "entityId": EntityId.from_dict(obj["entityId"]) if obj.get("entityId") is not None else None,
             "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
             "customerId": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
@@ -135,8 +137,6 @@ class EntityView(BaseModel):
             "startTimeMs": obj.get("startTimeMs"),
             "endTimeMs": obj.get("endTimeMs"),
             "version": obj.get("version"),
-            "id": EntityViewId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
             "additionalInfo": obj.get("additionalInfo")
         })
         return _obj

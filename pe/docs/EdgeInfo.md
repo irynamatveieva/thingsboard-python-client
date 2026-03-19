@@ -9,6 +9,7 @@
 |------------ | ------------- | ------------- | -------------|
 | **id** | [**EdgeId**](EdgeId.md) | JSON object with the Edge Id. Specify this field to update the Edge. Referencing non-existing Edge Id will cause error. Omit this field to create new Edge. | [optional] |
 | **created_time** | **int** | Timestamp of the edge creation, in milliseconds | [optional] [readonly] |
+| **additional_info** | **object** | Additional parameters of the edge. May include: 'description' (string). | [optional] |
 | **tenant_id** | [**TenantId**](TenantId.md) | JSON object with Tenant Id. Use 'assignDeviceToTenant' to change the Tenant Id. | [optional] [readonly] |
 | **customer_id** | [**CustomerId**](CustomerId.md) | JSON object with Customer Id. Use 'assignEdgeToCustomer' to change the Customer Id. | [optional] [readonly] |
 | **root_rule_chain_id** | [**RuleChainId**](RuleChainId.md) | JSON object with Root Rule Chain Id. Use 'setEdgeRootRuleChain' to change the Root Rule Chain Id. | [optional] [readonly] |
@@ -23,7 +24,6 @@
 | **owner_name** | **str** | Owner name | [optional] [readonly] |
 | **groups** | [**List[EntityInfo]**](EntityInfo.md) | Groups | [optional] |
 | **owner_id** | [**EntityId**](EntityId.md) |  | [optional] [readonly] |
-| **additional_info** | **object** | Additional parameters of the edge. May include: 'description' (string). | [optional] |
 
 
 

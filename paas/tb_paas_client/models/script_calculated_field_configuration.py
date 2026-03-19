@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ class ScriptCalculatedFieldConfiguration(CalculatedFieldConfiguration):
     """ # noqa: E501
     arguments: Dict[str, Argument]
     expression: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["output", "aiGenerated", "type", "arguments", "expression"]
+    __properties: ClassVar[List[str]] = ["type", "output", "aiGenerated", "arguments", "expression"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -98,9 +98,9 @@ class ScriptCalculatedFieldConfiguration(CalculatedFieldConfiguration):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "type": obj.get("type"),
             "output": Output.from_dict(obj["output"]) if obj.get("output") is not None else None,
             "aiGenerated": obj.get("aiGenerated"),
-            "type": obj.get("type"),
             "arguments": dict(
                 (_k, Argument.from_dict(_v))
                 for _k, _v in obj["arguments"].items()

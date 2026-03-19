@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -51,10 +51,10 @@ class GroupPermissionInfo(BaseModel):
     user_group_name: Optional[StrictStr] = Field(default=None, description="User Group Name.", alias="userGroupName")
     user_group_owner_id: Optional[EntityId] = Field(default=None, description="User Group Owner Id (Tenant or Customer).", alias="userGroupOwnerId")
     user_group_owner_name: Optional[StrictStr] = Field(default=None, description="Name of the user group owner (Tenant or Customer title).", alias="userGroupOwnerName")
-    read_only: Optional[StrictBool] = Field(default=None, alias="readOnly")
     name: Optional[StrictStr] = Field(default=None, description="Name of the Group Permissions. Auto-generated")
     public: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "userGroupId", "roleId", "entityGroupId", "entityGroupType", "role", "entityGroupName", "entityGroupOwnerId", "entityGroupOwnerName", "userGroupName", "userGroupOwnerId", "userGroupOwnerName", "readOnly", "name", "public"]
+    read_only: Optional[StrictBool] = Field(default=None, alias="readOnly")
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "userGroupId", "roleId", "entityGroupId", "entityGroupType", "role", "entityGroupName", "entityGroupOwnerId", "entityGroupOwnerName", "userGroupName", "userGroupOwnerId", "userGroupOwnerName", "name", "public", "readOnly"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -153,9 +153,9 @@ class GroupPermissionInfo(BaseModel):
             "userGroupName": obj.get("userGroupName"),
             "userGroupOwnerId": EntityId.from_dict(obj["userGroupOwnerId"]) if obj.get("userGroupOwnerId") is not None else None,
             "userGroupOwnerName": obj.get("userGroupOwnerName"),
-            "readOnly": obj.get("readOnly"),
             "name": obj.get("name"),
-            "public": obj.get("public")
+            "public": obj.get("public"),
+            "readOnly": obj.get("readOnly")
         })
         return _obj
 

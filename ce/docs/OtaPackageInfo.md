@@ -22,8 +22,8 @@
 | **checksum_algorithm** | [**ChecksumAlgorithm**](ChecksumAlgorithm.md) | OTA Package checksum algorithm. | [optional] [readonly] |
 | **checksum** | **str** | OTA Package checksum. | [optional] [readonly] |
 | **data_size** | **int** | OTA Package data size. | [optional] [readonly] |
-| **name** | **str** |  | [optional] [readonly] |
 | **additional_info** | **object** | OTA Package description. | [optional] |
+| **name** | **str** |  | [optional] [readonly] |
 
 
 

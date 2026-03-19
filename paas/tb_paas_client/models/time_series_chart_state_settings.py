@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,10 +34,10 @@ class TimeSeriesChartStateSettings(BaseModel):
     label: Optional[StrictStr] = None
     value: Optional[Union[StrictFloat, StrictInt]] = None
     source_type: Optional[TimeSeriesChartStateSourceType] = Field(default=None, alias="sourceType")
+    source_value: Optional[Any] = Field(default=None, alias="sourceValue")
     source_range_from: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, alias="sourceRangeFrom")
     source_range_to: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, alias="sourceRangeTo")
-    source_value: Optional[Any] = Field(default=None, alias="sourceValue")
-    __properties: ClassVar[List[str]] = ["label", "value", "sourceType", "sourceRangeFrom", "sourceRangeTo", "sourceValue"]
+    __properties: ClassVar[List[str]] = ["label", "value", "sourceType", "sourceValue", "sourceRangeFrom", "sourceRangeTo"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -98,9 +98,9 @@ class TimeSeriesChartStateSettings(BaseModel):
             "label": obj.get("label"),
             "value": obj.get("value"),
             "sourceType": obj.get("sourceType"),
+            "sourceValue": obj.get("sourceValue"),
             "sourceRangeFrom": obj.get("sourceRangeFrom"),
-            "sourceRangeTo": obj.get("sourceRangeTo"),
-            "sourceValue": obj.get("sourceValue")
+            "sourceRangeTo": obj.get("sourceRangeTo")
         })
         return _obj
 

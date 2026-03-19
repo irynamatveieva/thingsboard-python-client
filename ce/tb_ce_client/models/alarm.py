@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -37,6 +37,8 @@ class Alarm(BaseModel):
     """
     Alarm
     """ # noqa: E501
+    id: Optional[AlarmId] = Field(default=None, description="JSON object with the alarm Id. Specify this field to update the alarm. Referencing non-existing alarm Id will cause error. Omit this field to create new alarm.")
+    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the alarm creation, in milliseconds", alias="createdTime")
     tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id", alias="tenantId")
     customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id", alias="customerId")
     type: StrictStr = Field(description="representing type of the Alarm")
@@ -55,11 +57,9 @@ class Alarm(BaseModel):
     propagate_to_owner: Optional[StrictBool] = Field(default=None, description="Propagation flag to specify if alarm should be propagated to the owner (tenant or customer) of alarm originator", alias="propagateToOwner")
     propagate_to_tenant: Optional[StrictBool] = Field(default=None, description="Propagation flag to specify if alarm should be propagated to the tenant entity", alias="propagateToTenant")
     propagate_relation_types: Optional[List[StrictStr]] = Field(default=None, description="JSON array of relation types that should be used for propagation. By default, 'propagateRelationTypes' array is empty which means that the alarm will be propagated based on any relation type to parent entities. This parameter should be used only in case when 'propagate' parameter is set to true, otherwise, 'propagateRelationTypes' array will be ignored.", alias="propagateRelationTypes")
-    id: Optional[AlarmId] = Field(default=None, description="JSON object with the alarm Id. Specify this field to update the alarm. Referencing non-existing alarm Id will cause error. Omit this field to create new alarm.")
-    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the alarm creation, in milliseconds", alias="createdTime")
     name: StrictStr = Field(description="representing type of the Alarm")
     status: AlarmStatus = Field(description="status of the Alarm")
-    __properties: ClassVar[List[str]] = ["tenantId", "customerId", "type", "originator", "severity", "acknowledged", "cleared", "assigneeId", "startTs", "endTs", "ackTs", "clearTs", "assignTs", "details", "propagate", "propagateToOwner", "propagateToTenant", "propagateRelationTypes", "id", "createdTime", "name", "status"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "customerId", "type", "originator", "severity", "acknowledged", "cleared", "assigneeId", "startTs", "endTs", "ackTs", "clearTs", "assignTs", "details", "propagate", "propagateToOwner", "propagateToTenant", "propagateRelationTypes", "name", "status"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -98,9 +98,9 @@ class Alarm(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set([
+            "created_time",
             "tenant_id",
             "customer_id",
-            "created_time",
             "name",
             "status",
         ])
@@ -110,6 +110,9 @@ class Alarm(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of id
+        if self.id:
+            _dict['id'] = self.id.to_dict()
         # override the default output from pydantic by calling `to_dict()` of tenant_id
         if self.tenant_id:
             _dict['tenantId'] = self.tenant_id.to_dict()
@@ -122,9 +125,6 @@ class Alarm(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of assignee_id
         if self.assignee_id:
             _dict['assigneeId'] = self.assignee_id.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of id
-        if self.id:
-            _dict['id'] = self.id.to_dict()
         # set to None if details (nullable) is None
         # and model_fields_set contains the field
         if self.details is None and "details" in self.model_fields_set:
@@ -142,6 +142,8 @@ class Alarm(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "id": AlarmId.from_dict(obj["id"]) if obj.get("id") is not None else None,
+            "createdTime": obj.get("createdTime"),
             "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
             "customerId": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
             "type": obj.get("type"),
@@ -160,8 +162,6 @@ class Alarm(BaseModel):
             "propagateToOwner": obj.get("propagateToOwner"),
             "propagateToTenant": obj.get("propagateToTenant"),
             "propagateRelationTypes": obj.get("propagateRelationTypes"),
-            "id": AlarmId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
             "name": obj.get("name"),
             "status": obj.get("status")
         })

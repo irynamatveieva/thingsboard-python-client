@@ -11,6 +11,7 @@ A JSON value representing the queue.
 |------------ | ------------- | ------------- | -------------|
 | **id** | [**QueueId**](QueueId.md) |  | [optional] |
 | **created_time** | **int** | Entity creation timestamp in milliseconds since Unix epoch | [optional] [readonly] |
+| **additional_info** | **object** |  | [optional] |
 | **tenant_id** | [**TenantId**](TenantId.md) |  | [optional] |
 | **name** | **str** |  | [optional] |
 | **topic** | **str** |  | [optional] |
@@ -20,7 +21,6 @@ A JSON value representing the queue.
 | **pack_processing_timeout** | **int** |  | [optional] |
 | **submit_strategy** | [**SubmitStrategy**](SubmitStrategy.md) |  | [optional] |
 | **processing_strategy** | [**ProcessingStrategy**](ProcessingStrategy.md) |  | [optional] |
-| **additional_info** | **object** |  | [optional] |
 
 
 

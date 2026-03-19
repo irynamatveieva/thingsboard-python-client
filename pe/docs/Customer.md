@@ -9,6 +9,7 @@
 |------------ | ------------- | ------------- | -------------|
 | **id** | [**CustomerId**](CustomerId.md) | JSON object with the customer Id. Specify this field to update the customer. Referencing non-existing customer Id will cause error. Omit this field to create new customer. | [optional] |
 | **created_time** | **int** | Timestamp of the customer creation, in milliseconds | [optional] [readonly] |
+| **additional_info** | **object** | Additional parameters of the customer. May include: 'description' (string), 'homeDashboardId' (string, UUID of the home dashboard), 'homeDashboardHideToolbar' (boolean, whether to hide the dashboard toolbar), 'isPublic' (boolean, whether this is a public customer). | [optional] |
 | **country** | **str** | Country | [optional] |
 | **state** | **str** | State | [optional] |
 | **city** | **str** | City | [optional] |
@@ -22,10 +23,9 @@
 | **parent_customer_id** | [**CustomerId**](CustomerId.md) | JSON object with parent Customer Id | [optional] |
 | **version** | **int** |  | [optional] |
 | **custom_menu_id** | [**CustomMenuId**](CustomMenuId.md) |  | [optional] |
-| **name** | **str** | Name of the customer. Read-only, duplicated from title for backward compatibility | [optional] [readonly] |
 | **customer_id** | [**CustomerId**](CustomerId.md) | JSON object with parent Customer Id | [optional] [readonly] |
+| **name** | **str** | Name of the customer. Read-only, duplicated from title for backward compatibility | [optional] [readonly] |
 | **owner_id** | [**EntityId**](EntityId.md) | JSON object with Customer or Tenant Id | [optional] [readonly] |
-| **additional_info** | **object** | Additional parameters of the customer. May include: 'description' (string), 'homeDashboardId' (string, UUID of the home dashboard), 'homeDashboardHideToolbar' (boolean, whether to hide the dashboard toolbar), 'isPublic' (boolean, whether this is a public customer). | [optional] |
 
 
 

@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -38,6 +38,7 @@ class User(BaseModel):
     """ # noqa: E501
     id: Optional[UserId] = Field(default=None, description="JSON object with the User Id. Specify this field to update the device. Referencing non-existing User Id will cause error. Omit this field to create new customer.")
     created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the user creation, in milliseconds", alias="createdTime")
+    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the user. May include: 'defaultDashboardId' (string, UUID of the default dashboard), 'defaultDashboardFullscreen' (boolean), 'homeDashboardId' (string, UUID of the home dashboard), 'homeDashboardHideToolbar' (boolean), 'lang' (string, user locale, e.g. 'en_US'), 'authProviderName' (string, name of the authentication provider).", alias="additionalInfo")
     tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with the Tenant Id.", alias="tenantId")
     customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with the Customer Id.", alias="customerId")
     email: StrictStr = Field(description="Email of the user")
@@ -49,8 +50,7 @@ class User(BaseModel):
     version: Optional[StrictInt] = None
     name: Optional[StrictStr] = Field(default=None, description="Duplicates the email of the user, readonly")
     owner_id: Optional[EntityId] = Field(default=None, description="JSON object with Customer or Tenant Id", alias="ownerId")
-    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the user. May include: 'defaultDashboardId' (string, UUID of the default dashboard), 'defaultDashboardFullscreen' (boolean), 'homeDashboardId' (string, UUID of the home dashboard), 'homeDashboardHideToolbar' (boolean), 'lang' (string, user locale, e.g. 'en_US'), 'authProviderName' (string, name of the authentication provider).", alias="additionalInfo")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "customerId", "email", "authority", "firstName", "lastName", "phone", "customMenuId", "version", "name", "ownerId", "additionalInfo"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "additionalInfo", "tenantId", "customerId", "email", "authority", "firstName", "lastName", "phone", "customMenuId", "version", "name", "ownerId"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -131,6 +131,7 @@ class User(BaseModel):
         _obj = cls.model_validate({
             "id": UserId.from_dict(obj["id"]) if obj.get("id") is not None else None,
             "createdTime": obj.get("createdTime"),
+            "additionalInfo": obj.get("additionalInfo"),
             "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
             "customerId": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
             "email": obj.get("email"),
@@ -141,8 +142,7 @@ class User(BaseModel):
             "customMenuId": CustomMenuId.from_dict(obj["customMenuId"]) if obj.get("customMenuId") is not None else None,
             "version": obj.get("version"),
             "name": obj.get("name"),
-            "ownerId": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None,
-            "additionalInfo": obj.get("additionalInfo")
+            "ownerId": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None
         })
         return _obj
 

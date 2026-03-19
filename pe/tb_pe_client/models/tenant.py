@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,6 +34,7 @@ class Tenant(BaseModel):
     """ # noqa: E501
     id: Optional[TenantId] = Field(default=None, description="JSON object with the tenant Id. Specify this field to update the tenant. Referencing non-existing tenant Id will cause error. Omit this field to create new tenant.")
     created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the tenant creation, in milliseconds", alias="createdTime")
+    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the tenant. May include: 'description' (string), 'homeDashboardId' (string, UUID of the home dashboard), 'homeDashboardHideToolbar' (boolean, whether to hide the dashboard toolbar).", alias="additionalInfo")
     country: Optional[StrictStr] = Field(default=None, description="Country")
     state: Optional[StrictStr] = Field(default=None, description="State")
     city: Optional[StrictStr] = Field(default=None, description="City")
@@ -47,8 +48,7 @@ class Tenant(BaseModel):
     tenant_profile_id: Optional[TenantProfileId] = Field(default=None, description="JSON object with Tenant Profile Id", alias="tenantProfileId")
     version: Optional[StrictInt] = None
     name: Optional[StrictStr] = Field(default=None, description="Name of the tenant. Read-only, duplicated from title for backward compatibility")
-    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the tenant. May include: 'description' (string), 'homeDashboardId' (string, UUID of the home dashboard), 'homeDashboardHideToolbar' (boolean, whether to hide the dashboard toolbar).", alias="additionalInfo")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "country", "state", "city", "address", "address2", "zip", "phone", "email", "title", "region", "tenantProfileId", "version", "name", "additionalInfo"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "additionalInfo", "country", "state", "city", "address", "address2", "zip", "phone", "email", "title", "region", "tenantProfileId", "version", "name"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -118,6 +118,7 @@ class Tenant(BaseModel):
         _obj = cls.model_validate({
             "id": TenantId.from_dict(obj["id"]) if obj.get("id") is not None else None,
             "createdTime": obj.get("createdTime"),
+            "additionalInfo": obj.get("additionalInfo"),
             "country": obj.get("country"),
             "state": obj.get("state"),
             "city": obj.get("city"),
@@ -130,8 +131,7 @@ class Tenant(BaseModel):
             "region": obj.get("region"),
             "tenantProfileId": TenantProfileId.from_dict(obj["tenantProfileId"]) if obj.get("tenantProfileId") is not None else None,
             "version": obj.get("version"),
-            "name": obj.get("name"),
-            "additionalInfo": obj.get("additionalInfo")
+            "name": obj.get("name")
         })
         return _obj
 

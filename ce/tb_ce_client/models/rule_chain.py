@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -43,9 +43,9 @@ class RuleChain(BaseModel):
     root: Optional[StrictBool] = Field(default=None, description="Indicates root rule chain. The root rule chain process messages from all devices and entities by default. User may configure default rule chain per device profile.")
     debug_mode: Optional[StrictBool] = Field(default=None, description="Reserved for future usage.", alias="debugMode")
     version: Optional[StrictInt] = None
-    configuration: Optional[Any] = None
     additional_info: Optional[Any] = Field(default=None, alias="additionalInfo")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "name", "type", "firstRuleNodeId", "root", "debugMode", "version", "configuration", "additionalInfo"]
+    configuration: Optional[Any] = None
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "name", "type", "firstRuleNodeId", "root", "debugMode", "version", "additionalInfo", "configuration"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -99,15 +99,15 @@ class RuleChain(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of first_rule_node_id
         if self.first_rule_node_id:
             _dict['firstRuleNodeId'] = self.first_rule_node_id.to_dict()
-        # set to None if configuration (nullable) is None
-        # and model_fields_set contains the field
-        if self.configuration is None and "configuration" in self.model_fields_set:
-            _dict['configuration'] = None
-
         # set to None if additional_info (nullable) is None
         # and model_fields_set contains the field
         if self.additional_info is None and "additional_info" in self.model_fields_set:
             _dict['additionalInfo'] = None
+
+        # set to None if configuration (nullable) is None
+        # and model_fields_set contains the field
+        if self.configuration is None and "configuration" in self.model_fields_set:
+            _dict['configuration'] = None
 
         return _dict
 
@@ -130,8 +130,8 @@ class RuleChain(BaseModel):
             "root": obj.get("root"),
             "debugMode": obj.get("debugMode"),
             "version": obj.get("version"),
-            "configuration": obj.get("configuration"),
-            "additionalInfo": obj.get("additionalInfo")
+            "additionalInfo": obj.get("additionalInfo"),
+            "configuration": obj.get("configuration")
         })
         return _obj
 

@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -36,6 +36,7 @@ class Customer(BaseModel):
     """ # noqa: E501
     id: Optional[CustomerId] = Field(default=None, description="JSON object with the customer Id. Specify this field to update the customer. Referencing non-existing customer Id will cause error. Omit this field to create new customer.")
     created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the customer creation, in milliseconds", alias="createdTime")
+    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the customer. May include: 'description' (string), 'homeDashboardId' (string, UUID of the home dashboard), 'homeDashboardHideToolbar' (boolean, whether to hide the dashboard toolbar), 'isPublic' (boolean, whether this is a public customer).", alias="additionalInfo")
     country: Optional[StrictStr] = Field(default=None, description="Country")
     state: Optional[StrictStr] = Field(default=None, description="State")
     city: Optional[StrictStr] = Field(default=None, description="City")
@@ -49,11 +50,10 @@ class Customer(BaseModel):
     parent_customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with parent Customer Id", alias="parentCustomerId")
     version: Optional[StrictInt] = None
     custom_menu_id: Optional[CustomMenuId] = Field(default=None, alias="customMenuId")
-    name: Optional[StrictStr] = Field(default=None, description="Name of the customer. Read-only, duplicated from title for backward compatibility")
     customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with parent Customer Id", alias="customerId")
+    name: Optional[StrictStr] = Field(default=None, description="Name of the customer. Read-only, duplicated from title for backward compatibility")
     owner_id: Optional[EntityId] = Field(default=None, description="JSON object with Customer or Tenant Id", alias="ownerId")
-    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the customer. May include: 'description' (string), 'homeDashboardId' (string, UUID of the home dashboard), 'homeDashboardHideToolbar' (boolean, whether to hide the dashboard toolbar), 'isPublic' (boolean, whether this is a public customer).", alias="additionalInfo")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "country", "state", "city", "address", "address2", "zip", "phone", "email", "title", "tenantId", "parentCustomerId", "version", "customMenuId", "name", "customerId", "ownerId", "additionalInfo"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "additionalInfo", "country", "state", "city", "address", "address2", "zip", "phone", "email", "title", "tenantId", "parentCustomerId", "version", "customMenuId", "customerId", "name", "ownerId"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -92,8 +92,8 @@ class Customer(BaseModel):
         """
         excluded_fields: Set[str] = set([
             "created_time",
-            "name",
             "customer_id",
+            "name",
             "owner_id",
         ])
 
@@ -139,6 +139,7 @@ class Customer(BaseModel):
         _obj = cls.model_validate({
             "id": CustomerId.from_dict(obj["id"]) if obj.get("id") is not None else None,
             "createdTime": obj.get("createdTime"),
+            "additionalInfo": obj.get("additionalInfo"),
             "country": obj.get("country"),
             "state": obj.get("state"),
             "city": obj.get("city"),
@@ -152,10 +153,9 @@ class Customer(BaseModel):
             "parentCustomerId": CustomerId.from_dict(obj["parentCustomerId"]) if obj.get("parentCustomerId") is not None else None,
             "version": obj.get("version"),
             "customMenuId": CustomMenuId.from_dict(obj["customMenuId"]) if obj.get("customMenuId") is not None else None,
-            "name": obj.get("name"),
             "customerId": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
-            "ownerId": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None,
-            "additionalInfo": obj.get("additionalInfo")
+            "name": obj.get("name"),
+            "ownerId": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None
         })
         return _obj
 

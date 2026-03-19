@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,6 +35,8 @@ class AlarmCountQuery(BaseModel):
     """
     A JSON value representing the alarm count query.
     """ # noqa: E501
+    entity_filter: Optional[EntityFilter] = Field(default=None, alias="entityFilter")
+    key_filters: Optional[List[KeyFilter]] = Field(default=None, alias="keyFilters")
     start_ts: Optional[StrictInt] = Field(default=None, alias="startTs")
     end_ts: Optional[StrictInt] = Field(default=None, alias="endTs")
     time_window: Optional[StrictInt] = Field(default=None, alias="timeWindow")
@@ -43,9 +45,7 @@ class AlarmCountQuery(BaseModel):
     severity_list: Optional[List[AlarmSeverity]] = Field(default=None, alias="severityList")
     search_propagated_alarms: Optional[StrictBool] = Field(default=None, alias="searchPropagatedAlarms")
     assignee_id: Optional[UserId] = Field(default=None, alias="assigneeId")
-    entity_filter: Optional[EntityFilter] = Field(default=None, alias="entityFilter")
-    key_filters: Optional[List[KeyFilter]] = Field(default=None, alias="keyFilters")
-    __properties: ClassVar[List[str]] = ["startTs", "endTs", "timeWindow", "typeList", "statusList", "severityList", "searchPropagatedAlarms", "assigneeId", "entityFilter", "keyFilters"]
+    __properties: ClassVar[List[str]] = ["entityFilter", "keyFilters", "startTs", "endTs", "timeWindow", "typeList", "statusList", "severityList", "searchPropagatedAlarms", "assigneeId"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -86,9 +86,6 @@ class AlarmCountQuery(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of assignee_id
-        if self.assignee_id:
-            _dict['assigneeId'] = self.assignee_id.to_dict()
         # override the default output from pydantic by calling `to_dict()` of entity_filter
         if self.entity_filter:
             _dict['entityFilter'] = self.entity_filter.to_dict()
@@ -99,6 +96,9 @@ class AlarmCountQuery(BaseModel):
                 if _item_key_filters:
                     _items.append(_item_key_filters.to_dict())
             _dict['keyFilters'] = _items
+        # override the default output from pydantic by calling `to_dict()` of assignee_id
+        if self.assignee_id:
+            _dict['assigneeId'] = self.assignee_id.to_dict()
         return _dict
 
     @classmethod
@@ -111,6 +111,8 @@ class AlarmCountQuery(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "entityFilter": EntityFilter.from_dict(obj["entityFilter"]) if obj.get("entityFilter") is not None else None,
+            "keyFilters": [KeyFilter.from_dict(_item) for _item in obj["keyFilters"]] if obj.get("keyFilters") is not None else None,
             "startTs": obj.get("startTs"),
             "endTs": obj.get("endTs"),
             "timeWindow": obj.get("timeWindow"),
@@ -118,9 +120,7 @@ class AlarmCountQuery(BaseModel):
             "statusList": obj.get("statusList"),
             "severityList": obj.get("severityList"),
             "searchPropagatedAlarms": obj.get("searchPropagatedAlarms"),
-            "assigneeId": UserId.from_dict(obj["assigneeId"]) if obj.get("assigneeId") is not None else None,
-            "entityFilter": EntityFilter.from_dict(obj["entityFilter"]) if obj.get("entityFilter") is not None else None,
-            "keyFilters": [KeyFilter.from_dict(_item) for _item in obj["keyFilters"]] if obj.get("keyFilters") is not None else None
+            "assigneeId": UserId.from_dict(obj["assigneeId"]) if obj.get("assigneeId") is not None else None
         })
         return _obj
 

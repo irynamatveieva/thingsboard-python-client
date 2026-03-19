@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -39,6 +39,7 @@ class SubscriptionDetails(BaseModel):
     """ # noqa: E501
     id: Optional[SubscriptionId] = None
     created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", alias="createdTime")
+    additional_info: Optional[Any] = Field(default=None, alias="additionalInfo")
     external_id: Optional[StrictStr] = Field(default=None, alias="externalId")
     tenant_id: Optional[TenantId] = Field(default=None, alias="tenantId")
     billing_customer_id: Optional[BillingCustomerId] = Field(default=None, alias="billingCustomerId")
@@ -63,8 +64,7 @@ class SubscriptionDetails(BaseModel):
     items: Optional[SubscriptionItems] = None
     discount: Optional[Discount] = None
     name: Optional[StrictStr] = None
-    additional_info: Optional[Any] = Field(default=None, alias="additionalInfo")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "externalId", "tenantId", "billingCustomerId", "subscriptionPlanId", "currentPeriodStartTs", "currentPeriodEndTs", "active", "trial", "trialEndTs", "status", "lastPaid", "upcomingInvoiceDate", "upcomingInvoiceAmountDue", "couponId", "discountEndDate", "subscriptionPlanName", "planHasAddons", "planUiType", "planIsFree", "planIsActive", "edgeCountIncluded", "items", "discount", "name", "additionalInfo"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "additionalInfo", "externalId", "tenantId", "billingCustomerId", "subscriptionPlanId", "currentPeriodStartTs", "currentPeriodEndTs", "active", "trial", "trialEndTs", "status", "lastPaid", "upcomingInvoiceDate", "upcomingInvoiceAmountDue", "couponId", "discountEndDate", "subscriptionPlanName", "planHasAddons", "planUiType", "planIsFree", "planIsActive", "edgeCountIncluded", "items", "discount", "name"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -149,6 +149,7 @@ class SubscriptionDetails(BaseModel):
         _obj = cls.model_validate({
             "id": SubscriptionId.from_dict(obj["id"]) if obj.get("id") is not None else None,
             "createdTime": obj.get("createdTime"),
+            "additionalInfo": obj.get("additionalInfo"),
             "externalId": obj.get("externalId"),
             "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
             "billingCustomerId": BillingCustomerId.from_dict(obj["billingCustomerId"]) if obj.get("billingCustomerId") is not None else None,
@@ -172,8 +173,7 @@ class SubscriptionDetails(BaseModel):
             "edgeCountIncluded": obj.get("edgeCountIncluded"),
             "items": SubscriptionItems.from_dict(obj["items"]) if obj.get("items") is not None else None,
             "discount": Discount.from_dict(obj["discount"]) if obj.get("discount") is not None else None,
-            "name": obj.get("name"),
-            "additionalInfo": obj.get("additionalInfo")
+            "name": obj.get("name")
         })
         return _obj
 

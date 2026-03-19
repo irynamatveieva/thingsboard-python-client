@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -36,16 +36,16 @@ class RuleChain(BaseModel):
     """ # noqa: E501
     id: Optional[RuleChainId] = Field(default=None, description="JSON object with the Rule Chain Id. Specify this field to update the Rule Chain. Referencing non-existing Rule Chain Id will cause error. Omit this field to create new rule chain.")
     created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the rule chain creation, in milliseconds", alias="createdTime")
+    additional_info: Optional[Any] = Field(default=None, alias="additionalInfo")
     tenant_id: TenantId = Field(description="JSON object with Tenant Id.", alias="tenantId")
     name: StrictStr = Field(description="Rule Chain name")
     type: Optional[RuleChainType] = Field(default=None, description="Rule Chain type. 'EDGE' rule chains are processing messages on the edge devices only.")
     first_rule_node_id: Optional[RuleNodeId] = Field(default=None, description="JSON object with Rule Chain Id. Pointer to the first rule node that should receive all messages pushed to this rule chain.", alias="firstRuleNodeId")
     root: Optional[StrictBool] = Field(default=None, description="Indicates root rule chain. The root rule chain process messages from all devices and entities by default. User may configure default rule chain per device profile.")
     debug_mode: Optional[StrictBool] = Field(default=None, description="Reserved for future usage.", alias="debugMode")
-    version: Optional[StrictInt] = None
     configuration: Optional[Any] = None
-    additional_info: Optional[Any] = Field(default=None, alias="additionalInfo")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "name", "type", "firstRuleNodeId", "root", "debugMode", "version", "configuration", "additionalInfo"]
+    version: Optional[StrictInt] = None
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "additionalInfo", "tenantId", "name", "type", "firstRuleNodeId", "root", "debugMode", "configuration", "version"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -99,15 +99,15 @@ class RuleChain(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of first_rule_node_id
         if self.first_rule_node_id:
             _dict['firstRuleNodeId'] = self.first_rule_node_id.to_dict()
-        # set to None if configuration (nullable) is None
-        # and model_fields_set contains the field
-        if self.configuration is None and "configuration" in self.model_fields_set:
-            _dict['configuration'] = None
-
         # set to None if additional_info (nullable) is None
         # and model_fields_set contains the field
         if self.additional_info is None and "additional_info" in self.model_fields_set:
             _dict['additionalInfo'] = None
+
+        # set to None if configuration (nullable) is None
+        # and model_fields_set contains the field
+        if self.configuration is None and "configuration" in self.model_fields_set:
+            _dict['configuration'] = None
 
         return _dict
 
@@ -123,15 +123,15 @@ class RuleChain(BaseModel):
         _obj = cls.model_validate({
             "id": RuleChainId.from_dict(obj["id"]) if obj.get("id") is not None else None,
             "createdTime": obj.get("createdTime"),
+            "additionalInfo": obj.get("additionalInfo"),
             "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
             "name": obj.get("name"),
             "type": obj.get("type"),
             "firstRuleNodeId": RuleNodeId.from_dict(obj["firstRuleNodeId"]) if obj.get("firstRuleNodeId") is not None else None,
             "root": obj.get("root"),
             "debugMode": obj.get("debugMode"),
-            "version": obj.get("version"),
             "configuration": obj.get("configuration"),
-            "additionalInfo": obj.get("additionalInfo")
+            "version": obj.get("version")
         })
         return _obj
 

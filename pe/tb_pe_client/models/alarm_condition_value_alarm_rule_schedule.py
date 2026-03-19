@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,9 +31,9 @@ class AlarmConditionValueAlarmRuleSchedule(BaseModel):
     """
     AlarmConditionValueAlarmRuleSchedule
     """ # noqa: E501
-    static_value: Optional[AlarmRuleSchedule] = Field(default=None, alias="staticValue")
     dynamic_value_argument: Optional[StrictStr] = Field(default=None, alias="dynamicValueArgument")
-    __properties: ClassVar[List[str]] = ["staticValue", "dynamicValueArgument"]
+    static_value: Optional[AlarmRuleSchedule] = Field(default=None, alias="staticValue")
+    __properties: ClassVar[List[str]] = ["dynamicValueArgument", "staticValue"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -89,8 +89,8 @@ class AlarmConditionValueAlarmRuleSchedule(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "staticValue": AlarmRuleSchedule.from_dict(obj["staticValue"]) if obj.get("staticValue") is not None else None,
-            "dynamicValueArgument": obj.get("dynamicValueArgument")
+            "dynamicValueArgument": obj.get("dynamicValueArgument"),
+            "staticValue": AlarmRuleSchedule.from_dict(obj["staticValue"]) if obj.get("staticValue") is not None else None
         })
         return _obj
 

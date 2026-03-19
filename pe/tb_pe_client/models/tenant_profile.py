@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -36,10 +36,10 @@ class TenantProfile(BaseModel):
     created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the tenant profile creation, in milliseconds", alias="createdTime")
     name: Optional[StrictStr] = Field(default=None, description="Name of the tenant profile")
     description: Optional[StrictStr] = Field(default=None, description="Description of the tenant profile")
-    isolated_tb_rule_engine: Optional[StrictBool] = Field(default=None, description="If enabled, will push all messages related to this tenant and processed by the rule engine into separate queue. Useful for complex microservices deployments, to isolate processing of the data for specific tenants", alias="isolatedTbRuleEngine")
     default: Optional[StrictBool] = Field(default=None, description="Default Tenant profile to be used.")
+    isolated_tb_rule_engine: Optional[StrictBool] = Field(default=None, description="If enabled, will push all messages related to this tenant and processed by the rule engine into separate queue. Useful for complex microservices deployments, to isolate processing of the data for specific tenants", alias="isolatedTbRuleEngine")
     profile_data: Optional[TenantProfileData] = Field(default=None, alias="profileData")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "name", "description", "isolatedTbRuleEngine", "default", "profileData"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "name", "description", "default", "isolatedTbRuleEngine", "profileData"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -104,8 +104,8 @@ class TenantProfile(BaseModel):
             "createdTime": obj.get("createdTime"),
             "name": obj.get("name"),
             "description": obj.get("description"),
-            "isolatedTbRuleEngine": obj.get("isolatedTbRuleEngine"),
             "default": obj.get("default"),
+            "isolatedTbRuleEngine": obj.get("isolatedTbRuleEngine"),
             "profileData": TenantProfileData.from_dict(obj["profileData"]) if obj.get("profileData") is not None else None
         })
         return _obj

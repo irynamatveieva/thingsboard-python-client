@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -50,9 +50,9 @@ class ReportComponent(BaseModel):
     """
     ReportComponent
     """ # noqa: E501
-    type: ReportComponentType
     sub_type: ReportComponentSubType = Field(alias="subType")
-    __properties: ClassVar[List[str]] = ["type", "subType"]
+    type: ReportComponentType
+    __properties: ClassVar[List[str]] = ["subType", "type"]
 
     model_config = ConfigDict(
         populate_by_name=True,

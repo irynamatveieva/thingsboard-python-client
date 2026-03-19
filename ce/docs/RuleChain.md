@@ -18,8 +18,8 @@ A JSON value representing the rule chain.
 | **root** | **bool** | Indicates root rule chain. The root rule chain process messages from all devices and entities by default. User may configure default rule chain per device profile. | [optional] |
 | **debug_mode** | **bool** | Reserved for future usage. | [optional] |
 | **version** | **int** |  | [optional] |
-| **configuration** | **object** |  | [optional] |
 | **additional_info** | **object** |  | [optional] |
+| **configuration** | **object** |  | [optional] |
 
 
 

@@ -7,8 +7,6 @@
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-| **entity_id** | [**EntityId**](EntityId.md) |  | [optional] |
-| **latest** | **Dict[str, Dict[str, TsValue]]** |  | [optional] |
 | **id** | [**AlarmId**](AlarmId.md) | JSON object with the alarm Id. Specify this field to update the alarm. Referencing non-existing alarm Id will cause error. Omit this field to create new alarm. | [optional] |
 | **created_time** | **int** | Timestamp of the alarm creation, in milliseconds | [optional] [readonly] |
 | **tenant_id** | [**TenantId**](TenantId.md) | JSON object with Tenant Id | [optional] [readonly] |
@@ -34,6 +32,8 @@
 | **originator_label** | **str** | Alarm originator label | [optional] |
 | **originator_display_name** | **str** | Originator display name | [optional] |
 | **assignee** | [**AlarmAssignee**](AlarmAssignee.md) | Alarm assignee | [optional] |
+| **entity_id** | [**EntityId**](EntityId.md) |  | [optional] |
+| **latest** | **Dict[str, Dict[str, TsValue]]** |  | [optional] |
 | **name** | **str** | representing type of the Alarm | [readonly] |
 | **status** | [**AlarmStatus**](AlarmStatus.md) | status of the Alarm | [readonly] |
 
@@ -44,7 +44,7 @@
 ### Conventions
 
 - **Package:** `tb_pe_client.models`
-- **Attribute access:** `obj.entity_id`, `obj.name`, etc.
+- **Attribute access:** `obj.id`, `obj.name`, etc.
 - **Serialize:** `obj.model_dump()` or `obj.model_dump(by_alias=True)` for camelCase JSON
 - **Deserialize:** `AlarmData.model_validate(data)` or `AlarmData.model_validate_json(json_str)`
 - **None fields:** Optional attributes default to `None`; accessing them never raises exceptions

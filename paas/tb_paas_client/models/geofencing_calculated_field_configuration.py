@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ class GeofencingCalculatedFieldConfiguration(CalculatedFieldConfiguration):
     scheduled_update_enabled: Optional[StrictBool] = Field(default=None, alias="scheduledUpdateEnabled")
     scheduled_update_interval: Optional[StrictInt] = Field(default=None, alias="scheduledUpdateInterval")
     zone_groups: Dict[str, ZoneGroupConfiguration] = Field(alias="zoneGroups")
-    __properties: ClassVar[List[str]] = ["output", "aiGenerated", "type", "entityCoordinates", "scheduledUpdateEnabled", "scheduledUpdateInterval", "zoneGroups"]
+    __properties: ClassVar[List[str]] = ["type", "output", "aiGenerated", "entityCoordinates", "scheduledUpdateEnabled", "scheduledUpdateInterval", "zoneGroups"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -104,9 +104,9 @@ class GeofencingCalculatedFieldConfiguration(CalculatedFieldConfiguration):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "type": obj.get("type"),
             "output": Output.from_dict(obj["output"]) if obj.get("output") is not None else None,
             "aiGenerated": obj.get("aiGenerated"),
-            "type": obj.get("type"),
             "entityCoordinates": EntityCoordinates.from_dict(obj["entityCoordinates"]) if obj.get("entityCoordinates") is not None else None,
             "scheduledUpdateEnabled": obj.get("scheduledUpdateEnabled"),
             "scheduledUpdateInterval": obj.get("scheduledUpdateInterval"),

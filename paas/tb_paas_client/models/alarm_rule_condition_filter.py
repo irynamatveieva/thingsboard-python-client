@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,10 +35,10 @@ class AlarmRuleConditionFilter(BaseModel):
     AlarmRuleConditionFilter
     """ # noqa: E501
     argument: Annotated[str, Field(min_length=1, strict=True)]
-    value_type: EntityKeyValueType = Field(alias="valueType")
     operation: Optional[ComplexOperation] = None
     predicates: Annotated[List[AlarmRuleKeyFilterPredicate], Field(min_length=1)]
-    __properties: ClassVar[List[str]] = ["argument", "valueType", "operation", "predicates"]
+    value_type: EntityKeyValueType = Field(alias="valueType")
+    __properties: ClassVar[List[str]] = ["argument", "operation", "predicates", "valueType"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -99,9 +99,9 @@ class AlarmRuleConditionFilter(BaseModel):
 
         _obj = cls.model_validate({
             "argument": obj.get("argument"),
-            "valueType": obj.get("valueType"),
             "operation": obj.get("operation"),
-            "predicates": [AlarmRuleKeyFilterPredicate.from_dict(_item) for _item in obj["predicates"]] if obj.get("predicates") is not None else None
+            "predicates": [AlarmRuleKeyFilterPredicate.from_dict(_item) for _item in obj["predicates"]] if obj.get("predicates") is not None else None,
+            "valueType": obj.get("valueType")
         })
         return _obj
 

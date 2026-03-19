@@ -10,9 +10,9 @@
 | **label** | **str** |  | [optional] |
 | **value** | **float** |  | [optional] |
 | **source_type** | [**TimeSeriesChartStateSourceType**](TimeSeriesChartStateSourceType.md) |  | [optional] |
+| **source_value** | **object** |  | [optional] |
 | **source_range_from** | **float** |  | [optional] |
 | **source_range_to** | **float** |  | [optional] |
-| **source_value** | **object** |  | [optional] |
 
 
 

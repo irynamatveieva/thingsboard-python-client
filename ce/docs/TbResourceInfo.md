@@ -20,9 +20,9 @@ A JSON value representing the Resource Info.
 | **etag** | **str** | Resource etag. | [optional] [readonly] |
 | **file_name** | **str** | Resource file name. | [optional] |
 | **descriptor** | **object** | Resource descriptor. | [optional] |
+| **link** | **str** |  | [optional] [readonly] |
 | **name** | **str** |  | [optional] [readonly] |
 | **public** | **bool** |  | [optional] |
-| **link** | **str** |  | [optional] [readonly] |
 | **public_link** | **str** |  | [optional] [readonly] |
 
 

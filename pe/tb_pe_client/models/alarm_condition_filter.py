@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,11 +33,11 @@ class AlarmConditionFilter(BaseModel):
     """
     AlarmConditionFilter
     """ # noqa: E501
-    key: Optional[AlarmConditionFilterKey] = Field(default=None, description="JSON object for specifying alarm condition by specific key")
     value_type: Optional[EntityKeyValueType] = Field(default=None, description="String representation of the type of the value", alias="valueType")
-    value: Optional[Any] = None
+    key: Optional[AlarmConditionFilterKey] = Field(default=None, description="JSON object for specifying alarm condition by specific key")
     predicate: Optional[KeyFilterPredicate] = Field(default=None, description="JSON object representing filter condition")
-    __properties: ClassVar[List[str]] = ["key", "valueType", "value", "predicate"]
+    value: Optional[Any] = None
+    __properties: ClassVar[List[str]] = ["valueType", "key", "predicate", "value"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -101,10 +101,10 @@ class AlarmConditionFilter(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "key": AlarmConditionFilterKey.from_dict(obj["key"]) if obj.get("key") is not None else None,
             "valueType": obj.get("valueType"),
-            "value": obj.get("value"),
-            "predicate": KeyFilterPredicate.from_dict(obj["predicate"]) if obj.get("predicate") is not None else None
+            "key": AlarmConditionFilterKey.from_dict(obj["key"]) if obj.get("key") is not None else None,
+            "predicate": KeyFilterPredicate.from_dict(obj["predicate"]) if obj.get("predicate") is not None else None,
+            "value": obj.get("value")
         })
         return _obj
 

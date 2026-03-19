@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ class AlarmTableComponent(ReportComponent):
     table_sort_order: Optional[TableSortOrder] = Field(default=None, alias="tableSortOrder")
     alarm_source: Optional[DataSource] = Field(default=None, alias="alarmSource")
     timewindow: Optional[TimeWindowConfiguration] = None
-    __properties: ClassVar[List[str]] = ["type", "subType", "margins", "paddings", "background", "borderWidth", "borderRadius", "borderColor", "showTableHeading", "tableHeading", "tableSortOrder", "alarmSource", "timewindow"]
+    __properties: ClassVar[List[str]] = ["subType", "type", "margins", "paddings", "background", "borderWidth", "borderRadius", "borderColor", "showTableHeading", "tableHeading", "tableSortOrder", "alarmSource", "timewindow"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -120,8 +120,8 @@ class AlarmTableComponent(ReportComponent):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "type": obj.get("type"),
             "subType": obj.get("subType"),
+            "type": obj.get("type"),
             "margins": Insets.from_dict(obj["margins"]) if obj.get("margins") is not None else None,
             "paddings": Insets.from_dict(obj["paddings"]) if obj.get("paddings") is not None else None,
             "background": obj.get("background"),

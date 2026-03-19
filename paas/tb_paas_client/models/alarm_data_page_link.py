@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,6 +34,11 @@ class AlarmDataPageLink(BaseModel):
     """
     AlarmDataPageLink
     """ # noqa: E501
+    page_size: Optional[StrictInt] = Field(default=None, alias="pageSize")
+    page: Optional[StrictInt] = None
+    text_search: Optional[StrictStr] = Field(default=None, alias="textSearch")
+    sort_order: Optional[EntityDataSortOrder] = Field(default=None, alias="sortOrder")
+    dynamic: Optional[StrictBool] = None
     start_ts: Optional[StrictInt] = Field(default=None, alias="startTs")
     end_ts: Optional[StrictInt] = Field(default=None, alias="endTs")
     time_window: Optional[StrictInt] = Field(default=None, alias="timeWindow")
@@ -42,12 +47,7 @@ class AlarmDataPageLink(BaseModel):
     severity_list: Optional[List[AlarmSeverity]] = Field(default=None, alias="severityList")
     search_propagated_alarms: Optional[StrictBool] = Field(default=None, alias="searchPropagatedAlarms")
     assignee_id: Optional[UserId] = Field(default=None, alias="assigneeId")
-    page_size: Optional[StrictInt] = Field(default=None, alias="pageSize")
-    page: Optional[StrictInt] = None
-    text_search: Optional[StrictStr] = Field(default=None, alias="textSearch")
-    sort_order: Optional[EntityDataSortOrder] = Field(default=None, alias="sortOrder")
-    dynamic: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["startTs", "endTs", "timeWindow", "typeList", "statusList", "severityList", "searchPropagatedAlarms", "assigneeId", "pageSize", "page", "textSearch", "sortOrder", "dynamic"]
+    __properties: ClassVar[List[str]] = ["pageSize", "page", "textSearch", "sortOrder", "dynamic", "startTs", "endTs", "timeWindow", "typeList", "statusList", "severityList", "searchPropagatedAlarms", "assigneeId"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -88,12 +88,12 @@ class AlarmDataPageLink(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of assignee_id
-        if self.assignee_id:
-            _dict['assigneeId'] = self.assignee_id.to_dict()
         # override the default output from pydantic by calling `to_dict()` of sort_order
         if self.sort_order:
             _dict['sortOrder'] = self.sort_order.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of assignee_id
+        if self.assignee_id:
+            _dict['assigneeId'] = self.assignee_id.to_dict()
         return _dict
 
     @classmethod
@@ -106,6 +106,11 @@ class AlarmDataPageLink(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "pageSize": obj.get("pageSize"),
+            "page": obj.get("page"),
+            "textSearch": obj.get("textSearch"),
+            "sortOrder": EntityDataSortOrder.from_dict(obj["sortOrder"]) if obj.get("sortOrder") is not None else None,
+            "dynamic": obj.get("dynamic"),
             "startTs": obj.get("startTs"),
             "endTs": obj.get("endTs"),
             "timeWindow": obj.get("timeWindow"),
@@ -113,12 +118,7 @@ class AlarmDataPageLink(BaseModel):
             "statusList": obj.get("statusList"),
             "severityList": obj.get("severityList"),
             "searchPropagatedAlarms": obj.get("searchPropagatedAlarms"),
-            "assigneeId": UserId.from_dict(obj["assigneeId"]) if obj.get("assigneeId") is not None else None,
-            "pageSize": obj.get("pageSize"),
-            "page": obj.get("page"),
-            "textSearch": obj.get("textSearch"),
-            "sortOrder": EntityDataSortOrder.from_dict(obj["sortOrder"]) if obj.get("sortOrder") is not None else None,
-            "dynamic": obj.get("dynamic")
+            "assigneeId": UserId.from_dict(obj["assigneeId"]) if obj.get("assigneeId") is not None else None
         })
         return _obj
 

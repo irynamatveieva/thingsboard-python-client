@@ -8,10 +8,9 @@
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
 | **type** | [**TwoFaProviderType**](TwoFaProviderType.md) |  | [optional] |
-| **is_default** | **bool** |  | [optional] |
+| **default** | **bool** |  | [optional] |
 | **contact** | **str** |  | [optional] |
 | **min_verification_code_send_period** | **int** |  | [optional] |
-| **default** | **bool** |  | [optional] |
 
 
 

@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -37,12 +37,12 @@ class Output(BaseModel):
     """
     Output
     """ # noqa: E501
+    decimals_by_default: Optional[StrictInt] = Field(default=None, alias="decimalsByDefault")
     name: Optional[StrictStr] = None
     scope: Optional[AttributeScope] = None
-    decimals_by_default: Optional[StrictInt] = Field(default=None, alias="decimalsByDefault")
     strategy: Optional[Any] = None
     type: StrictStr
-    __properties: ClassVar[List[str]] = ["name", "scope", "decimalsByDefault", "strategy", "type"]
+    __properties: ClassVar[List[str]] = ["decimalsByDefault", "name", "scope", "strategy", "type"]
 
     model_config = ConfigDict(
         populate_by_name=True,

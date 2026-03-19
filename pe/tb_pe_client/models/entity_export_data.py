@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -61,12 +61,12 @@ class EntityExportData(BaseModel):
     """
     Base export container for ThingsBoard entities
     """ # noqa: E501
-    entity_type: EntityType = Field(alias="entityType")
     entity: Optional[ExportableEntity] = None
     relations: Optional[List[EntityRelation]] = None
     attributes: Optional[Dict[str, List[AttributeExportData]]] = Field(default=None, description="Map of attributes where key is the scope of attributes and value is the list of attributes for that scope")
     calculated_fields: Optional[List[CalculatedField]] = Field(default=None, alias="calculatedFields")
-    __properties: ClassVar[List[str]] = ["entityType", "entity", "relations", "attributes", "calculatedFields"]
+    entity_type: EntityType = Field(alias="entityType")
+    __properties: ClassVar[List[str]] = ["entity", "relations", "attributes", "calculatedFields", "entityType"]
 
     model_config = ConfigDict(
         populate_by_name=True,

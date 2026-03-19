@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -51,9 +51,9 @@ class DashboardInfo(BaseModel):
     configuration: Optional[Any] = None
     resources: Optional[List[ResourceExportData]] = None
     version: Optional[StrictInt] = None
-    owner_name: Optional[StrictStr] = Field(default=None, description="Owner name", alias="ownerName")
     groups: Optional[List[EntityInfo]] = Field(default=None, description="Groups")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "customerId", "ownerId", "title", "name", "image", "assignedCustomers", "mobileHide", "mobileOrder", "configuration", "resources", "version", "ownerName", "groups"]
+    owner_name: Optional[StrictStr] = Field(default=None, description="Owner name", alias="ownerName")
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "customerId", "ownerId", "title", "name", "image", "assignedCustomers", "mobileHide", "mobileOrder", "configuration", "resources", "version", "groups", "ownerName"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -174,8 +174,8 @@ class DashboardInfo(BaseModel):
             "configuration": obj.get("configuration"),
             "resources": [ResourceExportData.from_dict(_item) for _item in obj["resources"]] if obj.get("resources") is not None else None,
             "version": obj.get("version"),
-            "ownerName": obj.get("ownerName"),
-            "groups": [EntityInfo.from_dict(_item) for _item in obj["groups"]] if obj.get("groups") is not None else None
+            "groups": [EntityInfo.from_dict(_item) for _item in obj["groups"]] if obj.get("groups") is not None else None,
+            "ownerName": obj.get("ownerName")
         })
         return _obj
 

@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,11 +32,10 @@ class TwoFaProviderInfo(BaseModel):
     TwoFaProviderInfo
     """ # noqa: E501
     type: Optional[TwoFaProviderType] = None
-    is_default: Optional[StrictBool] = Field(default=None, alias="isDefault")
+    default: Optional[StrictBool] = None
     contact: Optional[StrictStr] = None
     min_verification_code_send_period: Optional[StrictInt] = Field(default=None, alias="minVerificationCodeSendPeriod")
-    default: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["type", "isDefault", "contact", "minVerificationCodeSendPeriod", "default"]
+    __properties: ClassVar[List[str]] = ["type", "default", "contact", "minVerificationCodeSendPeriod"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -90,10 +89,9 @@ class TwoFaProviderInfo(BaseModel):
 
         _obj = cls.model_validate({
             "type": obj.get("type"),
-            "isDefault": obj.get("isDefault"),
+            "default": obj.get("default"),
             "contact": obj.get("contact"),
-            "minVerificationCodeSendPeriod": obj.get("minVerificationCodeSendPeriod"),
-            "default": obj.get("default")
+            "minVerificationCodeSendPeriod": obj.get("minVerificationCodeSendPeriod")
         })
         return _obj
 

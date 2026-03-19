@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,9 +30,9 @@ class LoginResponse(BaseModel):
     """
     LoginResponse
     """ # noqa: E501
-    token: StrictStr = Field(description="JWT token")
     refresh_token: StrictStr = Field(description="Refresh token", alias="refreshToken")
-    __properties: ClassVar[List[str]] = ["token", "refreshToken"]
+    token: StrictStr = Field(description="JWT token")
+    __properties: ClassVar[List[str]] = ["refreshToken", "token"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -85,8 +85,8 @@ class LoginResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "token": obj.get("token"),
-            "refreshToken": obj.get("refreshToken")
+            "refreshToken": obj.get("refreshToken"),
+            "token": obj.get("token")
         })
         return _obj
 

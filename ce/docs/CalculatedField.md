@@ -13,12 +13,12 @@
 | **entity_id** | [**EntityId**](EntityId.md) |  | [optional] |
 | **type** | [**CalculatedFieldType**](CalculatedFieldType.md) |  | [optional] |
 | **name** | **str** | User defined name of the calculated field. | [optional] |
-| **debug_mode** | **bool** |  | [optional] |
 | **debug_settings** | [**DebugSettings**](DebugSettings.md) | Debug settings object. | [optional] |
 | **configuration_version** | **int** | Version of calculated field configuration. | [optional] |
 | **configuration** | [**CalculatedFieldConfiguration**](CalculatedFieldConfiguration.md) |  | |
 | **version** | **int** |  | [optional] |
 | **additional_info** | **object** | Additional parameters of the calculated field | [optional] |
+| **debug_mode** | **bool** |  | [optional] |
 
 
 

@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ class PropagationCalculatedFieldConfiguration(CalculatedFieldConfiguration):
     arguments: Dict[str, Argument]
     expression: Optional[StrictStr] = None
     relation: RelationPathLevel
-    __properties: ClassVar[List[str]] = ["output", "aiGenerated", "type", "applyExpressionToResolvedArguments", "arguments", "expression", "relation"]
+    __properties: ClassVar[List[str]] = ["type", "output", "aiGenerated", "applyExpressionToResolvedArguments", "arguments", "expression", "relation"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -104,9 +104,9 @@ class PropagationCalculatedFieldConfiguration(CalculatedFieldConfiguration):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "type": obj.get("type"),
             "output": Output.from_dict(obj["output"]) if obj.get("output") is not None else None,
             "aiGenerated": obj.get("aiGenerated"),
-            "type": obj.get("type"),
             "applyExpressionToResolvedArguments": obj.get("applyExpressionToResolvedArguments"),
             "arguments": dict(
                 (_k, Argument.from_dict(_v))

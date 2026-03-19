@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -43,7 +43,9 @@ class Integration(BaseModel):
     debug_mode: Optional[StrictBool] = Field(default=None, description="Enable/disable debug. ", alias="debugMode")
     debug_settings: Optional[DebugSettings] = Field(default=None, description="Debug settings object.", alias="debugSettings")
     enabled: Optional[StrictBool] = Field(default=None, description="Boolean flag to enable/disable the integration")
+    remote: Optional[StrictBool] = Field(default=None, description="Boolean flag to enable/disable the integration to be executed remotely. Remote integration is launched in a separate microservice. Local integration is executed by the platform core")
     allow_create_devices_or_assets: Optional[StrictBool] = Field(default=None, description="Boolean flag to allow/disallow the integration to create devices or assets that send message and do not exist in the system yet", alias="allowCreateDevicesOrAssets")
+    edge_template: Optional[StrictBool] = Field(default=None, description="Boolean flag that specifies that is regular or edge template integration", alias="edgeTemplate")
     version: Optional[StrictInt] = None
     default_converter_id: ConverterId = Field(description="JSON object with the Uplink Converter Id", alias="defaultConverterId")
     downlink_converter_id: Optional[ConverterId] = Field(default=None, description="JSON object with the Downlink Converter Id", alias="downlinkConverterId")
@@ -51,9 +53,7 @@ class Integration(BaseModel):
     secret: Optional[StrictStr] = Field(default=None, description="String value used by the remote integrations. Remote integration uses this value along with the 'routingKey' for kind of security and validation to be able to connect to the platform using Grpc")
     configuration: Optional[Any] = Field(description="JSON object representing integration configuration. Each integration type has specific configuration with the connectivity parameters (like 'host' and 'port' for MQTT type or 'baseUrl' for HTTP based type, etc.) and other important parameters dependent on the integration type")
     additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the integration", alias="additionalInfo")
-    edge_template: Optional[StrictBool] = Field(default=None, description="Boolean flag that specifies that is regular or edge template integration", alias="edgeTemplate")
-    remote: Optional[StrictBool] = Field(default=None, description="Boolean flag to enable/disable the integration to be executed remotely. Remote integration is launched in a separate microservice. Local integration is executed by the platform core")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "name", "type", "debugMode", "debugSettings", "enabled", "allowCreateDevicesOrAssets", "version", "defaultConverterId", "downlinkConverterId", "routingKey", "secret", "configuration", "additionalInfo", "edgeTemplate", "remote"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "name", "type", "debugMode", "debugSettings", "enabled", "remote", "allowCreateDevicesOrAssets", "edgeTemplate", "version", "defaultConverterId", "downlinkConverterId", "routingKey", "secret", "configuration", "additionalInfo"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -143,16 +143,16 @@ class Integration(BaseModel):
             "debugMode": obj.get("debugMode"),
             "debugSettings": DebugSettings.from_dict(obj["debugSettings"]) if obj.get("debugSettings") is not None else None,
             "enabled": obj.get("enabled"),
+            "remote": obj.get("remote"),
             "allowCreateDevicesOrAssets": obj.get("allowCreateDevicesOrAssets"),
+            "edgeTemplate": obj.get("edgeTemplate"),
             "version": obj.get("version"),
             "defaultConverterId": ConverterId.from_dict(obj["defaultConverterId"]) if obj.get("defaultConverterId") is not None else None,
             "downlinkConverterId": ConverterId.from_dict(obj["downlinkConverterId"]) if obj.get("downlinkConverterId") is not None else None,
             "routingKey": obj.get("routingKey"),
             "secret": obj.get("secret"),
             "configuration": obj.get("configuration"),
-            "additionalInfo": obj.get("additionalInfo"),
-            "edgeTemplate": obj.get("edgeTemplate"),
-            "remote": obj.get("remote")
+            "additionalInfo": obj.get("additionalInfo")
         })
         return _obj
 

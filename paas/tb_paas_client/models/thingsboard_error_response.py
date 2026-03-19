@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,14 +33,14 @@ class ThingsboardErrorResponse(BaseModel):
     """
     ThingsboardErrorResponse
     """ # noqa: E501
-    message: Optional[StrictStr] = Field(default=None, description="Error message")
     error_code: Optional[ThingsboardErrorCode] = Field(default=None, alias="errorCode")
+    message: Optional[StrictStr] = Field(default=None, description="Error message")
     status: Optional[StrictInt] = Field(default=None, description="HTTP Response Status Code")
-    subscription_error_code: Optional[SubscriptionExceptionErrorCode] = Field(default=None, alias="subscriptionErrorCode")
     subscription_entry: Optional[SubscriptionEntry] = Field(default=None, alias="subscriptionEntry")
+    subscription_error_code: Optional[SubscriptionExceptionErrorCode] = Field(default=None, alias="subscriptionErrorCode")
     subscription_value: Optional[Any] = Field(default=None, alias="subscriptionValue")
     timestamp: Optional[StrictInt] = Field(default=None, description="Timestamp")
-    __properties: ClassVar[List[str]] = ["message", "errorCode", "status", "subscriptionErrorCode", "subscriptionEntry", "subscriptionValue", "timestamp"]
+    __properties: ClassVar[List[str]] = ["errorCode", "message", "status", "subscriptionEntry", "subscriptionErrorCode", "subscriptionValue", "timestamp"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -104,11 +104,11 @@ class ThingsboardErrorResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "message": obj.get("message"),
             "errorCode": obj.get("errorCode"),
+            "message": obj.get("message"),
             "status": obj.get("status"),
-            "subscriptionErrorCode": obj.get("subscriptionErrorCode"),
             "subscriptionEntry": obj.get("subscriptionEntry"),
+            "subscriptionErrorCode": obj.get("subscriptionErrorCode"),
             "subscriptionValue": obj.get("subscriptionValue"),
             "timestamp": obj.get("timestamp")
         })

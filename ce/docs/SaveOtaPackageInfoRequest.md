@@ -25,8 +25,8 @@ A JSON value representing the OTA Package.
 | **checksum** | **str** | OTA Package checksum. | [optional] [readonly] |
 | **data_size** | **int** | OTA Package data size. | [optional] [readonly] |
 | **uses_url** | **bool** | Indicates OTA Package uses url. Should be 'true' if uses url or 'false' if will be used data. | [optional] [readonly] |
-| **name** | **str** |  | [optional] [readonly] |
 | **additional_info** | **object** | OTA Package description. | [optional] |
+| **name** | **str** |  | [optional] [readonly] |
 
 
 

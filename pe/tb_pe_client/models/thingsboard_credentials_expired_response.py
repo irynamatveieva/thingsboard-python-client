@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,12 +31,12 @@ class ThingsboardCredentialsExpiredResponse(BaseModel):
     """
     ThingsboardCredentialsExpiredResponse
     """ # noqa: E501
-    status: Optional[StrictInt] = Field(default=None, description="HTTP Response Status Code")
-    message: Optional[StrictStr] = Field(default=None, description="Error message")
     error_code: Optional[ThingsboardErrorCode] = Field(default=None, alias="errorCode")
-    timestamp: Optional[StrictInt] = Field(default=None, description="Timestamp")
+    message: Optional[StrictStr] = Field(default=None, description="Error message")
     reset_token: Optional[StrictStr] = Field(default=None, description="Password reset token", alias="resetToken")
-    __properties: ClassVar[List[str]] = ["status", "message", "errorCode", "timestamp", "resetToken"]
+    status: Optional[StrictInt] = Field(default=None, description="HTTP Response Status Code")
+    timestamp: Optional[StrictInt] = Field(default=None, description="Timestamp")
+    __properties: ClassVar[List[str]] = ["errorCode", "message", "resetToken", "status", "timestamp"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -74,10 +74,10 @@ class ThingsboardCredentialsExpiredResponse(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set([
-            "status",
             "message",
-            "timestamp",
             "reset_token",
+            "status",
+            "timestamp",
         ])
 
         _dict = self.model_dump(
@@ -97,11 +97,11 @@ class ThingsboardCredentialsExpiredResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "status": obj.get("status"),
-            "message": obj.get("message"),
             "errorCode": obj.get("errorCode"),
-            "timestamp": obj.get("timestamp"),
-            "resetToken": obj.get("resetToken")
+            "message": obj.get("message"),
+            "resetToken": obj.get("resetToken"),
+            "status": obj.get("status"),
+            "timestamp": obj.get("timestamp")
         })
         return _obj
 

@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ class EntityAggregationCalculatedFieldConfiguration(CalculatedFieldConfiguration
     metrics: Dict[str, AggMetric]
     produce_intermediate_result: Optional[StrictBool] = Field(default=None, alias="produceIntermediateResult")
     watermark: Optional[Watermark] = None
-    __properties: ClassVar[List[str]] = ["output", "aiGenerated", "type", "arguments", "interval", "metrics", "produceIntermediateResult", "watermark"]
+    __properties: ClassVar[List[str]] = ["type", "output", "aiGenerated", "arguments", "interval", "metrics", "produceIntermediateResult", "watermark"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -117,9 +117,9 @@ class EntityAggregationCalculatedFieldConfiguration(CalculatedFieldConfiguration
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "type": obj.get("type"),
             "output": Output.from_dict(obj["output"]) if obj.get("output") is not None else None,
             "aiGenerated": obj.get("aiGenerated"),
-            "type": obj.get("type"),
             "arguments": dict(
                 (_k, Argument.from_dict(_v))
                 for _k, _v in obj["arguments"].items()

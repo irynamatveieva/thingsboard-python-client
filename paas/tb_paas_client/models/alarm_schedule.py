@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -39,9 +39,9 @@ class AlarmSchedule(BaseModel):
     """
     Configuration for alarm schedule
     """ # noqa: E501
-    type: Optional[AlarmScheduleType] = None
     dynamic_value: Optional[DynamicValueString] = Field(default=None, alias="dynamicValue")
-    __properties: ClassVar[List[str]] = ["type", "dynamicValue"]
+    type: Optional[AlarmScheduleType] = None
+    __properties: ClassVar[List[str]] = ["dynamicValue", "type"]
 
     model_config = ConfigDict(
         populate_by_name=True,

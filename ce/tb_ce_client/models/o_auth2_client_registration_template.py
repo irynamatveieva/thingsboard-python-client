@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -47,9 +47,9 @@ class OAuth2ClientRegistrationTemplate(BaseModel):
     login_button_icon: Optional[StrictStr] = Field(default=None, description="Default log in button icon for OAuth2 provider", alias="loginButtonIcon")
     login_button_label: Optional[StrictStr] = Field(default=None, description="Default OAuth2 provider label", alias="loginButtonLabel")
     help_link: Optional[StrictStr] = Field(default=None, description="Help link for OAuth2 provider", alias="helpLink")
-    name: Optional[StrictStr] = None
     additional_info: Optional[Any] = Field(default=None, alias="additionalInfo")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "providerId", "mapperConfig", "authorizationUri", "accessTokenUri", "scope", "userInfoUri", "userNameAttributeName", "jwkSetUri", "clientAuthenticationMethod", "comment", "loginButtonIcon", "loginButtonLabel", "helpLink", "name", "additionalInfo"]
+    name: Optional[StrictStr] = None
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "providerId", "mapperConfig", "authorizationUri", "accessTokenUri", "scope", "userInfoUri", "userNameAttributeName", "jwkSetUri", "clientAuthenticationMethod", "comment", "loginButtonIcon", "loginButtonLabel", "helpLink", "additionalInfo", "name"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -130,8 +130,8 @@ class OAuth2ClientRegistrationTemplate(BaseModel):
             "loginButtonIcon": obj.get("loginButtonIcon"),
             "loginButtonLabel": obj.get("loginButtonLabel"),
             "helpLink": obj.get("helpLink"),
-            "name": obj.get("name"),
-            "additionalInfo": obj.get("additionalInfo")
+            "additionalInfo": obj.get("additionalInfo"),
+            "name": obj.get("name")
         })
         return _obj
 

@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,10 +33,10 @@ class AlarmRuleStringFilterPredicate(AlarmRuleKeyFilterPredicate):
     """
     AlarmRuleStringFilterPredicate
     """ # noqa: E501
+    ignore_case: Optional[StrictBool] = Field(default=None, alias="ignoreCase")
     operation: StringOperation
     value: AlarmConditionValueString
-    ignore_case: Optional[StrictBool] = Field(default=None, alias="ignoreCase")
-    __properties: ClassVar[List[str]] = ["type", "operation", "value", "ignoreCase"]
+    __properties: ClassVar[List[str]] = ["type", "ignoreCase", "operation", "value"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -93,9 +93,9 @@ class AlarmRuleStringFilterPredicate(AlarmRuleKeyFilterPredicate):
 
         _obj = cls.model_validate({
             "type": obj.get("type"),
+            "ignoreCase": obj.get("ignoreCase"),
             "operation": obj.get("operation"),
-            "value": AlarmConditionValueString.from_dict(obj["value"]) if obj.get("value") is not None else None,
-            "ignoreCase": obj.get("ignoreCase")
+            "value": AlarmConditionValueString.from_dict(obj["value"]) if obj.get("value") is not None else None
         })
         return _obj
 

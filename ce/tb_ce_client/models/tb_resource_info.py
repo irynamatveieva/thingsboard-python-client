@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -45,11 +45,11 @@ class TbResourceInfo(BaseModel):
     etag: Optional[StrictStr] = Field(default=None, description="Resource etag.")
     file_name: Optional[StrictStr] = Field(default=None, description="Resource file name.", alias="fileName")
     descriptor: Optional[Any] = Field(default=None, description="Resource descriptor.")
+    link: Optional[StrictStr] = None
     name: Optional[StrictStr] = None
     public: Optional[StrictBool] = None
-    link: Optional[StrictStr] = None
     public_link: Optional[StrictStr] = Field(default=None, alias="publicLink")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "title", "resourceType", "resourceSubType", "resourceKey", "publicResourceKey", "etag", "fileName", "descriptor", "name", "public", "link", "publicLink"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "title", "resourceType", "resourceSubType", "resourceKey", "publicResourceKey", "etag", "fileName", "descriptor", "link", "name", "public", "publicLink"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -92,8 +92,8 @@ class TbResourceInfo(BaseModel):
             "created_time",
             "tenant_id",
             "etag",
-            "name",
             "link",
+            "name",
             "public_link",
         ])
 
@@ -136,9 +136,9 @@ class TbResourceInfo(BaseModel):
             "etag": obj.get("etag"),
             "fileName": obj.get("fileName"),
             "descriptor": obj.get("descriptor"),
+            "link": obj.get("link"),
             "name": obj.get("name"),
             "public": obj.get("public"),
-            "link": obj.get("link"),
             "publicLink": obj.get("publicLink")
         })
         return _obj

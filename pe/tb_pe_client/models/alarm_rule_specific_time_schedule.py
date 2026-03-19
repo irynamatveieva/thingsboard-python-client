@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,11 +31,11 @@ class AlarmRuleSpecificTimeSchedule(AlarmRuleSchedule):
     """
     AlarmRuleSpecificTimeSchedule
     """ # noqa: E501
-    timezone: Optional[StrictStr] = None
     days_of_week: Optional[List[StrictInt]] = Field(default=None, alias="daysOfWeek")
-    starts_on: Optional[StrictInt] = Field(default=None, alias="startsOn")
     ends_on: Optional[StrictInt] = Field(default=None, alias="endsOn")
-    __properties: ClassVar[List[str]] = ["type", "timezone", "daysOfWeek", "startsOn", "endsOn"]
+    starts_on: Optional[StrictInt] = Field(default=None, alias="startsOn")
+    timezone: Optional[StrictStr] = None
+    __properties: ClassVar[List[str]] = ["type", "daysOfWeek", "endsOn", "startsOn", "timezone"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -89,10 +89,10 @@ class AlarmRuleSpecificTimeSchedule(AlarmRuleSchedule):
 
         _obj = cls.model_validate({
             "type": obj.get("type"),
-            "timezone": obj.get("timezone"),
             "daysOfWeek": obj.get("daysOfWeek"),
+            "endsOn": obj.get("endsOn"),
             "startsOn": obj.get("startsOn"),
-            "endsOn": obj.get("endsOn")
+            "timezone": obj.get("timezone")
         })
         return _obj
 

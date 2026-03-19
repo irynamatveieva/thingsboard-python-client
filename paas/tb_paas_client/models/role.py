@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,17 +35,17 @@ class Role(BaseModel):
     """
     A JSON value representing the role.
     """ # noqa: E501
+    id: Optional[RoleId] = Field(default=None, description="JSON object with the Role Id. Specify this field to update the Role. Referencing non-existing Role Id will cause error. Omit this field to create new Role.")
+    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the role creation, in milliseconds", alias="createdTime")
+    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the role. May include: 'description' (string).", alias="additionalInfo")
     tenant_id: TenantId = Field(description="JSON object with Tenant Id.", alias="tenantId")
     customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id. ", alias="customerId")
     name: StrictStr = Field(description="Role Name")
     type: RoleType = Field(description="Type of the role: generic or group")
     permissions: Optional[Any] = None
     version: Optional[StrictInt] = None
-    id: Optional[RoleId] = Field(default=None, description="JSON object with the Role Id. Specify this field to update the Role. Referencing non-existing Role Id will cause error. Omit this field to create new Role.")
-    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the role creation, in milliseconds", alias="createdTime")
     owner_id: Optional[EntityId] = Field(default=None, description="JSON object with Customer or Tenant Id", alias="ownerId")
-    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the role. May include: 'description' (string).", alias="additionalInfo")
-    __properties: ClassVar[List[str]] = ["tenantId", "customerId", "name", "type", "permissions", "version", "id", "createdTime", "ownerId", "additionalInfo"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "additionalInfo", "tenantId", "customerId", "name", "type", "permissions", "version", "ownerId"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -83,9 +83,9 @@ class Role(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set([
+            "created_time",
             "tenant_id",
             "customer_id",
-            "created_time",
             "owner_id",
         ])
 
@@ -94,27 +94,27 @@ class Role(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of id
+        if self.id:
+            _dict['id'] = self.id.to_dict()
         # override the default output from pydantic by calling `to_dict()` of tenant_id
         if self.tenant_id:
             _dict['tenantId'] = self.tenant_id.to_dict()
         # override the default output from pydantic by calling `to_dict()` of customer_id
         if self.customer_id:
             _dict['customerId'] = self.customer_id.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of id
-        if self.id:
-            _dict['id'] = self.id.to_dict()
         # override the default output from pydantic by calling `to_dict()` of owner_id
         if self.owner_id:
             _dict['ownerId'] = self.owner_id.to_dict()
-        # set to None if permissions (nullable) is None
-        # and model_fields_set contains the field
-        if self.permissions is None and "permissions" in self.model_fields_set:
-            _dict['permissions'] = None
-
         # set to None if additional_info (nullable) is None
         # and model_fields_set contains the field
         if self.additional_info is None and "additional_info" in self.model_fields_set:
             _dict['additionalInfo'] = None
+
+        # set to None if permissions (nullable) is None
+        # and model_fields_set contains the field
+        if self.permissions is None and "permissions" in self.model_fields_set:
+            _dict['permissions'] = None
 
         return _dict
 
@@ -128,16 +128,16 @@ class Role(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "id": RoleId.from_dict(obj["id"]) if obj.get("id") is not None else None,
+            "createdTime": obj.get("createdTime"),
+            "additionalInfo": obj.get("additionalInfo"),
             "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
             "customerId": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
             "name": obj.get("name"),
             "type": obj.get("type"),
             "permissions": obj.get("permissions"),
             "version": obj.get("version"),
-            "id": RoleId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "ownerId": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None,
-            "additionalInfo": obj.get("additionalInfo")
+            "ownerId": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None
         })
         return _obj
 

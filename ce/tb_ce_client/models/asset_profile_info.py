@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,11 +34,11 @@ class AssetProfileInfo(BaseModel):
     AssetProfileInfo
     """ # noqa: E501
     id: Optional[EntityId] = Field(default=None, description="JSON object with the entity Id. ")
-    tenant_id: Optional[TenantId] = Field(default=None, description="Tenant id.", alias="tenantId")
     name: Optional[StrictStr] = Field(default=None, description="Entity Name")
     image: Optional[StrictStr] = Field(default=None, description="Either URL or Base64 data of the icon. Used in the mobile application to visualize set of asset profiles in the grid view. ")
     default_dashboard_id: Optional[DashboardId] = Field(default=None, description="Reference to the dashboard. Used in the mobile application to open the default dashboard when user navigates to asset details.", alias="defaultDashboardId")
-    __properties: ClassVar[List[str]] = ["id", "tenantId", "name", "image", "defaultDashboardId"]
+    tenant_id: Optional[TenantId] = Field(default=None, description="Tenant id.", alias="tenantId")
+    __properties: ClassVar[List[str]] = ["id", "name", "image", "defaultDashboardId", "tenantId"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -82,12 +82,12 @@ class AssetProfileInfo(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of id
         if self.id:
             _dict['id'] = self.id.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of tenant_id
-        if self.tenant_id:
-            _dict['tenantId'] = self.tenant_id.to_dict()
         # override the default output from pydantic by calling `to_dict()` of default_dashboard_id
         if self.default_dashboard_id:
             _dict['defaultDashboardId'] = self.default_dashboard_id.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of tenant_id
+        if self.tenant_id:
+            _dict['tenantId'] = self.tenant_id.to_dict()
         return _dict
 
     @classmethod
@@ -101,10 +101,10 @@ class AssetProfileInfo(BaseModel):
 
         _obj = cls.model_validate({
             "id": EntityId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
             "name": obj.get("name"),
             "image": obj.get("image"),
-            "defaultDashboardId": DashboardId.from_dict(obj["defaultDashboardId"]) if obj.get("defaultDashboardId") is not None else None
+            "defaultDashboardId": DashboardId.from_dict(obj["defaultDashboardId"]) if obj.get("defaultDashboardId") is not None else None,
+            "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None
         })
         return _obj
 

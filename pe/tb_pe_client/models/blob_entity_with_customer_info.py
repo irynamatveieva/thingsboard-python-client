@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -36,6 +36,7 @@ class BlobEntityWithCustomerInfo(BaseModel):
     """ # noqa: E501
     id: Optional[BlobEntityId] = Field(default=None, description="JSON object with the blob entity Id. Referencing non-existing blob entity Id will cause error")
     created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the blob entity creation, in milliseconds", alias="createdTime")
+    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the blob entity", alias="additionalInfo")
     tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id", alias="tenantId")
     customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id", alias="customerId")
     name: Optional[StrictStr] = Field(default=None, description="blob entity name")
@@ -44,8 +45,7 @@ class BlobEntityWithCustomerInfo(BaseModel):
     customer_title: Optional[StrictStr] = Field(default=None, description="Title of the customer", alias="customerTitle")
     customer_is_public: Optional[StrictBool] = Field(default=None, description="Parameter that specifies if customer is public", alias="customerIsPublic")
     owner_id: Optional[EntityId] = Field(default=None, description="JSON object with Customer or Tenant Id", alias="ownerId")
-    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the blob entity", alias="additionalInfo")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "customerId", "name", "type", "contentType", "customerTitle", "customerIsPublic", "ownerId", "additionalInfo"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "additionalInfo", "tenantId", "customerId", "name", "type", "contentType", "customerTitle", "customerIsPublic", "ownerId"]
 
     @field_validator('content_type')
     def content_type_validate_enum(cls, value):
@@ -143,6 +143,7 @@ class BlobEntityWithCustomerInfo(BaseModel):
         _obj = cls.model_validate({
             "id": BlobEntityId.from_dict(obj["id"]) if obj.get("id") is not None else None,
             "createdTime": obj.get("createdTime"),
+            "additionalInfo": obj.get("additionalInfo"),
             "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
             "customerId": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
             "name": obj.get("name"),
@@ -150,8 +151,7 @@ class BlobEntityWithCustomerInfo(BaseModel):
             "contentType": obj.get("contentType"),
             "customerTitle": obj.get("customerTitle"),
             "customerIsPublic": obj.get("customerIsPublic"),
-            "ownerId": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None,
-            "additionalInfo": obj.get("additionalInfo")
+            "ownerId": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None
         })
         return _obj
 

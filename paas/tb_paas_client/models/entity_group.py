@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -42,10 +42,10 @@ class EntityGroup(BaseModel):
     additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the entity group. May include: 'description' (string), 'isPublic' (boolean, whether this group is shared publicly), 'publicCustomerId' (string, UUID of the public customer associated with this group).", alias="additionalInfo")
     configuration: Optional[Any] = Field(default=None, description="JSON with the configuration for UI components: list of columns, settings, actions, etc ")
     version: Optional[StrictInt] = None
-    group_all: Optional[StrictBool] = Field(default=None, description="Indicates special group 'All' that contains all entities and can't be deleted.", alias="groupAll")
     edge_group_all: Optional[StrictBool] = Field(default=None, description="Indicates special edge group 'All' that contains all entities and can't be deleted.", alias="edgeGroupAll")
+    group_all: Optional[StrictBool] = Field(default=None, description="Indicates special group 'All' that contains all entities and can't be deleted.", alias="groupAll")
     tenant_id: Optional[TenantId] = Field(default=None, alias="tenantId")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "type", "name", "ownerId", "additionalInfo", "configuration", "version", "groupAll", "edgeGroupAll", "tenantId"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "type", "name", "ownerId", "additionalInfo", "configuration", "version", "edgeGroupAll", "groupAll", "tenantId"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -136,8 +136,8 @@ class EntityGroup(BaseModel):
             "additionalInfo": obj.get("additionalInfo"),
             "configuration": obj.get("configuration"),
             "version": obj.get("version"),
-            "groupAll": obj.get("groupAll"),
             "edgeGroupAll": obj.get("edgeGroupAll"),
+            "groupAll": obj.get("groupAll"),
             "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None
         })
         return _obj

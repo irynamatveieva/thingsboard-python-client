@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ class AnyTimeSchedule(AlarmSchedule):
     """
     AnyTimeSchedule
     """ # noqa: E501
-    __properties: ClassVar[List[str]] = ["type", "dynamicValue"]
+    __properties: ClassVar[List[str]] = ["dynamicValue", "type"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -89,8 +89,8 @@ class AnyTimeSchedule(AlarmSchedule):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "type": obj.get("type"),
-            "dynamicValue": DynamicValueString.from_dict(obj["dynamicValue"]) if obj.get("dynamicValue") is not None else None
+            "dynamicValue": DynamicValueString.from_dict(obj["dynamicValue"]) if obj.get("dynamicValue") is not None else None,
+            "type": obj.get("type")
         })
         return _obj
 

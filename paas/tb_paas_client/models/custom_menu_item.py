@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -42,6 +42,7 @@ class CustomMenuItem(MenuItem):
     hide_dashboard_toolbar: Optional[StrictBool] = Field(default=None, description="Hide the dashboard toolbar", alias="hideDashboardToolbar")
     url: Optional[StrictStr] = Field(default=None, description="URL to open in the iframe, when user clicks the menu item")
     set_access_token: Optional[StrictBool] = Field(default=None, description="Set the access token of the current user to a new dashboard", alias="setAccessToken")
+    visible: Optional[StrictBool] = Field(default=None, description="Mark if menu item is visible for user")
     pages: Optional[List[CustomMenuItem]] = Field(default=None, description="List of child menu items")
     __properties: ClassVar[List[str]] = ["type", "visible", "name", "icon", "menuItemType", "linkType", "dashboardId", "hideDashboardToolbar", "url", "setAccessToken", "pages"]
 

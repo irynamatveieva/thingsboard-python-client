@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -42,6 +42,7 @@ class TimeSeriesChartThreshold(BaseModel):
     entity_key_type: Optional[StrictStr] = Field(default=None, alias="entityKeyType")
     entity_alias: Optional[StrictStr] = Field(default=None, alias="entityAlias")
     entity_key: Optional[StrictStr] = Field(default=None, alias="entityKey")
+    y_axis_id: Optional[StrictStr] = Field(default=None, alias="yAxisId")
     units: Optional[StrictStr] = None
     decimals: Optional[StrictInt] = None
     line_color: Optional[StrictStr] = Field(default=None, alias="lineColor")
@@ -58,8 +59,7 @@ class TimeSeriesChartThreshold(BaseModel):
     enable_label_background: Optional[StrictBool] = Field(default=None, alias="enableLabelBackground")
     label_background: Optional[StrictStr] = Field(default=None, alias="labelBackground")
     yaxis_id: Optional[StrictStr] = Field(default=None, alias="yaxisId")
-    y_axis_id: Optional[StrictStr] = Field(default=None, alias="yAxisId")
-    __properties: ClassVar[List[str]] = ["type", "value", "latestKeyType", "latestKey", "entityKeyType", "entityAlias", "entityKey", "units", "decimals", "lineColor", "lineType", "lineWidth", "startSymbol", "startSymbolSize", "endSymbol", "endSymbolSize", "showLabel", "labelPosition", "labelFont", "labelColor", "enableLabelBackground", "labelBackground", "yaxisId", "yAxisId"]
+    __properties: ClassVar[List[str]] = ["type", "value", "latestKeyType", "latestKey", "entityKeyType", "entityAlias", "entityKey", "yAxisId", "units", "decimals", "lineColor", "lineType", "lineWidth", "startSymbol", "startSymbolSize", "endSymbol", "endSymbolSize", "showLabel", "labelPosition", "labelFont", "labelColor", "enableLabelBackground", "labelBackground", "yaxisId"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -122,6 +122,7 @@ class TimeSeriesChartThreshold(BaseModel):
             "entityKeyType": obj.get("entityKeyType"),
             "entityAlias": obj.get("entityAlias"),
             "entityKey": obj.get("entityKey"),
+            "yAxisId": obj.get("yAxisId"),
             "units": obj.get("units"),
             "decimals": obj.get("decimals"),
             "lineColor": obj.get("lineColor"),
@@ -137,8 +138,7 @@ class TimeSeriesChartThreshold(BaseModel):
             "labelColor": obj.get("labelColor"),
             "enableLabelBackground": obj.get("enableLabelBackground"),
             "labelBackground": obj.get("labelBackground"),
-            "yaxisId": obj.get("yaxisId"),
-            "yAxisId": obj.get("yAxisId")
+            "yaxisId": obj.get("yaxisId")
         })
         return _obj
 

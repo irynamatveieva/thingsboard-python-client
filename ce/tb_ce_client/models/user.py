@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -44,9 +44,9 @@ class User(BaseModel):
     last_name: Optional[StrictStr] = Field(default=None, description="Last name of the user", alias="lastName")
     phone: Optional[StrictStr] = Field(default=None, description="Phone number of the user")
     version: Optional[StrictInt] = None
-    name: Optional[StrictStr] = Field(default=None, description="Duplicates the email of the user, readonly")
     additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the user. May include: 'defaultDashboardId' (string, UUID of the default dashboard), 'defaultDashboardFullscreen' (boolean), 'homeDashboardId' (string, UUID of the home dashboard), 'homeDashboardHideToolbar' (boolean), 'lang' (string, user locale, e.g. 'en_US'), 'authProviderName' (string, name of the authentication provider).", alias="additionalInfo")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "customerId", "email", "authority", "firstName", "lastName", "phone", "version", "name", "additionalInfo"]
+    name: Optional[StrictStr] = Field(default=None, description="Duplicates the email of the user, readonly")
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "customerId", "email", "authority", "firstName", "lastName", "phone", "version", "additionalInfo", "name"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -127,8 +127,8 @@ class User(BaseModel):
             "lastName": obj.get("lastName"),
             "phone": obj.get("phone"),
             "version": obj.get("version"),
-            "name": obj.get("name"),
-            "additionalInfo": obj.get("additionalInfo")
+            "additionalInfo": obj.get("additionalInfo"),
+            "name": obj.get("name")
         })
         return _obj
 

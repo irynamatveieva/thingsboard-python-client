@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -45,9 +45,9 @@ class Customer(BaseModel):
     title: StrictStr = Field(description="Title of the customer")
     tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id", alias="tenantId")
     version: Optional[StrictInt] = None
-    name: Optional[StrictStr] = Field(default=None, description="Name of the customer. Read-only, duplicated from title for backward compatibility")
     additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the customer. May include: 'description' (string), 'homeDashboardId' (string, UUID of the home dashboard), 'homeDashboardHideToolbar' (boolean, whether to hide the dashboard toolbar), 'isPublic' (boolean, whether this is a public customer).", alias="additionalInfo")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "country", "state", "city", "address", "address2", "zip", "phone", "email", "title", "tenantId", "version", "name", "additionalInfo"]
+    name: Optional[StrictStr] = Field(default=None, description="Name of the customer. Read-only, duplicated from title for backward compatibility")
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "country", "state", "city", "address", "address2", "zip", "phone", "email", "title", "tenantId", "version", "additionalInfo", "name"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -128,8 +128,8 @@ class Customer(BaseModel):
             "title": obj.get("title"),
             "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
             "version": obj.get("version"),
-            "name": obj.get("name"),
-            "additionalInfo": obj.get("additionalInfo")
+            "additionalInfo": obj.get("additionalInfo"),
+            "name": obj.get("name")
         })
         return _obj
 

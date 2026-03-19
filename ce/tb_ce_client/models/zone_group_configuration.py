@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,14 +35,14 @@ class ZoneGroupConfiguration(BaseModel):
     """
     ZoneGroupConfiguration
     """ # noqa: E501
+    ref_entity_id: Optional[EntityId] = Field(default=None, alias="refEntityId")
+    ref_dynamic_source_configuration: Optional[CfArgumentDynamicSourceConfiguration] = Field(default=None, alias="refDynamicSourceConfiguration")
     perimeter_key_name: Annotated[str, Field(min_length=1, strict=True)] = Field(alias="perimeterKeyName")
     report_strategy: GeofencingReportStrategy = Field(alias="reportStrategy")
     create_relations_with_matched_zones: Optional[StrictBool] = Field(default=None, alias="createRelationsWithMatchedZones")
-    ref_entity_id: Optional[EntityId] = Field(default=None, alias="refEntityId")
-    ref_dynamic_source_configuration: Optional[CfArgumentDynamicSourceConfiguration] = Field(default=None, alias="refDynamicSourceConfiguration")
     relation_type: Optional[StrictStr] = Field(default=None, alias="relationType")
     direction: Optional[EntitySearchDirection] = None
-    __properties: ClassVar[List[str]] = ["perimeterKeyName", "reportStrategy", "createRelationsWithMatchedZones", "refEntityId", "refDynamicSourceConfiguration", "relationType", "direction"]
+    __properties: ClassVar[List[str]] = ["refEntityId", "refDynamicSourceConfiguration", "perimeterKeyName", "reportStrategy", "createRelationsWithMatchedZones", "relationType", "direction"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -101,11 +101,11 @@ class ZoneGroupConfiguration(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "refEntityId": EntityId.from_dict(obj["refEntityId"]) if obj.get("refEntityId") is not None else None,
+            "refDynamicSourceConfiguration": CfArgumentDynamicSourceConfiguration.from_dict(obj["refDynamicSourceConfiguration"]) if obj.get("refDynamicSourceConfiguration") is not None else None,
             "perimeterKeyName": obj.get("perimeterKeyName"),
             "reportStrategy": obj.get("reportStrategy"),
             "createRelationsWithMatchedZones": obj.get("createRelationsWithMatchedZones"),
-            "refEntityId": EntityId.from_dict(obj["refEntityId"]) if obj.get("refEntityId") is not None else None,
-            "refDynamicSourceConfiguration": CfArgumentDynamicSourceConfiguration.from_dict(obj["refDynamicSourceConfiguration"]) if obj.get("refDynamicSourceConfiguration") is not None else None,
             "relationType": obj.get("relationType"),
             "direction": obj.get("direction")
         })

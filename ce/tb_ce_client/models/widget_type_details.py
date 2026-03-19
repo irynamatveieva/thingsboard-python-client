@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,20 +33,20 @@ class WidgetTypeDetails(BaseModel):
     """
     A JSON value representing the Widget Type Details.
     """ # noqa: E501
-    fqn: Optional[StrictStr] = Field(default=None, description="Unique FQN that is used in dashboards as a reference widget type")
-    name: Optional[StrictStr] = Field(default=None, description="Widget name used in search and UI")
-    deprecated: Optional[StrictBool] = Field(default=None, description="Whether widget type is deprecated.")
-    image: Optional[StrictStr] = Field(default=None, description="Relative or external image URL. Replaced with image data URL (Base64) in case of relative URL and 'inlineImages' option enabled.")
-    description: Optional[StrictStr] = Field(default=None, description="Description of the widget")
-    descriptor: Optional[Any] = Field(default=None, description="Complex JSON object that describes the widget type")
-    resources: Optional[List[ResourceExportData]] = None
     id: Optional[WidgetTypeId] = Field(default=None, description="JSON object with the Widget Type Id. Specify this field to update the Widget Type. Referencing non-existing Widget Type Id will cause error. Omit this field to create new Widget Type.")
     created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the Widget Type creation, in milliseconds", alias="createdTime")
     tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id.", alias="tenantId")
+    fqn: Optional[StrictStr] = Field(default=None, description="Unique FQN that is used in dashboards as a reference widget type")
+    name: Optional[StrictStr] = Field(default=None, description="Widget name used in search and UI")
+    deprecated: Optional[StrictBool] = Field(default=None, description="Whether widget type is deprecated.")
     scada: Optional[StrictBool] = Field(default=None, description="Whether widget type is SCADA symbol.")
     version: Optional[StrictInt] = None
+    descriptor: Optional[Any] = Field(default=None, description="Complex JSON object that describes the widget type")
+    image: Optional[StrictStr] = Field(default=None, description="Relative or external image URL. Replaced with image data URL (Base64) in case of relative URL and 'inlineImages' option enabled.")
+    description: Optional[StrictStr] = Field(default=None, description="Description of the widget")
     tags: Optional[List[StrictStr]] = Field(default=None, description="Tags of the widget type")
-    __properties: ClassVar[List[str]] = ["fqn", "name", "deprecated", "image", "description", "descriptor", "resources", "id", "createdTime", "tenantId", "scada", "version", "tags"]
+    resources: Optional[List[ResourceExportData]] = None
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "fqn", "name", "deprecated", "scada", "version", "descriptor", "image", "description", "tags", "resources"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -85,11 +85,11 @@ class WidgetTypeDetails(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set([
+            "created_time",
+            "tenant_id",
             "fqn",
             "name",
             "descriptor",
-            "created_time",
-            "tenant_id",
         ])
 
         _dict = self.model_dump(
@@ -97,6 +97,12 @@ class WidgetTypeDetails(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of id
+        if self.id:
+            _dict['id'] = self.id.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of tenant_id
+        if self.tenant_id:
+            _dict['tenantId'] = self.tenant_id.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each item in resources (list)
         _items = []
         if self.resources:
@@ -104,12 +110,6 @@ class WidgetTypeDetails(BaseModel):
                 if _item_resources:
                     _items.append(_item_resources.to_dict())
             _dict['resources'] = _items
-        # override the default output from pydantic by calling `to_dict()` of id
-        if self.id:
-            _dict['id'] = self.id.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of tenant_id
-        if self.tenant_id:
-            _dict['tenantId'] = self.tenant_id.to_dict()
         # set to None if descriptor (nullable) is None
         # and model_fields_set contains the field
         if self.descriptor is None and "descriptor" in self.model_fields_set:
@@ -127,19 +127,19 @@ class WidgetTypeDetails(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "fqn": obj.get("fqn"),
-            "name": obj.get("name"),
-            "deprecated": obj.get("deprecated"),
-            "image": obj.get("image"),
-            "description": obj.get("description"),
-            "descriptor": obj.get("descriptor"),
-            "resources": [ResourceExportData.from_dict(_item) for _item in obj["resources"]] if obj.get("resources") is not None else None,
             "id": WidgetTypeId.from_dict(obj["id"]) if obj.get("id") is not None else None,
             "createdTime": obj.get("createdTime"),
             "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
+            "fqn": obj.get("fqn"),
+            "name": obj.get("name"),
+            "deprecated": obj.get("deprecated"),
             "scada": obj.get("scada"),
             "version": obj.get("version"),
-            "tags": obj.get("tags")
+            "descriptor": obj.get("descriptor"),
+            "image": obj.get("image"),
+            "description": obj.get("description"),
+            "tags": obj.get("tags"),
+            "resources": [ResourceExportData.from_dict(_item) for _item in obj["resources"]] if obj.get("resources") is not None else None
         })
         return _obj
 

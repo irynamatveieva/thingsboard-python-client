@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,10 +32,10 @@ class AlarmRuleDefinition(BaseModel):
     """
     AlarmRuleDefinition
     """ # noqa: E501
-    condition: AlarmRuleCondition
     alarm_details: Optional[StrictStr] = Field(default=None, alias="alarmDetails")
+    condition: AlarmRuleCondition
     dashboard_id: Optional[DashboardId] = Field(default=None, alias="dashboardId")
-    __properties: ClassVar[List[str]] = ["condition", "alarmDetails", "dashboardId"]
+    __properties: ClassVar[List[str]] = ["alarmDetails", "condition", "dashboardId"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -94,8 +94,8 @@ class AlarmRuleDefinition(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "condition": AlarmRuleCondition.from_dict(obj["condition"]) if obj.get("condition") is not None else None,
             "alarmDetails": obj.get("alarmDetails"),
+            "condition": AlarmRuleCondition.from_dict(obj["condition"]) if obj.get("condition") is not None else None,
             "dashboardId": DashboardId.from_dict(obj["dashboardId"]) if obj.get("dashboardId") is not None else None
         })
         return _obj

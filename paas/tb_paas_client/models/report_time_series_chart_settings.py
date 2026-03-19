@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -52,10 +52,18 @@ class ReportTimeSeriesChartSettings(BaseModel):
     title_font: Optional[Font] = Field(default=None, alias="titleFont")
     title_color: Optional[StrictStr] = Field(default=None, alias="titleColor")
     title_alignment: Optional[TextAlignment] = Field(default=None, alias="titleAlignment")
+    thresholds: Optional[List[TimeSeriesChartThreshold]] = None
     stack: Optional[StrictBool] = None
+    grid: Optional[TimeSeriesChartGridSettings] = None
+    y_axes: Optional[Dict[str, TimeSeriesChartYAxisSettings]] = Field(default=None, alias="yAxes")
+    x_axis: Optional[TimeSeriesChartXAxisSettings] = Field(default=None, alias="xAxis")
+    bar_width_settings: Optional[TimeSeriesChartBarWidthSettings] = Field(default=None, alias="barWidthSettings")
+    no_aggregation_bar_width_settings: Optional[TimeSeriesChartNoAggregationBarWidthSettings] = Field(default=None, alias="noAggregationBarWidthSettings")
+    states: Optional[List[TimeSeriesChartStateSettings]] = None
     comparison_enabled: Optional[StrictBool] = Field(default=None, alias="comparisonEnabled")
     time_for_comparison: Optional[ComparisonDuration] = Field(default=None, alias="timeForComparison")
     comparison_custom_interval_value: Optional[StrictInt] = Field(default=None, alias="comparisonCustomIntervalValue")
+    comparison_x_axis: Optional[TimeSeriesChartXAxisSettings] = Field(default=None, alias="comparisonXAxis")
     show_legend: Optional[StrictBool] = Field(default=None, alias="showLegend")
     legend_column_title_font: Optional[Font] = Field(default=None, alias="legendColumnTitleFont")
     legend_column_title_color: Optional[StrictStr] = Field(default=None, alias="legendColumnTitleColor")
@@ -63,18 +71,10 @@ class ReportTimeSeriesChartSettings(BaseModel):
     legend_label_color: Optional[StrictStr] = Field(default=None, alias="legendLabelColor")
     legend_value_font: Optional[Font] = Field(default=None, alias="legendValueFont")
     legend_value_color: Optional[StrictStr] = Field(default=None, alias="legendValueColor")
+    legend_config: Optional[LegendConfig] = Field(default=None, alias="legendConfig")
     xaxis: Optional[TimeSeriesChartXAxisSettings] = None
     yaxes: Optional[Dict[str, TimeSeriesChartYAxisSettings]] = None
-    thresholds: Optional[List[TimeSeriesChartThreshold]] = None
-    grid: Optional[TimeSeriesChartGridSettings] = None
-    y_axes: Optional[Dict[str, TimeSeriesChartYAxisSettings]] = Field(default=None, alias="yAxes")
-    x_axis: Optional[TimeSeriesChartXAxisSettings] = Field(default=None, alias="xAxis")
-    bar_width_settings: Optional[TimeSeriesChartBarWidthSettings] = Field(default=None, alias="barWidthSettings")
-    no_aggregation_bar_width_settings: Optional[TimeSeriesChartNoAggregationBarWidthSettings] = Field(default=None, alias="noAggregationBarWidthSettings")
-    states: Optional[List[TimeSeriesChartStateSettings]] = None
-    comparison_x_axis: Optional[TimeSeriesChartXAxisSettings] = Field(default=None, alias="comparisonXAxis")
-    legend_config: Optional[LegendConfig] = Field(default=None, alias="legendConfig")
-    __properties: ClassVar[List[str]] = ["showTitle", "title", "titleFont", "titleColor", "titleAlignment", "stack", "comparisonEnabled", "timeForComparison", "comparisonCustomIntervalValue", "showLegend", "legendColumnTitleFont", "legendColumnTitleColor", "legendLabelFont", "legendLabelColor", "legendValueFont", "legendValueColor", "xaxis", "yaxes", "thresholds", "grid", "yAxes", "xAxis", "barWidthSettings", "noAggregationBarWidthSettings", "states", "comparisonXAxis", "legendConfig"]
+    __properties: ClassVar[List[str]] = ["showTitle", "title", "titleFont", "titleColor", "titleAlignment", "thresholds", "stack", "grid", "yAxes", "xAxis", "barWidthSettings", "noAggregationBarWidthSettings", "states", "comparisonEnabled", "timeForComparison", "comparisonCustomIntervalValue", "comparisonXAxis", "showLegend", "legendColumnTitleFont", "legendColumnTitleColor", "legendLabelFont", "legendLabelColor", "legendValueFont", "legendValueColor", "legendConfig", "xaxis", "yaxes"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -135,25 +135,6 @@ class ReportTimeSeriesChartSettings(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of title_font
         if self.title_font:
             _dict['titleFont'] = self.title_font.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of legend_column_title_font
-        if self.legend_column_title_font:
-            _dict['legendColumnTitleFont'] = self.legend_column_title_font.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of legend_label_font
-        if self.legend_label_font:
-            _dict['legendLabelFont'] = self.legend_label_font.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of legend_value_font
-        if self.legend_value_font:
-            _dict['legendValueFont'] = self.legend_value_font.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of xaxis
-        if self.xaxis:
-            _dict['xaxis'] = self.xaxis.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of each value in yaxes (dict)
-        _field_dict = {}
-        if self.yaxes:
-            for _key_yaxes in self.yaxes:
-                if self.yaxes[_key_yaxes]:
-                    _field_dict[_key_yaxes] = self.yaxes[_key_yaxes].to_dict()
-            _dict['yaxes'] = _field_dict
         # override the default output from pydantic by calling `to_dict()` of each item in thresholds (list)
         _items = []
         if self.thresholds:
@@ -190,9 +171,28 @@ class ReportTimeSeriesChartSettings(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of comparison_x_axis
         if self.comparison_x_axis:
             _dict['comparisonXAxis'] = self.comparison_x_axis.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of legend_column_title_font
+        if self.legend_column_title_font:
+            _dict['legendColumnTitleFont'] = self.legend_column_title_font.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of legend_label_font
+        if self.legend_label_font:
+            _dict['legendLabelFont'] = self.legend_label_font.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of legend_value_font
+        if self.legend_value_font:
+            _dict['legendValueFont'] = self.legend_value_font.to_dict()
         # override the default output from pydantic by calling `to_dict()` of legend_config
         if self.legend_config:
             _dict['legendConfig'] = self.legend_config.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of xaxis
+        if self.xaxis:
+            _dict['xaxis'] = self.xaxis.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each value in yaxes (dict)
+        _field_dict = {}
+        if self.yaxes:
+            for _key_yaxes in self.yaxes:
+                if self.yaxes[_key_yaxes]:
+                    _field_dict[_key_yaxes] = self.yaxes[_key_yaxes].to_dict()
+            _dict['yaxes'] = _field_dict
         return _dict
 
     @classmethod

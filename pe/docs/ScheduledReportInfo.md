@@ -9,6 +9,7 @@
 |------------ | ------------- | ------------- | -------------|
 | **id** | [**SchedulerEventId**](SchedulerEventId.md) | JSON object with the scheduler event Id. Specify this field to update the scheduler event. Referencing non-existing scheduler event Id will cause error. Omit this field to create new scheduler event | [optional] |
 | **created_time** | **int** | Timestamp of the scheduler event creation, in milliseconds | [optional] [readonly] |
+| **additional_info** | **object** | Additional parameters of the scheduler event | [optional] |
 | **tenant_id** | [**TenantId**](TenantId.md) | JSON object with Tenant Id | [optional] [readonly] |
 | **customer_id** | [**CustomerId**](CustomerId.md) | JSON object with Customer Id | [optional] [readonly] |
 | **originator_id** | [**EntityId**](EntityId.md) | JSON object with Originator Id | [optional] [readonly] |
@@ -21,7 +22,6 @@
 | **customer_title** | **str** | Customer title | [optional] [readonly] |
 | **user_name** | **str** | Report user name | [optional] [readonly] |
 | **owner_id** | [**EntityId**](EntityId.md) | JSON object with Customer or Tenant Id | [optional] [readonly] |
-| **additional_info** | **object** | Additional parameters of the scheduler event | [optional] |
 
 
 

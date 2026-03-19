@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,9 +30,9 @@ class LoginRequest(BaseModel):
     """
     LoginRequest
     """ # noqa: E501
-    username: StrictStr = Field(description="User email")
     password: StrictStr = Field(description="User password")
-    __properties: ClassVar[List[str]] = ["username", "password"]
+    username: StrictStr = Field(description="User email")
+    __properties: ClassVar[List[str]] = ["password", "username"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -85,8 +85,8 @@ class LoginRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "username": obj.get("username"),
-            "password": obj.get("password")
+            "password": obj.get("password"),
+            "username": obj.get("username")
         })
         return _obj
 

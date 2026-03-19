@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -36,6 +36,7 @@ class SchedulerEvent(BaseModel):
     """ # noqa: E501
     id: Optional[SchedulerEventId] = Field(default=None, description="JSON object with the scheduler event Id. Specify this field to update the scheduler event. Referencing non-existing scheduler event Id will cause error. Omit this field to create new scheduler event")
     created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the scheduler event creation, in milliseconds", alias="createdTime")
+    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the scheduler event", alias="additionalInfo")
     tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id", alias="tenantId")
     customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id", alias="customerId")
     originator_id: Optional[EntityId] = Field(default=None, description="JSON object with Originator Id", alias="originatorId")
@@ -46,8 +47,7 @@ class SchedulerEvent(BaseModel):
     version: Optional[StrictInt] = None
     configuration: Optional[Any] = None
     owner_id: Optional[EntityId] = Field(default=None, description="JSON object with Customer or Tenant Id", alias="ownerId")
-    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the scheduler event", alias="additionalInfo")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "customerId", "originatorId", "name", "type", "schedule", "enabled", "version", "configuration", "ownerId", "additionalInfo"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "additionalInfo", "tenantId", "customerId", "originatorId", "name", "type", "schedule", "enabled", "version", "configuration", "ownerId"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -113,6 +113,11 @@ class SchedulerEvent(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of owner_id
         if self.owner_id:
             _dict['ownerId'] = self.owner_id.to_dict()
+        # set to None if additional_info (nullable) is None
+        # and model_fields_set contains the field
+        if self.additional_info is None and "additional_info" in self.model_fields_set:
+            _dict['additionalInfo'] = None
+
         # set to None if schedule (nullable) is None
         # and model_fields_set contains the field
         if self.schedule is None and "schedule" in self.model_fields_set:
@@ -122,11 +127,6 @@ class SchedulerEvent(BaseModel):
         # and model_fields_set contains the field
         if self.configuration is None and "configuration" in self.model_fields_set:
             _dict['configuration'] = None
-
-        # set to None if additional_info (nullable) is None
-        # and model_fields_set contains the field
-        if self.additional_info is None and "additional_info" in self.model_fields_set:
-            _dict['additionalInfo'] = None
 
         return _dict
 
@@ -142,6 +142,7 @@ class SchedulerEvent(BaseModel):
         _obj = cls.model_validate({
             "id": SchedulerEventId.from_dict(obj["id"]) if obj.get("id") is not None else None,
             "createdTime": obj.get("createdTime"),
+            "additionalInfo": obj.get("additionalInfo"),
             "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
             "customerId": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
             "originatorId": EntityId.from_dict(obj["originatorId"]) if obj.get("originatorId") is not None else None,
@@ -151,8 +152,7 @@ class SchedulerEvent(BaseModel):
             "enabled": obj.get("enabled"),
             "version": obj.get("version"),
             "configuration": obj.get("configuration"),
-            "ownerId": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None,
-            "additionalInfo": obj.get("additionalInfo")
+            "ownerId": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None
         })
         return _obj
 

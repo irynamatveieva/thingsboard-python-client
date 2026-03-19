@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,11 +30,11 @@ class AlarmRuleCustomTimeScheduleItem(BaseModel):
     """
     AlarmRuleCustomTimeScheduleItem
     """ # noqa: E501
-    enabled: Optional[StrictBool] = None
     day_of_week: Optional[StrictInt] = Field(default=None, alias="dayOfWeek")
-    starts_on: Optional[StrictInt] = Field(default=None, alias="startsOn")
+    enabled: Optional[StrictBool] = None
     ends_on: Optional[StrictInt] = Field(default=None, alias="endsOn")
-    __properties: ClassVar[List[str]] = ["enabled", "dayOfWeek", "startsOn", "endsOn"]
+    starts_on: Optional[StrictInt] = Field(default=None, alias="startsOn")
+    __properties: ClassVar[List[str]] = ["dayOfWeek", "enabled", "endsOn", "startsOn"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -87,10 +87,10 @@ class AlarmRuleCustomTimeScheduleItem(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "enabled": obj.get("enabled"),
             "dayOfWeek": obj.get("dayOfWeek"),
-            "startsOn": obj.get("startsOn"),
-            "endsOn": obj.get("endsOn")
+            "enabled": obj.get("enabled"),
+            "endsOn": obj.get("endsOn"),
+            "startsOn": obj.get("startsOn")
         })
         return _obj
 

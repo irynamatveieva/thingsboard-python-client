@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -37,6 +37,7 @@ class OtaPackageInfo(BaseModel):
     """ # noqa: E501
     id: Optional[OtaPackageId] = Field(default=None, description="JSON object with the ota package Id. Specify existing ota package Id to update the ota package. Referencing non-existing ota package id will cause error. Omit this field to create new ota package.")
     created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the ota package creation, in milliseconds", alias="createdTime")
+    additional_info: Optional[Any] = Field(default=None, description="OTA Package description.", alias="additionalInfo")
     tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id. Tenant Id of the ota package can't be changed.", alias="tenantId")
     device_profile_id: Optional[DeviceProfileId] = Field(default=None, description="JSON object with Device Profile Id. Device Profile Id of the ota package can't be changed.", alias="deviceProfileId")
     type: Optional[OtaPackageType] = Field(default=None, description="OTA Package type.")
@@ -51,8 +52,7 @@ class OtaPackageInfo(BaseModel):
     checksum: Optional[StrictStr] = Field(default=None, description="OTA Package checksum.")
     data_size: Optional[StrictInt] = Field(default=None, description="OTA Package data size.", alias="dataSize")
     name: Optional[StrictStr] = None
-    additional_info: Optional[Any] = Field(default=None, description="OTA Package description.", alias="additionalInfo")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "deviceProfileId", "type", "title", "version", "tag", "url", "hasData", "fileName", "contentType", "checksumAlgorithm", "checksum", "dataSize", "name", "additionalInfo"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "additionalInfo", "tenantId", "deviceProfileId", "type", "title", "version", "tag", "url", "hasData", "fileName", "contentType", "checksumAlgorithm", "checksum", "dataSize", "name"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -141,6 +141,7 @@ class OtaPackageInfo(BaseModel):
         _obj = cls.model_validate({
             "id": OtaPackageId.from_dict(obj["id"]) if obj.get("id") is not None else None,
             "createdTime": obj.get("createdTime"),
+            "additionalInfo": obj.get("additionalInfo"),
             "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
             "deviceProfileId": DeviceProfileId.from_dict(obj["deviceProfileId"]) if obj.get("deviceProfileId") is not None else None,
             "type": obj.get("type"),
@@ -154,8 +155,7 @@ class OtaPackageInfo(BaseModel):
             "checksumAlgorithm": obj.get("checksumAlgorithm"),
             "checksum": obj.get("checksum"),
             "dataSize": obj.get("dataSize"),
-            "name": obj.get("name"),
-            "additionalInfo": obj.get("additionalInfo")
+            "name": obj.get("name")
         })
         return _obj
 

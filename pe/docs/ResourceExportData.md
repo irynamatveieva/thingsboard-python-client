@@ -14,9 +14,9 @@
 | **resource_key** | **str** |  | [optional] |
 | **file_name** | **str** |  | [optional] |
 | **public_resource_key** | **str** |  | [optional] |
-| **is_public** | **bool** |  | [optional] |
 | **media_type** | **str** |  | [optional] |
 | **data** | **str** |  | [optional] |
+| **is_public** | **bool** |  | [optional] |
 | **public** | **bool** |  | [optional] |
 
 

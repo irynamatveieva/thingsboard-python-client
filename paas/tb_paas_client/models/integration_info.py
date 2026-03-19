@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -42,13 +42,13 @@ class IntegrationInfo(BaseModel):
     debug_mode: Optional[StrictBool] = Field(default=None, description="Enable/disable debug. ", alias="debugMode")
     debug_settings: Optional[DebugSettings] = Field(default=None, description="Debug settings object.", alias="debugSettings")
     enabled: Optional[StrictBool] = Field(default=None, description="Boolean flag to enable/disable the integration")
+    remote: Optional[StrictBool] = Field(default=None, description="Boolean flag to enable/disable the integration to be executed remotely. Remote integration is launched in a separate microservice. Local integration is executed by the platform core")
     allow_create_devices_or_assets: Optional[StrictBool] = Field(default=None, description="Boolean flag to allow/disallow the integration to create devices or assets that send message and do not exist in the system yet", alias="allowCreateDevicesOrAssets")
+    edge_template: Optional[StrictBool] = Field(default=None, description="Boolean flag that specifies that is regular or edge template integration", alias="edgeTemplate")
     version: Optional[StrictInt] = None
     status: Optional[Dict[str, Any]] = None
     stats: Optional[Any] = None
-    edge_template: Optional[StrictBool] = Field(default=None, description="Boolean flag that specifies that is regular or edge template integration", alias="edgeTemplate")
-    remote: Optional[StrictBool] = Field(default=None, description="Boolean flag to enable/disable the integration to be executed remotely. Remote integration is launched in a separate microservice. Local integration is executed by the platform core")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "name", "type", "debugMode", "debugSettings", "enabled", "allowCreateDevicesOrAssets", "version", "status", "stats", "edgeTemplate", "remote"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "name", "type", "debugMode", "debugSettings", "enabled", "remote", "allowCreateDevicesOrAssets", "edgeTemplate", "version", "status", "stats"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -127,12 +127,12 @@ class IntegrationInfo(BaseModel):
             "debugMode": obj.get("debugMode"),
             "debugSettings": DebugSettings.from_dict(obj["debugSettings"]) if obj.get("debugSettings") is not None else None,
             "enabled": obj.get("enabled"),
+            "remote": obj.get("remote"),
             "allowCreateDevicesOrAssets": obj.get("allowCreateDevicesOrAssets"),
+            "edgeTemplate": obj.get("edgeTemplate"),
             "version": obj.get("version"),
             "status": obj.get("status"),
-            "stats": obj.get("stats"),
-            "edgeTemplate": obj.get("edgeTemplate"),
-            "remote": obj.get("remote")
+            "stats": obj.get("stats")
         })
         return _obj
 

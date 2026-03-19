@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,6 +32,7 @@ class ContactBasedObject(BaseModel):
     """ # noqa: E501
     id: Optional[Any] = None
     created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", alias="createdTime")
+    additional_info: Optional[Any] = Field(default=None, alias="additionalInfo")
     country: Optional[StrictStr] = None
     state: Optional[StrictStr] = None
     city: Optional[StrictStr] = None
@@ -41,8 +42,7 @@ class ContactBasedObject(BaseModel):
     phone: Optional[StrictStr] = None
     email: Optional[StrictStr] = None
     name: Optional[StrictStr] = None
-    additional_info: Optional[Any] = Field(default=None, alias="additionalInfo")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "country", "state", "city", "address", "address2", "zip", "phone", "email", "name", "additionalInfo"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "additionalInfo", "country", "state", "city", "address", "address2", "zip", "phone", "email", "name"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -109,6 +109,7 @@ class ContactBasedObject(BaseModel):
         _obj = cls.model_validate({
             "id": obj.get("id"),
             "createdTime": obj.get("createdTime"),
+            "additionalInfo": obj.get("additionalInfo"),
             "country": obj.get("country"),
             "state": obj.get("state"),
             "city": obj.get("city"),
@@ -117,8 +118,7 @@ class ContactBasedObject(BaseModel):
             "zip": obj.get("zip"),
             "phone": obj.get("phone"),
             "email": obj.get("email"),
-            "name": obj.get("name"),
-            "additionalInfo": obj.get("additionalInfo")
+            "name": obj.get("name")
         })
         return _obj
 

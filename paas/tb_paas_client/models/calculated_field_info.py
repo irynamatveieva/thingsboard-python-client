@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -42,14 +42,14 @@ class CalculatedFieldInfo(BaseModel):
     entity_id: Optional[EntityId] = Field(default=None, alias="entityId")
     type: Optional[CalculatedFieldType] = None
     name: Optional[StrictStr] = Field(default=None, description="User defined name of the calculated field.")
-    debug_mode: Optional[StrictBool] = Field(default=None, alias="debugMode")
     debug_settings: Optional[DebugSettings] = Field(default=None, description="Debug settings object.", alias="debugSettings")
     configuration_version: Optional[StrictInt] = Field(default=None, description="Version of calculated field configuration.", alias="configurationVersion")
     configuration: CalculatedFieldConfiguration
     version: Optional[StrictInt] = None
     additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the calculated field", alias="additionalInfo")
     entity_name: Optional[StrictStr] = Field(default=None, alias="entityName")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "entityId", "type", "name", "debugMode", "debugSettings", "configurationVersion", "configuration", "version", "additionalInfo", "entityName"]
+    debug_mode: Optional[StrictBool] = Field(default=None, alias="debugMode")
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "entityId", "type", "name", "debugSettings", "configurationVersion", "configuration", "version", "additionalInfo", "entityName", "debugMode"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -130,13 +130,13 @@ class CalculatedFieldInfo(BaseModel):
             "entityId": EntityId.from_dict(obj["entityId"]) if obj.get("entityId") is not None else None,
             "type": obj.get("type"),
             "name": obj.get("name"),
-            "debugMode": obj.get("debugMode"),
             "debugSettings": DebugSettings.from_dict(obj["debugSettings"]) if obj.get("debugSettings") is not None else None,
             "configurationVersion": obj.get("configurationVersion"),
             "configuration": CalculatedFieldConfiguration.from_dict(obj["configuration"]) if obj.get("configuration") is not None else None,
             "version": obj.get("version"),
             "additionalInfo": obj.get("additionalInfo"),
-            "entityName": obj.get("entityName")
+            "entityName": obj.get("entityName"),
+            "debugMode": obj.get("debugMode")
         })
         return _obj
 

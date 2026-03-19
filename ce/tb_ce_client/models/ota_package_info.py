@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -50,9 +50,9 @@ class OtaPackageInfo(BaseModel):
     checksum_algorithm: Optional[ChecksumAlgorithm] = Field(default=None, description="OTA Package checksum algorithm.", alias="checksumAlgorithm")
     checksum: Optional[StrictStr] = Field(default=None, description="OTA Package checksum.")
     data_size: Optional[StrictInt] = Field(default=None, description="OTA Package data size.", alias="dataSize")
-    name: Optional[StrictStr] = None
     additional_info: Optional[Any] = Field(default=None, description="OTA Package description.", alias="additionalInfo")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "deviceProfileId", "type", "title", "version", "tag", "url", "hasData", "fileName", "contentType", "checksumAlgorithm", "checksum", "dataSize", "name", "additionalInfo"]
+    name: Optional[StrictStr] = None
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "deviceProfileId", "type", "title", "version", "tag", "url", "hasData", "fileName", "contentType", "checksumAlgorithm", "checksum", "dataSize", "additionalInfo", "name"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -154,8 +154,8 @@ class OtaPackageInfo(BaseModel):
             "checksumAlgorithm": obj.get("checksumAlgorithm"),
             "checksum": obj.get("checksum"),
             "dataSize": obj.get("dataSize"),
-            "name": obj.get("name"),
-            "additionalInfo": obj.get("additionalInfo")
+            "additionalInfo": obj.get("additionalInfo"),
+            "name": obj.get("name")
         })
         return _obj
 

@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -42,6 +42,8 @@ class NotificationRequest(BaseModel):
     """
     NotificationRequest
     """ # noqa: E501
+    id: Optional[NotificationRequestId] = None
+    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", alias="createdTime")
     tenant_id: Optional[TenantId] = Field(default=None, alias="tenantId")
     targets: Annotated[List[UUID], Field(min_length=1)]
     template_id: Optional[NotificationTemplateId] = Field(default=None, alias="templateId")
@@ -52,9 +54,7 @@ class NotificationRequest(BaseModel):
     rule_id: Optional[NotificationRuleId] = Field(default=None, alias="ruleId")
     status: Optional[NotificationRequestStatus] = None
     stats: Optional[NotificationRequestStats] = None
-    id: Optional[NotificationRequestId] = None
-    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", alias="createdTime")
-    __properties: ClassVar[List[str]] = ["tenantId", "targets", "templateId", "template", "info", "additionalConfig", "originatorEntityId", "ruleId", "status", "stats", "id", "createdTime"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "targets", "templateId", "template", "info", "additionalConfig", "originatorEntityId", "ruleId", "status", "stats"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -97,6 +97,9 @@ class NotificationRequest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of id
+        if self.id:
+            _dict['id'] = self.id.to_dict()
         # override the default output from pydantic by calling `to_dict()` of tenant_id
         if self.tenant_id:
             _dict['tenantId'] = self.tenant_id.to_dict()
@@ -121,9 +124,6 @@ class NotificationRequest(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of stats
         if self.stats:
             _dict['stats'] = self.stats.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of id
-        if self.id:
-            _dict['id'] = self.id.to_dict()
         return _dict
 
     @classmethod
@@ -136,6 +136,8 @@ class NotificationRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "id": NotificationRequestId.from_dict(obj["id"]) if obj.get("id") is not None else None,
+            "createdTime": obj.get("createdTime"),
             "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
             "targets": obj.get("targets"),
             "templateId": NotificationTemplateId.from_dict(obj["templateId"]) if obj.get("templateId") is not None else None,
@@ -145,9 +147,7 @@ class NotificationRequest(BaseModel):
             "originatorEntityId": EntityId.from_dict(obj["originatorEntityId"]) if obj.get("originatorEntityId") is not None else None,
             "ruleId": NotificationRuleId.from_dict(obj["ruleId"]) if obj.get("ruleId") is not None else None,
             "status": obj.get("status"),
-            "stats": NotificationRequestStats.from_dict(obj["stats"]) if obj.get("stats") is not None else None,
-            "id": NotificationRequestId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime")
+            "stats": NotificationRequestStats.from_dict(obj["stats"]) if obj.get("stats") is not None else None
         })
         return _obj
 

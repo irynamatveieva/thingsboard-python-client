@@ -12,10 +12,18 @@
 | **title_font** | [**Font**](Font.md) |  | [optional] |
 | **title_color** | **str** |  | [optional] |
 | **title_alignment** | [**TextAlignment**](TextAlignment.md) |  | [optional] |
+| **thresholds** | [**List[TimeSeriesChartThreshold]**](TimeSeriesChartThreshold.md) |  | [optional] |
 | **stack** | **bool** |  | [optional] |
+| **grid** | [**TimeSeriesChartGridSettings**](TimeSeriesChartGridSettings.md) |  | [optional] |
+| **y_axes** | [**Dict[str, TimeSeriesChartYAxisSettings]**](TimeSeriesChartYAxisSettings.md) |  | [optional] |
+| **x_axis** | [**TimeSeriesChartXAxisSettings**](TimeSeriesChartXAxisSettings.md) |  | [optional] |
+| **bar_width_settings** | [**TimeSeriesChartBarWidthSettings**](TimeSeriesChartBarWidthSettings.md) |  | [optional] |
+| **no_aggregation_bar_width_settings** | [**TimeSeriesChartNoAggregationBarWidthSettings**](TimeSeriesChartNoAggregationBarWidthSettings.md) |  | [optional] |
+| **states** | [**List[TimeSeriesChartStateSettings]**](TimeSeriesChartStateSettings.md) |  | [optional] |
 | **comparison_enabled** | **bool** |  | [optional] |
 | **time_for_comparison** | [**ComparisonDuration**](ComparisonDuration.md) |  | [optional] |
 | **comparison_custom_interval_value** | **int** |  | [optional] |
+| **comparison_x_axis** | [**TimeSeriesChartXAxisSettings**](TimeSeriesChartXAxisSettings.md) |  | [optional] |
 | **show_legend** | **bool** |  | [optional] |
 | **legend_column_title_font** | [**Font**](Font.md) |  | [optional] |
 | **legend_column_title_color** | **str** |  | [optional] |
@@ -23,17 +31,9 @@
 | **legend_label_color** | **str** |  | [optional] |
 | **legend_value_font** | [**Font**](Font.md) |  | [optional] |
 | **legend_value_color** | **str** |  | [optional] |
+| **legend_config** | [**LegendConfig**](LegendConfig.md) |  | [optional] |
 | **xaxis** | [**TimeSeriesChartXAxisSettings**](TimeSeriesChartXAxisSettings.md) |  | [optional] |
 | **yaxes** | [**Dict[str, TimeSeriesChartYAxisSettings]**](TimeSeriesChartYAxisSettings.md) |  | [optional] |
-| **thresholds** | [**List[TimeSeriesChartThreshold]**](TimeSeriesChartThreshold.md) |  | [optional] |
-| **grid** | [**TimeSeriesChartGridSettings**](TimeSeriesChartGridSettings.md) |  | [optional] |
-| **y_axes** | [**Dict[str, TimeSeriesChartYAxisSettings]**](TimeSeriesChartYAxisSettings.md) |  | [optional] |
-| **x_axis** | [**TimeSeriesChartXAxisSettings**](TimeSeriesChartXAxisSettings.md) |  | [optional] |
-| **bar_width_settings** | [**TimeSeriesChartBarWidthSettings**](TimeSeriesChartBarWidthSettings.md) |  | [optional] |
-| **no_aggregation_bar_width_settings** | [**TimeSeriesChartNoAggregationBarWidthSettings**](TimeSeriesChartNoAggregationBarWidthSettings.md) |  | [optional] |
-| **states** | [**List[TimeSeriesChartStateSettings]**](TimeSeriesChartStateSettings.md) |  | [optional] |
-| **comparison_x_axis** | [**TimeSeriesChartXAxisSettings**](TimeSeriesChartXAxisSettings.md) |  | [optional] |
-| **legend_config** | [**LegendConfig**](LegendConfig.md) |  | [optional] |
 
 
 

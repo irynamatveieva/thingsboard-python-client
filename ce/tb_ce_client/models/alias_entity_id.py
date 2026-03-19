@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,9 +34,9 @@ class AliasEntityId(BaseModel):
     AliasEntityId
     """ # noqa: E501
     alias_entity_type: Optional[AliasEntityType] = Field(default=None, alias="aliasEntityType")
-    id: UUID = Field(description="ID of the entity, time-based UUID v1")
     entity_type: EntityType = Field(alias="entityType")
-    __properties: ClassVar[List[str]] = ["aliasEntityType", "id", "entityType"]
+    id: UUID = Field(description="ID of the entity, time-based UUID v1")
+    __properties: ClassVar[List[str]] = ["aliasEntityType", "entityType", "id"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -90,8 +90,8 @@ class AliasEntityId(BaseModel):
 
         _obj = cls.model_validate({
             "aliasEntityType": obj.get("aliasEntityType"),
-            "id": obj.get("id"),
-            "entityType": obj.get("entityType")
+            "entityType": obj.get("entityType"),
+            "id": obj.get("id")
         })
         return _obj
 

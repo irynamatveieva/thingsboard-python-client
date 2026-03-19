@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ class CustomTimeSchedule(AlarmSchedule):
     """ # noqa: E501
     timezone: Optional[StrictStr] = None
     items: Optional[List[CustomTimeScheduleItem]] = None
-    __properties: ClassVar[List[str]] = ["type", "dynamicValue", "timezone", "items"]
+    __properties: ClassVar[List[str]] = ["dynamicValue", "type", "timezone", "items"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -99,8 +99,8 @@ class CustomTimeSchedule(AlarmSchedule):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "type": obj.get("type"),
             "dynamicValue": DynamicValueString.from_dict(obj["dynamicValue"]) if obj.get("dynamicValue") is not None else None,
+            "type": obj.get("type"),
             "timezone": obj.get("timezone"),
             "items": [CustomTimeScheduleItem.from_dict(_item) for _item in obj["items"]] if obj.get("items") is not None else None
         })

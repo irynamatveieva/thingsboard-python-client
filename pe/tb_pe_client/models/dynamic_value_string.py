@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,11 +31,11 @@ class DynamicValueString(BaseModel):
     """
     DynamicValueString
     """ # noqa: E501
+    resolved_value: Optional[StrictStr] = Field(default=None, alias="resolvedValue")
     source_type: Optional[DynamicValueSourceType] = Field(default=None, alias="sourceType")
     source_attribute: Optional[StrictStr] = Field(default=None, alias="sourceAttribute")
     inherit: Optional[StrictBool] = None
-    resolved_value: Optional[StrictStr] = Field(default=None, alias="resolvedValue")
-    __properties: ClassVar[List[str]] = ["sourceType", "sourceAttribute", "inherit", "resolvedValue"]
+    __properties: ClassVar[List[str]] = ["resolvedValue", "sourceType", "sourceAttribute", "inherit"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -88,10 +88,10 @@ class DynamicValueString(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "resolvedValue": obj.get("resolvedValue"),
             "sourceType": obj.get("sourceType"),
             "sourceAttribute": obj.get("sourceAttribute"),
-            "inherit": obj.get("inherit"),
-            "resolvedValue": obj.get("resolvedValue")
+            "inherit": obj.get("inherit")
         })
         return _obj
 

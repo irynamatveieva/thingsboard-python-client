@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,13 +34,13 @@ class AiModel(BaseModel):
     """
     AiModel
     """ # noqa: E501
+    id: Optional[AiModelId] = None
+    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", alias="createdTime")
     tenant_id: TenantId = Field(description="JSON object representing the ID of the tenant associated with this AI model", alias="tenantId")
     version: StrictInt = Field(description="Version of the AI model record; increments automatically whenever the record is changed")
     name: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Display name for this AI model configuration; not the technical model identifier")
     configuration: Optional[AiModelConfig] = Field(default=None, description="Configuration of the AI model")
-    id: Optional[AiModelId] = None
-    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", alias="createdTime")
-    __properties: ClassVar[List[str]] = ["tenantId", "version", "name", "configuration", "id", "createdTime"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "version", "name", "configuration"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -77,9 +77,9 @@ class AiModel(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set([
+            "created_time",
             "tenant_id",
             "version",
-            "created_time",
         ])
 
         _dict = self.model_dump(
@@ -87,15 +87,15 @@ class AiModel(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of id
+        if self.id:
+            _dict['id'] = self.id.to_dict()
         # override the default output from pydantic by calling `to_dict()` of tenant_id
         if self.tenant_id:
             _dict['tenantId'] = self.tenant_id.to_dict()
         # override the default output from pydantic by calling `to_dict()` of configuration
         if self.configuration:
             _dict['configuration'] = self.configuration.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of id
-        if self.id:
-            _dict['id'] = self.id.to_dict()
         return _dict
 
     @classmethod
@@ -108,12 +108,12 @@ class AiModel(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "id": AiModelId.from_dict(obj["id"]) if obj.get("id") is not None else None,
+            "createdTime": obj.get("createdTime"),
             "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
             "version": obj.get("version") if obj.get("version") is not None else 1,
             "name": obj.get("name"),
-            "configuration": AiModelConfig.from_dict(obj["configuration"]) if obj.get("configuration") is not None else None,
-            "id": AiModelId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime")
+            "configuration": AiModelConfig.from_dict(obj["configuration"]) if obj.get("configuration") is not None else None
         })
         return _obj
 

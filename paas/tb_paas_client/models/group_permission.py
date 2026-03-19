@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,17 +35,17 @@ class GroupPermission(BaseModel):
     """
     A JSON value representing the group permission.
     """ # noqa: E501
+    id: Optional[GroupPermissionId] = Field(default=None, description="JSON object with the Group Permission Id. Specify this field to update the Group Permission. Referencing non-existing Group Permission Id will cause error. Omit this field to create new Group Permission.")
+    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the group permission creation, in milliseconds", alias="createdTime")
     tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with the Tenant Id.", alias="tenantId")
     user_group_id: EntityGroupId = Field(description="JSON object with the User Group Id. Represents the user group that will have permissions to perform operations against the corresponding entity group.", alias="userGroupId")
     role_id: RoleId = Field(description="JSON object with the Role Id. Represents the set of permissions. The role type (GENERIC or GROUP) determines whether 'entityGroupId' is required.", alias="roleId")
     entity_group_id: Optional[EntityGroupId] = Field(default=None, description="JSON object with the Entity Group Id. Required when using a GROUP role — specifies the entity group to which the permissions apply. Must be null or omitted when using a GENERIC role.", alias="entityGroupId")
     entity_group_type: Optional[EntityType] = Field(default=None, description="Type of the entities in the group: DEVICE, ASSET, CUSTOMER, etc. Auto-populated from the referenced entity group. Null for generic permissions.", alias="entityGroupType")
     is_public: Optional[StrictBool] = Field(default=None, alias="isPublic")
-    id: Optional[GroupPermissionId] = Field(default=None, description="JSON object with the Group Permission Id. Specify this field to update the Group Permission. Referencing non-existing Group Permission Id will cause error. Omit this field to create new Group Permission.")
-    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the group permission creation, in milliseconds", alias="createdTime")
     name: Optional[StrictStr] = Field(default=None, description="Name of the Group Permissions. Auto-generated")
     public: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["tenantId", "userGroupId", "roleId", "entityGroupId", "entityGroupType", "isPublic", "id", "createdTime", "name", "public"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "userGroupId", "roleId", "entityGroupId", "entityGroupType", "isPublic", "name", "public"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -83,9 +83,9 @@ class GroupPermission(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set([
+            "created_time",
             "tenant_id",
             "entity_group_type",
-            "created_time",
             "name",
         ])
 
@@ -94,6 +94,9 @@ class GroupPermission(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of id
+        if self.id:
+            _dict['id'] = self.id.to_dict()
         # override the default output from pydantic by calling `to_dict()` of tenant_id
         if self.tenant_id:
             _dict['tenantId'] = self.tenant_id.to_dict()
@@ -106,9 +109,6 @@ class GroupPermission(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of entity_group_id
         if self.entity_group_id:
             _dict['entityGroupId'] = self.entity_group_id.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of id
-        if self.id:
-            _dict['id'] = self.id.to_dict()
         return _dict
 
     @classmethod
@@ -121,14 +121,14 @@ class GroupPermission(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "id": GroupPermissionId.from_dict(obj["id"]) if obj.get("id") is not None else None,
+            "createdTime": obj.get("createdTime"),
             "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
             "userGroupId": EntityGroupId.from_dict(obj["userGroupId"]) if obj.get("userGroupId") is not None else None,
             "roleId": RoleId.from_dict(obj["roleId"]) if obj.get("roleId") is not None else None,
             "entityGroupId": EntityGroupId.from_dict(obj["entityGroupId"]) if obj.get("entityGroupId") is not None else None,
             "entityGroupType": obj.get("entityGroupType"),
             "isPublic": obj.get("isPublic"),
-            "id": GroupPermissionId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
             "name": obj.get("name"),
             "public": obj.get("public")
         })

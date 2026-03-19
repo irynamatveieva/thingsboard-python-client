@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ class AlarmCalculatedFieldConfiguration(CalculatedFieldConfiguration):
     propagate_to_owner: Optional[StrictBool] = Field(default=None, alias="propagateToOwner")
     propagate_to_owner_hierarchy: Optional[StrictBool] = Field(default=None, alias="propagateToOwnerHierarchy")
     propagate_to_tenant: Optional[StrictBool] = Field(default=None, alias="propagateToTenant")
-    __properties: ClassVar[List[str]] = ["output", "aiGenerated", "type", "arguments", "clearRule", "createRules", "propagate", "propagateRelationTypes", "propagateToOwner", "propagateToOwnerHierarchy", "propagateToTenant"]
+    __properties: ClassVar[List[str]] = ["type", "output", "aiGenerated", "arguments", "clearRule", "createRules", "propagate", "propagateRelationTypes", "propagateToOwner", "propagateToOwnerHierarchy", "propagateToTenant"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -115,9 +115,9 @@ class AlarmCalculatedFieldConfiguration(CalculatedFieldConfiguration):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "type": obj.get("type"),
             "output": Output.from_dict(obj["output"]) if obj.get("output") is not None else None,
             "aiGenerated": obj.get("aiGenerated"),
-            "type": obj.get("type"),
             "arguments": dict(
                 (_k, Argument.from_dict(_v))
                 for _k, _v in obj["arguments"].items()

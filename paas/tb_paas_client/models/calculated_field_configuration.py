@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -42,10 +42,10 @@ class CalculatedFieldConfiguration(BaseModel):
     """
     CalculatedFieldConfiguration
     """ # noqa: E501
+    type: StrictStr
     output: Optional[Output] = None
     ai_generated: Optional[StrictBool] = Field(default=None, alias="aiGenerated")
-    type: StrictStr
-    __properties: ClassVar[List[str]] = ["output", "aiGenerated", "type"]
+    __properties: ClassVar[List[str]] = ["type", "output", "aiGenerated"]
 
     model_config = ConfigDict(
         populate_by_name=True,

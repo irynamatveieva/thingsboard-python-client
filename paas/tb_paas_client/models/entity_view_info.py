@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -38,6 +38,7 @@ class EntityViewInfo(BaseModel):
     """ # noqa: E501
     id: Optional[EntityViewId] = Field(default=None, description="JSON object with the Entity View Id. Specify this field to update the Entity View. Referencing non-existing Entity View Id will cause error. Omit this field to create new Entity View.")
     created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the Entity View creation, in milliseconds", alias="createdTime")
+    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the entity view. May include: 'description' (string).", alias="additionalInfo")
     entity_id: EntityId = Field(description="JSON object with the referenced Entity Id (Device or Asset).", alias="entityId")
     tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id.", alias="tenantId")
     customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id. Use 'assignEntityViewToCustomer' to change the Customer Id.", alias="customerId")
@@ -50,8 +51,7 @@ class EntityViewInfo(BaseModel):
     owner_name: Optional[StrictStr] = Field(default=None, description="Owner name", alias="ownerName")
     groups: Optional[List[EntityInfo]] = Field(default=None, description="Groups")
     owner_id: Optional[EntityId] = Field(default=None, description="JSON object with Customer or Tenant Id", alias="ownerId")
-    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the entity view. May include: 'description' (string).", alias="additionalInfo")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "entityId", "tenantId", "customerId", "name", "type", "keys", "startTimeMs", "endTimeMs", "version", "ownerName", "groups", "ownerId", "additionalInfo"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "additionalInfo", "entityId", "tenantId", "customerId", "name", "type", "keys", "startTimeMs", "endTimeMs", "version", "ownerName", "groups", "ownerId"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -146,6 +146,7 @@ class EntityViewInfo(BaseModel):
         _obj = cls.model_validate({
             "id": EntityViewId.from_dict(obj["id"]) if obj.get("id") is not None else None,
             "createdTime": obj.get("createdTime"),
+            "additionalInfo": obj.get("additionalInfo"),
             "entityId": EntityId.from_dict(obj["entityId"]) if obj.get("entityId") is not None else None,
             "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
             "customerId": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
@@ -157,8 +158,7 @@ class EntityViewInfo(BaseModel):
             "version": obj.get("version"),
             "ownerName": obj.get("ownerName"),
             "groups": [EntityInfo.from_dict(_item) for _item in obj["groups"]] if obj.get("groups") is not None else None,
-            "ownerId": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None,
-            "additionalInfo": obj.get("additionalInfo")
+            "ownerId": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None
         })
         return _obj
 

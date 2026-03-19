@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,14 +34,14 @@ class AlarmComment(BaseModel):
     """
     AlarmComment
     """ # noqa: E501
+    id: Optional[AlarmCommentId] = Field(default=None, description="JSON object with the alarm comment Id. Specify this field to update the alarm comment. Referencing non-existing alarm Id will cause error. Omit this field to create new alarm.")
+    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the alarm comment creation, in milliseconds", alias="createdTime")
     alarm_id: Optional[AlarmId] = Field(default=None, description="JSON object with Alarm id.", alias="alarmId")
     user_id: Optional[UserId] = Field(default=None, description="JSON object with User id.", alias="userId")
     type: Optional[AlarmCommentType] = Field(default=None, description="Defines origination of comment. System type means comment was created by TB. OTHER type means comment was created by user.")
     comment: Optional[Any] = Field(default=None, description="JSON object with text of comment.")
-    id: Optional[AlarmCommentId] = Field(default=None, description="JSON object with the alarm comment Id. Specify this field to update the alarm comment. Referencing non-existing alarm Id will cause error. Omit this field to create new alarm.")
-    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the alarm comment creation, in milliseconds", alias="createdTime")
     name: Optional[StrictStr] = Field(default=None, description="representing comment text")
-    __properties: ClassVar[List[str]] = ["alarmId", "userId", "type", "comment", "id", "createdTime", "name"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "alarmId", "userId", "type", "comment", "name"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -79,9 +79,9 @@ class AlarmComment(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set([
+            "created_time",
             "alarm_id",
             "user_id",
-            "created_time",
             "name",
         ])
 
@@ -90,15 +90,15 @@ class AlarmComment(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of id
+        if self.id:
+            _dict['id'] = self.id.to_dict()
         # override the default output from pydantic by calling `to_dict()` of alarm_id
         if self.alarm_id:
             _dict['alarmId'] = self.alarm_id.to_dict()
         # override the default output from pydantic by calling `to_dict()` of user_id
         if self.user_id:
             _dict['userId'] = self.user_id.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of id
-        if self.id:
-            _dict['id'] = self.id.to_dict()
         # set to None if comment (nullable) is None
         # and model_fields_set contains the field
         if self.comment is None and "comment" in self.model_fields_set:
@@ -116,12 +116,12 @@ class AlarmComment(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "id": AlarmCommentId.from_dict(obj["id"]) if obj.get("id") is not None else None,
+            "createdTime": obj.get("createdTime"),
             "alarmId": AlarmId.from_dict(obj["alarmId"]) if obj.get("alarmId") is not None else None,
             "userId": UserId.from_dict(obj["userId"]) if obj.get("userId") is not None else None,
             "type": obj.get("type"),
             "comment": obj.get("comment"),
-            "id": AlarmCommentId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
             "name": obj.get("name")
         })
         return _obj

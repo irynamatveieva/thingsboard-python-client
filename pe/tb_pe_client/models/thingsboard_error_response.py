@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,11 +31,11 @@ class ThingsboardErrorResponse(BaseModel):
     """
     ThingsboardErrorResponse
     """ # noqa: E501
-    status: Optional[StrictInt] = Field(default=None, description="HTTP Response Status Code")
-    message: Optional[StrictStr] = Field(default=None, description="Error message")
     error_code: Optional[ThingsboardErrorCode] = Field(default=None, alias="errorCode")
+    message: Optional[StrictStr] = Field(default=None, description="Error message")
+    status: Optional[StrictInt] = Field(default=None, description="HTTP Response Status Code")
     timestamp: Optional[StrictInt] = Field(default=None, description="Timestamp")
-    __properties: ClassVar[List[str]] = ["status", "message", "errorCode", "timestamp"]
+    __properties: ClassVar[List[str]] = ["errorCode", "message", "status", "timestamp"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -72,8 +72,8 @@ class ThingsboardErrorResponse(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set([
-            "status",
             "message",
+            "status",
             "timestamp",
         ])
 
@@ -94,9 +94,9 @@ class ThingsboardErrorResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "status": obj.get("status"),
-            "message": obj.get("message"),
             "errorCode": obj.get("errorCode"),
+            "message": obj.get("message"),
+            "status": obj.get("status"),
             "timestamp": obj.get("timestamp")
         })
         return _obj

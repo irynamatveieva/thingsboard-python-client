@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -41,12 +41,12 @@ class ComponentDescriptor(BaseModel):
     clustering_mode: Optional[ComponentClusteringMode] = Field(default=None, description="Clustering mode of the RuleNode. This mode represents the ability to start Rule Node in multiple microservices.", alias="clusteringMode")
     name: Optional[StrictStr] = Field(default=None, description="Name of the Rule Node. Taken from the @RuleNode annotation.")
     clazz: Optional[StrictStr] = Field(default=None, description="Full name of the Java class that implements the Rule Engine Node interface.")
+    configuration_descriptor: Optional[Any] = Field(default=None, alias="configurationDescriptor")
     configuration_version: Optional[StrictInt] = Field(default=None, description="Rule node configuration version. By default, this value is 0. If the rule node is a versioned node, this value might be greater than 0.", alias="configurationVersion")
     actions: Optional[StrictStr] = Field(default=None, description="Rule Node Actions. Deprecated. Always null.")
     has_queue_name: Optional[StrictBool] = Field(default=None, description="Indicates that the RuleNode supports queue name configuration.", alias="hasQueueName")
     has_secrets: Optional[StrictBool] = Field(default=None, description="Indicates that the RuleNode configuration uses secrets placeholders.", alias="hasSecrets")
-    configuration_descriptor: Optional[Any] = Field(default=None, alias="configurationDescriptor")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "type", "scope", "clusteringMode", "name", "clazz", "configurationVersion", "actions", "hasQueueName", "hasSecrets", "configurationDescriptor"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "type", "scope", "clusteringMode", "name", "clazz", "configurationDescriptor", "configurationVersion", "actions", "hasQueueName", "hasSecrets"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -134,11 +134,11 @@ class ComponentDescriptor(BaseModel):
             "clusteringMode": obj.get("clusteringMode"),
             "name": obj.get("name"),
             "clazz": obj.get("clazz"),
+            "configurationDescriptor": obj.get("configurationDescriptor"),
             "configurationVersion": obj.get("configurationVersion"),
             "actions": obj.get("actions"),
             "hasQueueName": obj.get("hasQueueName"),
-            "hasSecrets": obj.get("hasSecrets"),
-            "configurationDescriptor": obj.get("configurationDescriptor")
+            "hasSecrets": obj.get("hasSecrets")
         })
         return _obj
 

@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,10 +32,10 @@ class PageDataContactBasedObject(BaseModel):
     PageDataContactBasedObject
     """ # noqa: E501
     data: Optional[List[ContactBasedObject]] = Field(default=None, description="Array of the entities")
-    total_pages: Optional[StrictInt] = Field(default=None, description="Total number of available pages. Calculated based on the 'pageSize' request parameter and total number of entities that match search criteria", alias="totalPages")
-    total_elements: Optional[StrictInt] = Field(default=None, description="Total number of elements in all available pages", alias="totalElements")
     has_next: Optional[StrictBool] = Field(default=None, description="'false' value indicates the end of the result set", alias="hasNext")
-    __properties: ClassVar[List[str]] = ["data", "totalPages", "totalElements", "hasNext"]
+    total_elements: Optional[StrictInt] = Field(default=None, description="Total number of elements in all available pages", alias="totalElements")
+    total_pages: Optional[StrictInt] = Field(default=None, description="Total number of available pages. Calculated based on the 'pageSize' request parameter and total number of entities that match search criteria", alias="totalPages")
+    __properties: ClassVar[List[str]] = ["data", "hasNext", "totalElements", "totalPages"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -72,9 +72,9 @@ class PageDataContactBasedObject(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set([
-            "total_pages",
-            "total_elements",
             "has_next",
+            "total_elements",
+            "total_pages",
         ])
 
         _dict = self.model_dump(
@@ -102,9 +102,9 @@ class PageDataContactBasedObject(BaseModel):
 
         _obj = cls.model_validate({
             "data": [ContactBasedObject.from_dict(_item) for _item in obj["data"]] if obj.get("data") is not None else None,
-            "totalPages": obj.get("totalPages"),
+            "hasNext": obj.get("hasNext"),
             "totalElements": obj.get("totalElements"),
-            "hasNext": obj.get("hasNext")
+            "totalPages": obj.get("totalPages")
         })
         return _obj
 

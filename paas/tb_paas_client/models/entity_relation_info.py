@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -38,10 +38,10 @@ class EntityRelationInfo(BaseModel):
     type: Annotated[str, Field(min_length=1, strict=True)] = Field(description="String value of relation type.")
     type_group: RelationTypeGroup = Field(description="Represents the type group of the relation.", alias="typeGroup")
     version: Optional[StrictInt] = None
+    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the relation.", alias="additionalInfo")
     from_name: Optional[StrictStr] = Field(default=None, description="Name of the entity for [from] direction.", alias="fromName")
     to_name: Optional[StrictStr] = Field(default=None, description="Name of the entity for [to] direction.", alias="toName")
-    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the relation.", alias="additionalInfo")
-    __properties: ClassVar[List[str]] = ["from", "to", "type", "typeGroup", "version", "fromName", "toName", "additionalInfo"]
+    __properties: ClassVar[List[str]] = ["from", "to", "type", "typeGroup", "version", "additionalInfo", "fromName", "toName"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -114,9 +114,9 @@ class EntityRelationInfo(BaseModel):
             "type": obj.get("type"),
             "typeGroup": obj.get("typeGroup"),
             "version": obj.get("version"),
+            "additionalInfo": obj.get("additionalInfo"),
             "fromName": obj.get("fromName"),
-            "toName": obj.get("toName"),
-            "additionalInfo": obj.get("additionalInfo")
+            "toName": obj.get("toName")
         })
         return _obj
 

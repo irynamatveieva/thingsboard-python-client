@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ class SubReportComponent(ReportComponent):
     data_sources: Optional[List[DataSource]] = Field(default=None, alias="dataSources")
     template_id: Optional[ReportTemplateId] = Field(default=None, alias="templateId")
     avoid_page_break_inside: Optional[StrictBool] = Field(default=None, alias="avoidPageBreakInside")
-    __properties: ClassVar[List[str]] = ["type", "subType", "dataSources", "templateId", "avoidPageBreakInside"]
+    __properties: ClassVar[List[str]] = ["subType", "type", "dataSources", "templateId", "avoidPageBreakInside"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -101,8 +101,8 @@ class SubReportComponent(ReportComponent):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "type": obj.get("type"),
             "subType": obj.get("subType"),
+            "type": obj.get("type"),
             "dataSources": [DataSource.from_dict(_item) for _item in obj["dataSources"]] if obj.get("dataSources") is not None else None,
             "templateId": ReportTemplateId.from_dict(obj["templateId"]) if obj.get("templateId") is not None else None,
             "avoidPageBreakInside": obj.get("avoidPageBreakInside")

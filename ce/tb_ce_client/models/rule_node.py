@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -38,7 +38,6 @@ class RuleNode(BaseModel):
     rule_chain_id: Optional[RuleChainId] = Field(default=None, description="JSON object with the Rule Chain Id. ", alias="ruleChainId")
     type: Optional[StrictStr] = Field(default=None, description="Full Java Class Name of the rule node implementation. ")
     name: Optional[StrictStr] = Field(default=None, description="User defined name of the rule node. Used on UI and for logging. ")
-    debug_mode: Optional[StrictBool] = Field(default=None, alias="debugMode")
     debug_settings: Optional[DebugSettings] = Field(default=None, description="Debug settings object.", alias="debugSettings")
     singleton_mode: Optional[StrictBool] = Field(default=None, description="Enable/disable singleton mode. ", alias="singletonMode")
     queue_name: Optional[StrictStr] = Field(default=None, description="Queue name. ", alias="queueName")
@@ -46,7 +45,8 @@ class RuleNode(BaseModel):
     configuration: Optional[Any] = Field(default=None, description="JSON with the rule node configuration. Structure depends on the rule node implementation.")
     external_id: Optional[RuleNodeId] = Field(default=None, alias="externalId")
     additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the rule node. May include: 'layoutX' (number, X coordinate for visualization), 'layoutY' (number, Y coordinate for visualization), 'description' (string).", alias="additionalInfo")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "ruleChainId", "type", "name", "debugMode", "debugSettings", "singletonMode", "queueName", "configurationVersion", "configuration", "externalId", "additionalInfo"]
+    debug_mode: Optional[StrictBool] = Field(default=None, alias="debugMode")
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "ruleChainId", "type", "name", "debugSettings", "singletonMode", "queueName", "configurationVersion", "configuration", "externalId", "additionalInfo", "debugMode"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -130,14 +130,14 @@ class RuleNode(BaseModel):
             "ruleChainId": RuleChainId.from_dict(obj["ruleChainId"]) if obj.get("ruleChainId") is not None else None,
             "type": obj.get("type"),
             "name": obj.get("name"),
-            "debugMode": obj.get("debugMode"),
             "debugSettings": DebugSettings.from_dict(obj["debugSettings"]) if obj.get("debugSettings") is not None else None,
             "singletonMode": obj.get("singletonMode"),
             "queueName": obj.get("queueName"),
             "configurationVersion": obj.get("configurationVersion"),
             "configuration": obj.get("configuration"),
             "externalId": RuleNodeId.from_dict(obj["externalId"]) if obj.get("externalId") is not None else None,
-            "additionalInfo": obj.get("additionalInfo")
+            "additionalInfo": obj.get("additionalInfo"),
+            "debugMode": obj.get("debugMode")
         })
         return _obj
 

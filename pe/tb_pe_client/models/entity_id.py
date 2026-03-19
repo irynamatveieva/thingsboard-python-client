@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -82,9 +82,9 @@ class EntityId(BaseModel):
     """
     EntityId
     """ # noqa: E501
-    id: UUID = Field(description="ID of the entity, time-based UUID v1")
     entity_type: EntityType = Field(alias="entityType")
-    __properties: ClassVar[List[str]] = ["id", "entityType"]
+    id: UUID = Field(description="ID of the entity, time-based UUID v1")
+    __properties: ClassVar[List[str]] = ["entityType", "id"]
 
     model_config = ConfigDict(
         populate_by_name=True,

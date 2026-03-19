@@ -12,6 +12,7 @@
 | **id** | **str** | Unique identifier for predefined menu items | [optional] [readonly] |
 | **name** | **str** | Name of the menu item | [optional] |
 | **icon** | **str** | URL of the menu item icon. Overrides 'materialIcon' | [optional] |
+| **visible** | **bool** | Mark if menu item is visible for user | [optional] |
 | **pages** | [**List[DefaultMenuItem]**](DefaultMenuItem.md) | List of child menu items | [optional] |
 
 

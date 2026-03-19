@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,6 +35,7 @@ class TenantInfo(BaseModel):
     """ # noqa: E501
     id: Optional[TenantId] = Field(default=None, description="JSON object with the tenant Id. Specify this field to update the tenant. Referencing non-existing tenant Id will cause error. Omit this field to create new tenant.")
     created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the tenant creation, in milliseconds", alias="createdTime")
+    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the tenant. May include: 'description' (string), 'homeDashboardId' (string, UUID of the home dashboard), 'homeDashboardHideToolbar' (boolean, whether to hide the dashboard toolbar).", alias="additionalInfo")
     country: Optional[StrictStr] = Field(default=None, description="Country")
     state: Optional[StrictStr] = Field(default=None, description="State")
     city: Optional[StrictStr] = Field(default=None, description="City")
@@ -50,12 +51,11 @@ class TenantInfo(BaseModel):
     active: Optional[StrictBool] = None
     last_inactive_ts: Optional[StrictInt] = Field(default=None, alias="lastInactiveTs")
     current_period_start_ts: Optional[StrictInt] = Field(default=None, alias="currentPeriodStartTs")
+    addon_data: Optional[TenantAddonData] = Field(default=None, alias="addonData")
     edge_license_version: Optional[StrictInt] = Field(default=None, alias="edgeLicenseVersion")
     tenant_profile_name: Optional[StrictStr] = Field(default=None, description="Tenant Profile name", alias="tenantProfileName")
     name: Optional[StrictStr] = Field(default=None, description="Name of the tenant. Read-only, duplicated from title for backward compatibility")
-    addon_data: Optional[TenantAddonData] = Field(default=None, alias="addonData")
-    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the tenant. May include: 'description' (string), 'homeDashboardId' (string, UUID of the home dashboard), 'homeDashboardHideToolbar' (boolean, whether to hide the dashboard toolbar).", alias="additionalInfo")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "country", "state", "city", "address", "address2", "zip", "phone", "email", "title", "region", "tenantProfileId", "version", "active", "lastInactiveTs", "currentPeriodStartTs", "edgeLicenseVersion", "tenantProfileName", "name", "addonData", "additionalInfo"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "additionalInfo", "country", "state", "city", "address", "address2", "zip", "phone", "email", "title", "region", "tenantProfileId", "version", "active", "lastInactiveTs", "currentPeriodStartTs", "addonData", "edgeLicenseVersion", "tenantProfileName", "name"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -128,6 +128,7 @@ class TenantInfo(BaseModel):
         _obj = cls.model_validate({
             "id": TenantId.from_dict(obj["id"]) if obj.get("id") is not None else None,
             "createdTime": obj.get("createdTime"),
+            "additionalInfo": obj.get("additionalInfo"),
             "country": obj.get("country"),
             "state": obj.get("state"),
             "city": obj.get("city"),
@@ -143,11 +144,10 @@ class TenantInfo(BaseModel):
             "active": obj.get("active"),
             "lastInactiveTs": obj.get("lastInactiveTs"),
             "currentPeriodStartTs": obj.get("currentPeriodStartTs"),
+            "addonData": TenantAddonData.from_dict(obj["addonData"]) if obj.get("addonData") is not None else None,
             "edgeLicenseVersion": obj.get("edgeLicenseVersion"),
             "tenantProfileName": obj.get("tenantProfileName"),
-            "name": obj.get("name"),
-            "addonData": TenantAddonData.from_dict(obj["addonData"]) if obj.get("addonData") is not None else None,
-            "additionalInfo": obj.get("additionalInfo")
+            "name": obj.get("name")
         })
         return _obj
 

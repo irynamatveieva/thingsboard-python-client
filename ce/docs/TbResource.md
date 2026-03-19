@@ -22,9 +22,9 @@ A JSON value representing the Resource.
 | **descriptor** | **object** | Resource descriptor. | [optional] |
 | **data** | **str** | Resource data. | [optional] |
 | **preview** | **str** |  | [optional] |
+| **link** | **str** |  | [optional] [readonly] |
 | **name** | **str** |  | [optional] [readonly] |
 | **public** | **bool** |  | [optional] |
-| **link** | **str** |  | [optional] [readonly] |
 | **public_link** | **str** |  | [optional] [readonly] |
 
 

@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -37,6 +37,8 @@ class Notification(BaseModel):
     """
     Notification
     """ # noqa: E501
+    id: Optional[NotificationId] = None
+    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", alias="createdTime")
     request_id: Optional[NotificationRequestId] = Field(default=None, alias="requestId")
     recipient_id: Optional[UserId] = Field(default=None, alias="recipientId")
     type: Optional[NotificationType] = None
@@ -46,9 +48,7 @@ class Notification(BaseModel):
     additional_config: Optional[Any] = Field(default=None, alias="additionalConfig")
     info: Optional[NotificationInfo] = None
     status: Optional[NotificationStatus] = None
-    id: Optional[NotificationId] = None
-    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", alias="createdTime")
-    __properties: ClassVar[List[str]] = ["requestId", "recipientId", "type", "deliveryMethod", "subject", "text", "additionalConfig", "info", "status", "id", "createdTime"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "requestId", "recipientId", "type", "deliveryMethod", "subject", "text", "additionalConfig", "info", "status"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -91,6 +91,9 @@ class Notification(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of id
+        if self.id:
+            _dict['id'] = self.id.to_dict()
         # override the default output from pydantic by calling `to_dict()` of request_id
         if self.request_id:
             _dict['requestId'] = self.request_id.to_dict()
@@ -100,9 +103,6 @@ class Notification(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of info
         if self.info:
             _dict['info'] = self.info.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of id
-        if self.id:
-            _dict['id'] = self.id.to_dict()
         # set to None if additional_config (nullable) is None
         # and model_fields_set contains the field
         if self.additional_config is None and "additional_config" in self.model_fields_set:
@@ -120,6 +120,8 @@ class Notification(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "id": NotificationId.from_dict(obj["id"]) if obj.get("id") is not None else None,
+            "createdTime": obj.get("createdTime"),
             "requestId": NotificationRequestId.from_dict(obj["requestId"]) if obj.get("requestId") is not None else None,
             "recipientId": UserId.from_dict(obj["recipientId"]) if obj.get("recipientId") is not None else None,
             "type": obj.get("type"),
@@ -128,9 +130,7 @@ class Notification(BaseModel):
             "text": obj.get("text"),
             "additionalConfig": obj.get("additionalConfig"),
             "info": NotificationInfo.from_dict(obj["info"]) if obj.get("info") is not None else None,
-            "status": obj.get("status"),
-            "id": NotificationId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime")
+            "status": obj.get("status")
         })
         return _obj
 

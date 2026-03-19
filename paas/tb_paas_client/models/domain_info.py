@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -41,11 +41,11 @@ class DomainInfo(BaseModel):
     tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id", alias="tenantId")
     customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id", alias="customerId")
     name: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Domain name. Cannot be empty")
-    oauth2_enabled: Optional[StrictBool] = Field(default=None, description="Whether OAuth2 settings are enabled or not", alias="oauth2Enabled")
-    propagate_to_edge: Optional[StrictBool] = Field(default=None, description="Whether OAuth2 settings are enabled on Edge or not", alias="propagateToEdge")
     oauth2_client_infos: Optional[List[OAuth2ClientInfo]] = Field(default=None, description="List of available oauth2 clients", alias="oauth2ClientInfos")
+    oauth2_enabled: Optional[StrictBool] = Field(default=None, description="Whether OAuth2 settings are enabled or not", alias="oauth2Enabled")
     owner_id: Optional[EntityId] = Field(default=None, description="JSON object with Customer or Tenant Id", alias="ownerId")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "customerId", "name", "oauth2Enabled", "propagateToEdge", "oauth2ClientInfos", "ownerId"]
+    propagate_to_edge: Optional[StrictBool] = Field(default=None, description="Whether OAuth2 settings are enabled on Edge or not", alias="propagateToEdge")
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "customerId", "name", "oauth2ClientInfos", "oauth2Enabled", "ownerId", "propagateToEdge"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -126,10 +126,10 @@ class DomainInfo(BaseModel):
             "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
             "customerId": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
             "name": obj.get("name"),
-            "oauth2Enabled": obj.get("oauth2Enabled"),
-            "propagateToEdge": obj.get("propagateToEdge"),
             "oauth2ClientInfos": [OAuth2ClientInfo.from_dict(_item) for _item in obj["oauth2ClientInfos"]] if obj.get("oauth2ClientInfos") is not None else None,
-            "ownerId": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None
+            "oauth2Enabled": obj.get("oauth2Enabled"),
+            "ownerId": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None,
+            "propagateToEdge": obj.get("propagateToEdge")
         })
         return _obj
 

@@ -13,8 +13,8 @@ A JSON value representing the tenant profile.
 | **created_time** | **int** | Timestamp of the tenant profile creation, in milliseconds | [optional] [readonly] |
 | **name** | **str** | Name of the tenant profile | [optional] |
 | **description** | **str** | Description of the tenant profile | [optional] |
-| **isolated_tb_rule_engine** | **bool** | If enabled, will push all messages related to this tenant and processed by the rule engine into separate queue. Useful for complex microservices deployments, to isolate processing of the data for specific tenants | [optional] |
 | **default** | **bool** | Default Tenant profile to be used. | [optional] |
+| **isolated_tb_rule_engine** | **bool** | If enabled, will push all messages related to this tenant and processed by the rule engine into separate queue. Useful for complex microservices deployments, to isolate processing of the data for specific tenants | [optional] |
 | **profile_data** | [**TenantProfileData**](TenantProfileData.md) |  | [optional] |
 
 

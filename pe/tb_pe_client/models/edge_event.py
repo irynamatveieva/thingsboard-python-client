@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -45,9 +45,9 @@ class EdgeEvent(BaseModel):
     entity_id: Optional[UUID] = Field(default=None, alias="entityId")
     uid: Optional[StrictStr] = None
     type: Optional[EdgeEventType] = None
-    entity_group_id: Optional[UUID] = Field(default=None, alias="entityGroupId")
     body: Optional[Any] = None
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "seqId", "tenantId", "edgeId", "action", "entityId", "uid", "type", "entityGroupId", "body"]
+    entity_group_id: Optional[UUID] = Field(default=None, alias="entityGroupId")
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "seqId", "tenantId", "edgeId", "action", "entityId", "uid", "type", "body", "entityGroupId"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -125,8 +125,8 @@ class EdgeEvent(BaseModel):
             "entityId": obj.get("entityId"),
             "uid": obj.get("uid"),
             "type": obj.get("type"),
-            "entityGroupId": obj.get("entityGroupId"),
-            "body": obj.get("body")
+            "body": obj.get("body"),
+            "entityGroupId": obj.get("entityGroupId")
         })
         return _obj
 

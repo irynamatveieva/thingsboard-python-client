@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, Field, StrictStr
+from pydantic import ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from tb_paas_client.models.menu_item import MenuItem
 from tb_paas_client.models.menu_item_type import MenuItemType
@@ -35,6 +35,7 @@ class DefaultMenuItem(MenuItem):
     id: Optional[StrictStr] = Field(default=None, description="Unique identifier for predefined menu items")
     name: Optional[StrictStr] = Field(default=None, description="Name of the menu item")
     icon: Optional[StrictStr] = Field(default=None, description="URL of the menu item icon. Overrides 'materialIcon'")
+    visible: Optional[StrictBool] = Field(default=None, description="Mark if menu item is visible for user")
     pages: Optional[List[DefaultMenuItem]] = Field(default=None, description="List of child menu items")
     __properties: ClassVar[List[str]] = ["type", "visible", "id", "name", "icon", "pages"]
 

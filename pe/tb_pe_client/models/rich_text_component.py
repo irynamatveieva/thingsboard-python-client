@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ class RichTextComponent(ReportComponent):
     border_radius: Optional[StrictInt] = Field(default=None, alias="borderRadius")
     border_color: Optional[StrictStr] = Field(default=None, alias="borderColor")
     value: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["type", "subType", "dataSources", "margins", "paddings", "background", "borderWidth", "borderRadius", "borderColor", "value"]
+    __properties: ClassVar[List[str]] = ["subType", "type", "dataSources", "margins", "paddings", "background", "borderWidth", "borderRadius", "borderColor", "value"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -109,8 +109,8 @@ class RichTextComponent(ReportComponent):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "type": obj.get("type"),
             "subType": obj.get("subType"),
+            "type": obj.get("type"),
             "dataSources": [DataSource.from_dict(_item) for _item in obj["dataSources"]] if obj.get("dataSources") is not None else None,
             "margins": Insets.from_dict(obj["margins"]) if obj.get("margins") is not None else None,
             "paddings": Insets.from_dict(obj["paddings"]) if obj.get("paddings") is not None else None,

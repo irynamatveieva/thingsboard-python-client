@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,18 +31,18 @@ class OtherConfiguration(BaseModel):
     """
     OtherConfiguration
     """ # noqa: E501
-    use_object19_for_ota_info: Optional[StrictBool] = Field(default=None, alias="useObject19ForOtaInfo")
-    fw_update_strategy: Optional[StrictInt] = Field(default=None, alias="fwUpdateStrategy")
-    sw_update_strategy: Optional[StrictInt] = Field(default=None, alias="swUpdateStrategy")
-    client_only_observe_after_connect: Optional[StrictInt] = Field(default=None, alias="clientOnlyObserveAfterConnect")
     power_mode: Optional[PowerMode] = Field(default=None, alias="powerMode")
     psm_activity_timer: Optional[StrictInt] = Field(default=None, alias="psmActivityTimer")
     edrx_cycle: Optional[StrictInt] = Field(default=None, alias="edrxCycle")
     paging_transmission_window: Optional[StrictInt] = Field(default=None, alias="pagingTransmissionWindow")
+    use_object19_for_ota_info: Optional[StrictBool] = Field(default=None, alias="useObject19ForOtaInfo")
+    fw_update_strategy: Optional[StrictInt] = Field(default=None, alias="fwUpdateStrategy")
+    sw_update_strategy: Optional[StrictInt] = Field(default=None, alias="swUpdateStrategy")
+    client_only_observe_after_connect: Optional[StrictInt] = Field(default=None, alias="clientOnlyObserveAfterConnect")
     fw_update_resource: Optional[StrictStr] = Field(default=None, alias="fwUpdateResource")
     sw_update_resource: Optional[StrictStr] = Field(default=None, alias="swUpdateResource")
     default_object_id_ver: Optional[StrictStr] = Field(default=None, alias="defaultObjectIDVer")
-    __properties: ClassVar[List[str]] = ["useObject19ForOtaInfo", "fwUpdateStrategy", "swUpdateStrategy", "clientOnlyObserveAfterConnect", "powerMode", "psmActivityTimer", "edrxCycle", "pagingTransmissionWindow", "fwUpdateResource", "swUpdateResource", "defaultObjectIDVer"]
+    __properties: ClassVar[List[str]] = ["powerMode", "psmActivityTimer", "edrxCycle", "pagingTransmissionWindow", "useObject19ForOtaInfo", "fwUpdateStrategy", "swUpdateStrategy", "clientOnlyObserveAfterConnect", "fwUpdateResource", "swUpdateResource", "defaultObjectIDVer"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -95,14 +95,14 @@ class OtherConfiguration(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "useObject19ForOtaInfo": obj.get("useObject19ForOtaInfo"),
-            "fwUpdateStrategy": obj.get("fwUpdateStrategy"),
-            "swUpdateStrategy": obj.get("swUpdateStrategy"),
-            "clientOnlyObserveAfterConnect": obj.get("clientOnlyObserveAfterConnect"),
             "powerMode": obj.get("powerMode"),
             "psmActivityTimer": obj.get("psmActivityTimer"),
             "edrxCycle": obj.get("edrxCycle"),
             "pagingTransmissionWindow": obj.get("pagingTransmissionWindow"),
+            "useObject19ForOtaInfo": obj.get("useObject19ForOtaInfo"),
+            "fwUpdateStrategy": obj.get("fwUpdateStrategy"),
+            "swUpdateStrategy": obj.get("swUpdateStrategy"),
+            "clientOnlyObserveAfterConnect": obj.get("clientOnlyObserveAfterConnect"),
             "fwUpdateResource": obj.get("fwUpdateResource"),
             "swUpdateResource": obj.get("swUpdateResource"),
             "defaultObjectIDVer": obj.get("defaultObjectIDVer")

@@ -8,8 +8,8 @@
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
 | **alias_entity_type** | [**AliasEntityType**](AliasEntityType.md) |  | [optional] |
-| **id** | **UUID** | ID of the entity, time-based UUID v1 | |
 | **entity_type** | [**EntityType**](EntityType.md) |  | |
+| **id** | **UUID** | ID of the entity, time-based UUID v1 | |
 
 
 

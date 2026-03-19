@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,9 +33,9 @@ class AlarmRuleNoDataFilterPredicate(AlarmRuleKeyFilterPredicate):
     """
     AlarmRuleNoDataFilterPredicate
     """ # noqa: E501
-    unit: TimeUnit
     duration: AlarmConditionValueLong
-    __properties: ClassVar[List[str]] = ["type", "unit", "duration"]
+    unit: TimeUnit
+    __properties: ClassVar[List[str]] = ["type", "duration", "unit"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -92,8 +92,8 @@ class AlarmRuleNoDataFilterPredicate(AlarmRuleKeyFilterPredicate):
 
         _obj = cls.model_validate({
             "type": obj.get("type"),
-            "unit": obj.get("unit"),
-            "duration": AlarmConditionValueLong.from_dict(obj["duration"]) if obj.get("duration") is not None else None
+            "duration": AlarmConditionValueLong.from_dict(obj["duration"]) if obj.get("duration") is not None else None,
+            "unit": obj.get("unit")
         })
         return _obj
 

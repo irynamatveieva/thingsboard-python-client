@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ class SplitViewComponent(ReportComponent):
     split_gap: Optional[StrictInt] = Field(default=None, alias="splitGap")
     left_vertical_alignment: Optional[VerticalAlignment] = Field(default=None, alias="leftVerticalAlignment")
     right_vertical_alignment: Optional[VerticalAlignment] = Field(default=None, alias="rightVerticalAlignment")
-    __properties: ClassVar[List[str]] = ["type", "subType", "margins", "paddings", "background", "borderWidth", "borderRadius", "borderColor", "leftView", "rightView", "splitPosition", "splitGap", "leftVerticalAlignment", "rightVerticalAlignment"]
+    __properties: ClassVar[List[str]] = ["subType", "type", "margins", "paddings", "background", "borderWidth", "borderRadius", "borderColor", "leftView", "rightView", "splitPosition", "splitGap", "leftVerticalAlignment", "rightVerticalAlignment"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -112,8 +112,8 @@ class SplitViewComponent(ReportComponent):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "type": obj.get("type"),
             "subType": obj.get("subType"),
+            "type": obj.get("type"),
             "margins": Insets.from_dict(obj["margins"]) if obj.get("margins") is not None else None,
             "paddings": Insets.from_dict(obj["paddings"]) if obj.get("paddings") is not None else None,
             "background": obj.get("background"),

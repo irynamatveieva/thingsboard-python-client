@@ -22,8 +22,8 @@
 | **login_button_icon** | **str** | Default log in button icon for OAuth2 provider | [optional] |
 | **login_button_label** | **str** | Default OAuth2 provider label | [optional] |
 | **help_link** | **str** | Help link for OAuth2 provider | [optional] |
-| **name** | **str** |  | [optional] |
 | **additional_info** | **object** |  | [optional] |
+| **name** | **str** |  | [optional] |
 
 
 

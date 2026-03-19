@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -36,6 +36,7 @@ class Queue(BaseModel):
     """ # noqa: E501
     id: Optional[QueueId] = None
     created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", alias="createdTime")
+    additional_info: Optional[Any] = Field(default=None, alias="additionalInfo")
     tenant_id: Optional[TenantId] = Field(default=None, alias="tenantId")
     name: Optional[StrictStr] = None
     topic: Optional[StrictStr] = None
@@ -45,8 +46,7 @@ class Queue(BaseModel):
     pack_processing_timeout: Optional[StrictInt] = Field(default=None, alias="packProcessingTimeout")
     submit_strategy: Optional[SubmitStrategy] = Field(default=None, alias="submitStrategy")
     processing_strategy: Optional[ProcessingStrategy] = Field(default=None, alias="processingStrategy")
-    additional_info: Optional[Any] = Field(default=None, alias="additionalInfo")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "name", "topic", "pollInterval", "partitions", "consumerPerPartition", "packProcessingTimeout", "submitStrategy", "processingStrategy", "additionalInfo"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "additionalInfo", "tenantId", "name", "topic", "pollInterval", "partitions", "consumerPerPartition", "packProcessingTimeout", "submitStrategy", "processingStrategy"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -120,6 +120,7 @@ class Queue(BaseModel):
         _obj = cls.model_validate({
             "id": QueueId.from_dict(obj["id"]) if obj.get("id") is not None else None,
             "createdTime": obj.get("createdTime"),
+            "additionalInfo": obj.get("additionalInfo"),
             "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
             "name": obj.get("name"),
             "topic": obj.get("topic"),
@@ -128,8 +129,7 @@ class Queue(BaseModel):
             "consumerPerPartition": obj.get("consumerPerPartition"),
             "packProcessingTimeout": obj.get("packProcessingTimeout"),
             "submitStrategy": SubmitStrategy.from_dict(obj["submitStrategy"]) if obj.get("submitStrategy") is not None else None,
-            "processingStrategy": ProcessingStrategy.from_dict(obj["processingStrategy"]) if obj.get("processingStrategy") is not None else None,
-            "additionalInfo": obj.get("additionalInfo")
+            "processingStrategy": ProcessingStrategy.from_dict(obj["processingStrategy"]) if obj.get("processingStrategy") is not None else None
         })
         return _obj
 

@@ -1,5 +1,5 @@
 #
-# Copyright 2026 ThingsBoard, Inc.
+# Copyright © 2026-2026 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ class EntityGroupExportData(EntityExportData):
     permissions: Optional[List[GroupPermission]] = None
     group_ota_packages: Optional[List[DeviceGroupOtaPackage]] = Field(default=None, alias="groupOtaPackages")
     group_entities: Optional[StrictBool] = Field(default=None, alias="groupEntities")
-    __properties: ClassVar[List[str]] = ["entityType", "entity", "relations", "attributes", "calculatedFields", "permissions", "groupOtaPackages", "groupEntities"]
+    __properties: ClassVar[List[str]] = ["entity", "relations", "attributes", "calculatedFields", "entityType", "permissions", "groupOtaPackages", "groupEntities"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -133,7 +133,6 @@ class EntityGroupExportData(EntityExportData):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "entityType": obj.get("entityType"),
             "entity": ExportableEntity.from_dict(obj["entity"]) if obj.get("entity") is not None else None,
             "relations": [EntityRelation.from_dict(_item) for _item in obj["relations"]] if obj.get("relations") is not None else None,
             "attributes": dict(
@@ -145,6 +144,7 @@ class EntityGroupExportData(EntityExportData):
                 for _k, _v in obj.get("attributes", {}).items()
             ),
             "calculatedFields": [CalculatedField.from_dict(_item) for _item in obj["calculatedFields"]] if obj.get("calculatedFields") is not None else None,
+            "entityType": obj.get("entityType"),
             "permissions": [GroupPermission.from_dict(_item) for _item in obj["permissions"]] if obj.get("permissions") is not None else None,
             "groupOtaPackages": [DeviceGroupOtaPackage.from_dict(_item) for _item in obj["groupOtaPackages"]] if obj.get("groupOtaPackages") is not None else None,
             "groupEntities": obj.get("groupEntities")
