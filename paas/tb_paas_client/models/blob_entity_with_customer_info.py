@@ -35,16 +35,16 @@ class BlobEntityWithCustomerInfo(BaseModel):
     BlobEntityWithCustomerInfo
     """ # noqa: E501
     id: Optional[BlobEntityId] = Field(default=None, description="JSON object with the blob entity Id. Referencing non-existing blob entity Id will cause error")
-    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the blob entity creation, in milliseconds", alias="createdTime")
-    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the blob entity", alias="additionalInfo")
-    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id", alias="tenantId")
-    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id", alias="customerId")
+    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the blob entity creation, in milliseconds", serialization_alias="createdTime")
+    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the blob entity", serialization_alias="additionalInfo")
+    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id", serialization_alias="tenantId")
+    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id", serialization_alias="customerId")
     name: Optional[StrictStr] = Field(default=None, description="blob entity name")
     type: Optional[StrictStr] = Field(default=None, description="blob entity type")
-    content_type: Optional[StrictStr] = Field(default=None, description="blob content type", alias="contentType")
-    customer_title: Optional[StrictStr] = Field(default=None, description="Title of the customer", alias="customerTitle")
-    customer_is_public: Optional[StrictBool] = Field(default=None, description="Parameter that specifies if customer is public", alias="customerIsPublic")
-    owner_id: Optional[EntityId] = Field(default=None, description="JSON object with Customer or Tenant Id", alias="ownerId")
+    content_type: Optional[StrictStr] = Field(default=None, description="blob content type", serialization_alias="contentType")
+    customer_title: Optional[StrictStr] = Field(default=None, description="Title of the customer", serialization_alias="customerTitle")
+    customer_is_public: Optional[StrictBool] = Field(default=None, description="Parameter that specifies if customer is public", serialization_alias="customerIsPublic")
+    owner_id: Optional[EntityId] = Field(default=None, description="JSON object with Customer or Tenant Id", serialization_alias="ownerId")
     __properties: ClassVar[List[str]] = ["id", "createdTime", "additionalInfo", "tenantId", "customerId", "name", "type", "contentType", "customerTitle", "customerIsPublic", "ownerId"]
 
     @field_validator('content_type')
@@ -65,13 +65,18 @@ class BlobEntityWithCustomerInfo(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -142,16 +147,16 @@ class BlobEntityWithCustomerInfo(BaseModel):
 
         _obj = cls.model_validate({
             "id": BlobEntityId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "additionalInfo": obj.get("additionalInfo"),
-            "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
-            "customerId": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
+            "created_time": obj.get("createdTime"),
+            "additional_info": obj.get("additionalInfo"),
+            "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
+            "customer_id": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
             "name": obj.get("name"),
             "type": obj.get("type"),
-            "contentType": obj.get("contentType"),
-            "customerTitle": obj.get("customerTitle"),
-            "customerIsPublic": obj.get("customerIsPublic"),
-            "ownerId": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None
+            "content_type": obj.get("contentType"),
+            "customer_title": obj.get("customerTitle"),
+            "customer_is_public": obj.get("customerIsPublic"),
+            "owner_id": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None
         })
         return _obj
 

@@ -33,11 +33,11 @@ class ShareGroupRequest(BaseModel):
     """
     The Share Group Request JSON
     """ # noqa: E501
-    owner_id: Optional[EntityId] = Field(default=None, description="In case 'allUserGroup' is set to true, this property specifies the owner of the user group 'All'. Either Tenant or Customer Id.", alias="ownerId")
-    all_user_group: StrictBool = Field(description="Indicate that the group should be shared with user group 'All' that belongs to Tenant or Customer (see 'ownerId' property description).", alias="allUserGroup")
-    user_group_id: Optional[EntityGroupId] = Field(default=None, description="In case 'allUserGroup' is set to false, this property specifies the specific user group that the entity group should be shared with.", alias="userGroupId")
-    read_else_write: Optional[StrictBool] = Field(default=None, description="Used if 'roleIds' property is not present. if the value is 'true', creates role with read-only permissions. If the value is 'false', creates role with write permissions.", alias="readElseWrite")
-    role_ids: Optional[List[RoleId]] = Field(default=None, description="List of group role Ids that should be used to share the entity group with the user group. If not set, the platform will create new role (see 'readElseWrite' property description)", alias="roleIds")
+    owner_id: Optional[EntityId] = Field(default=None, description="In case 'allUserGroup' is set to true, this property specifies the owner of the user group 'All'. Either Tenant or Customer Id.", serialization_alias="ownerId")
+    all_user_group: StrictBool = Field(description="Indicate that the group should be shared with user group 'All' that belongs to Tenant or Customer (see 'ownerId' property description).", serialization_alias="allUserGroup")
+    user_group_id: Optional[EntityGroupId] = Field(default=None, description="In case 'allUserGroup' is set to false, this property specifies the specific user group that the entity group should be shared with.", serialization_alias="userGroupId")
+    read_else_write: Optional[StrictBool] = Field(default=None, description="Used if 'roleIds' property is not present. if the value is 'true', creates role with read-only permissions. If the value is 'false', creates role with write permissions.", serialization_alias="readElseWrite")
+    role_ids: Optional[List[RoleId]] = Field(default=None, description="List of group role Ids that should be used to share the entity group with the user group. If not set, the platform will create new role (see 'readElseWrite' property description)", serialization_alias="roleIds")
     __properties: ClassVar[List[str]] = ["ownerId", "allUserGroup", "userGroupId", "readElseWrite", "roleIds"]
 
     model_config = ConfigDict(
@@ -48,13 +48,18 @@ class ShareGroupRequest(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -104,11 +109,11 @@ class ShareGroupRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "ownerId": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None,
-            "allUserGroup": obj.get("allUserGroup"),
-            "userGroupId": EntityGroupId.from_dict(obj["userGroupId"]) if obj.get("userGroupId") is not None else None,
-            "readElseWrite": obj.get("readElseWrite"),
-            "roleIds": [RoleId.from_dict(_item) for _item in obj["roleIds"]] if obj.get("roleIds") is not None else None
+            "owner_id": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None,
+            "all_user_group": obj.get("allUserGroup"),
+            "user_group_id": EntityGroupId.from_dict(obj["userGroupId"]) if obj.get("userGroupId") is not None else None,
+            "read_else_write": obj.get("readElseWrite"),
+            "role_ids": [RoleId.from_dict(_item) for _item in obj["roleIds"]] if obj.get("roleIds") is not None else None
         })
         return _obj
 

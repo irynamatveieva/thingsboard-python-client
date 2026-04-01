@@ -32,15 +32,15 @@ class EntityTypeVersionCreateConfig(BaseModel):
     """
     EntityTypeVersionCreateConfig
     """ # noqa: E501
-    save_relations: Optional[StrictBool] = Field(default=None, alias="saveRelations")
-    save_attributes: Optional[StrictBool] = Field(default=None, alias="saveAttributes")
-    save_credentials: Optional[StrictBool] = Field(default=None, alias="saveCredentials")
-    save_calculated_fields: Optional[StrictBool] = Field(default=None, alias="saveCalculatedFields")
-    save_permissions: Optional[StrictBool] = Field(default=None, alias="savePermissions")
-    save_group_entities: Optional[StrictBool] = Field(default=None, alias="saveGroupEntities")
-    sync_strategy: Optional[SyncStrategy] = Field(default=None, alias="syncStrategy")
-    entity_ids: Optional[List[UUID]] = Field(default=None, alias="entityIds")
-    all_entities: Optional[StrictBool] = Field(default=None, alias="allEntities")
+    save_relations: Optional[StrictBool] = Field(default=None, serialization_alias="saveRelations")
+    save_attributes: Optional[StrictBool] = Field(default=None, serialization_alias="saveAttributes")
+    save_credentials: Optional[StrictBool] = Field(default=None, serialization_alias="saveCredentials")
+    save_calculated_fields: Optional[StrictBool] = Field(default=None, serialization_alias="saveCalculatedFields")
+    save_permissions: Optional[StrictBool] = Field(default=None, serialization_alias="savePermissions")
+    save_group_entities: Optional[StrictBool] = Field(default=None, serialization_alias="saveGroupEntities")
+    sync_strategy: Optional[SyncStrategy] = Field(default=None, serialization_alias="syncStrategy")
+    entity_ids: Optional[List[UUID]] = Field(default=None, serialization_alias="entityIds")
+    all_entities: Optional[StrictBool] = Field(default=None, serialization_alias="allEntities")
     __properties: ClassVar[List[str]] = ["saveRelations", "saveAttributes", "saveCredentials", "saveCalculatedFields", "savePermissions", "saveGroupEntities", "syncStrategy", "entityIds", "allEntities"]
 
     model_config = ConfigDict(
@@ -51,13 +51,18 @@ class EntityTypeVersionCreateConfig(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -94,15 +99,15 @@ class EntityTypeVersionCreateConfig(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "saveRelations": obj.get("saveRelations"),
-            "saveAttributes": obj.get("saveAttributes"),
-            "saveCredentials": obj.get("saveCredentials"),
-            "saveCalculatedFields": obj.get("saveCalculatedFields"),
-            "savePermissions": obj.get("savePermissions"),
-            "saveGroupEntities": obj.get("saveGroupEntities"),
-            "syncStrategy": obj.get("syncStrategy"),
-            "entityIds": obj.get("entityIds"),
-            "allEntities": obj.get("allEntities")
+            "save_relations": obj.get("saveRelations"),
+            "save_attributes": obj.get("saveAttributes"),
+            "save_credentials": obj.get("saveCredentials"),
+            "save_calculated_fields": obj.get("saveCalculatedFields"),
+            "save_permissions": obj.get("savePermissions"),
+            "save_group_entities": obj.get("saveGroupEntities"),
+            "sync_strategy": obj.get("syncStrategy"),
+            "entity_ids": obj.get("entityIds"),
+            "all_entities": obj.get("allEntities")
         })
         return _obj
 

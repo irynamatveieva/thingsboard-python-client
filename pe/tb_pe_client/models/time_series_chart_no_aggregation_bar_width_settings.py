@@ -33,8 +33,8 @@ class TimeSeriesChartNoAggregationBarWidthSettings(BaseModel):
     TimeSeriesChartNoAggregationBarWidthSettings
     """ # noqa: E501
     strategy: Optional[TimeSeriesChartNoAggregationBarWidthStrategy] = None
-    group_width: Optional[TimeSeriesChartBarWidth] = Field(default=None, alias="groupWidth")
-    bar_width: Optional[TimeSeriesChartBarWidth] = Field(default=None, alias="barWidth")
+    group_width: Optional[TimeSeriesChartBarWidth] = Field(default=None, serialization_alias="groupWidth")
+    bar_width: Optional[TimeSeriesChartBarWidth] = Field(default=None, serialization_alias="barWidth")
     __properties: ClassVar[List[str]] = ["strategy", "groupWidth", "barWidth"]
 
     model_config = ConfigDict(
@@ -45,13 +45,18 @@ class TimeSeriesChartNoAggregationBarWidthSettings(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -95,8 +100,8 @@ class TimeSeriesChartNoAggregationBarWidthSettings(BaseModel):
 
         _obj = cls.model_validate({
             "strategy": obj.get("strategy"),
-            "groupWidth": TimeSeriesChartBarWidth.from_dict(obj["groupWidth"]) if obj.get("groupWidth") is not None else None,
-            "barWidth": TimeSeriesChartBarWidth.from_dict(obj["barWidth"]) if obj.get("barWidth") is not None else None
+            "group_width": TimeSeriesChartBarWidth.from_dict(obj["groupWidth"]) if obj.get("groupWidth") is not None else None,
+            "bar_width": TimeSeriesChartBarWidth.from_dict(obj["barWidth"]) if obj.get("barWidth") is not None else None
         })
         return _obj
 

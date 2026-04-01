@@ -40,17 +40,17 @@ class ReportJobConfiguration(JobConfiguration):
     """
     ReportJobConfiguration
     """ # noqa: E501
-    report_template_id: Optional[ReportTemplateId] = Field(default=None, alias="reportTemplateId")
-    user_id: Optional[UserId] = Field(default=None, alias="userId")
+    report_template_id: Optional[ReportTemplateId] = Field(default=None, serialization_alias="reportTemplateId")
+    user_id: Optional[UserId] = Field(default=None, serialization_alias="userId")
     timezone: Optional[StrictStr] = None
     targets: Optional[List[UUID]] = None
-    notification_template_id: Optional[NotificationTemplateId] = Field(default=None, alias="notificationTemplateId")
-    notification_requests: Optional[List[NotificationRequest]] = Field(default=None, alias="notificationRequests")
+    notification_template_id: Optional[NotificationTemplateId] = Field(default=None, serialization_alias="notificationTemplateId")
+    notification_requests: Optional[List[NotificationRequest]] = Field(default=None, serialization_alias="notificationRequests")
     originator: Optional[EntityId] = None
-    rule_node: Optional[RuleNode] = Field(default=None, alias="ruleNode")
-    output_tb_msg_proto: Optional[StrictStr] = Field(default=None, alias="outputTbMsgProto")
-    queue_name: Optional[StrictStr] = Field(default=None, alias="queueName")
-    scheduler_event_info: Optional[EntityInfo] = Field(default=None, alias="schedulerEventInfo")
+    rule_node: Optional[RuleNode] = Field(default=None, serialization_alias="ruleNode")
+    output_tb_msg_proto: Optional[StrictStr] = Field(default=None, serialization_alias="outputTbMsgProto")
+    queue_name: Optional[StrictStr] = Field(default=None, serialization_alias="queueName")
+    scheduler_event_info: Optional[EntityInfo] = Field(default=None, serialization_alias="schedulerEventInfo")
     __properties: ClassVar[List[str]] = ["tasksKey", "toReprocess", "type", "reportTemplateId", "userId", "timezone", "targets", "notificationTemplateId", "notificationRequests", "originator", "ruleNode", "outputTbMsgProto", "queueName", "schedulerEventInfo"]
 
     model_config = ConfigDict(
@@ -61,13 +61,18 @@ class ReportJobConfiguration(JobConfiguration):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -136,20 +141,20 @@ class ReportJobConfiguration(JobConfiguration):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "tasksKey": obj.get("tasksKey"),
-            "toReprocess": [TaskResult.from_dict(_item) for _item in obj["toReprocess"]] if obj.get("toReprocess") is not None else None,
+            "tasks_key": obj.get("tasksKey"),
+            "to_reprocess": [TaskResult.from_dict(_item) for _item in obj["toReprocess"]] if obj.get("toReprocess") is not None else None,
             "type": obj.get("type"),
-            "reportTemplateId": ReportTemplateId.from_dict(obj["reportTemplateId"]) if obj.get("reportTemplateId") is not None else None,
-            "userId": UserId.from_dict(obj["userId"]) if obj.get("userId") is not None else None,
+            "report_template_id": ReportTemplateId.from_dict(obj["reportTemplateId"]) if obj.get("reportTemplateId") is not None else None,
+            "user_id": UserId.from_dict(obj["userId"]) if obj.get("userId") is not None else None,
             "timezone": obj.get("timezone"),
             "targets": obj.get("targets"),
-            "notificationTemplateId": NotificationTemplateId.from_dict(obj["notificationTemplateId"]) if obj.get("notificationTemplateId") is not None else None,
-            "notificationRequests": [NotificationRequest.from_dict(_item) for _item in obj["notificationRequests"]] if obj.get("notificationRequests") is not None else None,
+            "notification_template_id": NotificationTemplateId.from_dict(obj["notificationTemplateId"]) if obj.get("notificationTemplateId") is not None else None,
+            "notification_requests": [NotificationRequest.from_dict(_item) for _item in obj["notificationRequests"]] if obj.get("notificationRequests") is not None else None,
             "originator": EntityId.from_dict(obj["originator"]) if obj.get("originator") is not None else None,
-            "ruleNode": RuleNode.from_dict(obj["ruleNode"]) if obj.get("ruleNode") is not None else None,
-            "outputTbMsgProto": obj.get("outputTbMsgProto"),
-            "queueName": obj.get("queueName"),
-            "schedulerEventInfo": EntityInfo.from_dict(obj["schedulerEventInfo"]) if obj.get("schedulerEventInfo") is not None else None
+            "rule_node": RuleNode.from_dict(obj["ruleNode"]) if obj.get("ruleNode") is not None else None,
+            "output_tb_msg_proto": obj.get("outputTbMsgProto"),
+            "queue_name": obj.get("queueName"),
+            "scheduler_event_info": EntityInfo.from_dict(obj["schedulerEventInfo"]) if obj.get("schedulerEventInfo") is not None else None
         })
         return _obj
 

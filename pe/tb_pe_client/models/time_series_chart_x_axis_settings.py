@@ -34,19 +34,19 @@ class TimeSeriesChartXAxisSettings(BaseModel):
     """ # noqa: E501
     show: Optional[StrictBool] = None
     label: Optional[StrictStr] = None
-    label_font: Optional[Font] = Field(default=None, alias="labelFont")
-    label_color: Optional[StrictStr] = Field(default=None, alias="labelColor")
+    label_font: Optional[Font] = Field(default=None, serialization_alias="labelFont")
+    label_color: Optional[StrictStr] = Field(default=None, serialization_alias="labelColor")
     position: Optional[AxisPosition] = None
-    show_tick_labels: Optional[StrictBool] = Field(default=None, alias="showTickLabels")
-    tick_label_font: Optional[Font] = Field(default=None, alias="tickLabelFont")
-    tick_label_color: Optional[StrictStr] = Field(default=None, alias="tickLabelColor")
-    show_ticks: Optional[StrictBool] = Field(default=None, alias="showTicks")
-    ticks_color: Optional[StrictStr] = Field(default=None, alias="ticksColor")
-    show_line: Optional[StrictBool] = Field(default=None, alias="showLine")
-    line_color: Optional[StrictStr] = Field(default=None, alias="lineColor")
-    show_split_lines: Optional[StrictBool] = Field(default=None, alias="showSplitLines")
-    split_lines_color: Optional[StrictStr] = Field(default=None, alias="splitLinesColor")
-    ticks_format: Optional[Dict[str, StrictStr]] = Field(default=None, alias="ticksFormat")
+    show_tick_labels: Optional[StrictBool] = Field(default=None, serialization_alias="showTickLabels")
+    tick_label_font: Optional[Font] = Field(default=None, serialization_alias="tickLabelFont")
+    tick_label_color: Optional[StrictStr] = Field(default=None, serialization_alias="tickLabelColor")
+    show_ticks: Optional[StrictBool] = Field(default=None, serialization_alias="showTicks")
+    ticks_color: Optional[StrictStr] = Field(default=None, serialization_alias="ticksColor")
+    show_line: Optional[StrictBool] = Field(default=None, serialization_alias="showLine")
+    line_color: Optional[StrictStr] = Field(default=None, serialization_alias="lineColor")
+    show_split_lines: Optional[StrictBool] = Field(default=None, serialization_alias="showSplitLines")
+    split_lines_color: Optional[StrictStr] = Field(default=None, serialization_alias="splitLinesColor")
+    ticks_format: Optional[Dict[str, StrictStr]] = Field(default=None, serialization_alias="ticksFormat")
     __properties: ClassVar[List[str]] = ["show", "label", "labelFont", "labelColor", "position", "showTickLabels", "tickLabelFont", "tickLabelColor", "showTicks", "ticksColor", "showLine", "lineColor", "showSplitLines", "splitLinesColor", "ticksFormat"]
 
     model_config = ConfigDict(
@@ -57,13 +57,18 @@ class TimeSeriesChartXAxisSettings(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -108,19 +113,19 @@ class TimeSeriesChartXAxisSettings(BaseModel):
         _obj = cls.model_validate({
             "show": obj.get("show"),
             "label": obj.get("label"),
-            "labelFont": Font.from_dict(obj["labelFont"]) if obj.get("labelFont") is not None else None,
-            "labelColor": obj.get("labelColor"),
+            "label_font": Font.from_dict(obj["labelFont"]) if obj.get("labelFont") is not None else None,
+            "label_color": obj.get("labelColor"),
             "position": obj.get("position"),
-            "showTickLabels": obj.get("showTickLabels"),
-            "tickLabelFont": Font.from_dict(obj["tickLabelFont"]) if obj.get("tickLabelFont") is not None else None,
-            "tickLabelColor": obj.get("tickLabelColor"),
-            "showTicks": obj.get("showTicks"),
-            "ticksColor": obj.get("ticksColor"),
-            "showLine": obj.get("showLine"),
-            "lineColor": obj.get("lineColor"),
-            "showSplitLines": obj.get("showSplitLines"),
-            "splitLinesColor": obj.get("splitLinesColor"),
-            "ticksFormat": obj.get("ticksFormat")
+            "show_tick_labels": obj.get("showTickLabels"),
+            "tick_label_font": Font.from_dict(obj["tickLabelFont"]) if obj.get("tickLabelFont") is not None else None,
+            "tick_label_color": obj.get("tickLabelColor"),
+            "show_ticks": obj.get("showTicks"),
+            "ticks_color": obj.get("ticksColor"),
+            "show_line": obj.get("showLine"),
+            "line_color": obj.get("lineColor"),
+            "show_split_lines": obj.get("showSplitLines"),
+            "split_lines_color": obj.get("splitLinesColor"),
+            "ticks_format": obj.get("ticksFormat")
         })
         return _obj
 

@@ -31,8 +31,8 @@ class AlarmConditionValueAlarmRuleSchedule(BaseModel):
     """
     AlarmConditionValueAlarmRuleSchedule
     """ # noqa: E501
-    dynamic_value_argument: Optional[StrictStr] = Field(default=None, alias="dynamicValueArgument")
-    static_value: Optional[AlarmRuleSchedule] = Field(default=None, alias="staticValue")
+    dynamic_value_argument: Optional[StrictStr] = Field(default=None, serialization_alias="dynamicValueArgument")
+    static_value: Optional[AlarmRuleSchedule] = Field(default=None, serialization_alias="staticValue")
     __properties: ClassVar[List[str]] = ["dynamicValueArgument", "staticValue"]
 
     model_config = ConfigDict(
@@ -43,13 +43,18 @@ class AlarmConditionValueAlarmRuleSchedule(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -89,8 +94,8 @@ class AlarmConditionValueAlarmRuleSchedule(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "dynamicValueArgument": obj.get("dynamicValueArgument"),
-            "staticValue": AlarmRuleSchedule.from_dict(obj["staticValue"]) if obj.get("staticValue") is not None else None
+            "dynamic_value_argument": obj.get("dynamicValueArgument"),
+            "static_value": AlarmRuleSchedule.from_dict(obj["staticValue"]) if obj.get("staticValue") is not None else None
         })
         return _obj
 

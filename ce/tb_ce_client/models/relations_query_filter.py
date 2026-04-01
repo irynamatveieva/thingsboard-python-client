@@ -35,17 +35,17 @@ class RelationsQueryFilter(EntityFilter):
     """
     RelationsQueryFilter
     """ # noqa: E501
-    root_entity: Optional[AliasEntityId] = Field(default=None, alias="rootEntity")
-    multi_root: Optional[StrictBool] = Field(default=None, alias="multiRoot")
-    multi_root_entities_type: Optional[EntityType] = Field(default=None, alias="multiRootEntitiesType")
-    multi_root_entity_ids: Optional[List[StrictStr]] = Field(default=None, alias="multiRootEntityIds")
+    root_entity: Optional[AliasEntityId] = Field(default=None, serialization_alias="rootEntity")
+    multi_root: Optional[StrictBool] = Field(default=None, serialization_alias="multiRoot")
+    multi_root_entities_type: Optional[EntityType] = Field(default=None, serialization_alias="multiRootEntitiesType")
+    multi_root_entity_ids: Optional[List[StrictStr]] = Field(default=None, serialization_alias="multiRootEntityIds")
     direction: Optional[EntitySearchDirection] = None
     filters: Optional[List[RelationEntityTypeFilter]] = None
-    max_level: Optional[StrictInt] = Field(default=None, alias="maxLevel")
-    fetch_last_level_only: Optional[StrictBool] = Field(default=None, alias="fetchLastLevelOnly")
+    max_level: Optional[StrictInt] = Field(default=None, serialization_alias="maxLevel")
+    fetch_last_level_only: Optional[StrictBool] = Field(default=None, serialization_alias="fetchLastLevelOnly")
     negate: Optional[StrictBool] = None
-    root_state_entity: Optional[StrictBool] = Field(default=None, alias="rootStateEntity")
-    default_state_entity: Optional[AliasEntityId] = Field(default=None, alias="defaultStateEntity")
+    root_state_entity: Optional[StrictBool] = Field(default=None, serialization_alias="rootStateEntity")
+    default_state_entity: Optional[AliasEntityId] = Field(default=None, serialization_alias="defaultStateEntity")
     __properties: ClassVar[List[str]] = ["type", "rootEntity", "multiRoot", "multiRootEntitiesType", "multiRootEntityIds", "direction", "filters", "maxLevel", "fetchLastLevelOnly", "negate", "rootStateEntity", "defaultStateEntity"]
 
     model_config = ConfigDict(
@@ -56,13 +56,18 @@ class RelationsQueryFilter(EntityFilter):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -113,17 +118,17 @@ class RelationsQueryFilter(EntityFilter):
 
         _obj = cls.model_validate({
             "type": obj.get("type"),
-            "rootEntity": AliasEntityId.from_dict(obj["rootEntity"]) if obj.get("rootEntity") is not None else None,
-            "multiRoot": obj.get("multiRoot"),
-            "multiRootEntitiesType": obj.get("multiRootEntitiesType"),
-            "multiRootEntityIds": obj.get("multiRootEntityIds"),
+            "root_entity": AliasEntityId.from_dict(obj["rootEntity"]) if obj.get("rootEntity") is not None else None,
+            "multi_root": obj.get("multiRoot"),
+            "multi_root_entities_type": obj.get("multiRootEntitiesType"),
+            "multi_root_entity_ids": obj.get("multiRootEntityIds"),
             "direction": obj.get("direction"),
             "filters": [RelationEntityTypeFilter.from_dict(_item) for _item in obj["filters"]] if obj.get("filters") is not None else None,
-            "maxLevel": obj.get("maxLevel"),
-            "fetchLastLevelOnly": obj.get("fetchLastLevelOnly"),
+            "max_level": obj.get("maxLevel"),
+            "fetch_last_level_only": obj.get("fetchLastLevelOnly"),
             "negate": obj.get("negate"),
-            "rootStateEntity": obj.get("rootStateEntity"),
-            "defaultStateEntity": AliasEntityId.from_dict(obj["defaultStateEntity"]) if obj.get("defaultStateEntity") is not None else None
+            "root_state_entity": obj.get("rootStateEntity"),
+            "default_state_entity": AliasEntityId.from_dict(obj["defaultStateEntity"]) if obj.get("defaultStateEntity") is not None else None
         })
         return _obj
 

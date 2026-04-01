@@ -33,12 +33,12 @@ class EntityData(BaseModel):
     """
     EntityData
     """ # noqa: E501
-    entity_id: Optional[EntityId] = Field(default=None, alias="entityId")
-    read_attrs: Optional[StrictBool] = Field(default=None, alias="readAttrs")
-    read_ts: Optional[StrictBool] = Field(default=None, alias="readTs")
+    entity_id: Optional[EntityId] = Field(default=None, serialization_alias="entityId")
+    read_attrs: Optional[StrictBool] = Field(default=None, serialization_alias="readAttrs")
+    read_ts: Optional[StrictBool] = Field(default=None, serialization_alias="readTs")
     latest: Optional[Dict[str, Dict[str, TsValue]]] = None
     timeseries: Optional[Dict[str, List[TsValue]]] = None
-    agg_latest: Optional[Dict[str, ComparisonTsValue]] = Field(default=None, alias="aggLatest")
+    agg_latest: Optional[Dict[str, ComparisonTsValue]] = Field(default=None, serialization_alias="aggLatest")
     __properties: ClassVar[List[str]] = ["entityId", "readAttrs", "readTs", "latest", "timeseries", "aggLatest"]
 
     model_config = ConfigDict(
@@ -49,13 +49,18 @@ class EntityData(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -118,9 +123,9 @@ class EntityData(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "entityId": EntityId.from_dict(obj["entityId"]) if obj.get("entityId") is not None else None,
-            "readAttrs": obj.get("readAttrs"),
-            "readTs": obj.get("readTs"),
+            "entity_id": EntityId.from_dict(obj["entityId"]) if obj.get("entityId") is not None else None,
+            "read_attrs": obj.get("readAttrs"),
+            "read_ts": obj.get("readTs"),
             "latest": dict(
                 (_k, dict(
                     (_ik, TsValue.from_dict(_iv))

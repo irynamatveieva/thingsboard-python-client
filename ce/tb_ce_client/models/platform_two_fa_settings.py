@@ -33,12 +33,12 @@ class PlatformTwoFaSettings(BaseModel):
     Settings value
     """ # noqa: E501
     providers: List[TwoFaProviderConfig]
-    min_verification_code_send_period: Annotated[int, Field(strict=True, ge=5)] = Field(alias="minVerificationCodeSendPeriod")
-    verification_code_check_rate_limit: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, alias="verificationCodeCheckRateLimit")
-    max_verification_failures_before_user_lockout: Optional[Annotated[int, Field(strict=True, ge=0)]] = Field(default=None, alias="maxVerificationFailuresBeforeUserLockout")
-    total_allowed_time_for_verification: Annotated[int, Field(strict=True, ge=60)] = Field(alias="totalAllowedTimeForVerification")
-    enforce_two_fa: Optional[StrictBool] = Field(default=None, alias="enforceTwoFa")
-    enforced_users_filter: Optional[Any] = Field(default=None, alias="enforcedUsersFilter")
+    min_verification_code_send_period: Annotated[int, Field(strict=True, ge=5)] = Field(serialization_alias="minVerificationCodeSendPeriod")
+    verification_code_check_rate_limit: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, serialization_alias="verificationCodeCheckRateLimit")
+    max_verification_failures_before_user_lockout: Optional[Annotated[int, Field(strict=True, ge=0)]] = Field(default=None, serialization_alias="maxVerificationFailuresBeforeUserLockout")
+    total_allowed_time_for_verification: Annotated[int, Field(strict=True, ge=60)] = Field(serialization_alias="totalAllowedTimeForVerification")
+    enforce_two_fa: Optional[StrictBool] = Field(default=None, serialization_alias="enforceTwoFa")
+    enforced_users_filter: Optional[Any] = Field(default=None, serialization_alias="enforcedUsersFilter")
     __properties: ClassVar[List[str]] = ["providers", "minVerificationCodeSendPeriod", "verificationCodeCheckRateLimit", "maxVerificationFailuresBeforeUserLockout", "totalAllowedTimeForVerification", "enforceTwoFa", "enforcedUsersFilter"]
 
     @field_validator('verification_code_check_rate_limit')
@@ -59,13 +59,18 @@ class PlatformTwoFaSettings(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -115,12 +120,12 @@ class PlatformTwoFaSettings(BaseModel):
 
         _obj = cls.model_validate({
             "providers": [TwoFaProviderConfig.from_dict(_item) for _item in obj["providers"]] if obj.get("providers") is not None else None,
-            "minVerificationCodeSendPeriod": obj.get("minVerificationCodeSendPeriod"),
-            "verificationCodeCheckRateLimit": obj.get("verificationCodeCheckRateLimit"),
-            "maxVerificationFailuresBeforeUserLockout": obj.get("maxVerificationFailuresBeforeUserLockout"),
-            "totalAllowedTimeForVerification": obj.get("totalAllowedTimeForVerification"),
-            "enforceTwoFa": obj.get("enforceTwoFa"),
-            "enforcedUsersFilter": obj.get("enforcedUsersFilter")
+            "min_verification_code_send_period": obj.get("minVerificationCodeSendPeriod"),
+            "verification_code_check_rate_limit": obj.get("verificationCodeCheckRateLimit"),
+            "max_verification_failures_before_user_lockout": obj.get("maxVerificationFailuresBeforeUserLockout"),
+            "total_allowed_time_for_verification": obj.get("totalAllowedTimeForVerification"),
+            "enforce_two_fa": obj.get("enforceTwoFa"),
+            "enforced_users_filter": obj.get("enforcedUsersFilter")
         })
         return _obj
 

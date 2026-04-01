@@ -40,10 +40,10 @@ class ReportTemplateConfig(BaseModel):
     """
     ReportTemplateConfig
     """ # noqa: E501
-    name_pattern: Optional[StrictStr] = Field(default=None, alias="namePattern")
-    time_data_pattern: Optional[StrictStr] = Field(default=None, alias="timeDataPattern")
+    name_pattern: Optional[StrictStr] = Field(default=None, serialization_alias="namePattern")
+    time_data_pattern: Optional[StrictStr] = Field(default=None, serialization_alias="timeDataPattern")
     format: TbReportFormat = Field(description="Report format")
-    entity_aliases: Optional[List[EntityAlias]] = Field(default=None, alias="entityAliases")
+    entity_aliases: Optional[List[EntityAlias]] = Field(default=None, serialization_alias="entityAliases")
     filters: Optional[List[Filter]] = None
     components: Optional[List[ReportComponent]] = None
     __properties: ClassVar[List[str]] = ["namePattern", "timeDataPattern", "format", "entityAliases", "filters", "components"]
@@ -73,13 +73,18 @@ class ReportTemplateConfig(BaseModel):
             return None
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Union[CsvReportTemplateConfig, PdfReportTemplateConfig]]:

@@ -38,15 +38,15 @@ class SplitViewComponent(ReportComponent):
     margins: Optional[Insets] = None
     paddings: Optional[Insets] = None
     background: Optional[StrictStr] = None
-    border_width: Optional[StrictInt] = Field(default=None, alias="borderWidth")
-    border_radius: Optional[StrictInt] = Field(default=None, alias="borderRadius")
-    border_color: Optional[StrictStr] = Field(default=None, alias="borderColor")
-    left_view: Optional[ReportComponent] = Field(default=None, alias="leftView")
-    right_view: Optional[ReportComponent] = Field(default=None, alias="rightView")
-    split_position: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, alias="splitPosition")
-    split_gap: Optional[StrictInt] = Field(default=None, alias="splitGap")
-    left_vertical_alignment: Optional[VerticalAlignment] = Field(default=None, alias="leftVerticalAlignment")
-    right_vertical_alignment: Optional[VerticalAlignment] = Field(default=None, alias="rightVerticalAlignment")
+    border_width: Optional[StrictInt] = Field(default=None, serialization_alias="borderWidth")
+    border_radius: Optional[StrictInt] = Field(default=None, serialization_alias="borderRadius")
+    border_color: Optional[StrictStr] = Field(default=None, serialization_alias="borderColor")
+    left_view: Optional[ReportComponent] = Field(default=None, serialization_alias="leftView")
+    right_view: Optional[ReportComponent] = Field(default=None, serialization_alias="rightView")
+    split_position: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, serialization_alias="splitPosition")
+    split_gap: Optional[StrictInt] = Field(default=None, serialization_alias="splitGap")
+    left_vertical_alignment: Optional[VerticalAlignment] = Field(default=None, serialization_alias="leftVerticalAlignment")
+    right_vertical_alignment: Optional[VerticalAlignment] = Field(default=None, serialization_alias="rightVerticalAlignment")
     __properties: ClassVar[List[str]] = ["subType", "type", "margins", "paddings", "background", "borderWidth", "borderRadius", "borderColor", "leftView", "rightView", "splitPosition", "splitGap", "leftVerticalAlignment", "rightVerticalAlignment"]
 
     model_config = ConfigDict(
@@ -57,13 +57,18 @@ class SplitViewComponent(ReportComponent):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -112,20 +117,20 @@ class SplitViewComponent(ReportComponent):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "subType": obj.get("subType"),
+            "sub_type": obj.get("subType"),
             "type": obj.get("type"),
             "margins": Insets.from_dict(obj["margins"]) if obj.get("margins") is not None else None,
             "paddings": Insets.from_dict(obj["paddings"]) if obj.get("paddings") is not None else None,
             "background": obj.get("background"),
-            "borderWidth": obj.get("borderWidth"),
-            "borderRadius": obj.get("borderRadius"),
-            "borderColor": obj.get("borderColor"),
-            "leftView": ReportComponent.from_dict(obj["leftView"]) if obj.get("leftView") is not None else None,
-            "rightView": ReportComponent.from_dict(obj["rightView"]) if obj.get("rightView") is not None else None,
-            "splitPosition": obj.get("splitPosition"),
-            "splitGap": obj.get("splitGap"),
-            "leftVerticalAlignment": obj.get("leftVerticalAlignment"),
-            "rightVerticalAlignment": obj.get("rightVerticalAlignment")
+            "border_width": obj.get("borderWidth"),
+            "border_radius": obj.get("borderRadius"),
+            "border_color": obj.get("borderColor"),
+            "left_view": ReportComponent.from_dict(obj["leftView"]) if obj.get("leftView") is not None else None,
+            "right_view": ReportComponent.from_dict(obj["rightView"]) if obj.get("rightView") is not None else None,
+            "split_position": obj.get("splitPosition"),
+            "split_gap": obj.get("splitGap"),
+            "left_vertical_alignment": obj.get("leftVerticalAlignment"),
+            "right_vertical_alignment": obj.get("rightVerticalAlignment")
         })
         return _obj
 

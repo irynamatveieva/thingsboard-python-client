@@ -33,17 +33,17 @@ class BarSeriesSettings(BaseModel):
     """
     BarSeriesSettings
     """ # noqa: E501
-    show_border: Optional[StrictBool] = Field(default=None, alias="showBorder")
-    border_width: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, alias="borderWidth")
-    border_radius: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, alias="borderRadius")
-    bar_width: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, alias="barWidth")
-    show_label: Optional[StrictBool] = Field(default=None, alias="showLabel")
-    label_position: Optional[ChartLabelPosition] = Field(default=None, alias="labelPosition")
-    label_font: Optional[Font] = Field(default=None, alias="labelFont")
-    label_color: Optional[StrictStr] = Field(default=None, alias="labelColor")
-    enable_label_background: Optional[StrictBool] = Field(default=None, alias="enableLabelBackground")
-    label_background: Optional[StrictStr] = Field(default=None, alias="labelBackground")
-    background_settings: Optional[ChartFillSettings] = Field(default=None, alias="backgroundSettings")
+    show_border: Optional[StrictBool] = Field(default=None, serialization_alias="showBorder")
+    border_width: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, serialization_alias="borderWidth")
+    border_radius: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, serialization_alias="borderRadius")
+    bar_width: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, serialization_alias="barWidth")
+    show_label: Optional[StrictBool] = Field(default=None, serialization_alias="showLabel")
+    label_position: Optional[ChartLabelPosition] = Field(default=None, serialization_alias="labelPosition")
+    label_font: Optional[Font] = Field(default=None, serialization_alias="labelFont")
+    label_color: Optional[StrictStr] = Field(default=None, serialization_alias="labelColor")
+    enable_label_background: Optional[StrictBool] = Field(default=None, serialization_alias="enableLabelBackground")
+    label_background: Optional[StrictStr] = Field(default=None, serialization_alias="labelBackground")
+    background_settings: Optional[ChartFillSettings] = Field(default=None, serialization_alias="backgroundSettings")
     __properties: ClassVar[List[str]] = ["showBorder", "borderWidth", "borderRadius", "barWidth", "showLabel", "labelPosition", "labelFont", "labelColor", "enableLabelBackground", "labelBackground", "backgroundSettings"]
 
     model_config = ConfigDict(
@@ -54,13 +54,18 @@ class BarSeriesSettings(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -103,17 +108,17 @@ class BarSeriesSettings(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "showBorder": obj.get("showBorder"),
-            "borderWidth": obj.get("borderWidth"),
-            "borderRadius": obj.get("borderRadius"),
-            "barWidth": obj.get("barWidth"),
-            "showLabel": obj.get("showLabel"),
-            "labelPosition": obj.get("labelPosition"),
-            "labelFont": Font.from_dict(obj["labelFont"]) if obj.get("labelFont") is not None else None,
-            "labelColor": obj.get("labelColor"),
-            "enableLabelBackground": obj.get("enableLabelBackground"),
-            "labelBackground": obj.get("labelBackground"),
-            "backgroundSettings": ChartFillSettings.from_dict(obj["backgroundSettings"]) if obj.get("backgroundSettings") is not None else None
+            "show_border": obj.get("showBorder"),
+            "border_width": obj.get("borderWidth"),
+            "border_radius": obj.get("borderRadius"),
+            "bar_width": obj.get("barWidth"),
+            "show_label": obj.get("showLabel"),
+            "label_position": obj.get("labelPosition"),
+            "label_font": Font.from_dict(obj["labelFont"]) if obj.get("labelFont") is not None else None,
+            "label_color": obj.get("labelColor"),
+            "enable_label_background": obj.get("enableLabelBackground"),
+            "label_background": obj.get("labelBackground"),
+            "background_settings": ChartFillSettings.from_dict(obj["backgroundSettings"]) if obj.get("backgroundSettings") is not None else None
         })
         return _obj
 

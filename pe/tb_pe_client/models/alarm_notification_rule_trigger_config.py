@@ -36,10 +36,10 @@ class AlarmNotificationRuleTriggerConfig(NotificationRuleTriggerConfig):
     """
     AlarmNotificationRuleTriggerConfig
     """ # noqa: E501
-    alarm_types: Optional[List[StrictStr]] = Field(default=None, alias="alarmTypes")
-    alarm_severities: Optional[List[AlarmSeverity]] = Field(default=None, alias="alarmSeverities")
-    notify_on: Annotated[List[AlarmAction], Field(min_length=1)] = Field(alias="notifyOn")
-    clear_rule: Optional[ClearRule] = Field(default=None, alias="clearRule")
+    alarm_types: Optional[List[StrictStr]] = Field(default=None, serialization_alias="alarmTypes")
+    alarm_severities: Optional[List[AlarmSeverity]] = Field(default=None, serialization_alias="alarmSeverities")
+    notify_on: Annotated[List[AlarmAction], Field(min_length=1)] = Field(serialization_alias="notifyOn")
+    clear_rule: Optional[ClearRule] = Field(default=None, serialization_alias="clearRule")
     __properties: ClassVar[List[str]] = ["triggerType", "alarmTypes", "alarmSeverities", "notifyOn", "clearRule"]
 
     model_config = ConfigDict(
@@ -50,13 +50,18 @@ class AlarmNotificationRuleTriggerConfig(NotificationRuleTriggerConfig):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -96,11 +101,11 @@ class AlarmNotificationRuleTriggerConfig(NotificationRuleTriggerConfig):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "triggerType": obj.get("triggerType"),
-            "alarmTypes": obj.get("alarmTypes"),
-            "alarmSeverities": obj.get("alarmSeverities"),
-            "notifyOn": obj.get("notifyOn"),
-            "clearRule": ClearRule.from_dict(obj["clearRule"]) if obj.get("clearRule") is not None else None
+            "trigger_type": obj.get("triggerType"),
+            "alarm_types": obj.get("alarmTypes"),
+            "alarm_severities": obj.get("alarmSeverities"),
+            "notify_on": obj.get("notifyOn"),
+            "clear_rule": ClearRule.from_dict(obj["clearRule"]) if obj.get("clearRule") is not None else None
         })
         return _obj
 

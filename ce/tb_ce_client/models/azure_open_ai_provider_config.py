@@ -31,8 +31,8 @@ class AzureOpenAiProviderConfig(BaseModel):
     AzureOpenAiProviderConfig
     """ # noqa: E501
     endpoint: StrictStr
-    service_version: Optional[StrictStr] = Field(default=None, alias="serviceVersion")
-    api_key: StrictStr = Field(alias="apiKey")
+    service_version: Optional[StrictStr] = Field(default=None, serialization_alias="serviceVersion")
+    api_key: StrictStr = Field(serialization_alias="apiKey")
     __properties: ClassVar[List[str]] = ["endpoint", "serviceVersion", "apiKey"]
 
     model_config = ConfigDict(
@@ -43,13 +43,18 @@ class AzureOpenAiProviderConfig(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -87,8 +92,8 @@ class AzureOpenAiProviderConfig(BaseModel):
 
         _obj = cls.model_validate({
             "endpoint": obj.get("endpoint"),
-            "serviceVersion": obj.get("serviceVersion"),
-            "apiKey": obj.get("apiKey")
+            "service_version": obj.get("serviceVersion"),
+            "api_key": obj.get("apiKey")
         })
         return _obj
 

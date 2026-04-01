@@ -32,7 +32,7 @@ class AvailableEntityKeysV2(BaseModel):
     """
     Contains unique time series and attribute key names discovered from entities matching a query, optionally including a sample value for each key.
     """ # noqa: E501
-    entity_types: List[EntityType] = Field(description="Set of entity types found among the matched entities.", alias="entityTypes")
+    entity_types: List[EntityType] = Field(description="Set of entity types found among the matched entities.", serialization_alias="entityTypes")
     timeseries: Optional[List[KeyInfo]] = None
     attributes: Optional[Dict[str, List[KeyInfo]]] = Field(default=None, description="Map of attribute scope to the list of unique attribute keys available on the matched entities. Only scopes supported by the matched entity types are included. Omitted when attribute keys were not requested or when none of the requested scopes apply to the matched entity types.")
     __properties: ClassVar[List[str]] = ["entityTypes", "timeseries", "attributes"]
@@ -45,13 +45,18 @@ class AvailableEntityKeysV2(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -104,7 +109,7 @@ class AvailableEntityKeysV2(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "entityTypes": obj.get("entityTypes"),
+            "entity_types": obj.get("entityTypes"),
             "timeseries": [KeyInfo.from_dict(_item) for _item in obj["timeseries"]] if obj.get("timeseries") is not None else None,
             "attributes": dict(
                 (_k,

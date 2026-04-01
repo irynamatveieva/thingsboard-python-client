@@ -33,12 +33,12 @@ class TrendzUsage(BaseModel):
     TrendzUsage
     """ # noqa: E501
     used: Optional[StrictBool] = None
-    anomaly_usage: Optional[Entity] = Field(default=None, alias="anomalyUsage")
-    prediction_usage: Optional[Entity] = Field(default=None, alias="predictionUsage")
-    calculation_usage: Optional[Entity] = Field(default=None, alias="calculationUsage")
-    view_usage: Optional[SimpleEntity] = Field(default=None, alias="viewUsage")
-    metric_usage: Optional[SimpleEntity] = Field(default=None, alias="metricUsage")
-    chat_usage: Optional[SimpleEntity] = Field(default=None, alias="chatUsage")
+    anomaly_usage: Optional[Entity] = Field(default=None, serialization_alias="anomalyUsage")
+    prediction_usage: Optional[Entity] = Field(default=None, serialization_alias="predictionUsage")
+    calculation_usage: Optional[Entity] = Field(default=None, serialization_alias="calculationUsage")
+    view_usage: Optional[SimpleEntity] = Field(default=None, serialization_alias="viewUsage")
+    metric_usage: Optional[SimpleEntity] = Field(default=None, serialization_alias="metricUsage")
+    chat_usage: Optional[SimpleEntity] = Field(default=None, serialization_alias="chatUsage")
     __properties: ClassVar[List[str]] = ["used", "anomalyUsage", "predictionUsage", "calculationUsage", "viewUsage", "metricUsage", "chatUsage"]
 
     model_config = ConfigDict(
@@ -49,13 +49,18 @@ class TrendzUsage(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -111,12 +116,12 @@ class TrendzUsage(BaseModel):
 
         _obj = cls.model_validate({
             "used": obj.get("used"),
-            "anomalyUsage": Entity.from_dict(obj["anomalyUsage"]) if obj.get("anomalyUsage") is not None else None,
-            "predictionUsage": Entity.from_dict(obj["predictionUsage"]) if obj.get("predictionUsage") is not None else None,
-            "calculationUsage": Entity.from_dict(obj["calculationUsage"]) if obj.get("calculationUsage") is not None else None,
-            "viewUsage": SimpleEntity.from_dict(obj["viewUsage"]) if obj.get("viewUsage") is not None else None,
-            "metricUsage": SimpleEntity.from_dict(obj["metricUsage"]) if obj.get("metricUsage") is not None else None,
-            "chatUsage": SimpleEntity.from_dict(obj["chatUsage"]) if obj.get("chatUsage") is not None else None
+            "anomaly_usage": Entity.from_dict(obj["anomalyUsage"]) if obj.get("anomalyUsage") is not None else None,
+            "prediction_usage": Entity.from_dict(obj["predictionUsage"]) if obj.get("predictionUsage") is not None else None,
+            "calculation_usage": Entity.from_dict(obj["calculationUsage"]) if obj.get("calculationUsage") is not None else None,
+            "view_usage": SimpleEntity.from_dict(obj["viewUsage"]) if obj.get("viewUsage") is not None else None,
+            "metric_usage": SimpleEntity.from_dict(obj["metricUsage"]) if obj.get("metricUsage") is not None else None,
+            "chat_usage": SimpleEntity.from_dict(obj["chatUsage"]) if obj.get("chatUsage") is not None else None
         })
         return _obj
 

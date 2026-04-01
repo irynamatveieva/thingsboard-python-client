@@ -34,13 +34,13 @@ class AllowedPermissionsInfo(BaseModel):
     """
     AllowedPermissionsInfo
     """ # noqa: E501
-    operations_by_resource: Optional[Dict[str, List[Operation]]] = Field(default=None, description="Static map (vocabulary) of allowed operations by resource type", alias="operationsByResource")
-    allowed_for_group_role_operations: Optional[List[Operation]] = Field(default=None, description="Static set (vocabulary) of allowed operations for group roles", alias="allowedForGroupRoleOperations")
-    allowed_for_group_owner_only_operations: Optional[List[Operation]] = Field(default=None, description="Static set (vocabulary) of allowed operations for group owner", alias="allowedForGroupOwnerOnlyOperations")
-    allowed_for_group_owner_only_group_operations: Optional[List[Operation]] = Field(default=None, description="Static set (vocabulary) of allowed group operations for group owner", alias="allowedForGroupOwnerOnlyGroupOperations")
-    allowed_resources: Optional[List[Resource]] = Field(default=None, description="Static set (vocabulary) of all possibly allowed resources. Static and depends only on the authority of the user", alias="allowedResources")
-    user_permissions: Optional[MergedUserPermissions] = Field(default=None, description="JSON object with merged permission for all generic and group roles assigned to all user groups the user belongs to", alias="userPermissions")
-    user_owner_id: Optional[EntityId] = Field(default=None, description="Owner Id of the user (Tenant or Customer)", alias="userOwnerId")
+    operations_by_resource: Optional[Dict[str, List[Operation]]] = Field(default=None, description="Static map (vocabulary) of allowed operations by resource type", serialization_alias="operationsByResource")
+    allowed_for_group_role_operations: Optional[List[Operation]] = Field(default=None, description="Static set (vocabulary) of allowed operations for group roles", serialization_alias="allowedForGroupRoleOperations")
+    allowed_for_group_owner_only_operations: Optional[List[Operation]] = Field(default=None, description="Static set (vocabulary) of allowed operations for group owner", serialization_alias="allowedForGroupOwnerOnlyOperations")
+    allowed_for_group_owner_only_group_operations: Optional[List[Operation]] = Field(default=None, description="Static set (vocabulary) of allowed group operations for group owner", serialization_alias="allowedForGroupOwnerOnlyGroupOperations")
+    allowed_resources: Optional[List[Resource]] = Field(default=None, description="Static set (vocabulary) of all possibly allowed resources. Static and depends only on the authority of the user", serialization_alias="allowedResources")
+    user_permissions: Optional[MergedUserPermissions] = Field(default=None, description="JSON object with merged permission for all generic and group roles assigned to all user groups the user belongs to", serialization_alias="userPermissions")
+    user_owner_id: Optional[EntityId] = Field(default=None, description="Owner Id of the user (Tenant or Customer)", serialization_alias="userOwnerId")
     __properties: ClassVar[List[str]] = ["operationsByResource", "allowedForGroupRoleOperations", "allowedForGroupOwnerOnlyOperations", "allowedForGroupOwnerOnlyGroupOperations", "allowedResources", "userPermissions", "userOwnerId"]
 
     model_config = ConfigDict(
@@ -51,13 +51,18 @@ class AllowedPermissionsInfo(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -109,7 +114,7 @@ class AllowedPermissionsInfo(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "operationsByResource": dict(
+            "operations_by_resource": dict(
                 (_k,
                         [Operation.from_dict(_item) for _item in _v]
                         if _v is not None

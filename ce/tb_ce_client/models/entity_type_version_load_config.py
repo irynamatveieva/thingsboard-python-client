@@ -30,12 +30,12 @@ class EntityTypeVersionLoadConfig(BaseModel):
     """
     EntityTypeVersionLoadConfig
     """ # noqa: E501
-    load_relations: Optional[StrictBool] = Field(default=None, alias="loadRelations")
-    load_attributes: Optional[StrictBool] = Field(default=None, alias="loadAttributes")
-    load_credentials: Optional[StrictBool] = Field(default=None, alias="loadCredentials")
-    load_calculated_fields: Optional[StrictBool] = Field(default=None, alias="loadCalculatedFields")
-    remove_other_entities: Optional[StrictBool] = Field(default=None, alias="removeOtherEntities")
-    find_existing_entity_by_name: Optional[StrictBool] = Field(default=None, alias="findExistingEntityByName")
+    load_relations: Optional[StrictBool] = Field(default=None, serialization_alias="loadRelations")
+    load_attributes: Optional[StrictBool] = Field(default=None, serialization_alias="loadAttributes")
+    load_credentials: Optional[StrictBool] = Field(default=None, serialization_alias="loadCredentials")
+    load_calculated_fields: Optional[StrictBool] = Field(default=None, serialization_alias="loadCalculatedFields")
+    remove_other_entities: Optional[StrictBool] = Field(default=None, serialization_alias="removeOtherEntities")
+    find_existing_entity_by_name: Optional[StrictBool] = Field(default=None, serialization_alias="findExistingEntityByName")
     __properties: ClassVar[List[str]] = ["loadRelations", "loadAttributes", "loadCredentials", "loadCalculatedFields", "removeOtherEntities", "findExistingEntityByName"]
 
     model_config = ConfigDict(
@@ -46,13 +46,18 @@ class EntityTypeVersionLoadConfig(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -89,12 +94,12 @@ class EntityTypeVersionLoadConfig(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "loadRelations": obj.get("loadRelations"),
-            "loadAttributes": obj.get("loadAttributes"),
-            "loadCredentials": obj.get("loadCredentials"),
-            "loadCalculatedFields": obj.get("loadCalculatedFields"),
-            "removeOtherEntities": obj.get("removeOtherEntities"),
-            "findExistingEntityByName": obj.get("findExistingEntityByName")
+            "load_relations": obj.get("loadRelations"),
+            "load_attributes": obj.get("loadAttributes"),
+            "load_credentials": obj.get("loadCredentials"),
+            "load_calculated_fields": obj.get("loadCalculatedFields"),
+            "remove_other_entities": obj.get("removeOtherEntities"),
+            "find_existing_entity_by_name": obj.get("findExistingEntityByName")
         })
         return _obj
 

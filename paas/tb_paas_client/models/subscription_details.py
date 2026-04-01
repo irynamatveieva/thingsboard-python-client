@@ -38,29 +38,29 @@ class SubscriptionDetails(BaseModel):
     SubscriptionDetails
     """ # noqa: E501
     id: Optional[SubscriptionId] = None
-    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", alias="createdTime")
-    additional_info: Optional[Any] = Field(default=None, alias="additionalInfo")
-    external_id: Optional[StrictStr] = Field(default=None, alias="externalId")
-    tenant_id: Optional[TenantId] = Field(default=None, alias="tenantId")
-    billing_customer_id: Optional[BillingCustomerId] = Field(default=None, alias="billingCustomerId")
-    subscription_plan_id: Optional[SubscriptionPlanId] = Field(default=None, alias="subscriptionPlanId")
-    current_period_start_ts: Optional[StrictInt] = Field(default=None, alias="currentPeriodStartTs")
-    current_period_end_ts: Optional[StrictInt] = Field(default=None, alias="currentPeriodEndTs")
+    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", serialization_alias="createdTime")
+    additional_info: Optional[Any] = Field(default=None, serialization_alias="additionalInfo")
+    external_id: Optional[StrictStr] = Field(default=None, serialization_alias="externalId")
+    tenant_id: Optional[TenantId] = Field(default=None, serialization_alias="tenantId")
+    billing_customer_id: Optional[BillingCustomerId] = Field(default=None, serialization_alias="billingCustomerId")
+    subscription_plan_id: Optional[SubscriptionPlanId] = Field(default=None, serialization_alias="subscriptionPlanId")
+    current_period_start_ts: Optional[StrictInt] = Field(default=None, serialization_alias="currentPeriodStartTs")
+    current_period_end_ts: Optional[StrictInt] = Field(default=None, serialization_alias="currentPeriodEndTs")
     active: Optional[StrictBool] = None
     trial: Optional[StrictBool] = None
-    trial_end_ts: Optional[StrictInt] = Field(default=None, alias="trialEndTs")
+    trial_end_ts: Optional[StrictInt] = Field(default=None, serialization_alias="trialEndTs")
     status: Optional[StrictStr] = None
-    last_paid: Optional[StrictBool] = Field(default=None, alias="lastPaid")
-    upcoming_invoice_date: Optional[StrictInt] = Field(default=None, alias="upcomingInvoiceDate")
-    upcoming_invoice_amount_due: Optional[StrictInt] = Field(default=None, alias="upcomingInvoiceAmountDue")
-    coupon_id: Optional[CouponId] = Field(default=None, alias="couponId")
-    discount_end_date: Optional[StrictInt] = Field(default=None, alias="discountEndDate")
-    subscription_plan_name: Optional[StrictStr] = Field(default=None, alias="subscriptionPlanName")
-    plan_has_addons: Optional[StrictBool] = Field(default=None, alias="planHasAddons")
-    plan_ui_type: Optional[StrictStr] = Field(default=None, alias="planUiType")
-    plan_is_free: Optional[StrictBool] = Field(default=None, alias="planIsFree")
-    plan_is_active: Optional[StrictBool] = Field(default=None, alias="planIsActive")
-    edge_count_included: Optional[StrictInt] = Field(default=None, alias="edgeCountIncluded")
+    last_paid: Optional[StrictBool] = Field(default=None, serialization_alias="lastPaid")
+    upcoming_invoice_date: Optional[StrictInt] = Field(default=None, serialization_alias="upcomingInvoiceDate")
+    upcoming_invoice_amount_due: Optional[StrictInt] = Field(default=None, serialization_alias="upcomingInvoiceAmountDue")
+    coupon_id: Optional[CouponId] = Field(default=None, serialization_alias="couponId")
+    discount_end_date: Optional[StrictInt] = Field(default=None, serialization_alias="discountEndDate")
+    subscription_plan_name: Optional[StrictStr] = Field(default=None, serialization_alias="subscriptionPlanName")
+    plan_has_addons: Optional[StrictBool] = Field(default=None, serialization_alias="planHasAddons")
+    plan_ui_type: Optional[StrictStr] = Field(default=None, serialization_alias="planUiType")
+    plan_is_free: Optional[StrictBool] = Field(default=None, serialization_alias="planIsFree")
+    plan_is_active: Optional[StrictBool] = Field(default=None, serialization_alias="planIsActive")
+    edge_count_included: Optional[StrictInt] = Field(default=None, serialization_alias="edgeCountIncluded")
     items: Optional[SubscriptionItems] = None
     discount: Optional[Discount] = None
     name: Optional[StrictStr] = None
@@ -74,13 +74,18 @@ class SubscriptionDetails(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -148,29 +153,29 @@ class SubscriptionDetails(BaseModel):
 
         _obj = cls.model_validate({
             "id": SubscriptionId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "additionalInfo": obj.get("additionalInfo"),
-            "externalId": obj.get("externalId"),
-            "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
-            "billingCustomerId": BillingCustomerId.from_dict(obj["billingCustomerId"]) if obj.get("billingCustomerId") is not None else None,
-            "subscriptionPlanId": SubscriptionPlanId.from_dict(obj["subscriptionPlanId"]) if obj.get("subscriptionPlanId") is not None else None,
-            "currentPeriodStartTs": obj.get("currentPeriodStartTs"),
-            "currentPeriodEndTs": obj.get("currentPeriodEndTs"),
+            "created_time": obj.get("createdTime"),
+            "additional_info": obj.get("additionalInfo"),
+            "external_id": obj.get("externalId"),
+            "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
+            "billing_customer_id": BillingCustomerId.from_dict(obj["billingCustomerId"]) if obj.get("billingCustomerId") is not None else None,
+            "subscription_plan_id": SubscriptionPlanId.from_dict(obj["subscriptionPlanId"]) if obj.get("subscriptionPlanId") is not None else None,
+            "current_period_start_ts": obj.get("currentPeriodStartTs"),
+            "current_period_end_ts": obj.get("currentPeriodEndTs"),
             "active": obj.get("active"),
             "trial": obj.get("trial"),
-            "trialEndTs": obj.get("trialEndTs"),
+            "trial_end_ts": obj.get("trialEndTs"),
             "status": obj.get("status"),
-            "lastPaid": obj.get("lastPaid"),
-            "upcomingInvoiceDate": obj.get("upcomingInvoiceDate"),
-            "upcomingInvoiceAmountDue": obj.get("upcomingInvoiceAmountDue"),
-            "couponId": CouponId.from_dict(obj["couponId"]) if obj.get("couponId") is not None else None,
-            "discountEndDate": obj.get("discountEndDate"),
-            "subscriptionPlanName": obj.get("subscriptionPlanName"),
-            "planHasAddons": obj.get("planHasAddons"),
-            "planUiType": obj.get("planUiType"),
-            "planIsFree": obj.get("planIsFree"),
-            "planIsActive": obj.get("planIsActive"),
-            "edgeCountIncluded": obj.get("edgeCountIncluded"),
+            "last_paid": obj.get("lastPaid"),
+            "upcoming_invoice_date": obj.get("upcomingInvoiceDate"),
+            "upcoming_invoice_amount_due": obj.get("upcomingInvoiceAmountDue"),
+            "coupon_id": CouponId.from_dict(obj["couponId"]) if obj.get("couponId") is not None else None,
+            "discount_end_date": obj.get("discountEndDate"),
+            "subscription_plan_name": obj.get("subscriptionPlanName"),
+            "plan_has_addons": obj.get("planHasAddons"),
+            "plan_ui_type": obj.get("planUiType"),
+            "plan_is_free": obj.get("planIsFree"),
+            "plan_is_active": obj.get("planIsActive"),
+            "edge_count_included": obj.get("edgeCountIncluded"),
             "items": SubscriptionItems.from_dict(obj["items"]) if obj.get("items") is not None else None,
             "discount": Discount.from_dict(obj["discount"]) if obj.get("discount") is not None else None,
             "name": obj.get("name")

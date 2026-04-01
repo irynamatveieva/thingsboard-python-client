@@ -31,8 +31,8 @@ class HomeDashboardInfo(BaseModel):
     """
     A JSON object that represents home dashboard id and other parameters
     """ # noqa: E501
-    dashboard_id: Optional[DashboardId] = Field(default=None, description="JSON object with the dashboard Id.", alias="dashboardId")
-    hide_dashboard_toolbar: Optional[StrictBool] = Field(default=None, description="Hide dashboard toolbar flag. Useful for rendering dashboards on mobile.", alias="hideDashboardToolbar")
+    dashboard_id: Optional[DashboardId] = Field(default=None, description="JSON object with the dashboard Id.", serialization_alias="dashboardId")
+    hide_dashboard_toolbar: Optional[StrictBool] = Field(default=None, description="Hide dashboard toolbar flag. Useful for rendering dashboards on mobile.", serialization_alias="hideDashboardToolbar")
     __properties: ClassVar[List[str]] = ["dashboardId", "hideDashboardToolbar"]
 
     model_config = ConfigDict(
@@ -43,13 +43,18 @@ class HomeDashboardInfo(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -89,8 +94,8 @@ class HomeDashboardInfo(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "dashboardId": DashboardId.from_dict(obj["dashboardId"]) if obj.get("dashboardId") is not None else None,
-            "hideDashboardToolbar": obj.get("hideDashboardToolbar")
+            "dashboard_id": DashboardId.from_dict(obj["dashboardId"]) if obj.get("dashboardId") is not None else None,
+            "hide_dashboard_toolbar": obj.get("hideDashboardToolbar")
         })
         return _obj
 

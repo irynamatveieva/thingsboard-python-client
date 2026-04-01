@@ -33,8 +33,8 @@ class UserEmailInfo(BaseModel):
     """ # noqa: E501
     id: Optional[UserId] = Field(default=None, description="User id")
     email: Optional[StrictStr] = Field(default=None, description="User email")
-    first_name: Optional[StrictStr] = Field(default=None, description="User first name", alias="firstName")
-    last_name: Optional[StrictStr] = Field(default=None, description="User last name", alias="lastName")
+    first_name: Optional[StrictStr] = Field(default=None, description="User first name", serialization_alias="firstName")
+    last_name: Optional[StrictStr] = Field(default=None, description="User last name", serialization_alias="lastName")
     __properties: ClassVar[List[str]] = ["id", "email", "firstName", "lastName"]
 
     model_config = ConfigDict(
@@ -45,13 +45,18 @@ class UserEmailInfo(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -93,8 +98,8 @@ class UserEmailInfo(BaseModel):
         _obj = cls.model_validate({
             "id": UserId.from_dict(obj["id"]) if obj.get("id") is not None else None,
             "email": obj.get("email"),
-            "firstName": obj.get("firstName"),
-            "lastName": obj.get("lastName")
+            "first_name": obj.get("firstName"),
+            "last_name": obj.get("lastName")
         })
         return _obj
 

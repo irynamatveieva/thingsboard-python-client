@@ -33,10 +33,10 @@ class CfReprocessingJobConfiguration(JobConfiguration):
     """
     CfReprocessingJobConfiguration
     """ # noqa: E501
-    calculated_field_id: CalculatedFieldId = Field(alias="calculatedFieldId")
-    calculated_field_name: Optional[StrictStr] = Field(default=None, alias="calculatedFieldName")
-    start_ts: Optional[StrictInt] = Field(default=None, alias="startTs")
-    end_ts: Optional[StrictInt] = Field(default=None, alias="endTs")
+    calculated_field_id: CalculatedFieldId = Field(serialization_alias="calculatedFieldId")
+    calculated_field_name: Optional[StrictStr] = Field(default=None, serialization_alias="calculatedFieldName")
+    start_ts: Optional[StrictInt] = Field(default=None, serialization_alias="startTs")
+    end_ts: Optional[StrictInt] = Field(default=None, serialization_alias="endTs")
     __properties: ClassVar[List[str]] = ["tasksKey", "toReprocess", "type", "calculatedFieldId", "calculatedFieldName", "startTs", "endTs"]
 
     model_config = ConfigDict(
@@ -47,13 +47,18 @@ class CfReprocessingJobConfiguration(JobConfiguration):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -100,13 +105,13 @@ class CfReprocessingJobConfiguration(JobConfiguration):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "tasksKey": obj.get("tasksKey"),
-            "toReprocess": [TaskResult.from_dict(_item) for _item in obj["toReprocess"]] if obj.get("toReprocess") is not None else None,
+            "tasks_key": obj.get("tasksKey"),
+            "to_reprocess": [TaskResult.from_dict(_item) for _item in obj["toReprocess"]] if obj.get("toReprocess") is not None else None,
             "type": obj.get("type"),
-            "calculatedFieldId": CalculatedFieldId.from_dict(obj["calculatedFieldId"]) if obj.get("calculatedFieldId") is not None else None,
-            "calculatedFieldName": obj.get("calculatedFieldName"),
-            "startTs": obj.get("startTs"),
-            "endTs": obj.get("endTs")
+            "calculated_field_id": CalculatedFieldId.from_dict(obj["calculatedFieldId"]) if obj.get("calculatedFieldId") is not None else None,
+            "calculated_field_name": obj.get("calculatedFieldName"),
+            "start_ts": obj.get("startTs"),
+            "end_ts": obj.get("endTs")
         })
         return _obj
 

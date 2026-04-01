@@ -30,8 +30,8 @@ class ChangePasswordRequest(BaseModel):
     """
     Change Password Request
     """ # noqa: E501
-    current_password: Optional[StrictStr] = Field(default=None, description="The old password", alias="currentPassword")
-    new_password: Optional[StrictStr] = Field(default=None, description="The new password", alias="newPassword")
+    current_password: Optional[StrictStr] = Field(default=None, description="The old password", serialization_alias="currentPassword")
+    new_password: Optional[StrictStr] = Field(default=None, description="The new password", serialization_alias="newPassword")
     __properties: ClassVar[List[str]] = ["currentPassword", "newPassword"]
 
     model_config = ConfigDict(
@@ -42,13 +42,18 @@ class ChangePasswordRequest(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -85,8 +90,8 @@ class ChangePasswordRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "currentPassword": obj.get("currentPassword"),
-            "newPassword": obj.get("newPassword")
+            "current_password": obj.get("currentPassword"),
+            "new_password": obj.get("newPassword")
         })
         return _obj
 

@@ -33,14 +33,14 @@ class EntityRelationInfo(BaseModel):
     """
     EntityRelationInfo
     """ # noqa: E501
-    var_from: EntityId = Field(description="JSON object with [from] Entity Id.", alias="from")
+    var_from: EntityId = Field(description="JSON object with [from] Entity Id.", serialization_alias="from")
     to: EntityId = Field(description="JSON object with [to] Entity Id.")
     type: Annotated[str, Field(min_length=1, strict=True)] = Field(description="String value of relation type.")
-    type_group: RelationTypeGroup = Field(description="Represents the type group of the relation.", alias="typeGroup")
+    type_group: RelationTypeGroup = Field(description="Represents the type group of the relation.", serialization_alias="typeGroup")
     version: Optional[StrictInt] = None
-    from_name: Optional[StrictStr] = Field(default=None, description="Name of the entity for [from] direction.", alias="fromName")
-    to_name: Optional[StrictStr] = Field(default=None, description="Name of the entity for [to] direction.", alias="toName")
-    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the relation.", alias="additionalInfo")
+    from_name: Optional[StrictStr] = Field(default=None, description="Name of the entity for [from] direction.", serialization_alias="fromName")
+    to_name: Optional[StrictStr] = Field(default=None, description="Name of the entity for [to] direction.", serialization_alias="toName")
+    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the relation.", serialization_alias="additionalInfo")
     __properties: ClassVar[List[str]] = ["from", "to", "type", "typeGroup", "version", "fromName", "toName", "additionalInfo"]
 
     model_config = ConfigDict(
@@ -51,13 +51,18 @@ class EntityRelationInfo(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -112,11 +117,11 @@ class EntityRelationInfo(BaseModel):
             "from": EntityId.from_dict(obj["from"]) if obj.get("from") is not None else None,
             "to": EntityId.from_dict(obj["to"]) if obj.get("to") is not None else None,
             "type": obj.get("type"),
-            "typeGroup": obj.get("typeGroup"),
+            "type_group": obj.get("typeGroup"),
             "version": obj.get("version"),
-            "fromName": obj.get("fromName"),
-            "toName": obj.get("toName"),
-            "additionalInfo": obj.get("additionalInfo")
+            "from_name": obj.get("fromName"),
+            "to_name": obj.get("toName"),
+            "additional_info": obj.get("additionalInfo")
         })
         return _obj
 

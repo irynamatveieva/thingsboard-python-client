@@ -30,16 +30,16 @@ class UserPasswordPolicy(BaseModel):
     """
     UserPasswordPolicy
     """ # noqa: E501
-    minimum_length: Optional[StrictInt] = Field(default=None, description="Minimum number of symbols in the password.", alias="minimumLength")
-    maximum_length: Optional[StrictInt] = Field(default=None, description="Maximum number of symbols in the password.", alias="maximumLength")
-    minimum_uppercase_letters: Optional[StrictInt] = Field(default=None, description="Minimum number of uppercase letters in the password.", alias="minimumUppercaseLetters")
-    minimum_lowercase_letters: Optional[StrictInt] = Field(default=None, description="Minimum number of lowercase letters in the password.", alias="minimumLowercaseLetters")
-    minimum_digits: Optional[StrictInt] = Field(default=None, description="Minimum number of digits in the password.", alias="minimumDigits")
-    minimum_special_characters: Optional[StrictInt] = Field(default=None, description="Minimum number of special in the password.", alias="minimumSpecialCharacters")
-    allow_whitespaces: Optional[StrictBool] = Field(default=None, description="Allow whitespaces", alias="allowWhitespaces")
-    force_user_to_reset_password_if_not_valid: Optional[StrictBool] = Field(default=None, description="Force user to update password if existing one does not pass validation", alias="forceUserToResetPasswordIfNotValid")
-    password_expiration_period_days: Optional[StrictInt] = Field(default=None, description="Password expiration period (days). Force expiration of the password.", alias="passwordExpirationPeriodDays")
-    password_reuse_frequency_days: Optional[StrictInt] = Field(default=None, description="Password reuse frequency (days). Disallow to use the same password for the defined number of days", alias="passwordReuseFrequencyDays")
+    minimum_length: Optional[StrictInt] = Field(default=None, description="Minimum number of symbols in the password.", serialization_alias="minimumLength")
+    maximum_length: Optional[StrictInt] = Field(default=None, description="Maximum number of symbols in the password.", serialization_alias="maximumLength")
+    minimum_uppercase_letters: Optional[StrictInt] = Field(default=None, description="Minimum number of uppercase letters in the password.", serialization_alias="minimumUppercaseLetters")
+    minimum_lowercase_letters: Optional[StrictInt] = Field(default=None, description="Minimum number of lowercase letters in the password.", serialization_alias="minimumLowercaseLetters")
+    minimum_digits: Optional[StrictInt] = Field(default=None, description="Minimum number of digits in the password.", serialization_alias="minimumDigits")
+    minimum_special_characters: Optional[StrictInt] = Field(default=None, description="Minimum number of special in the password.", serialization_alias="minimumSpecialCharacters")
+    allow_whitespaces: Optional[StrictBool] = Field(default=None, description="Allow whitespaces", serialization_alias="allowWhitespaces")
+    force_user_to_reset_password_if_not_valid: Optional[StrictBool] = Field(default=None, description="Force user to update password if existing one does not pass validation", serialization_alias="forceUserToResetPasswordIfNotValid")
+    password_expiration_period_days: Optional[StrictInt] = Field(default=None, description="Password expiration period (days). Force expiration of the password.", serialization_alias="passwordExpirationPeriodDays")
+    password_reuse_frequency_days: Optional[StrictInt] = Field(default=None, description="Password reuse frequency (days). Disallow to use the same password for the defined number of days", serialization_alias="passwordReuseFrequencyDays")
     __properties: ClassVar[List[str]] = ["minimumLength", "maximumLength", "minimumUppercaseLetters", "minimumLowercaseLetters", "minimumDigits", "minimumSpecialCharacters", "allowWhitespaces", "forceUserToResetPasswordIfNotValid", "passwordExpirationPeriodDays", "passwordReuseFrequencyDays"]
 
     model_config = ConfigDict(
@@ -50,13 +50,18 @@ class UserPasswordPolicy(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -93,16 +98,16 @@ class UserPasswordPolicy(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "minimumLength": obj.get("minimumLength"),
-            "maximumLength": obj.get("maximumLength"),
-            "minimumUppercaseLetters": obj.get("minimumUppercaseLetters"),
-            "minimumLowercaseLetters": obj.get("minimumLowercaseLetters"),
-            "minimumDigits": obj.get("minimumDigits"),
-            "minimumSpecialCharacters": obj.get("minimumSpecialCharacters"),
-            "allowWhitespaces": obj.get("allowWhitespaces"),
-            "forceUserToResetPasswordIfNotValid": obj.get("forceUserToResetPasswordIfNotValid"),
-            "passwordExpirationPeriodDays": obj.get("passwordExpirationPeriodDays"),
-            "passwordReuseFrequencyDays": obj.get("passwordReuseFrequencyDays")
+            "minimum_length": obj.get("minimumLength"),
+            "maximum_length": obj.get("maximumLength"),
+            "minimum_uppercase_letters": obj.get("minimumUppercaseLetters"),
+            "minimum_lowercase_letters": obj.get("minimumLowercaseLetters"),
+            "minimum_digits": obj.get("minimumDigits"),
+            "minimum_special_characters": obj.get("minimumSpecialCharacters"),
+            "allow_whitespaces": obj.get("allowWhitespaces"),
+            "force_user_to_reset_password_if_not_valid": obj.get("forceUserToResetPasswordIfNotValid"),
+            "password_expiration_period_days": obj.get("passwordExpirationPeriodDays"),
+            "password_reuse_frequency_days": obj.get("passwordReuseFrequencyDays")
         })
         return _obj
 

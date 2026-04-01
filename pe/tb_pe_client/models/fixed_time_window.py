@@ -30,8 +30,8 @@ class FixedTimeWindow(BaseModel):
     """
     FixedTimeWindow
     """ # noqa: E501
-    start_time_ms: Optional[StrictInt] = Field(default=None, alias="startTimeMs")
-    end_time_ms: Optional[StrictInt] = Field(default=None, alias="endTimeMs")
+    start_time_ms: Optional[StrictInt] = Field(default=None, serialization_alias="startTimeMs")
+    end_time_ms: Optional[StrictInt] = Field(default=None, serialization_alias="endTimeMs")
     __properties: ClassVar[List[str]] = ["startTimeMs", "endTimeMs"]
 
     model_config = ConfigDict(
@@ -42,13 +42,18 @@ class FixedTimeWindow(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -85,8 +90,8 @@ class FixedTimeWindow(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "startTimeMs": obj.get("startTimeMs"),
-            "endTimeMs": obj.get("endTimeMs")
+            "start_time_ms": obj.get("startTimeMs"),
+            "end_time_ms": obj.get("endTimeMs")
         })
         return _obj
 

@@ -33,8 +33,8 @@ class CustomMenuDeleteResult(BaseModel):
     CustomMenuDeleteResult
     """ # noqa: E501
     success: Optional[StrictBool] = None
-    assignee_type: Optional[CMAssigneeType] = Field(default=None, alias="assigneeType")
-    assignee_list: Optional[List[EntityInfo]] = Field(default=None, alias="assigneeList")
+    assignee_type: Optional[CMAssigneeType] = Field(default=None, serialization_alias="assigneeType")
+    assignee_list: Optional[List[EntityInfo]] = Field(default=None, serialization_alias="assigneeList")
     __properties: ClassVar[List[str]] = ["success", "assigneeType", "assigneeList"]
 
     model_config = ConfigDict(
@@ -45,13 +45,18 @@ class CustomMenuDeleteResult(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -96,8 +101,8 @@ class CustomMenuDeleteResult(BaseModel):
 
         _obj = cls.model_validate({
             "success": obj.get("success"),
-            "assigneeType": obj.get("assigneeType"),
-            "assigneeList": [EntityInfo.from_dict(_item) for _item in obj["assigneeList"]] if obj.get("assigneeList") is not None else None
+            "assignee_type": obj.get("assigneeType"),
+            "assignee_list": [EntityInfo.from_dict(_item) for _item in obj["assigneeList"]] if obj.get("assigneeList") is not None else None
         })
         return _obj
 

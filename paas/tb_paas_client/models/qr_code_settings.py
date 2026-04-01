@@ -35,16 +35,16 @@ class QrCodeSettings(BaseModel):
     A JSON value representing the mobile apps configuration
     """ # noqa: E501
     id: Optional[QrCodeSettingsId] = None
-    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", alias="createdTime")
-    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id.", alias="tenantId")
-    use_system_settings: Optional[StrictBool] = Field(default=None, description="Use settings from system level", alias="useSystemSettings")
-    use_default_app: Optional[StrictBool] = Field(default=None, description="Type of application: true means use default Thingsboard app", alias="useDefaultApp")
-    mobile_app_bundle_id: Optional[MobileAppBundleId] = Field(default=None, description="Mobile app bundle.", alias="mobileAppBundleId")
-    qr_code_config: QRCodeConfig = Field(description="QR code config configuration.", alias="qrCodeConfig")
-    android_enabled: Optional[StrictBool] = Field(default=None, description="Indicates if google play link is available", alias="androidEnabled")
-    ios_enabled: Optional[StrictBool] = Field(default=None, description="Indicates if apple store link is available", alias="iosEnabled")
-    google_play_link: Optional[StrictStr] = Field(default=None, alias="googlePlayLink")
-    app_store_link: Optional[StrictStr] = Field(default=None, alias="appStoreLink")
+    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", serialization_alias="createdTime")
+    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id.", serialization_alias="tenantId")
+    use_system_settings: Optional[StrictBool] = Field(default=None, description="Use settings from system level", serialization_alias="useSystemSettings")
+    use_default_app: Optional[StrictBool] = Field(default=None, description="Type of application: true means use default Thingsboard app", serialization_alias="useDefaultApp")
+    mobile_app_bundle_id: Optional[MobileAppBundleId] = Field(default=None, description="Mobile app bundle.", serialization_alias="mobileAppBundleId")
+    qr_code_config: QRCodeConfig = Field(description="QR code config configuration.", serialization_alias="qrCodeConfig")
+    android_enabled: Optional[StrictBool] = Field(default=None, description="Indicates if google play link is available", serialization_alias="androidEnabled")
+    ios_enabled: Optional[StrictBool] = Field(default=None, description="Indicates if apple store link is available", serialization_alias="iosEnabled")
+    google_play_link: Optional[StrictStr] = Field(default=None, serialization_alias="googlePlayLink")
+    app_store_link: Optional[StrictStr] = Field(default=None, serialization_alias="appStoreLink")
     __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "useSystemSettings", "useDefaultApp", "mobileAppBundleId", "qrCodeConfig", "androidEnabled", "iosEnabled", "googlePlayLink", "appStoreLink"]
 
     model_config = ConfigDict(
@@ -55,13 +55,18 @@ class QrCodeSettings(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -119,16 +124,16 @@ class QrCodeSettings(BaseModel):
 
         _obj = cls.model_validate({
             "id": QrCodeSettingsId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
-            "useSystemSettings": obj.get("useSystemSettings"),
-            "useDefaultApp": obj.get("useDefaultApp"),
-            "mobileAppBundleId": MobileAppBundleId.from_dict(obj["mobileAppBundleId"]) if obj.get("mobileAppBundleId") is not None else None,
-            "qrCodeConfig": QRCodeConfig.from_dict(obj["qrCodeConfig"]) if obj.get("qrCodeConfig") is not None else None,
-            "androidEnabled": obj.get("androidEnabled"),
-            "iosEnabled": obj.get("iosEnabled"),
-            "googlePlayLink": obj.get("googlePlayLink"),
-            "appStoreLink": obj.get("appStoreLink")
+            "created_time": obj.get("createdTime"),
+            "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
+            "use_system_settings": obj.get("useSystemSettings"),
+            "use_default_app": obj.get("useDefaultApp"),
+            "mobile_app_bundle_id": MobileAppBundleId.from_dict(obj["mobileAppBundleId"]) if obj.get("mobileAppBundleId") is not None else None,
+            "qr_code_config": QRCodeConfig.from_dict(obj["qrCodeConfig"]) if obj.get("qrCodeConfig") is not None else None,
+            "android_enabled": obj.get("androidEnabled"),
+            "ios_enabled": obj.get("iosEnabled"),
+            "google_play_link": obj.get("googlePlayLink"),
+            "app_store_link": obj.get("appStoreLink")
         })
         return _obj
 

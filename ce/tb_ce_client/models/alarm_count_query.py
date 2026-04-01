@@ -35,16 +35,16 @@ class AlarmCountQuery(BaseModel):
     """
     A JSON value representing the alarm count query.
     """ # noqa: E501
-    entity_filter: Optional[EntityFilter] = Field(default=None, alias="entityFilter")
-    key_filters: Optional[List[KeyFilter]] = Field(default=None, alias="keyFilters")
-    start_ts: Optional[StrictInt] = Field(default=None, alias="startTs")
-    end_ts: Optional[StrictInt] = Field(default=None, alias="endTs")
-    time_window: Optional[StrictInt] = Field(default=None, alias="timeWindow")
-    type_list: Optional[List[StrictStr]] = Field(default=None, alias="typeList")
-    status_list: Optional[List[AlarmSearchStatus]] = Field(default=None, alias="statusList")
-    severity_list: Optional[List[AlarmSeverity]] = Field(default=None, alias="severityList")
-    search_propagated_alarms: Optional[StrictBool] = Field(default=None, alias="searchPropagatedAlarms")
-    assignee_id: Optional[UserId] = Field(default=None, alias="assigneeId")
+    entity_filter: Optional[EntityFilter] = Field(default=None, serialization_alias="entityFilter")
+    key_filters: Optional[List[KeyFilter]] = Field(default=None, serialization_alias="keyFilters")
+    start_ts: Optional[StrictInt] = Field(default=None, serialization_alias="startTs")
+    end_ts: Optional[StrictInt] = Field(default=None, serialization_alias="endTs")
+    time_window: Optional[StrictInt] = Field(default=None, serialization_alias="timeWindow")
+    type_list: Optional[List[StrictStr]] = Field(default=None, serialization_alias="typeList")
+    status_list: Optional[List[AlarmSearchStatus]] = Field(default=None, serialization_alias="statusList")
+    severity_list: Optional[List[AlarmSeverity]] = Field(default=None, serialization_alias="severityList")
+    search_propagated_alarms: Optional[StrictBool] = Field(default=None, serialization_alias="searchPropagatedAlarms")
+    assignee_id: Optional[UserId] = Field(default=None, serialization_alias="assigneeId")
     __properties: ClassVar[List[str]] = ["entityFilter", "keyFilters", "startTs", "endTs", "timeWindow", "typeList", "statusList", "severityList", "searchPropagatedAlarms", "assigneeId"]
 
     model_config = ConfigDict(
@@ -55,13 +55,18 @@ class AlarmCountQuery(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -111,16 +116,16 @@ class AlarmCountQuery(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "entityFilter": EntityFilter.from_dict(obj["entityFilter"]) if obj.get("entityFilter") is not None else None,
-            "keyFilters": [KeyFilter.from_dict(_item) for _item in obj["keyFilters"]] if obj.get("keyFilters") is not None else None,
-            "startTs": obj.get("startTs"),
-            "endTs": obj.get("endTs"),
-            "timeWindow": obj.get("timeWindow"),
-            "typeList": obj.get("typeList"),
-            "statusList": obj.get("statusList"),
-            "severityList": obj.get("severityList"),
-            "searchPropagatedAlarms": obj.get("searchPropagatedAlarms"),
-            "assigneeId": UserId.from_dict(obj["assigneeId"]) if obj.get("assigneeId") is not None else None
+            "entity_filter": EntityFilter.from_dict(obj["entityFilter"]) if obj.get("entityFilter") is not None else None,
+            "key_filters": [KeyFilter.from_dict(_item) for _item in obj["keyFilters"]] if obj.get("keyFilters") is not None else None,
+            "start_ts": obj.get("startTs"),
+            "end_ts": obj.get("endTs"),
+            "time_window": obj.get("timeWindow"),
+            "type_list": obj.get("typeList"),
+            "status_list": obj.get("statusList"),
+            "severity_list": obj.get("severityList"),
+            "search_propagated_alarms": obj.get("searchPropagatedAlarms"),
+            "assignee_id": UserId.from_dict(obj["assigneeId"]) if obj.get("assigneeId") is not None else None
         })
         return _obj
 

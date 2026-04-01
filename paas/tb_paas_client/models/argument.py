@@ -33,12 +33,12 @@ class Argument(BaseModel):
     """
     Argument
     """ # noqa: E501
-    ref_entity_id: Optional[EntityId] = Field(default=None, alias="refEntityId")
-    ref_dynamic_source_configuration: Optional[CfArgumentDynamicSourceConfiguration] = Field(default=None, alias="refDynamicSourceConfiguration")
-    ref_entity_key: Optional[ReferencedEntityKey] = Field(default=None, alias="refEntityKey")
-    default_value: Optional[StrictStr] = Field(default=None, alias="defaultValue")
+    ref_entity_id: Optional[EntityId] = Field(default=None, serialization_alias="refEntityId")
+    ref_dynamic_source_configuration: Optional[CfArgumentDynamicSourceConfiguration] = Field(default=None, serialization_alias="refDynamicSourceConfiguration")
+    ref_entity_key: Optional[ReferencedEntityKey] = Field(default=None, serialization_alias="refEntityKey")
+    default_value: Optional[StrictStr] = Field(default=None, serialization_alias="defaultValue")
     limit: Optional[StrictInt] = None
-    time_window: Optional[StrictInt] = Field(default=None, alias="timeWindow")
+    time_window: Optional[StrictInt] = Field(default=None, serialization_alias="timeWindow")
     __properties: ClassVar[List[str]] = ["refEntityId", "refDynamicSourceConfiguration", "refEntityKey", "defaultValue", "limit", "timeWindow"]
 
     model_config = ConfigDict(
@@ -49,13 +49,18 @@ class Argument(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -101,12 +106,12 @@ class Argument(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "refEntityId": EntityId.from_dict(obj["refEntityId"]) if obj.get("refEntityId") is not None else None,
-            "refDynamicSourceConfiguration": CfArgumentDynamicSourceConfiguration.from_dict(obj["refDynamicSourceConfiguration"]) if obj.get("refDynamicSourceConfiguration") is not None else None,
-            "refEntityKey": ReferencedEntityKey.from_dict(obj["refEntityKey"]) if obj.get("refEntityKey") is not None else None,
-            "defaultValue": obj.get("defaultValue"),
+            "ref_entity_id": EntityId.from_dict(obj["refEntityId"]) if obj.get("refEntityId") is not None else None,
+            "ref_dynamic_source_configuration": CfArgumentDynamicSourceConfiguration.from_dict(obj["refDynamicSourceConfiguration"]) if obj.get("refDynamicSourceConfiguration") is not None else None,
+            "ref_entity_key": ReferencedEntityKey.from_dict(obj["refEntityKey"]) if obj.get("refEntityKey") is not None else None,
+            "default_value": obj.get("defaultValue"),
             "limit": obj.get("limit"),
-            "timeWindow": obj.get("timeWindow")
+            "time_window": obj.get("timeWindow")
         })
         return _obj
 

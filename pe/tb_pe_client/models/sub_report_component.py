@@ -35,9 +35,9 @@ class SubReportComponent(ReportComponent):
     """
     SubReportComponent
     """ # noqa: E501
-    data_sources: Optional[List[DataSource]] = Field(default=None, alias="dataSources")
-    template_id: Optional[ReportTemplateId] = Field(default=None, alias="templateId")
-    avoid_page_break_inside: Optional[StrictBool] = Field(default=None, alias="avoidPageBreakInside")
+    data_sources: Optional[List[DataSource]] = Field(default=None, serialization_alias="dataSources")
+    template_id: Optional[ReportTemplateId] = Field(default=None, serialization_alias="templateId")
+    avoid_page_break_inside: Optional[StrictBool] = Field(default=None, serialization_alias="avoidPageBreakInside")
     __properties: ClassVar[List[str]] = ["subType", "type", "dataSources", "templateId", "avoidPageBreakInside"]
 
     model_config = ConfigDict(
@@ -48,13 +48,18 @@ class SubReportComponent(ReportComponent):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -101,11 +106,11 @@ class SubReportComponent(ReportComponent):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "subType": obj.get("subType"),
+            "sub_type": obj.get("subType"),
             "type": obj.get("type"),
-            "dataSources": [DataSource.from_dict(_item) for _item in obj["dataSources"]] if obj.get("dataSources") is not None else None,
-            "templateId": ReportTemplateId.from_dict(obj["templateId"]) if obj.get("templateId") is not None else None,
-            "avoidPageBreakInside": obj.get("avoidPageBreakInside")
+            "data_sources": [DataSource.from_dict(_item) for _item in obj["dataSources"]] if obj.get("dataSources") is not None else None,
+            "template_id": ReportTemplateId.from_dict(obj["templateId"]) if obj.get("templateId") is not None else None,
+            "avoid_page_break_inside": obj.get("avoidPageBreakInside")
         })
         return _obj
 

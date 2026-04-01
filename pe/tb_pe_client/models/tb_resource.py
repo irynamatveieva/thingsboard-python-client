@@ -36,23 +36,23 @@ class TbResource(BaseModel):
     A JSON value representing the Resource.
     """ # noqa: E501
     id: Optional[TbResourceId] = Field(default=None, description="JSON object with the Resource Id. Specify this field to update the Resource. Referencing non-existing Resource Id will cause error. Omit this field to create new Resource.")
-    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the resource creation, in milliseconds", alias="createdTime")
-    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id. Tenant Id of the resource can't be changed.", alias="tenantId")
-    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id. Customer Id of the resource can't be changed.", alias="customerId")
+    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the resource creation, in milliseconds", serialization_alias="createdTime")
+    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id. Tenant Id of the resource can't be changed.", serialization_alias="tenantId")
+    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id. Customer Id of the resource can't be changed.", serialization_alias="customerId")
     title: Optional[StrictStr] = Field(default=None, description="Resource title.")
-    resource_type: Optional[ResourceType] = Field(default=None, description="Resource type.", alias="resourceType")
-    resource_sub_type: Optional[ResourceSubType] = Field(default=None, description="Resource sub type.", alias="resourceSubType")
-    resource_key: Optional[StrictStr] = Field(default=None, description="Resource key.", alias="resourceKey")
-    public_resource_key: Optional[StrictStr] = Field(default=None, description="Public resource key.", alias="publicResourceKey")
+    resource_type: Optional[ResourceType] = Field(default=None, description="Resource type.", serialization_alias="resourceType")
+    resource_sub_type: Optional[ResourceSubType] = Field(default=None, description="Resource sub type.", serialization_alias="resourceSubType")
+    resource_key: Optional[StrictStr] = Field(default=None, description="Resource key.", serialization_alias="resourceKey")
+    public_resource_key: Optional[StrictStr] = Field(default=None, description="Public resource key.", serialization_alias="publicResourceKey")
     etag: Optional[StrictStr] = Field(default=None, description="Resource etag.")
-    file_name: Optional[StrictStr] = Field(default=None, description="Resource file name.", alias="fileName")
+    file_name: Optional[StrictStr] = Field(default=None, description="Resource file name.", serialization_alias="fileName")
     descriptor: Optional[Any] = Field(default=None, description="Resource descriptor.")
     data: Optional[StrictStr] = Field(default=None, description="Resource data.")
     preview: Optional[StrictStr] = None
     link: Optional[StrictStr] = None
     name: Optional[StrictStr] = None
     public: Optional[StrictBool] = None
-    public_link: Optional[StrictStr] = Field(default=None, alias="publicLink")
+    public_link: Optional[StrictStr] = Field(default=None, serialization_alias="publicLink")
     __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "customerId", "title", "resourceType", "resourceSubType", "resourceKey", "publicResourceKey", "etag", "fileName", "descriptor", "data", "preview", "link", "name", "public", "publicLink"]
 
     model_config = ConfigDict(
@@ -63,13 +63,18 @@ class TbResource(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -135,23 +140,23 @@ class TbResource(BaseModel):
 
         _obj = cls.model_validate({
             "id": TbResourceId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
-            "customerId": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
+            "created_time": obj.get("createdTime"),
+            "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
+            "customer_id": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
             "title": obj.get("title"),
-            "resourceType": obj.get("resourceType"),
-            "resourceSubType": obj.get("resourceSubType"),
-            "resourceKey": obj.get("resourceKey"),
-            "publicResourceKey": obj.get("publicResourceKey"),
+            "resource_type": obj.get("resourceType"),
+            "resource_sub_type": obj.get("resourceSubType"),
+            "resource_key": obj.get("resourceKey"),
+            "public_resource_key": obj.get("publicResourceKey"),
             "etag": obj.get("etag"),
-            "fileName": obj.get("fileName"),
+            "file_name": obj.get("fileName"),
             "descriptor": obj.get("descriptor"),
             "data": obj.get("data"),
             "preview": obj.get("preview"),
             "link": obj.get("link"),
             "name": obj.get("name"),
             "public": obj.get("public"),
-            "publicLink": obj.get("publicLink")
+            "public_link": obj.get("publicLink")
         })
         return _obj
 

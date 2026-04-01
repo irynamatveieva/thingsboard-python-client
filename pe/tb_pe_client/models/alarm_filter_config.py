@@ -33,11 +33,11 @@ class AlarmFilterConfig(BaseModel):
     """
     AlarmFilterConfig
     """ # noqa: E501
-    type_list: Optional[List[StrictStr]] = Field(default=None, alias="typeList")
-    status_list: Optional[List[AlarmSearchStatus]] = Field(default=None, alias="statusList")
-    severity_list: Optional[List[AlarmSeverity]] = Field(default=None, alias="severityList")
-    assignee_id: Optional[UserId] = Field(default=None, alias="assigneeId")
-    search_propagated_alarms: Optional[StrictBool] = Field(default=None, alias="searchPropagatedAlarms")
+    type_list: Optional[List[StrictStr]] = Field(default=None, serialization_alias="typeList")
+    status_list: Optional[List[AlarmSearchStatus]] = Field(default=None, serialization_alias="statusList")
+    severity_list: Optional[List[AlarmSeverity]] = Field(default=None, serialization_alias="severityList")
+    assignee_id: Optional[UserId] = Field(default=None, serialization_alias="assigneeId")
+    search_propagated_alarms: Optional[StrictBool] = Field(default=None, serialization_alias="searchPropagatedAlarms")
     __properties: ClassVar[List[str]] = ["typeList", "statusList", "severityList", "assigneeId", "searchPropagatedAlarms"]
 
     model_config = ConfigDict(
@@ -48,13 +48,18 @@ class AlarmFilterConfig(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -94,11 +99,11 @@ class AlarmFilterConfig(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "typeList": obj.get("typeList"),
-            "statusList": obj.get("statusList"),
-            "severityList": obj.get("severityList"),
-            "assigneeId": UserId.from_dict(obj["assigneeId"]) if obj.get("assigneeId") is not None else None,
-            "searchPropagatedAlarms": obj.get("searchPropagatedAlarms")
+            "type_list": obj.get("typeList"),
+            "status_list": obj.get("statusList"),
+            "severity_list": obj.get("severityList"),
+            "assignee_id": UserId.from_dict(obj["assigneeId"]) if obj.get("assigneeId") is not None else None,
+            "search_propagated_alarms": obj.get("searchPropagatedAlarms")
         })
         return _obj
 

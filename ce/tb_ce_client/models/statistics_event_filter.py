@@ -33,10 +33,10 @@ class StatisticsEventFilter(EventFilter):
     StatisticsEventFilter
     """ # noqa: E501
     server: Optional[StrictStr] = Field(default=None, description="String value representing the server name, identifier or ip address where the platform is running")
-    min_messages_processed: Optional[StrictInt] = Field(default=None, description="The minimum number of successfully processed messages", alias="minMessagesProcessed")
-    max_messages_processed: Optional[StrictInt] = Field(default=None, description="The maximum number of successfully processed messages", alias="maxMessagesProcessed")
-    min_errors_occurred: Optional[StrictInt] = Field(default=None, description="The minimum number of errors occurred during messages processing", alias="minErrorsOccurred")
-    max_errors_occurred: Optional[StrictInt] = Field(default=None, description="The maximum number of errors occurred during messages processing", alias="maxErrorsOccurred")
+    min_messages_processed: Optional[StrictInt] = Field(default=None, description="The minimum number of successfully processed messages", serialization_alias="minMessagesProcessed")
+    max_messages_processed: Optional[StrictInt] = Field(default=None, description="The maximum number of successfully processed messages", serialization_alias="maxMessagesProcessed")
+    min_errors_occurred: Optional[StrictInt] = Field(default=None, description="The minimum number of errors occurred during messages processing", serialization_alias="minErrorsOccurred")
+    max_errors_occurred: Optional[StrictInt] = Field(default=None, description="The maximum number of errors occurred during messages processing", serialization_alias="maxErrorsOccurred")
     __properties: ClassVar[List[str]] = ["eventType", "notEmpty", "server", "minMessagesProcessed", "maxMessagesProcessed", "minErrorsOccurred", "maxErrorsOccurred"]
 
     model_config = ConfigDict(
@@ -47,13 +47,18 @@ class StatisticsEventFilter(EventFilter):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -90,13 +95,13 @@ class StatisticsEventFilter(EventFilter):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "eventType": obj.get("eventType"),
-            "notEmpty": obj.get("notEmpty"),
+            "event_type": obj.get("eventType"),
+            "not_empty": obj.get("notEmpty"),
             "server": obj.get("server"),
-            "minMessagesProcessed": obj.get("minMessagesProcessed"),
-            "maxMessagesProcessed": obj.get("maxMessagesProcessed"),
-            "minErrorsOccurred": obj.get("minErrorsOccurred"),
-            "maxErrorsOccurred": obj.get("maxErrorsOccurred")
+            "min_messages_processed": obj.get("minMessagesProcessed"),
+            "max_messages_processed": obj.get("maxMessagesProcessed"),
+            "min_errors_occurred": obj.get("minErrorsOccurred"),
+            "max_errors_occurred": obj.get("maxErrorsOccurred")
         })
         return _obj
 

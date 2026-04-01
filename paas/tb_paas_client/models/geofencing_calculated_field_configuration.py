@@ -34,10 +34,10 @@ class GeofencingCalculatedFieldConfiguration(CalculatedFieldConfiguration):
     """
     GeofencingCalculatedFieldConfiguration
     """ # noqa: E501
-    entity_coordinates: EntityCoordinates = Field(alias="entityCoordinates")
-    scheduled_update_enabled: Optional[StrictBool] = Field(default=None, alias="scheduledUpdateEnabled")
-    scheduled_update_interval: Optional[StrictInt] = Field(default=None, alias="scheduledUpdateInterval")
-    zone_groups: Dict[str, ZoneGroupConfiguration] = Field(alias="zoneGroups")
+    entity_coordinates: EntityCoordinates = Field(serialization_alias="entityCoordinates")
+    scheduled_update_enabled: Optional[StrictBool] = Field(default=None, serialization_alias="scheduledUpdateEnabled")
+    scheduled_update_interval: Optional[StrictInt] = Field(default=None, serialization_alias="scheduledUpdateInterval")
+    zone_groups: Dict[str, ZoneGroupConfiguration] = Field(serialization_alias="zoneGroups")
     __properties: ClassVar[List[str]] = ["type", "output", "aiGenerated", "entityCoordinates", "scheduledUpdateEnabled", "scheduledUpdateInterval", "zoneGroups"]
 
     model_config = ConfigDict(
@@ -48,13 +48,18 @@ class GeofencingCalculatedFieldConfiguration(CalculatedFieldConfiguration):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -106,11 +111,11 @@ class GeofencingCalculatedFieldConfiguration(CalculatedFieldConfiguration):
         _obj = cls.model_validate({
             "type": obj.get("type"),
             "output": Output.from_dict(obj["output"]) if obj.get("output") is not None else None,
-            "aiGenerated": obj.get("aiGenerated"),
-            "entityCoordinates": EntityCoordinates.from_dict(obj["entityCoordinates"]) if obj.get("entityCoordinates") is not None else None,
-            "scheduledUpdateEnabled": obj.get("scheduledUpdateEnabled"),
-            "scheduledUpdateInterval": obj.get("scheduledUpdateInterval"),
-            "zoneGroups": dict(
+            "ai_generated": obj.get("aiGenerated"),
+            "entity_coordinates": EntityCoordinates.from_dict(obj["entityCoordinates"]) if obj.get("entityCoordinates") is not None else None,
+            "scheduled_update_enabled": obj.get("scheduledUpdateEnabled"),
+            "scheduled_update_interval": obj.get("scheduledUpdateInterval"),
+            "zone_groups": dict(
                 (_k, ZoneGroupConfiguration.from_dict(_v))
                 for _k, _v in obj["zoneGroups"].items()
             )

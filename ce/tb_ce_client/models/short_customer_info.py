@@ -31,9 +31,9 @@ class ShortCustomerInfo(BaseModel):
     """
     ShortCustomerInfo
     """ # noqa: E501
-    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with the customer Id.", alias="customerId")
+    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with the customer Id.", serialization_alias="customerId")
     title: Optional[StrictStr] = Field(default=None, description="Title of the customer.")
-    is_public: Optional[StrictBool] = Field(default=None, description="Indicates special 'Public' customer used to embed dashboards on public websites.", alias="isPublic")
+    is_public: Optional[StrictBool] = Field(default=None, description="Indicates special 'Public' customer used to embed dashboards on public websites.", serialization_alias="isPublic")
     __properties: ClassVar[List[str]] = ["customerId", "title", "isPublic"]
 
     model_config = ConfigDict(
@@ -44,13 +44,18 @@ class ShortCustomerInfo(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -90,9 +95,9 @@ class ShortCustomerInfo(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "customerId": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
+            "customer_id": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
             "title": obj.get("title"),
-            "isPublic": obj.get("isPublic")
+            "is_public": obj.get("isPublic")
         })
         return _obj
 

@@ -31,17 +31,17 @@ class RepositorySettings(BaseModel):
     """
     A JSON value representing the Repository Settings.
     """ # noqa: E501
-    repository_uri: Optional[StrictStr] = Field(default=None, alias="repositoryUri")
-    auth_method: Optional[RepositoryAuthMethod] = Field(default=None, alias="authMethod")
+    repository_uri: Optional[StrictStr] = Field(default=None, serialization_alias="repositoryUri")
+    auth_method: Optional[RepositoryAuthMethod] = Field(default=None, serialization_alias="authMethod")
     username: Optional[StrictStr] = None
     password: Optional[StrictStr] = None
-    private_key_file_name: Optional[StrictStr] = Field(default=None, alias="privateKeyFileName")
-    private_key: Optional[StrictStr] = Field(default=None, alias="privateKey")
-    private_key_password: Optional[StrictStr] = Field(default=None, alias="privateKeyPassword")
-    default_branch: Optional[StrictStr] = Field(default=None, alias="defaultBranch")
-    read_only: Optional[StrictBool] = Field(default=None, alias="readOnly")
-    show_merge_commits: Optional[StrictBool] = Field(default=None, alias="showMergeCommits")
-    local_only: Optional[StrictBool] = Field(default=None, alias="localOnly")
+    private_key_file_name: Optional[StrictStr] = Field(default=None, serialization_alias="privateKeyFileName")
+    private_key: Optional[StrictStr] = Field(default=None, serialization_alias="privateKey")
+    private_key_password: Optional[StrictStr] = Field(default=None, serialization_alias="privateKeyPassword")
+    default_branch: Optional[StrictStr] = Field(default=None, serialization_alias="defaultBranch")
+    read_only: Optional[StrictBool] = Field(default=None, serialization_alias="readOnly")
+    show_merge_commits: Optional[StrictBool] = Field(default=None, serialization_alias="showMergeCommits")
+    local_only: Optional[StrictBool] = Field(default=None, serialization_alias="localOnly")
     __properties: ClassVar[List[str]] = ["repositoryUri", "authMethod", "username", "password", "privateKeyFileName", "privateKey", "privateKeyPassword", "defaultBranch", "readOnly", "showMergeCommits", "localOnly"]
 
     model_config = ConfigDict(
@@ -52,13 +52,18 @@ class RepositorySettings(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -95,17 +100,17 @@ class RepositorySettings(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "repositoryUri": obj.get("repositoryUri"),
-            "authMethod": obj.get("authMethod"),
+            "repository_uri": obj.get("repositoryUri"),
+            "auth_method": obj.get("authMethod"),
             "username": obj.get("username"),
             "password": obj.get("password"),
-            "privateKeyFileName": obj.get("privateKeyFileName"),
-            "privateKey": obj.get("privateKey"),
-            "privateKeyPassword": obj.get("privateKeyPassword"),
-            "defaultBranch": obj.get("defaultBranch"),
-            "readOnly": obj.get("readOnly"),
-            "showMergeCommits": obj.get("showMergeCommits"),
-            "localOnly": obj.get("localOnly")
+            "private_key_file_name": obj.get("privateKeyFileName"),
+            "private_key": obj.get("privateKey"),
+            "private_key_password": obj.get("privateKeyPassword"),
+            "default_branch": obj.get("defaultBranch"),
+            "read_only": obj.get("readOnly"),
+            "show_merge_commits": obj.get("showMergeCommits"),
+            "local_only": obj.get("localOnly")
         })
         return _obj
 

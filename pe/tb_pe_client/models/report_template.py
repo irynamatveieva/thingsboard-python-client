@@ -38,16 +38,16 @@ class ReportTemplate(BaseModel):
     A JSON value representing the Report Template.
     """ # noqa: E501
     id: Optional[ReportTemplateId] = Field(default=None, description="JSON object with the report template Id. Specify this field to update the report. Referencing non-existing report template Id will cause error. Omit this field to create new report template")
-    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the report template creation, in milliseconds", alias="createdTime")
-    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id. Tenant Id of the report template can't be changed.", alias="tenantId")
-    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id", alias="customerId")
+    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the report template creation, in milliseconds", serialization_alias="createdTime")
+    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id. Tenant Id of the report template can't be changed.", serialization_alias="tenantId")
+    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id", serialization_alias="customerId")
     name: StrictStr = Field(description="Report name")
     format: TbReportFormat = Field(description="Report format")
     type: ReportTemplateType = Field(description="Report template type")
     description: Optional[StrictStr] = Field(default=None, description="Description")
     version: Optional[StrictInt] = None
     configuration: ReportTemplateConfig = Field(description="a JSON value with report template configuration")
-    owner_id: Optional[EntityId] = Field(default=None, description="JSON object with Customer or Tenant Id", alias="ownerId")
+    owner_id: Optional[EntityId] = Field(default=None, description="JSON object with Customer or Tenant Id", serialization_alias="ownerId")
     __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "customerId", "name", "format", "type", "description", "version", "configuration", "ownerId"]
 
     model_config = ConfigDict(
@@ -58,13 +58,18 @@ class ReportTemplate(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -125,16 +130,16 @@ class ReportTemplate(BaseModel):
 
         _obj = cls.model_validate({
             "id": ReportTemplateId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
-            "customerId": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
+            "created_time": obj.get("createdTime"),
+            "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
+            "customer_id": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
             "name": obj.get("name"),
             "format": obj.get("format"),
             "type": obj.get("type"),
             "description": obj.get("description"),
             "version": obj.get("version"),
             "configuration": ReportTemplateConfig.from_dict(obj["configuration"]) if obj.get("configuration") is not None else None,
-            "ownerId": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None
+            "owner_id": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None
         })
         return _obj
 

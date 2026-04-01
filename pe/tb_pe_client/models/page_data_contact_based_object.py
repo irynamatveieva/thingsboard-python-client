@@ -32,9 +32,9 @@ class PageDataContactBasedObject(BaseModel):
     PageDataContactBasedObject
     """ # noqa: E501
     data: Optional[List[ContactBasedObject]] = Field(default=None, description="Array of the entities")
-    has_next: Optional[StrictBool] = Field(default=None, description="'false' value indicates the end of the result set", alias="hasNext")
-    total_elements: Optional[StrictInt] = Field(default=None, description="Total number of elements in all available pages", alias="totalElements")
-    total_pages: Optional[StrictInt] = Field(default=None, description="Total number of available pages. Calculated based on the 'pageSize' request parameter and total number of entities that match search criteria", alias="totalPages")
+    has_next: Optional[StrictBool] = Field(default=None, description="'false' value indicates the end of the result set", serialization_alias="hasNext")
+    total_elements: Optional[StrictInt] = Field(default=None, description="Total number of elements in all available pages", serialization_alias="totalElements")
+    total_pages: Optional[StrictInt] = Field(default=None, description="Total number of available pages. Calculated based on the 'pageSize' request parameter and total number of entities that match search criteria", serialization_alias="totalPages")
     __properties: ClassVar[List[str]] = ["data", "hasNext", "totalElements", "totalPages"]
 
     model_config = ConfigDict(
@@ -45,13 +45,18 @@ class PageDataContactBasedObject(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -102,9 +107,9 @@ class PageDataContactBasedObject(BaseModel):
 
         _obj = cls.model_validate({
             "data": [ContactBasedObject.from_dict(_item) for _item in obj["data"]] if obj.get("data") is not None else None,
-            "hasNext": obj.get("hasNext"),
-            "totalElements": obj.get("totalElements"),
-            "totalPages": obj.get("totalPages")
+            "has_next": obj.get("hasNext"),
+            "total_elements": obj.get("totalElements"),
+            "total_pages": obj.get("totalPages")
         })
         return _obj
 

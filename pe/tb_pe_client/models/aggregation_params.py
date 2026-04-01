@@ -33,8 +33,8 @@ class AggregationParams(BaseModel):
     AggregationParams
     """ # noqa: E501
     aggregation: Optional[Aggregation] = None
-    interval_type: Optional[IntervalType] = Field(default=None, alias="intervalType")
-    tz_id: Optional[StrictStr] = Field(default=None, alias="tzId")
+    interval_type: Optional[IntervalType] = Field(default=None, serialization_alias="intervalType")
+    tz_id: Optional[StrictStr] = Field(default=None, serialization_alias="tzId")
     interval: Optional[StrictInt] = None
     __properties: ClassVar[List[str]] = ["aggregation", "intervalType", "tzId", "interval"]
 
@@ -46,13 +46,18 @@ class AggregationParams(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -90,8 +95,8 @@ class AggregationParams(BaseModel):
 
         _obj = cls.model_validate({
             "aggregation": obj.get("aggregation"),
-            "intervalType": obj.get("intervalType"),
-            "tzId": obj.get("tzId"),
+            "interval_type": obj.get("intervalType"),
+            "tz_id": obj.get("tzId"),
             "interval": obj.get("interval")
         })
         return _obj

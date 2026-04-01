@@ -30,16 +30,16 @@ class DashboardReportConfig(BaseModel):
     """
     DashboardReportConfig
     """ # noqa: E501
-    base_url: StrictStr = Field(description="Base URL of ThingsBoard UI that should be accessible by Web Report Server.", alias="baseUrl")
-    dashboard_id: StrictStr = Field(description="A string value representing the dashboard id.", alias="dashboardId")
+    base_url: StrictStr = Field(description="Base URL of ThingsBoard UI that should be accessible by Web Report Server.", serialization_alias="baseUrl")
+    dashboard_id: StrictStr = Field(description="A string value representing the dashboard id.", serialization_alias="dashboardId")
     state: Optional[StrictStr] = Field(default=None, description="Target dashboard state for dashboard report generation.")
     timezone: StrictStr = Field(description="Timezone in which target dashboard will be presented in dashboard report.")
-    use_dashboard_timewindow: Optional[StrictBool] = Field(default=None, description="If set, timewindow configured in the target dashboard will be used during dashboard report generation.", alias="useDashboardTimewindow")
+    use_dashboard_timewindow: Optional[StrictBool] = Field(default=None, description="If set, timewindow configured in the target dashboard will be used during dashboard report generation.", serialization_alias="useDashboardTimewindow")
     timewindow: Optional[Any] = Field(default=None, description="Specific dashboard timewindow that will be used during dashboard report generation.")
-    name_pattern: StrictStr = Field(description="If set, timewindow configured in the target dashboard will be used during dashboard report generation.", alias="namePattern")
+    name_pattern: StrictStr = Field(description="If set, timewindow configured in the target dashboard will be used during dashboard report generation.", serialization_alias="namePattern")
     type: Optional[StrictStr] = Field(default=None, description="Dashboard report file type, can be PDF | PNG | JPEG.")
-    use_current_user_credentials: Optional[StrictBool] = Field(default=None, description="If set, credentials of user created this dashboard report configuration will be used to open dashboard UI during dashboard report generation.", alias="useCurrentUserCredentials")
-    user_id: StrictStr = Field(description="A string value representing the user id.", alias="userId")
+    use_current_user_credentials: Optional[StrictBool] = Field(default=None, description="If set, credentials of user created this dashboard report configuration will be used to open dashboard UI during dashboard report generation.", serialization_alias="useCurrentUserCredentials")
+    user_id: StrictStr = Field(description="A string value representing the user id.", serialization_alias="userId")
     __properties: ClassVar[List[str]] = ["baseUrl", "dashboardId", "state", "timezone", "useDashboardTimewindow", "timewindow", "namePattern", "type", "useCurrentUserCredentials", "userId"]
 
     model_config = ConfigDict(
@@ -50,13 +50,18 @@ class DashboardReportConfig(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -98,16 +103,16 @@ class DashboardReportConfig(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "baseUrl": obj.get("baseUrl"),
-            "dashboardId": obj.get("dashboardId"),
+            "base_url": obj.get("baseUrl"),
+            "dashboard_id": obj.get("dashboardId"),
             "state": obj.get("state"),
             "timezone": obj.get("timezone"),
-            "useDashboardTimewindow": obj.get("useDashboardTimewindow"),
+            "use_dashboard_timewindow": obj.get("useDashboardTimewindow"),
             "timewindow": obj.get("timewindow"),
-            "namePattern": obj.get("namePattern"),
+            "name_pattern": obj.get("namePattern"),
             "type": obj.get("type"),
-            "useCurrentUserCredentials": obj.get("useCurrentUserCredentials"),
-            "userId": obj.get("userId")
+            "use_current_user_credentials": obj.get("useCurrentUserCredentials"),
+            "user_id": obj.get("userId")
         })
         return _obj
 

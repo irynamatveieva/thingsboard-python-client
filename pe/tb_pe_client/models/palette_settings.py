@@ -31,8 +31,8 @@ class PaletteSettings(BaseModel):
     """
     PaletteSettings
     """ # noqa: E501
-    primary_palette: Palette = Field(description="Primary palette JSON", alias="primaryPalette")
-    accent_palette: Palette = Field(description="Accent palette JSON", alias="accentPalette")
+    primary_palette: Palette = Field(description="Primary palette JSON", serialization_alias="primaryPalette")
+    accent_palette: Palette = Field(description="Accent palette JSON", serialization_alias="accentPalette")
     __properties: ClassVar[List[str]] = ["primaryPalette", "accentPalette"]
 
     model_config = ConfigDict(
@@ -43,13 +43,18 @@ class PaletteSettings(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -92,8 +97,8 @@ class PaletteSettings(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "primaryPalette": Palette.from_dict(obj["primaryPalette"]) if obj.get("primaryPalette") is not None else None,
-            "accentPalette": Palette.from_dict(obj["accentPalette"]) if obj.get("accentPalette") is not None else None
+            "primary_palette": Palette.from_dict(obj["primaryPalette"]) if obj.get("primaryPalette") is not None else None,
+            "accent_palette": Palette.from_dict(obj["accentPalette"]) if obj.get("accentPalette") is not None else None
         })
         return _obj
 

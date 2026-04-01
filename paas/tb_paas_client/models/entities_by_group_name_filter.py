@@ -33,11 +33,11 @@ class EntitiesByGroupNameFilter(EntityFilter):
     """
     EntitiesByGroupNameFilter
     """ # noqa: E501
-    group_type: Optional[EntityType] = Field(default=None, alias="groupType")
-    owner_id: Optional[EntityId] = Field(default=None, alias="ownerId")
-    entity_group_name_filter: Optional[StrictStr] = Field(default=None, alias="entityGroupNameFilter")
-    group_state_entity: Optional[StrictBool] = Field(default=None, alias="groupStateEntity")
-    state_entity_param_name: Optional[StrictStr] = Field(default=None, alias="stateEntityParamName")
+    group_type: Optional[EntityType] = Field(default=None, serialization_alias="groupType")
+    owner_id: Optional[EntityId] = Field(default=None, serialization_alias="ownerId")
+    entity_group_name_filter: Optional[StrictStr] = Field(default=None, serialization_alias="entityGroupNameFilter")
+    group_state_entity: Optional[StrictBool] = Field(default=None, serialization_alias="groupStateEntity")
+    state_entity_param_name: Optional[StrictStr] = Field(default=None, serialization_alias="stateEntityParamName")
     __properties: ClassVar[List[str]] = ["type", "groupType", "ownerId", "entityGroupNameFilter", "groupStateEntity", "stateEntityParamName"]
 
     model_config = ConfigDict(
@@ -48,13 +48,18 @@ class EntitiesByGroupNameFilter(EntityFilter):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -95,11 +100,11 @@ class EntitiesByGroupNameFilter(EntityFilter):
 
         _obj = cls.model_validate({
             "type": obj.get("type"),
-            "groupType": obj.get("groupType"),
-            "ownerId": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None,
-            "entityGroupNameFilter": obj.get("entityGroupNameFilter"),
-            "groupStateEntity": obj.get("groupStateEntity"),
-            "stateEntityParamName": obj.get("stateEntityParamName")
+            "group_type": obj.get("groupType"),
+            "owner_id": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None,
+            "entity_group_name_filter": obj.get("entityGroupNameFilter"),
+            "group_state_entity": obj.get("groupStateEntity"),
+            "state_entity_param_name": obj.get("stateEntityParamName")
         })
         return _obj
 

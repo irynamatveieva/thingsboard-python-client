@@ -34,11 +34,11 @@ class Button(BaseModel):
     """ # noqa: E501
     enabled: Optional[StrictBool] = None
     text: Optional[StrictStr] = None
-    link_type: Optional[LinkType] = Field(default=None, alias="linkType")
+    link_type: Optional[LinkType] = Field(default=None, serialization_alias="linkType")
     link: Optional[StrictStr] = None
-    dashboard_id: Optional[UUID] = Field(default=None, alias="dashboardId")
-    dashboard_state: Optional[StrictStr] = Field(default=None, alias="dashboardState")
-    set_entity_id_in_state: Optional[StrictBool] = Field(default=None, alias="setEntityIdInState")
+    dashboard_id: Optional[UUID] = Field(default=None, serialization_alias="dashboardId")
+    dashboard_state: Optional[StrictStr] = Field(default=None, serialization_alias="dashboardState")
+    set_entity_id_in_state: Optional[StrictBool] = Field(default=None, serialization_alias="setEntityIdInState")
     __properties: ClassVar[List[str]] = ["enabled", "text", "linkType", "link", "dashboardId", "dashboardState", "setEntityIdInState"]
 
     model_config = ConfigDict(
@@ -49,13 +49,18 @@ class Button(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -94,11 +99,11 @@ class Button(BaseModel):
         _obj = cls.model_validate({
             "enabled": obj.get("enabled"),
             "text": obj.get("text"),
-            "linkType": obj.get("linkType"),
+            "link_type": obj.get("linkType"),
             "link": obj.get("link"),
-            "dashboardId": obj.get("dashboardId"),
-            "dashboardState": obj.get("dashboardState"),
-            "setEntityIdInState": obj.get("setEntityIdInState")
+            "dashboard_id": obj.get("dashboardId"),
+            "dashboard_state": obj.get("dashboardState"),
+            "set_entity_id_in_state": obj.get("setEntityIdInState")
         })
         return _obj
 

@@ -30,8 +30,8 @@ class DataKeyComparisonSettings(BaseModel):
     """
     DataKeyComparisonSettings
     """ # noqa: E501
-    show_values_for_comparison: Optional[StrictBool] = Field(default=None, alias="showValuesForComparison")
-    comparison_values_label: Optional[StrictStr] = Field(default=None, alias="comparisonValuesLabel")
+    show_values_for_comparison: Optional[StrictBool] = Field(default=None, serialization_alias="showValuesForComparison")
+    comparison_values_label: Optional[StrictStr] = Field(default=None, serialization_alias="comparisonValuesLabel")
     color: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["showValuesForComparison", "comparisonValuesLabel", "color"]
 
@@ -43,13 +43,18 @@ class DataKeyComparisonSettings(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -86,8 +91,8 @@ class DataKeyComparisonSettings(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "showValuesForComparison": obj.get("showValuesForComparison"),
-            "comparisonValuesLabel": obj.get("comparisonValuesLabel"),
+            "show_values_for_comparison": obj.get("showValuesForComparison"),
+            "comparison_values_label": obj.get("comparisonValuesLabel"),
             "color": obj.get("color")
         })
         return _obj

@@ -38,15 +38,15 @@ class MobileApp(BaseModel):
     A JSON value representing the Mobile Application.
     """ # noqa: E501
     id: Optional[MobileAppId] = None
-    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", alias="createdTime")
-    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id", alias="tenantId")
-    pkg_name: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Application package name. Cannot be empty", alias="pkgName")
+    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", serialization_alias="createdTime")
+    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id", serialization_alias="tenantId")
+    pkg_name: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Application package name. Cannot be empty", serialization_alias="pkgName")
     title: Optional[StrictStr] = Field(default=None, description="Application title")
-    app_secret: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Application secret. The length must be at least 16 characters", alias="appSecret")
-    platform_type: PlatformType = Field(description="Application platform type: ANDROID or IOS", alias="platformType")
+    app_secret: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Application secret. The length must be at least 16 characters", serialization_alias="appSecret")
+    platform_type: PlatformType = Field(description="Application platform type: ANDROID or IOS", serialization_alias="platformType")
     status: MobileAppStatus = Field(description="Application status: PUBLISHED, DEPRECATED, SUSPENDED, DRAFT")
-    version_info: Optional[MobileAppVersionInfo] = Field(default=None, description="Application version info", alias="versionInfo")
-    store_info: Optional[StoreInfo] = Field(default=None, description="Application store information", alias="storeInfo")
+    version_info: Optional[MobileAppVersionInfo] = Field(default=None, description="Application version info", serialization_alias="versionInfo")
+    store_info: Optional[StoreInfo] = Field(default=None, description="Application store information", serialization_alias="storeInfo")
     name: Optional[StrictStr] = Field(default=None, description="Mobile app package name")
     __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "pkgName", "title", "appSecret", "platformType", "status", "versionInfo", "storeInfo", "name"]
 
@@ -58,13 +58,18 @@ class MobileApp(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -118,15 +123,15 @@ class MobileApp(BaseModel):
 
         _obj = cls.model_validate({
             "id": MobileAppId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
-            "pkgName": obj.get("pkgName"),
+            "created_time": obj.get("createdTime"),
+            "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
+            "pkg_name": obj.get("pkgName"),
             "title": obj.get("title"),
-            "appSecret": obj.get("appSecret"),
-            "platformType": obj.get("platformType"),
+            "app_secret": obj.get("appSecret"),
+            "platform_type": obj.get("platformType"),
             "status": obj.get("status"),
-            "versionInfo": MobileAppVersionInfo.from_dict(obj["versionInfo"]) if obj.get("versionInfo") is not None else None,
-            "storeInfo": StoreInfo.from_dict(obj["storeInfo"]) if obj.get("storeInfo") is not None else None,
+            "version_info": MobileAppVersionInfo.from_dict(obj["versionInfo"]) if obj.get("versionInfo") is not None else None,
+            "store_info": StoreInfo.from_dict(obj["storeInfo"]) if obj.get("storeInfo") is not None else None,
             "name": obj.get("name")
         })
         return _obj

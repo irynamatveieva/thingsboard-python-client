@@ -32,21 +32,21 @@ class WhiteLabelingParams(BaseModel):
     """
     A JSON value representing the white labeling configuration
     """ # noqa: E501
-    logo_image_url: Optional[StrictStr] = Field(default=None, description="Logo image URL", alias="logoImageUrl")
-    logo_image_height: Optional[StrictInt] = Field(default=None, description="The height of a logo container. Logo image will be automatically scaled.", alias="logoImageHeight")
-    app_title: Optional[StrictStr] = Field(default=None, description="White-labeled name of the platform", alias="appTitle")
+    logo_image_url: Optional[StrictStr] = Field(default=None, description="Logo image URL", serialization_alias="logoImageUrl")
+    logo_image_height: Optional[StrictInt] = Field(default=None, description="The height of a logo container. Logo image will be automatically scaled.", serialization_alias="logoImageHeight")
+    app_title: Optional[StrictStr] = Field(default=None, description="White-labeled name of the platform", serialization_alias="appTitle")
     favicon: Optional[Favicon] = Field(default=None, description="JSON object that contains website icon url and type")
-    palette_settings: Optional[PaletteSettings] = Field(default=None, description="Complex JSON that describes structure of the Angular Material Palette. See [theming](https://material.angular.io/guide/theming) for more details", alias="paletteSettings")
-    help_link_base_url: Optional[StrictStr] = Field(default=None, description="Base URL for help link", alias="helpLinkBaseUrl")
-    ui_help_base_url: Optional[StrictStr] = Field(default=None, description="Base URL for the repository with the UI help components (markdown)", alias="uiHelpBaseUrl")
-    enable_help_links: Optional[StrictBool] = Field(default=None, description="Enable or Disable help links", alias="enableHelpLinks")
-    white_labeling_enabled: Optional[StrictBool] = Field(default=None, description="Enable white-labeling", alias="whiteLabelingEnabled")
-    show_name_version: Optional[StrictBool] = Field(default=None, description="Show platform name and version on UI and login screen", alias="showNameVersion")
-    platform_name: Optional[StrictStr] = Field(default=None, description="White-labeled platform name", alias="platformName")
-    platform_version: Optional[StrictStr] = Field(default=None, description="White-labeled platform version", alias="platformVersion")
-    custom_css: Optional[StrictStr] = Field(default=None, description="Custom CSS content", alias="customCss")
-    hide_connectivity_dialog: Optional[StrictBool] = Field(default=None, description="Hide device connectivity dialog", alias="hideConnectivityDialog")
-    override_trendz_name: Optional[StrictBool] = Field(default=None, description="Override Trendz Add-on name", alias="overrideTrendzName")
+    palette_settings: Optional[PaletteSettings] = Field(default=None, description="Complex JSON that describes structure of the Angular Material Palette. See [theming](https://material.angular.io/guide/theming) for more details", serialization_alias="paletteSettings")
+    help_link_base_url: Optional[StrictStr] = Field(default=None, description="Base URL for help link", serialization_alias="helpLinkBaseUrl")
+    ui_help_base_url: Optional[StrictStr] = Field(default=None, description="Base URL for the repository with the UI help components (markdown)", serialization_alias="uiHelpBaseUrl")
+    enable_help_links: Optional[StrictBool] = Field(default=None, description="Enable or Disable help links", serialization_alias="enableHelpLinks")
+    white_labeling_enabled: Optional[StrictBool] = Field(default=None, description="Enable white-labeling", serialization_alias="whiteLabelingEnabled")
+    show_name_version: Optional[StrictBool] = Field(default=None, description="Show platform name and version on UI and login screen", serialization_alias="showNameVersion")
+    platform_name: Optional[StrictStr] = Field(default=None, description="White-labeled platform name", serialization_alias="platformName")
+    platform_version: Optional[StrictStr] = Field(default=None, description="White-labeled platform version", serialization_alias="platformVersion")
+    custom_css: Optional[StrictStr] = Field(default=None, description="Custom CSS content", serialization_alias="customCss")
+    hide_connectivity_dialog: Optional[StrictBool] = Field(default=None, description="Hide device connectivity dialog", serialization_alias="hideConnectivityDialog")
+    override_trendz_name: Optional[StrictBool] = Field(default=None, description="Override Trendz Add-on name", serialization_alias="overrideTrendzName")
     __properties: ClassVar[List[str]] = ["logoImageUrl", "logoImageHeight", "appTitle", "favicon", "paletteSettings", "helpLinkBaseUrl", "uiHelpBaseUrl", "enableHelpLinks", "whiteLabelingEnabled", "showNameVersion", "platformName", "platformVersion", "customCss", "hideConnectivityDialog", "overrideTrendzName"]
 
     model_config = ConfigDict(
@@ -57,13 +57,18 @@ class WhiteLabelingParams(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -108,21 +113,21 @@ class WhiteLabelingParams(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "logoImageUrl": obj.get("logoImageUrl"),
-            "logoImageHeight": obj.get("logoImageHeight"),
-            "appTitle": obj.get("appTitle"),
+            "logo_image_url": obj.get("logoImageUrl"),
+            "logo_image_height": obj.get("logoImageHeight"),
+            "app_title": obj.get("appTitle"),
             "favicon": Favicon.from_dict(obj["favicon"]) if obj.get("favicon") is not None else None,
-            "paletteSettings": PaletteSettings.from_dict(obj["paletteSettings"]) if obj.get("paletteSettings") is not None else None,
-            "helpLinkBaseUrl": obj.get("helpLinkBaseUrl"),
-            "uiHelpBaseUrl": obj.get("uiHelpBaseUrl"),
-            "enableHelpLinks": obj.get("enableHelpLinks"),
-            "whiteLabelingEnabled": obj.get("whiteLabelingEnabled"),
-            "showNameVersion": obj.get("showNameVersion"),
-            "platformName": obj.get("platformName"),
-            "platformVersion": obj.get("platformVersion"),
-            "customCss": obj.get("customCss"),
-            "hideConnectivityDialog": obj.get("hideConnectivityDialog"),
-            "overrideTrendzName": obj.get("overrideTrendzName")
+            "palette_settings": PaletteSettings.from_dict(obj["paletteSettings"]) if obj.get("paletteSettings") is not None else None,
+            "help_link_base_url": obj.get("helpLinkBaseUrl"),
+            "ui_help_base_url": obj.get("uiHelpBaseUrl"),
+            "enable_help_links": obj.get("enableHelpLinks"),
+            "white_labeling_enabled": obj.get("whiteLabelingEnabled"),
+            "show_name_version": obj.get("showNameVersion"),
+            "platform_name": obj.get("platformName"),
+            "platform_version": obj.get("platformVersion"),
+            "custom_css": obj.get("customCss"),
+            "hide_connectivity_dialog": obj.get("hideConnectivityDialog"),
+            "override_trendz_name": obj.get("overrideTrendzName")
         })
         return _obj
 

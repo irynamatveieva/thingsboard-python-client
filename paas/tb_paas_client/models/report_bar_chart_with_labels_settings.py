@@ -43,18 +43,18 @@ class ReportBarChartWithLabelsSettings(ReportTimeSeriesChartSettings):
     """
     ReportBarChartWithLabelsSettings
     """ # noqa: E501
-    show_bar_label: Optional[StrictBool] = Field(default=None, alias="showBarLabel")
-    bar_label_font: Optional[Font] = Field(default=None, alias="barLabelFont")
-    bar_label_color: Optional[StrictStr] = Field(default=None, alias="barLabelColor")
-    show_bar_value: Optional[StrictBool] = Field(default=None, alias="showBarValue")
-    bar_value_font: Optional[Font] = Field(default=None, alias="barValueFont")
-    bar_value_color: Optional[StrictStr] = Field(default=None, alias="barValueColor")
-    show_bar_border: Optional[StrictBool] = Field(default=None, alias="showBarBorder")
-    bar_border_width: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, alias="barBorderWidth")
-    bar_border_radius: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, alias="barBorderRadius")
-    bar_background_settings: Optional[ChartFillSettings] = Field(default=None, alias="barBackgroundSettings")
-    bar_units: Optional[StrictStr] = Field(default=None, alias="barUnits")
-    bar_decimals: Optional[StrictInt] = Field(default=None, alias="barDecimals")
+    show_bar_label: Optional[StrictBool] = Field(default=None, serialization_alias="showBarLabel")
+    bar_label_font: Optional[Font] = Field(default=None, serialization_alias="barLabelFont")
+    bar_label_color: Optional[StrictStr] = Field(default=None, serialization_alias="barLabelColor")
+    show_bar_value: Optional[StrictBool] = Field(default=None, serialization_alias="showBarValue")
+    bar_value_font: Optional[Font] = Field(default=None, serialization_alias="barValueFont")
+    bar_value_color: Optional[StrictStr] = Field(default=None, serialization_alias="barValueColor")
+    show_bar_border: Optional[StrictBool] = Field(default=None, serialization_alias="showBarBorder")
+    bar_border_width: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, serialization_alias="barBorderWidth")
+    bar_border_radius: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, serialization_alias="barBorderRadius")
+    bar_background_settings: Optional[ChartFillSettings] = Field(default=None, serialization_alias="barBackgroundSettings")
+    bar_units: Optional[StrictStr] = Field(default=None, serialization_alias="barUnits")
+    bar_decimals: Optional[StrictInt] = Field(default=None, serialization_alias="barDecimals")
     __properties: ClassVar[List[str]] = ["showTitle", "title", "titleFont", "titleColor", "titleAlignment", "thresholds", "stack", "grid", "yAxes", "xAxis", "barWidthSettings", "noAggregationBarWidthSettings", "states", "comparisonEnabled", "timeForComparison", "comparisonCustomIntervalValue", "comparisonXAxis", "showLegend", "legendColumnTitleFont", "legendColumnTitleColor", "legendLabelFont", "legendLabelColor", "legendValueFont", "legendValueColor", "legendConfig", "xaxis", "yaxes", "showBarLabel", "barLabelFont", "barLabelColor", "showBarValue", "barValueFont", "barValueColor", "showBarBorder", "barBorderWidth", "barBorderRadius", "barBackgroundSettings", "barUnits", "barDecimals"]
 
     model_config = ConfigDict(
@@ -65,13 +65,18 @@ class ReportBarChartWithLabelsSettings(ReportTimeSeriesChartSettings):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -178,36 +183,36 @@ class ReportBarChartWithLabelsSettings(ReportTimeSeriesChartSettings):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "showTitle": obj.get("showTitle"),
+            "show_title": obj.get("showTitle"),
             "title": obj.get("title"),
-            "titleFont": Font.from_dict(obj["titleFont"]) if obj.get("titleFont") is not None else None,
-            "titleColor": obj.get("titleColor"),
-            "titleAlignment": obj.get("titleAlignment"),
+            "title_font": Font.from_dict(obj["titleFont"]) if obj.get("titleFont") is not None else None,
+            "title_color": obj.get("titleColor"),
+            "title_alignment": obj.get("titleAlignment"),
             "thresholds": [TimeSeriesChartThreshold.from_dict(_item) for _item in obj["thresholds"]] if obj.get("thresholds") is not None else None,
             "stack": obj.get("stack"),
             "grid": TimeSeriesChartGridSettings.from_dict(obj["grid"]) if obj.get("grid") is not None else None,
-            "yAxes": dict(
+            "y_axes": dict(
                 (_k, TimeSeriesChartYAxisSettings.from_dict(_v))
                 for _k, _v in obj["yAxes"].items()
             )
             if obj.get("yAxes") is not None
             else None,
-            "xAxis": TimeSeriesChartXAxisSettings.from_dict(obj["xAxis"]) if obj.get("xAxis") is not None else None,
-            "barWidthSettings": TimeSeriesChartBarWidthSettings.from_dict(obj["barWidthSettings"]) if obj.get("barWidthSettings") is not None else None,
-            "noAggregationBarWidthSettings": TimeSeriesChartNoAggregationBarWidthSettings.from_dict(obj["noAggregationBarWidthSettings"]) if obj.get("noAggregationBarWidthSettings") is not None else None,
+            "x_axis": TimeSeriesChartXAxisSettings.from_dict(obj["xAxis"]) if obj.get("xAxis") is not None else None,
+            "bar_width_settings": TimeSeriesChartBarWidthSettings.from_dict(obj["barWidthSettings"]) if obj.get("barWidthSettings") is not None else None,
+            "no_aggregation_bar_width_settings": TimeSeriesChartNoAggregationBarWidthSettings.from_dict(obj["noAggregationBarWidthSettings"]) if obj.get("noAggregationBarWidthSettings") is not None else None,
             "states": [TimeSeriesChartStateSettings.from_dict(_item) for _item in obj["states"]] if obj.get("states") is not None else None,
-            "comparisonEnabled": obj.get("comparisonEnabled"),
-            "timeForComparison": obj.get("timeForComparison"),
-            "comparisonCustomIntervalValue": obj.get("comparisonCustomIntervalValue"),
-            "comparisonXAxis": TimeSeriesChartXAxisSettings.from_dict(obj["comparisonXAxis"]) if obj.get("comparisonXAxis") is not None else None,
-            "showLegend": obj.get("showLegend"),
-            "legendColumnTitleFont": Font.from_dict(obj["legendColumnTitleFont"]) if obj.get("legendColumnTitleFont") is not None else None,
-            "legendColumnTitleColor": obj.get("legendColumnTitleColor"),
-            "legendLabelFont": Font.from_dict(obj["legendLabelFont"]) if obj.get("legendLabelFont") is not None else None,
-            "legendLabelColor": obj.get("legendLabelColor"),
-            "legendValueFont": Font.from_dict(obj["legendValueFont"]) if obj.get("legendValueFont") is not None else None,
-            "legendValueColor": obj.get("legendValueColor"),
-            "legendConfig": LegendConfig.from_dict(obj["legendConfig"]) if obj.get("legendConfig") is not None else None,
+            "comparison_enabled": obj.get("comparisonEnabled"),
+            "time_for_comparison": obj.get("timeForComparison"),
+            "comparison_custom_interval_value": obj.get("comparisonCustomIntervalValue"),
+            "comparison_x_axis": TimeSeriesChartXAxisSettings.from_dict(obj["comparisonXAxis"]) if obj.get("comparisonXAxis") is not None else None,
+            "show_legend": obj.get("showLegend"),
+            "legend_column_title_font": Font.from_dict(obj["legendColumnTitleFont"]) if obj.get("legendColumnTitleFont") is not None else None,
+            "legend_column_title_color": obj.get("legendColumnTitleColor"),
+            "legend_label_font": Font.from_dict(obj["legendLabelFont"]) if obj.get("legendLabelFont") is not None else None,
+            "legend_label_color": obj.get("legendLabelColor"),
+            "legend_value_font": Font.from_dict(obj["legendValueFont"]) if obj.get("legendValueFont") is not None else None,
+            "legend_value_color": obj.get("legendValueColor"),
+            "legend_config": LegendConfig.from_dict(obj["legendConfig"]) if obj.get("legendConfig") is not None else None,
             "xaxis": TimeSeriesChartXAxisSettings.from_dict(obj["xaxis"]) if obj.get("xaxis") is not None else None,
             "yaxes": dict(
                 (_k, TimeSeriesChartYAxisSettings.from_dict(_v))
@@ -215,18 +220,18 @@ class ReportBarChartWithLabelsSettings(ReportTimeSeriesChartSettings):
             )
             if obj.get("yaxes") is not None
             else None,
-            "showBarLabel": obj.get("showBarLabel"),
-            "barLabelFont": Font.from_dict(obj["barLabelFont"]) if obj.get("barLabelFont") is not None else None,
-            "barLabelColor": obj.get("barLabelColor"),
-            "showBarValue": obj.get("showBarValue"),
-            "barValueFont": Font.from_dict(obj["barValueFont"]) if obj.get("barValueFont") is not None else None,
-            "barValueColor": obj.get("barValueColor"),
-            "showBarBorder": obj.get("showBarBorder"),
-            "barBorderWidth": obj.get("barBorderWidth"),
-            "barBorderRadius": obj.get("barBorderRadius"),
-            "barBackgroundSettings": ChartFillSettings.from_dict(obj["barBackgroundSettings"]) if obj.get("barBackgroundSettings") is not None else None,
-            "barUnits": obj.get("barUnits"),
-            "barDecimals": obj.get("barDecimals")
+            "show_bar_label": obj.get("showBarLabel"),
+            "bar_label_font": Font.from_dict(obj["barLabelFont"]) if obj.get("barLabelFont") is not None else None,
+            "bar_label_color": obj.get("barLabelColor"),
+            "show_bar_value": obj.get("showBarValue"),
+            "bar_value_font": Font.from_dict(obj["barValueFont"]) if obj.get("barValueFont") is not None else None,
+            "bar_value_color": obj.get("barValueColor"),
+            "show_bar_border": obj.get("showBarBorder"),
+            "bar_border_width": obj.get("barBorderWidth"),
+            "bar_border_radius": obj.get("barBorderRadius"),
+            "bar_background_settings": ChartFillSettings.from_dict(obj["barBackgroundSettings"]) if obj.get("barBackgroundSettings") is not None else None,
+            "bar_units": obj.get("barUnits"),
+            "bar_decimals": obj.get("barDecimals")
         })
         return _obj
 

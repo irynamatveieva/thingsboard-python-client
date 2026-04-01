@@ -36,13 +36,13 @@ class CustomMenuInfo(BaseModel):
     A JSON value representing the custom menu basic info fields
     """ # noqa: E501
     id: Optional[CustomMenuId] = None
-    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", alias="createdTime")
-    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id that owns the menu.", alias="tenantId")
-    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id that owns the menu.", alias="customerId")
+    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", serialization_alias="createdTime")
+    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id that owns the menu.", serialization_alias="tenantId")
+    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id that owns the menu.", serialization_alias="customerId")
     name: StrictStr = Field(description="Custom menu name")
     scope: CMScope = Field(description="Custom menu scope. Possible values: SYSTEM, TENANT, CUSTOMER")
-    assignee_type: CMAssigneeType = Field(description="Custom menu assignee type. Possible values are: All (all users of specified scope), CUSTOMERS (specified customers), USERS (specified list of users), NO_ASSIGN (no assignees), USER_GROUPS (user groups)", alias="assigneeType")
-    user_group_names: Optional[List[StrictStr]] = Field(default=None, description="User group names menu is applied to", alias="userGroupNames")
+    assignee_type: CMAssigneeType = Field(description="Custom menu assignee type. Possible values are: All (all users of specified scope), CUSTOMERS (specified customers), USERS (specified list of users), NO_ASSIGN (no assignees), USER_GROUPS (user groups)", serialization_alias="assigneeType")
+    user_group_names: Optional[List[StrictStr]] = Field(default=None, description="User group names menu is applied to", serialization_alias="userGroupNames")
     __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "customerId", "name", "scope", "assigneeType", "userGroupNames"]
 
     model_config = ConfigDict(
@@ -53,13 +53,18 @@ class CustomMenuInfo(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -112,13 +117,13 @@ class CustomMenuInfo(BaseModel):
 
         _obj = cls.model_validate({
             "id": CustomMenuId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
-            "customerId": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
+            "created_time": obj.get("createdTime"),
+            "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
+            "customer_id": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
             "name": obj.get("name"),
             "scope": obj.get("scope"),
-            "assigneeType": obj.get("assigneeType"),
-            "userGroupNames": obj.get("userGroupNames")
+            "assignee_type": obj.get("assigneeType"),
+            "user_group_names": obj.get("userGroupNames")
         })
         return _obj
 

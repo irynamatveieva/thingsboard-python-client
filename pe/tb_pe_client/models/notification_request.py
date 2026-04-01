@@ -43,15 +43,15 @@ class NotificationRequest(BaseModel):
     NotificationRequest
     """ # noqa: E501
     id: Optional[NotificationRequestId] = None
-    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", alias="createdTime")
-    tenant_id: Optional[TenantId] = Field(default=None, alias="tenantId")
+    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", serialization_alias="createdTime")
+    tenant_id: Optional[TenantId] = Field(default=None, serialization_alias="tenantId")
     targets: Annotated[List[UUID], Field(min_length=1)]
-    template_id: Optional[NotificationTemplateId] = Field(default=None, alias="templateId")
+    template_id: Optional[NotificationTemplateId] = Field(default=None, serialization_alias="templateId")
     template: Optional[NotificationTemplate] = None
     info: Optional[NotificationInfo] = None
-    additional_config: Optional[NotificationRequestConfig] = Field(default=None, alias="additionalConfig")
-    originator_entity_id: Optional[EntityId] = Field(default=None, alias="originatorEntityId")
-    rule_id: Optional[NotificationRuleId] = Field(default=None, alias="ruleId")
+    additional_config: Optional[NotificationRequestConfig] = Field(default=None, serialization_alias="additionalConfig")
+    originator_entity_id: Optional[EntityId] = Field(default=None, serialization_alias="originatorEntityId")
+    rule_id: Optional[NotificationRuleId] = Field(default=None, serialization_alias="ruleId")
     status: Optional[NotificationRequestStatus] = None
     stats: Optional[NotificationRequestStats] = None
     __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "targets", "templateId", "template", "info", "additionalConfig", "originatorEntityId", "ruleId", "status", "stats"]
@@ -64,13 +64,18 @@ class NotificationRequest(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -137,15 +142,15 @@ class NotificationRequest(BaseModel):
 
         _obj = cls.model_validate({
             "id": NotificationRequestId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
+            "created_time": obj.get("createdTime"),
+            "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
             "targets": obj.get("targets"),
-            "templateId": NotificationTemplateId.from_dict(obj["templateId"]) if obj.get("templateId") is not None else None,
+            "template_id": NotificationTemplateId.from_dict(obj["templateId"]) if obj.get("templateId") is not None else None,
             "template": NotificationTemplate.from_dict(obj["template"]) if obj.get("template") is not None else None,
             "info": NotificationInfo.from_dict(obj["info"]) if obj.get("info") is not None else None,
-            "additionalConfig": NotificationRequestConfig.from_dict(obj["additionalConfig"]) if obj.get("additionalConfig") is not None else None,
-            "originatorEntityId": EntityId.from_dict(obj["originatorEntityId"]) if obj.get("originatorEntityId") is not None else None,
-            "ruleId": NotificationRuleId.from_dict(obj["ruleId"]) if obj.get("ruleId") is not None else None,
+            "additional_config": NotificationRequestConfig.from_dict(obj["additionalConfig"]) if obj.get("additionalConfig") is not None else None,
+            "originator_entity_id": EntityId.from_dict(obj["originatorEntityId"]) if obj.get("originatorEntityId") is not None else None,
+            "rule_id": NotificationRuleId.from_dict(obj["ruleId"]) if obj.get("ruleId") is not None else None,
             "status": obj.get("status"),
             "stats": NotificationRequestStats.from_dict(obj["stats"]) if obj.get("stats") is not None else None
         })

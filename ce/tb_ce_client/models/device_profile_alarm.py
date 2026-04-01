@@ -32,13 +32,13 @@ class DeviceProfileAlarm(BaseModel):
     DeviceProfileAlarm
     """ # noqa: E501
     id: Optional[StrictStr] = Field(default=None, description="String value representing the alarm rule id")
-    alarm_type: Optional[StrictStr] = Field(default=None, description="String value representing type of the alarm", alias="alarmType")
-    create_rules: Optional[Dict[str, AlarmRule]] = Field(default=None, description="Complex JSON object representing create alarm rules. The unique create alarm rule can be created for each alarm severity type. There can be 5 create alarm rules configured per a single alarm type. See method implementation notes and AlarmRule model for more details", alias="createRules")
-    clear_rule: Optional[AlarmRule] = Field(default=None, description="JSON object representing clear alarm rule", alias="clearRule")
+    alarm_type: Optional[StrictStr] = Field(default=None, description="String value representing type of the alarm", serialization_alias="alarmType")
+    create_rules: Optional[Dict[str, AlarmRule]] = Field(default=None, description="Complex JSON object representing create alarm rules. The unique create alarm rule can be created for each alarm severity type. There can be 5 create alarm rules configured per a single alarm type. See method implementation notes and AlarmRule model for more details", serialization_alias="createRules")
+    clear_rule: Optional[AlarmRule] = Field(default=None, description="JSON object representing clear alarm rule", serialization_alias="clearRule")
     propagate: Optional[StrictBool] = Field(default=None, description="Propagation flag to specify if alarm should be propagated to parent entities of alarm originator")
-    propagate_to_owner: Optional[StrictBool] = Field(default=None, description="Propagation flag to specify if alarm should be propagated to the owner (tenant or customer) of alarm originator", alias="propagateToOwner")
-    propagate_to_tenant: Optional[StrictBool] = Field(default=None, description="Propagation flag to specify if alarm should be propagated to the tenant entity", alias="propagateToTenant")
-    propagate_relation_types: Optional[List[StrictStr]] = Field(default=None, description="JSON array of relation types that should be used for propagation. By default, 'propagateRelationTypes' array is empty which means that the alarm will be propagated based on any relation type to parent entities. This parameter should be used only in case when 'propagate' parameter is set to true, otherwise, 'propagateRelationTypes' array will be ignored.", alias="propagateRelationTypes")
+    propagate_to_owner: Optional[StrictBool] = Field(default=None, description="Propagation flag to specify if alarm should be propagated to the owner (tenant or customer) of alarm originator", serialization_alias="propagateToOwner")
+    propagate_to_tenant: Optional[StrictBool] = Field(default=None, description="Propagation flag to specify if alarm should be propagated to the tenant entity", serialization_alias="propagateToTenant")
+    propagate_relation_types: Optional[List[StrictStr]] = Field(default=None, description="JSON array of relation types that should be used for propagation. By default, 'propagateRelationTypes' array is empty which means that the alarm will be propagated based on any relation type to parent entities. This parameter should be used only in case when 'propagate' parameter is set to true, otherwise, 'propagateRelationTypes' array will be ignored.", serialization_alias="propagateRelationTypes")
     __properties: ClassVar[List[str]] = ["id", "alarmType", "createRules", "clearRule", "propagate", "propagateToOwner", "propagateToTenant", "propagateRelationTypes"]
 
     model_config = ConfigDict(
@@ -49,13 +49,18 @@ class DeviceProfileAlarm(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -103,18 +108,18 @@ class DeviceProfileAlarm(BaseModel):
 
         _obj = cls.model_validate({
             "id": obj.get("id"),
-            "alarmType": obj.get("alarmType"),
-            "createRules": dict(
+            "alarm_type": obj.get("alarmType"),
+            "create_rules": dict(
                 (_k, AlarmRule.from_dict(_v))
                 for _k, _v in obj["createRules"].items()
             )
             if obj.get("createRules") is not None
             else None,
-            "clearRule": AlarmRule.from_dict(obj["clearRule"]) if obj.get("clearRule") is not None else None,
+            "clear_rule": AlarmRule.from_dict(obj["clearRule"]) if obj.get("clearRule") is not None else None,
             "propagate": obj.get("propagate"),
-            "propagateToOwner": obj.get("propagateToOwner"),
-            "propagateToTenant": obj.get("propagateToTenant"),
-            "propagateRelationTypes": obj.get("propagateRelationTypes")
+            "propagate_to_owner": obj.get("propagateToOwner"),
+            "propagate_to_tenant": obj.get("propagateToTenant"),
+            "propagate_relation_types": obj.get("propagateRelationTypes")
         })
         return _obj
 

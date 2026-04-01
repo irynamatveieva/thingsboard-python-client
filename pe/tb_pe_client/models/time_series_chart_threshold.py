@@ -37,28 +37,28 @@ class TimeSeriesChartThreshold(BaseModel):
     """ # noqa: E501
     type: Optional[ValueSourceType] = None
     value: Optional[Union[StrictFloat, StrictInt]] = None
-    latest_key_type: Optional[StrictStr] = Field(default=None, alias="latestKeyType")
-    latest_key: Optional[StrictStr] = Field(default=None, alias="latestKey")
-    entity_key_type: Optional[StrictStr] = Field(default=None, alias="entityKeyType")
-    entity_alias: Optional[StrictStr] = Field(default=None, alias="entityAlias")
-    entity_key: Optional[StrictStr] = Field(default=None, alias="entityKey")
-    y_axis_id: Optional[StrictStr] = Field(default=None, alias="yAxisId")
+    latest_key_type: Optional[StrictStr] = Field(default=None, serialization_alias="latestKeyType")
+    latest_key: Optional[StrictStr] = Field(default=None, serialization_alias="latestKey")
+    entity_key_type: Optional[StrictStr] = Field(default=None, serialization_alias="entityKeyType")
+    entity_alias: Optional[StrictStr] = Field(default=None, serialization_alias="entityAlias")
+    entity_key: Optional[StrictStr] = Field(default=None, serialization_alias="entityKey")
+    y_axis_id: Optional[StrictStr] = Field(default=None, serialization_alias="yAxisId")
     units: Optional[StrictStr] = None
     decimals: Optional[StrictInt] = None
-    line_color: Optional[StrictStr] = Field(default=None, alias="lineColor")
-    line_type: Optional[ChartLineType] = Field(default=None, alias="lineType")
-    line_width: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, alias="lineWidth")
-    start_symbol: Optional[ChartShape] = Field(default=None, alias="startSymbol")
-    start_symbol_size: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, alias="startSymbolSize")
-    end_symbol: Optional[ChartShape] = Field(default=None, alias="endSymbol")
-    end_symbol_size: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, alias="endSymbolSize")
-    show_label: Optional[StrictBool] = Field(default=None, alias="showLabel")
-    label_position: Optional[ThresholdLabelPosition] = Field(default=None, alias="labelPosition")
-    label_font: Optional[Font] = Field(default=None, alias="labelFont")
-    label_color: Optional[StrictStr] = Field(default=None, alias="labelColor")
-    enable_label_background: Optional[StrictBool] = Field(default=None, alias="enableLabelBackground")
-    label_background: Optional[StrictStr] = Field(default=None, alias="labelBackground")
-    yaxis_id: Optional[StrictStr] = Field(default=None, alias="yaxisId")
+    line_color: Optional[StrictStr] = Field(default=None, serialization_alias="lineColor")
+    line_type: Optional[ChartLineType] = Field(default=None, serialization_alias="lineType")
+    line_width: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, serialization_alias="lineWidth")
+    start_symbol: Optional[ChartShape] = Field(default=None, serialization_alias="startSymbol")
+    start_symbol_size: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, serialization_alias="startSymbolSize")
+    end_symbol: Optional[ChartShape] = Field(default=None, serialization_alias="endSymbol")
+    end_symbol_size: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, serialization_alias="endSymbolSize")
+    show_label: Optional[StrictBool] = Field(default=None, serialization_alias="showLabel")
+    label_position: Optional[ThresholdLabelPosition] = Field(default=None, serialization_alias="labelPosition")
+    label_font: Optional[Font] = Field(default=None, serialization_alias="labelFont")
+    label_color: Optional[StrictStr] = Field(default=None, serialization_alias="labelColor")
+    enable_label_background: Optional[StrictBool] = Field(default=None, serialization_alias="enableLabelBackground")
+    label_background: Optional[StrictStr] = Field(default=None, serialization_alias="labelBackground")
+    yaxis_id: Optional[StrictStr] = Field(default=None, serialization_alias="yaxisId")
     __properties: ClassVar[List[str]] = ["type", "value", "latestKeyType", "latestKey", "entityKeyType", "entityAlias", "entityKey", "yAxisId", "units", "decimals", "lineColor", "lineType", "lineWidth", "startSymbol", "startSymbolSize", "endSymbol", "endSymbolSize", "showLabel", "labelPosition", "labelFont", "labelColor", "enableLabelBackground", "labelBackground", "yaxisId"]
 
     model_config = ConfigDict(
@@ -69,13 +69,18 @@ class TimeSeriesChartThreshold(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -117,28 +122,28 @@ class TimeSeriesChartThreshold(BaseModel):
         _obj = cls.model_validate({
             "type": obj.get("type"),
             "value": obj.get("value"),
-            "latestKeyType": obj.get("latestKeyType"),
-            "latestKey": obj.get("latestKey"),
-            "entityKeyType": obj.get("entityKeyType"),
-            "entityAlias": obj.get("entityAlias"),
-            "entityKey": obj.get("entityKey"),
-            "yAxisId": obj.get("yAxisId"),
+            "latest_key_type": obj.get("latestKeyType"),
+            "latest_key": obj.get("latestKey"),
+            "entity_key_type": obj.get("entityKeyType"),
+            "entity_alias": obj.get("entityAlias"),
+            "entity_key": obj.get("entityKey"),
+            "y_axis_id": obj.get("yAxisId"),
             "units": obj.get("units"),
             "decimals": obj.get("decimals"),
-            "lineColor": obj.get("lineColor"),
-            "lineType": obj.get("lineType"),
-            "lineWidth": obj.get("lineWidth"),
-            "startSymbol": obj.get("startSymbol"),
-            "startSymbolSize": obj.get("startSymbolSize"),
-            "endSymbol": obj.get("endSymbol"),
-            "endSymbolSize": obj.get("endSymbolSize"),
-            "showLabel": obj.get("showLabel"),
-            "labelPosition": obj.get("labelPosition"),
-            "labelFont": Font.from_dict(obj["labelFont"]) if obj.get("labelFont") is not None else None,
-            "labelColor": obj.get("labelColor"),
-            "enableLabelBackground": obj.get("enableLabelBackground"),
-            "labelBackground": obj.get("labelBackground"),
-            "yaxisId": obj.get("yaxisId")
+            "line_color": obj.get("lineColor"),
+            "line_type": obj.get("lineType"),
+            "line_width": obj.get("lineWidth"),
+            "start_symbol": obj.get("startSymbol"),
+            "start_symbol_size": obj.get("startSymbolSize"),
+            "end_symbol": obj.get("endSymbol"),
+            "end_symbol_size": obj.get("endSymbolSize"),
+            "show_label": obj.get("showLabel"),
+            "label_position": obj.get("labelPosition"),
+            "label_font": Font.from_dict(obj["labelFont"]) if obj.get("labelFont") is not None else None,
+            "label_color": obj.get("labelColor"),
+            "enable_label_background": obj.get("enableLabelBackground"),
+            "label_background": obj.get("labelBackground"),
+            "yaxis_id": obj.get("yaxisId")
         })
         return _obj
 

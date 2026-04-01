@@ -32,13 +32,13 @@ class MicrosoftTeamsNotificationTargetConfig(NotificationTargetConfig):
     """
     MicrosoftTeamsNotificationTargetConfig
     """ # noqa: E501
-    webhook_url: Annotated[str, Field(min_length=1, strict=True)] = Field(alias="webhookUrl")
-    channel_name: Annotated[str, Field(min_length=1, strict=True)] = Field(alias="channelName")
-    use_old_api: Optional[StrictBool] = Field(default=None, alias="useOldApi")
+    webhook_url: Annotated[str, Field(min_length=1, strict=True)] = Field(serialization_alias="webhookUrl")
+    channel_name: Annotated[str, Field(min_length=1, strict=True)] = Field(serialization_alias="channelName")
+    use_old_api: Optional[StrictBool] = Field(default=None, serialization_alias="useOldApi")
     email: Optional[StrictStr] = None
-    first_name: Optional[StrictStr] = Field(default=None, alias="firstName")
+    first_name: Optional[StrictStr] = Field(default=None, serialization_alias="firstName")
     id: Optional[Any] = None
-    last_name: Optional[StrictStr] = Field(default=None, alias="lastName")
+    last_name: Optional[StrictStr] = Field(default=None, serialization_alias="lastName")
     title: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["description", "type", "webhookUrl", "channelName", "useOldApi", "email", "firstName", "id", "lastName", "title"]
 
@@ -50,13 +50,18 @@ class MicrosoftTeamsNotificationTargetConfig(NotificationTargetConfig):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -100,13 +105,13 @@ class MicrosoftTeamsNotificationTargetConfig(NotificationTargetConfig):
         _obj = cls.model_validate({
             "description": obj.get("description"),
             "type": obj.get("type"),
-            "webhookUrl": obj.get("webhookUrl"),
-            "channelName": obj.get("channelName"),
-            "useOldApi": obj.get("useOldApi"),
+            "webhook_url": obj.get("webhookUrl"),
+            "channel_name": obj.get("channelName"),
+            "use_old_api": obj.get("useOldApi"),
             "email": obj.get("email"),
-            "firstName": obj.get("firstName"),
+            "first_name": obj.get("firstName"),
             "id": obj.get("id"),
-            "lastName": obj.get("lastName"),
+            "last_name": obj.get("lastName"),
             "title": obj.get("title")
         })
         return _obj

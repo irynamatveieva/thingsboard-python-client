@@ -32,7 +32,7 @@ class RuleChainData(BaseModel):
     """
     A JSON value representing the rule chains.
     """ # noqa: E501
-    rule_chains: List[RuleChain] = Field(description="List of the Rule Chain objects.", alias="ruleChains")
+    rule_chains: List[RuleChain] = Field(description="List of the Rule Chain objects.", serialization_alias="ruleChains")
     metadata: List[RuleChainMetaData] = Field(description="List of the Rule Chain metadata objects.")
     __properties: ClassVar[List[str]] = ["ruleChains", "metadata"]
 
@@ -44,13 +44,18 @@ class RuleChainData(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -101,7 +106,7 @@ class RuleChainData(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "ruleChains": [RuleChain.from_dict(_item) for _item in obj["ruleChains"]] if obj.get("ruleChains") is not None else None,
+            "rule_chains": [RuleChain.from_dict(_item) for _item in obj["ruleChains"]] if obj.get("ruleChains") is not None else None,
             "metadata": [RuleChainMetaData.from_dict(_item) for _item in obj["metadata"]] if obj.get("metadata") is not None else None
         })
         return _obj

@@ -32,8 +32,8 @@ class DeviceSearchQuery(BaseModel):
     The device search query JSON
     """ # noqa: E501
     parameters: Optional[RelationsSearchParameters] = Field(default=None, description="Main search parameters.")
-    relation_type: Optional[StrictStr] = Field(default=None, description="Type of the relation between root entity and device (e.g. 'Contains' or 'Manages').", alias="relationType")
-    device_types: Optional[List[StrictStr]] = Field(default=None, description="Array of device types to filter the related entities (e.g. 'Temperature Sensor', 'Smoke Sensor').", alias="deviceTypes")
+    relation_type: Optional[StrictStr] = Field(default=None, description="Type of the relation between root entity and device (e.g. 'Contains' or 'Manages').", serialization_alias="relationType")
+    device_types: Optional[List[StrictStr]] = Field(default=None, description="Array of device types to filter the related entities (e.g. 'Temperature Sensor', 'Smoke Sensor').", serialization_alias="deviceTypes")
     __properties: ClassVar[List[str]] = ["parameters", "relationType", "deviceTypes"]
 
     model_config = ConfigDict(
@@ -44,13 +44,18 @@ class DeviceSearchQuery(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -91,8 +96,8 @@ class DeviceSearchQuery(BaseModel):
 
         _obj = cls.model_validate({
             "parameters": RelationsSearchParameters.from_dict(obj["parameters"]) if obj.get("parameters") is not None else None,
-            "relationType": obj.get("relationType"),
-            "deviceTypes": obj.get("deviceTypes")
+            "relation_type": obj.get("relationType"),
+            "device_types": obj.get("deviceTypes")
         })
         return _obj
 

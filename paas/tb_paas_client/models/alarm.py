@@ -38,26 +38,26 @@ class Alarm(BaseModel):
     Alarm
     """ # noqa: E501
     id: Optional[AlarmId] = Field(default=None, description="JSON object with the alarm Id. Specify this field to update the alarm. Referencing non-existing alarm Id will cause error. Omit this field to create new alarm.")
-    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the alarm creation, in milliseconds", alias="createdTime")
-    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id", alias="tenantId")
-    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id", alias="customerId")
+    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the alarm creation, in milliseconds", serialization_alias="createdTime")
+    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id", serialization_alias="tenantId")
+    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id", serialization_alias="customerId")
     type: StrictStr = Field(description="representing type of the Alarm")
     originator: EntityId = Field(description="JSON object with alarm originator id")
     severity: AlarmSeverity = Field(description="Alarm severity")
     acknowledged: StrictBool = Field(description="Acknowledged")
     cleared: StrictBool = Field(description="Cleared")
-    assignee_id: Optional[UserId] = Field(default=None, description="Alarm assignee user id", alias="assigneeId")
-    start_ts: Optional[StrictInt] = Field(default=None, description="Timestamp of the alarm start time, in milliseconds", alias="startTs")
-    end_ts: Optional[StrictInt] = Field(default=None, description="Timestamp of the alarm end time(last time update), in milliseconds", alias="endTs")
-    ack_ts: Optional[StrictInt] = Field(default=None, description="Timestamp of the alarm acknowledgement, in milliseconds", alias="ackTs")
-    clear_ts: Optional[StrictInt] = Field(default=None, description="Timestamp of the alarm clearing, in milliseconds", alias="clearTs")
-    assign_ts: Optional[StrictInt] = Field(default=None, description="Timestamp of the alarm assignment, in milliseconds", alias="assignTs")
+    assignee_id: Optional[UserId] = Field(default=None, description="Alarm assignee user id", serialization_alias="assigneeId")
+    start_ts: Optional[StrictInt] = Field(default=None, description="Timestamp of the alarm start time, in milliseconds", serialization_alias="startTs")
+    end_ts: Optional[StrictInt] = Field(default=None, description="Timestamp of the alarm end time(last time update), in milliseconds", serialization_alias="endTs")
+    ack_ts: Optional[StrictInt] = Field(default=None, description="Timestamp of the alarm acknowledgement, in milliseconds", serialization_alias="ackTs")
+    clear_ts: Optional[StrictInt] = Field(default=None, description="Timestamp of the alarm clearing, in milliseconds", serialization_alias="clearTs")
+    assign_ts: Optional[StrictInt] = Field(default=None, description="Timestamp of the alarm assignment, in milliseconds", serialization_alias="assignTs")
     details: Optional[Any] = Field(default=None, description="JSON object with alarm details")
     propagate: Optional[StrictBool] = Field(default=None, description="Propagation flag to specify if alarm should be propagated to parent entities of alarm originator")
-    propagate_to_owner: Optional[StrictBool] = Field(default=None, description="Propagation flag to specify if alarm should be propagated to the owner (tenant or customer) of alarm originator", alias="propagateToOwner")
-    propagate_to_owner_hierarchy: Optional[StrictBool] = Field(default=None, description="Propagation flag to specify if alarm should be propagated to the owner (tenant or customer) and all parent owners in the customer hierarchy", alias="propagateToOwnerHierarchy")
-    propagate_to_tenant: Optional[StrictBool] = Field(default=None, description="Propagation flag to specify if alarm should be propagated to the tenant entity", alias="propagateToTenant")
-    propagate_relation_types: Optional[List[StrictStr]] = Field(default=None, description="JSON array of relation types that should be used for propagation. By default, 'propagateRelationTypes' array is empty which means that the alarm will be propagated based on any relation type to parent entities. This parameter should be used only in case when 'propagate' parameter is set to true, otherwise, 'propagateRelationTypes' array will be ignored.", alias="propagateRelationTypes")
+    propagate_to_owner: Optional[StrictBool] = Field(default=None, description="Propagation flag to specify if alarm should be propagated to the owner (tenant or customer) of alarm originator", serialization_alias="propagateToOwner")
+    propagate_to_owner_hierarchy: Optional[StrictBool] = Field(default=None, description="Propagation flag to specify if alarm should be propagated to the owner (tenant or customer) and all parent owners in the customer hierarchy", serialization_alias="propagateToOwnerHierarchy")
+    propagate_to_tenant: Optional[StrictBool] = Field(default=None, description="Propagation flag to specify if alarm should be propagated to the tenant entity", serialization_alias="propagateToTenant")
+    propagate_relation_types: Optional[List[StrictStr]] = Field(default=None, description="JSON array of relation types that should be used for propagation. By default, 'propagateRelationTypes' array is empty which means that the alarm will be propagated based on any relation type to parent entities. This parameter should be used only in case when 'propagate' parameter is set to true, otherwise, 'propagateRelationTypes' array will be ignored.", serialization_alias="propagateRelationTypes")
     name: StrictStr = Field(description="representing type of the Alarm")
     status: AlarmStatus = Field(description="status of the Alarm")
     __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "customerId", "type", "originator", "severity", "acknowledged", "cleared", "assigneeId", "startTs", "endTs", "ackTs", "clearTs", "assignTs", "details", "propagate", "propagateToOwner", "propagateToOwnerHierarchy", "propagateToTenant", "propagateRelationTypes", "name", "status"]
@@ -70,13 +70,18 @@ class Alarm(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -144,26 +149,26 @@ class Alarm(BaseModel):
 
         _obj = cls.model_validate({
             "id": AlarmId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
-            "customerId": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
+            "created_time": obj.get("createdTime"),
+            "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
+            "customer_id": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
             "type": obj.get("type"),
             "originator": EntityId.from_dict(obj["originator"]) if obj.get("originator") is not None else None,
             "severity": obj.get("severity"),
             "acknowledged": obj.get("acknowledged"),
             "cleared": obj.get("cleared"),
-            "assigneeId": UserId.from_dict(obj["assigneeId"]) if obj.get("assigneeId") is not None else None,
-            "startTs": obj.get("startTs"),
-            "endTs": obj.get("endTs"),
-            "ackTs": obj.get("ackTs"),
-            "clearTs": obj.get("clearTs"),
-            "assignTs": obj.get("assignTs"),
+            "assignee_id": UserId.from_dict(obj["assigneeId"]) if obj.get("assigneeId") is not None else None,
+            "start_ts": obj.get("startTs"),
+            "end_ts": obj.get("endTs"),
+            "ack_ts": obj.get("ackTs"),
+            "clear_ts": obj.get("clearTs"),
+            "assign_ts": obj.get("assignTs"),
             "details": obj.get("details"),
             "propagate": obj.get("propagate"),
-            "propagateToOwner": obj.get("propagateToOwner"),
-            "propagateToOwnerHierarchy": obj.get("propagateToOwnerHierarchy"),
-            "propagateToTenant": obj.get("propagateToTenant"),
-            "propagateRelationTypes": obj.get("propagateRelationTypes"),
+            "propagate_to_owner": obj.get("propagateToOwner"),
+            "propagate_to_owner_hierarchy": obj.get("propagateToOwnerHierarchy"),
+            "propagate_to_tenant": obj.get("propagateToTenant"),
+            "propagate_relation_types": obj.get("propagateRelationTypes"),
             "name": obj.get("name"),
             "status": obj.get("status")
         })

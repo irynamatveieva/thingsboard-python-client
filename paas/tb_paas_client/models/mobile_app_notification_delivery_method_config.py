@@ -31,9 +31,9 @@ class MobileAppNotificationDeliveryMethodConfig(NotificationDeliveryMethodConfig
     """
     MobileAppNotificationDeliveryMethodConfig
     """ # noqa: E501
-    firebase_service_account_credentials_file_name: Optional[StrictStr] = Field(default=None, alias="firebaseServiceAccountCredentialsFileName")
-    firebase_service_account_credentials: Optional[StrictStr] = Field(default=None, alias="firebaseServiceAccountCredentials")
-    use_system_settings: Optional[StrictBool] = Field(default=None, alias="useSystemSettings")
+    firebase_service_account_credentials_file_name: Optional[StrictStr] = Field(default=None, serialization_alias="firebaseServiceAccountCredentialsFileName")
+    firebase_service_account_credentials: Optional[StrictStr] = Field(default=None, serialization_alias="firebaseServiceAccountCredentials")
+    use_system_settings: Optional[StrictBool] = Field(default=None, serialization_alias="useSystemSettings")
     __properties: ClassVar[List[str]] = ["method", "firebaseServiceAccountCredentialsFileName", "firebaseServiceAccountCredentials", "useSystemSettings"]
 
     model_config = ConfigDict(
@@ -44,13 +44,18 @@ class MobileAppNotificationDeliveryMethodConfig(NotificationDeliveryMethodConfig
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -88,9 +93,9 @@ class MobileAppNotificationDeliveryMethodConfig(NotificationDeliveryMethodConfig
 
         _obj = cls.model_validate({
             "method": obj.get("method"),
-            "firebaseServiceAccountCredentialsFileName": obj.get("firebaseServiceAccountCredentialsFileName"),
-            "firebaseServiceAccountCredentials": obj.get("firebaseServiceAccountCredentials"),
-            "useSystemSettings": obj.get("useSystemSettings")
+            "firebase_service_account_credentials_file_name": obj.get("firebaseServiceAccountCredentialsFileName"),
+            "firebase_service_account_credentials": obj.get("firebaseServiceAccountCredentials"),
+            "use_system_settings": obj.get("useSystemSettings")
         })
         return _obj
 

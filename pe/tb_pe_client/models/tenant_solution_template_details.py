@@ -34,10 +34,10 @@ class TenantSolutionTemplateDetails(BaseModel):
     id: Optional[StrictStr] = Field(default=None, description="ID of the solution template")
     title: Optional[StrictStr] = Field(default=None, description="Template Title")
     level: Optional[SolutionTemplateLevel] = Field(default=None, description="Level of the subscription that is required to unlock the template")
-    install_timeout_ms: Optional[StrictInt] = Field(default=None, description="Timeout for the installation UI to wait while template is installing", alias="installTimeoutMs")
-    tenant_telemetry_keys: Optional[List[StrictStr]] = Field(default=None, description="What keys to delete during template uninstall", alias="tenantTelemetryKeys")
-    tenant_attribute_keys: Optional[List[StrictStr]] = Field(default=None, description="What attributes to delete during template uninstall", alias="tenantAttributeKeys")
-    image_urls: Optional[List[StrictStr]] = Field(default=None, alias="imageUrls")
+    install_timeout_ms: Optional[StrictInt] = Field(default=None, description="Timeout for the installation UI to wait while template is installing", serialization_alias="installTimeoutMs")
+    tenant_telemetry_keys: Optional[List[StrictStr]] = Field(default=None, description="What keys to delete during template uninstall", serialization_alias="tenantTelemetryKeys")
+    tenant_attribute_keys: Optional[List[StrictStr]] = Field(default=None, description="What attributes to delete during template uninstall", serialization_alias="tenantAttributeKeys")
+    image_urls: Optional[List[StrictStr]] = Field(default=None, serialization_alias="imageUrls")
     highlights: Optional[StrictStr] = None
     description: Optional[StrictStr] = None
     installed: Optional[StrictBool] = None
@@ -51,13 +51,18 @@ class TenantSolutionTemplateDetails(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -97,10 +102,10 @@ class TenantSolutionTemplateDetails(BaseModel):
             "id": obj.get("id"),
             "title": obj.get("title"),
             "level": obj.get("level"),
-            "installTimeoutMs": obj.get("installTimeoutMs"),
-            "tenantTelemetryKeys": obj.get("tenantTelemetryKeys"),
-            "tenantAttributeKeys": obj.get("tenantAttributeKeys"),
-            "imageUrls": obj.get("imageUrls"),
+            "install_timeout_ms": obj.get("installTimeoutMs"),
+            "tenant_telemetry_keys": obj.get("tenantTelemetryKeys"),
+            "tenant_attribute_keys": obj.get("tenantAttributeKeys"),
+            "image_urls": obj.get("imageUrls"),
             "highlights": obj.get("highlights"),
             "description": obj.get("description"),
             "installed": obj.get("installed")

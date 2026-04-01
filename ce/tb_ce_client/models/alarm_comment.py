@@ -35,9 +35,9 @@ class AlarmComment(BaseModel):
     AlarmComment
     """ # noqa: E501
     id: Optional[AlarmCommentId] = Field(default=None, description="JSON object with the alarm comment Id. Specify this field to update the alarm comment. Referencing non-existing alarm Id will cause error. Omit this field to create new alarm.")
-    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the alarm comment creation, in milliseconds", alias="createdTime")
-    alarm_id: Optional[AlarmId] = Field(default=None, description="JSON object with Alarm id.", alias="alarmId")
-    user_id: Optional[UserId] = Field(default=None, description="JSON object with User id.", alias="userId")
+    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the alarm comment creation, in milliseconds", serialization_alias="createdTime")
+    alarm_id: Optional[AlarmId] = Field(default=None, description="JSON object with Alarm id.", serialization_alias="alarmId")
+    user_id: Optional[UserId] = Field(default=None, description="JSON object with User id.", serialization_alias="userId")
     type: Optional[AlarmCommentType] = Field(default=None, description="Defines origination of comment. System type means comment was created by TB. OTHER type means comment was created by user.")
     comment: Optional[Any] = Field(default=None, description="JSON object with text of comment.")
     name: Optional[StrictStr] = Field(default=None, description="representing comment text")
@@ -51,13 +51,18 @@ class AlarmComment(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -117,9 +122,9 @@ class AlarmComment(BaseModel):
 
         _obj = cls.model_validate({
             "id": AlarmCommentId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "alarmId": AlarmId.from_dict(obj["alarmId"]) if obj.get("alarmId") is not None else None,
-            "userId": UserId.from_dict(obj["userId"]) if obj.get("userId") is not None else None,
+            "created_time": obj.get("createdTime"),
+            "alarm_id": AlarmId.from_dict(obj["alarmId"]) if obj.get("alarmId") is not None else None,
+            "user_id": UserId.from_dict(obj["userId"]) if obj.get("userId") is not None else None,
             "type": obj.get("type"),
             "comment": obj.get("comment"),
             "name": obj.get("name")

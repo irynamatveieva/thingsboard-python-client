@@ -33,7 +33,7 @@ class StarredDashboardInfo(BaseModel):
     """ # noqa: E501
     id: Optional[UUID] = Field(default=None, description="JSON object with Dashboard id.")
     title: Optional[StrictStr] = Field(default=None, description="Title of the dashboard.")
-    starred_at: Optional[StrictInt] = Field(default=None, description="Starred timestamp", alias="starredAt")
+    starred_at: Optional[StrictInt] = Field(default=None, description="Starred timestamp", serialization_alias="starredAt")
     __properties: ClassVar[List[str]] = ["id", "title", "starredAt"]
 
     model_config = ConfigDict(
@@ -44,13 +44,18 @@ class StarredDashboardInfo(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -91,7 +96,7 @@ class StarredDashboardInfo(BaseModel):
         _obj = cls.model_validate({
             "id": obj.get("id"),
             "title": obj.get("title"),
-            "starredAt": obj.get("starredAt")
+            "starred_at": obj.get("starredAt")
         })
         return _obj
 

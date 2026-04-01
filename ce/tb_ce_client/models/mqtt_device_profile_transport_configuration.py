@@ -32,13 +32,13 @@ class MqttDeviceProfileTransportConfiguration(DeviceProfileTransportConfiguratio
     """
     MqttDeviceProfileTransportConfiguration
     """ # noqa: E501
-    device_telemetry_topic: Optional[StrictStr] = Field(default=None, alias="deviceTelemetryTopic")
-    device_attributes_topic: Optional[StrictStr] = Field(default=None, alias="deviceAttributesTopic")
-    device_attributes_subscribe_topic: Optional[StrictStr] = Field(default=None, alias="deviceAttributesSubscribeTopic")
-    transport_payload_type_configuration: Optional[TransportPayloadTypeConfiguration] = Field(default=None, alias="transportPayloadTypeConfiguration")
+    device_telemetry_topic: Optional[StrictStr] = Field(default=None, serialization_alias="deviceTelemetryTopic")
+    device_attributes_topic: Optional[StrictStr] = Field(default=None, serialization_alias="deviceAttributesTopic")
+    device_attributes_subscribe_topic: Optional[StrictStr] = Field(default=None, serialization_alias="deviceAttributesSubscribeTopic")
+    transport_payload_type_configuration: Optional[TransportPayloadTypeConfiguration] = Field(default=None, serialization_alias="transportPayloadTypeConfiguration")
     sparkplug: Optional[StrictBool] = None
-    sparkplug_attributes_metric_names: Optional[List[StrictStr]] = Field(default=None, alias="sparkplugAttributesMetricNames")
-    send_ack_on_validation_exception: Optional[StrictBool] = Field(default=None, alias="sendAckOnValidationException")
+    sparkplug_attributes_metric_names: Optional[List[StrictStr]] = Field(default=None, serialization_alias="sparkplugAttributesMetricNames")
+    send_ack_on_validation_exception: Optional[StrictBool] = Field(default=None, serialization_alias="sendAckOnValidationException")
     __properties: ClassVar[List[str]] = ["type", "deviceTelemetryTopic", "deviceAttributesTopic", "deviceAttributesSubscribeTopic", "transportPayloadTypeConfiguration", "sparkplug", "sparkplugAttributesMetricNames", "sendAckOnValidationException"]
 
     model_config = ConfigDict(
@@ -49,13 +49,18 @@ class MqttDeviceProfileTransportConfiguration(DeviceProfileTransportConfiguratio
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -96,13 +101,13 @@ class MqttDeviceProfileTransportConfiguration(DeviceProfileTransportConfiguratio
 
         _obj = cls.model_validate({
             "type": obj.get("type"),
-            "deviceTelemetryTopic": obj.get("deviceTelemetryTopic"),
-            "deviceAttributesTopic": obj.get("deviceAttributesTopic"),
-            "deviceAttributesSubscribeTopic": obj.get("deviceAttributesSubscribeTopic"),
-            "transportPayloadTypeConfiguration": TransportPayloadTypeConfiguration.from_dict(obj["transportPayloadTypeConfiguration"]) if obj.get("transportPayloadTypeConfiguration") is not None else None,
+            "device_telemetry_topic": obj.get("deviceTelemetryTopic"),
+            "device_attributes_topic": obj.get("deviceAttributesTopic"),
+            "device_attributes_subscribe_topic": obj.get("deviceAttributesSubscribeTopic"),
+            "transport_payload_type_configuration": TransportPayloadTypeConfiguration.from_dict(obj["transportPayloadTypeConfiguration"]) if obj.get("transportPayloadTypeConfiguration") is not None else None,
             "sparkplug": obj.get("sparkplug"),
-            "sparkplugAttributesMetricNames": obj.get("sparkplugAttributesMetricNames"),
-            "sendAckOnValidationException": obj.get("sendAckOnValidationException")
+            "sparkplug_attributes_metric_names": obj.get("sparkplugAttributesMetricNames"),
+            "send_ack_on_validation_exception": obj.get("sendAckOnValidationException")
         })
         return _obj
 

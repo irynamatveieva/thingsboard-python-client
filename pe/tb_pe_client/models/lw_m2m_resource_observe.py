@@ -35,7 +35,7 @@ class LwM2mResourceObserve(BaseModel):
     observe: Optional[StrictBool] = Field(default=None, description="LwM2M Resource Observe observe.")
     attribute: Optional[StrictBool] = Field(default=None, description="LwM2M Resource Observe attribute.")
     telemetry: Optional[StrictBool] = Field(default=None, description="LwM2M Resource Observe telemetry.")
-    key_name: Optional[StrictStr] = Field(default=None, description="LwM2M Resource Observe key name.", alias="keyName")
+    key_name: Optional[StrictStr] = Field(default=None, description="LwM2M Resource Observe key name.", serialization_alias="keyName")
     __properties: ClassVar[List[str]] = ["id", "name", "observe", "attribute", "telemetry", "keyName"]
 
     model_config = ConfigDict(
@@ -46,13 +46,18 @@ class LwM2mResourceObserve(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -94,7 +99,7 @@ class LwM2mResourceObserve(BaseModel):
             "observe": obj.get("observe"),
             "attribute": obj.get("attribute"),
             "telemetry": obj.get("telemetry"),
-            "keyName": obj.get("keyName")
+            "key_name": obj.get("keyName")
         })
         return _obj
 

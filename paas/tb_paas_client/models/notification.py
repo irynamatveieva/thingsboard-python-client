@@ -38,14 +38,14 @@ class Notification(BaseModel):
     Notification
     """ # noqa: E501
     id: Optional[NotificationId] = None
-    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", alias="createdTime")
-    request_id: Optional[NotificationRequestId] = Field(default=None, alias="requestId")
-    recipient_id: Optional[UserId] = Field(default=None, alias="recipientId")
+    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", serialization_alias="createdTime")
+    request_id: Optional[NotificationRequestId] = Field(default=None, serialization_alias="requestId")
+    recipient_id: Optional[UserId] = Field(default=None, serialization_alias="recipientId")
     type: Optional[NotificationType] = None
-    delivery_method: Optional[NotificationDeliveryMethod] = Field(default=None, alias="deliveryMethod")
+    delivery_method: Optional[NotificationDeliveryMethod] = Field(default=None, serialization_alias="deliveryMethod")
     subject: Optional[StrictStr] = None
     text: Optional[StrictStr] = None
-    additional_config: Optional[Any] = Field(default=None, alias="additionalConfig")
+    additional_config: Optional[Any] = Field(default=None, serialization_alias="additionalConfig")
     info: Optional[NotificationInfo] = None
     status: Optional[NotificationStatus] = None
     __properties: ClassVar[List[str]] = ["id", "createdTime", "requestId", "recipientId", "type", "deliveryMethod", "subject", "text", "additionalConfig", "info", "status"]
@@ -58,13 +58,18 @@ class Notification(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -121,14 +126,14 @@ class Notification(BaseModel):
 
         _obj = cls.model_validate({
             "id": NotificationId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "requestId": NotificationRequestId.from_dict(obj["requestId"]) if obj.get("requestId") is not None else None,
-            "recipientId": UserId.from_dict(obj["recipientId"]) if obj.get("recipientId") is not None else None,
+            "created_time": obj.get("createdTime"),
+            "request_id": NotificationRequestId.from_dict(obj["requestId"]) if obj.get("requestId") is not None else None,
+            "recipient_id": UserId.from_dict(obj["recipientId"]) if obj.get("recipientId") is not None else None,
             "type": obj.get("type"),
-            "deliveryMethod": obj.get("deliveryMethod"),
+            "delivery_method": obj.get("deliveryMethod"),
             "subject": obj.get("subject"),
             "text": obj.get("text"),
-            "additionalConfig": obj.get("additionalConfig"),
+            "additional_config": obj.get("additionalConfig"),
             "info": NotificationInfo.from_dict(obj["info"]) if obj.get("info") is not None else None,
             "status": obj.get("status")
         })

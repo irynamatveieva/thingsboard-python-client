@@ -31,10 +31,10 @@ class GoogleVertexAiGeminiProviderConfig(BaseModel):
     """
     GoogleVertexAiGeminiProviderConfig
     """ # noqa: E501
-    file_name: Annotated[str, Field(min_length=1, strict=True)] = Field(alias="fileName")
-    project_id: StrictStr = Field(alias="projectId")
+    file_name: Annotated[str, Field(min_length=1, strict=True)] = Field(serialization_alias="fileName")
+    project_id: StrictStr = Field(serialization_alias="projectId")
     location: StrictStr
-    service_account_key: StrictStr = Field(alias="serviceAccountKey")
+    service_account_key: StrictStr = Field(serialization_alias="serviceAccountKey")
     __properties: ClassVar[List[str]] = ["fileName", "projectId", "location", "serviceAccountKey"]
 
     model_config = ConfigDict(
@@ -45,13 +45,18 @@ class GoogleVertexAiGeminiProviderConfig(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -88,10 +93,10 @@ class GoogleVertexAiGeminiProviderConfig(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "fileName": obj.get("fileName"),
-            "projectId": obj.get("projectId"),
+            "file_name": obj.get("fileName"),
+            "project_id": obj.get("projectId"),
             "location": obj.get("location"),
-            "serviceAccountKey": obj.get("serviceAccountKey")
+            "service_account_key": obj.get("serviceAccountKey")
         })
         return _obj
 

@@ -38,7 +38,7 @@ class LwM2MBootstrapServerCredential(BaseModel):
     """
     LwM2MBootstrapServerCredential
     """ # noqa: E501
-    security_mode: StrictStr = Field(alias="securityMode")
+    security_mode: StrictStr = Field(serialization_alias="securityMode")
     __properties: ClassVar[List[str]] = ["securityMode"]
 
     model_config = ConfigDict(
@@ -66,13 +66,18 @@ class LwM2MBootstrapServerCredential(BaseModel):
             return None
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Union[NoSecLwM2MBootstrapServerCredential, PSKLwM2MBootstrapServerCredential, RPKLwM2MBootstrapServerCredential, X509LwM2MBootstrapServerCredential]]:

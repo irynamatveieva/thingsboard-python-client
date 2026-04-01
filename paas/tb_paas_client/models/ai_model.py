@@ -35,8 +35,8 @@ class AiModel(BaseModel):
     AiModel
     """ # noqa: E501
     id: Optional[AiModelId] = None
-    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", alias="createdTime")
-    tenant_id: TenantId = Field(description="JSON object representing the ID of the tenant associated with this AI model", alias="tenantId")
+    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", serialization_alias="createdTime")
+    tenant_id: TenantId = Field(description="JSON object representing the ID of the tenant associated with this AI model", serialization_alias="tenantId")
     version: StrictInt = Field(description="Version of the AI model record; increments automatically whenever the record is changed")
     name: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Display name for this AI model configuration; not the technical model identifier")
     configuration: Optional[AiModelConfig] = Field(default=None, description="Configuration of the AI model")
@@ -50,13 +50,18 @@ class AiModel(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -109,8 +114,8 @@ class AiModel(BaseModel):
 
         _obj = cls.model_validate({
             "id": AiModelId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
+            "created_time": obj.get("createdTime"),
+            "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
             "version": obj.get("version") if obj.get("version") is not None else 1,
             "name": obj.get("name"),
             "configuration": AiModelConfig.from_dict(obj["configuration"]) if obj.get("configuration") is not None else None

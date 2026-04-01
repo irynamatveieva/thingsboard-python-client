@@ -34,13 +34,13 @@ class TenantSolutionTemplateInfo(BaseModel):
     id: Optional[StrictStr] = Field(default=None, description="ID of the solution template")
     title: Optional[StrictStr] = Field(default=None, description="Template Title")
     level: Optional[SolutionTemplateLevel] = Field(default=None, description="Level of the subscription that is required to unlock the template")
-    install_timeout_ms: Optional[StrictInt] = Field(default=None, description="Timeout for the installation UI to wait while template is installing", alias="installTimeoutMs")
-    tenant_telemetry_keys: Optional[List[StrictStr]] = Field(default=None, description="What keys to delete during template uninstall", alias="tenantTelemetryKeys")
-    tenant_attribute_keys: Optional[List[StrictStr]] = Field(default=None, description="What attributes to delete during template uninstall", alias="tenantAttributeKeys")
-    preview_image_url: Optional[StrictStr] = Field(default=None, description="URL of the preview image", alias="previewImageUrl")
-    video_preview_image_url: Optional[StrictStr] = Field(default=None, description="Video preview image URL", alias="videoPreviewImageUrl")
-    preview_mp4_url: Optional[StrictStr] = Field(default=None, description="Video MP4 URL", alias="previewMp4Url")
-    preview_webm_url: Optional[StrictStr] = Field(default=None, description="Video WEBM URL", alias="previewWebmUrl")
+    install_timeout_ms: Optional[StrictInt] = Field(default=None, description="Timeout for the installation UI to wait while template is installing", serialization_alias="installTimeoutMs")
+    tenant_telemetry_keys: Optional[List[StrictStr]] = Field(default=None, description="What keys to delete during template uninstall", serialization_alias="tenantTelemetryKeys")
+    tenant_attribute_keys: Optional[List[StrictStr]] = Field(default=None, description="What attributes to delete during template uninstall", serialization_alias="tenantAttributeKeys")
+    preview_image_url: Optional[StrictStr] = Field(default=None, description="URL of the preview image", serialization_alias="previewImageUrl")
+    video_preview_image_url: Optional[StrictStr] = Field(default=None, description="Video preview image URL", serialization_alias="videoPreviewImageUrl")
+    preview_mp4_url: Optional[StrictStr] = Field(default=None, description="Video MP4 URL", serialization_alias="previewMp4Url")
+    preview_webm_url: Optional[StrictStr] = Field(default=None, description="Video WEBM URL", serialization_alias="previewWebmUrl")
     installed: Optional[StrictBool] = Field(default=None, description="Indicates that template is already installed for the current tenant")
     __properties: ClassVar[List[str]] = ["id", "title", "level", "installTimeoutMs", "tenantTelemetryKeys", "tenantAttributeKeys", "previewImageUrl", "videoPreviewImageUrl", "previewMp4Url", "previewWebmUrl", "installed"]
 
@@ -52,13 +52,18 @@ class TenantSolutionTemplateInfo(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -98,13 +103,13 @@ class TenantSolutionTemplateInfo(BaseModel):
             "id": obj.get("id"),
             "title": obj.get("title"),
             "level": obj.get("level"),
-            "installTimeoutMs": obj.get("installTimeoutMs"),
-            "tenantTelemetryKeys": obj.get("tenantTelemetryKeys"),
-            "tenantAttributeKeys": obj.get("tenantAttributeKeys"),
-            "previewImageUrl": obj.get("previewImageUrl"),
-            "videoPreviewImageUrl": obj.get("videoPreviewImageUrl"),
-            "previewMp4Url": obj.get("previewMp4Url"),
-            "previewWebmUrl": obj.get("previewWebmUrl"),
+            "install_timeout_ms": obj.get("installTimeoutMs"),
+            "tenant_telemetry_keys": obj.get("tenantTelemetryKeys"),
+            "tenant_attribute_keys": obj.get("tenantAttributeKeys"),
+            "preview_image_url": obj.get("previewImageUrl"),
+            "video_preview_image_url": obj.get("videoPreviewImageUrl"),
+            "preview_mp4_url": obj.get("previewMp4Url"),
+            "preview_webm_url": obj.get("previewWebmUrl"),
             "installed": obj.get("installed")
         })
         return _obj

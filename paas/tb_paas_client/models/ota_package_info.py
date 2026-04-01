@@ -36,21 +36,21 @@ class OtaPackageInfo(BaseModel):
     OtaPackageInfo
     """ # noqa: E501
     id: Optional[OtaPackageId] = Field(default=None, description="JSON object with the ota package Id. Specify existing ota package Id to update the ota package. Referencing non-existing ota package id will cause error. Omit this field to create new ota package.")
-    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the ota package creation, in milliseconds", alias="createdTime")
-    additional_info: Optional[Any] = Field(default=None, description="OTA Package description.", alias="additionalInfo")
-    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id. Tenant Id of the ota package can't be changed.", alias="tenantId")
-    device_profile_id: Optional[DeviceProfileId] = Field(default=None, description="JSON object with Device Profile Id. Device Profile Id of the ota package can't be changed.", alias="deviceProfileId")
+    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the ota package creation, in milliseconds", serialization_alias="createdTime")
+    additional_info: Optional[Any] = Field(default=None, description="OTA Package description.", serialization_alias="additionalInfo")
+    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id. Tenant Id of the ota package can't be changed.", serialization_alias="tenantId")
+    device_profile_id: Optional[DeviceProfileId] = Field(default=None, description="JSON object with Device Profile Id. Device Profile Id of the ota package can't be changed.", serialization_alias="deviceProfileId")
     type: Optional[OtaPackageType] = Field(default=None, description="OTA Package type.")
     title: Optional[StrictStr] = Field(default=None, description="OTA Package title.")
     version: Optional[StrictStr] = Field(default=None, description="OTA Package version.")
     tag: Optional[StrictStr] = Field(default=None, description="OTA Package tag.")
     url: Optional[StrictStr] = Field(default=None, description="OTA Package url.")
-    has_data: Optional[StrictBool] = Field(default=None, description="Indicates OTA Package 'has data'. Field is returned from DB ('true' if data exists or url is set).  If OTA Package 'has data' is 'false' we can not assign the OTA Package to the Device or Device Profile.", alias="hasData")
-    file_name: Optional[StrictStr] = Field(default=None, description="OTA Package file name.", alias="fileName")
-    content_type: Optional[StrictStr] = Field(default=None, description="OTA Package content type.", alias="contentType")
-    checksum_algorithm: Optional[ChecksumAlgorithm] = Field(default=None, description="OTA Package checksum algorithm.", alias="checksumAlgorithm")
+    has_data: Optional[StrictBool] = Field(default=None, description="Indicates OTA Package 'has data'. Field is returned from DB ('true' if data exists or url is set).  If OTA Package 'has data' is 'false' we can not assign the OTA Package to the Device or Device Profile.", serialization_alias="hasData")
+    file_name: Optional[StrictStr] = Field(default=None, description="OTA Package file name.", serialization_alias="fileName")
+    content_type: Optional[StrictStr] = Field(default=None, description="OTA Package content type.", serialization_alias="contentType")
+    checksum_algorithm: Optional[ChecksumAlgorithm] = Field(default=None, description="OTA Package checksum algorithm.", serialization_alias="checksumAlgorithm")
     checksum: Optional[StrictStr] = Field(default=None, description="OTA Package checksum.")
-    data_size: Optional[StrictInt] = Field(default=None, description="OTA Package data size.", alias="dataSize")
+    data_size: Optional[StrictInt] = Field(default=None, description="OTA Package data size.", serialization_alias="dataSize")
     name: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["id", "createdTime", "additionalInfo", "tenantId", "deviceProfileId", "type", "title", "version", "tag", "url", "hasData", "fileName", "contentType", "checksumAlgorithm", "checksum", "dataSize", "name"]
 
@@ -62,13 +62,18 @@ class OtaPackageInfo(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -140,21 +145,21 @@ class OtaPackageInfo(BaseModel):
 
         _obj = cls.model_validate({
             "id": OtaPackageId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "additionalInfo": obj.get("additionalInfo"),
-            "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
-            "deviceProfileId": DeviceProfileId.from_dict(obj["deviceProfileId"]) if obj.get("deviceProfileId") is not None else None,
+            "created_time": obj.get("createdTime"),
+            "additional_info": obj.get("additionalInfo"),
+            "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
+            "device_profile_id": DeviceProfileId.from_dict(obj["deviceProfileId"]) if obj.get("deviceProfileId") is not None else None,
             "type": obj.get("type"),
             "title": obj.get("title"),
             "version": obj.get("version"),
             "tag": obj.get("tag"),
             "url": obj.get("url"),
-            "hasData": obj.get("hasData"),
-            "fileName": obj.get("fileName"),
-            "contentType": obj.get("contentType"),
-            "checksumAlgorithm": obj.get("checksumAlgorithm"),
+            "has_data": obj.get("hasData"),
+            "file_name": obj.get("fileName"),
+            "content_type": obj.get("contentType"),
+            "checksum_algorithm": obj.get("checksumAlgorithm"),
             "checksum": obj.get("checksum"),
-            "dataSize": obj.get("dataSize"),
+            "data_size": obj.get("dataSize"),
             "name": obj.get("name")
         })
         return _obj

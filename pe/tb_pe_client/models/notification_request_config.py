@@ -32,7 +32,7 @@ class NotificationRequestConfig(BaseModel):
     """
     NotificationRequestConfig
     """ # noqa: E501
-    sending_delay_in_sec: Optional[Annotated[int, Field(le=604800, strict=True)]] = Field(default=None, alias="sendingDelayInSec")
+    sending_delay_in_sec: Optional[Annotated[int, Field(le=604800, strict=True)]] = Field(default=None, serialization_alias="sendingDelayInSec")
     reports: Optional[List[ReportId]] = None
     __properties: ClassVar[List[str]] = ["sendingDelayInSec", "reports"]
 
@@ -44,13 +44,18 @@ class NotificationRequestConfig(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -94,7 +99,7 @@ class NotificationRequestConfig(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "sendingDelayInSec": obj.get("sendingDelayInSec"),
+            "sending_delay_in_sec": obj.get("sendingDelayInSec"),
             "reports": [ReportId.from_dict(_item) for _item in obj["reports"]] if obj.get("reports") is not None else None
         })
         return _obj

@@ -30,12 +30,12 @@ class UpdateMessage(BaseModel):
     """
     UpdateMessage
     """ # noqa: E501
-    update_available: Optional[StrictBool] = Field(default=None, description="'True' if new platform update is available.", alias="updateAvailable")
-    current_version: Optional[StrictStr] = Field(default=None, description="Current ThingsBoard version.", alias="currentVersion")
-    latest_version: Optional[StrictStr] = Field(default=None, description="Latest ThingsBoard version.", alias="latestVersion")
-    upgrade_instructions_url: Optional[StrictStr] = Field(default=None, description="Upgrade instructions URL.", alias="upgradeInstructionsUrl")
-    current_version_release_notes_url: Optional[StrictStr] = Field(default=None, description="Current ThingsBoard version release notes URL.", alias="currentVersionReleaseNotesUrl")
-    latest_version_release_notes_url: Optional[StrictStr] = Field(default=None, description="Latest ThingsBoard version release notes URL.", alias="latestVersionReleaseNotesUrl")
+    update_available: Optional[StrictBool] = Field(default=None, description="'True' if new platform update is available.", serialization_alias="updateAvailable")
+    current_version: Optional[StrictStr] = Field(default=None, description="Current ThingsBoard version.", serialization_alias="currentVersion")
+    latest_version: Optional[StrictStr] = Field(default=None, description="Latest ThingsBoard version.", serialization_alias="latestVersion")
+    upgrade_instructions_url: Optional[StrictStr] = Field(default=None, description="Upgrade instructions URL.", serialization_alias="upgradeInstructionsUrl")
+    current_version_release_notes_url: Optional[StrictStr] = Field(default=None, description="Current ThingsBoard version release notes URL.", serialization_alias="currentVersionReleaseNotesUrl")
+    latest_version_release_notes_url: Optional[StrictStr] = Field(default=None, description="Latest ThingsBoard version release notes URL.", serialization_alias="latestVersionReleaseNotesUrl")
     __properties: ClassVar[List[str]] = ["updateAvailable", "currentVersion", "latestVersion", "upgradeInstructionsUrl", "currentVersionReleaseNotesUrl", "latestVersionReleaseNotesUrl"]
 
     model_config = ConfigDict(
@@ -46,13 +46,18 @@ class UpdateMessage(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -89,12 +94,12 @@ class UpdateMessage(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "updateAvailable": obj.get("updateAvailable"),
-            "currentVersion": obj.get("currentVersion"),
-            "latestVersion": obj.get("latestVersion"),
-            "upgradeInstructionsUrl": obj.get("upgradeInstructionsUrl"),
-            "currentVersionReleaseNotesUrl": obj.get("currentVersionReleaseNotesUrl"),
-            "latestVersionReleaseNotesUrl": obj.get("latestVersionReleaseNotesUrl")
+            "update_available": obj.get("updateAvailable"),
+            "current_version": obj.get("currentVersion"),
+            "latest_version": obj.get("latestVersion"),
+            "upgrade_instructions_url": obj.get("upgradeInstructionsUrl"),
+            "current_version_release_notes_url": obj.get("currentVersionReleaseNotesUrl"),
+            "latest_version_release_notes_url": obj.get("latestVersionReleaseNotesUrl")
         })
         return _obj
 

@@ -32,9 +32,9 @@ class TbChatRequest(BaseModel):
     """
     TbChatRequest
     """ # noqa: E501
-    system_message: Optional[StrictStr] = Field(default=None, description="A system-level instruction that frames the user's input, setting the persona, tone, and constraints for the generated response", alias="systemMessage")
-    user_message: TbUserMessage = Field(description="The actual user prompt that will be answered by the AI model", alias="userMessage")
-    chat_model_config: AiModelConfig = Field(description="Configuration of the AI chat model that should execute the request", alias="chatModelConfig")
+    system_message: Optional[StrictStr] = Field(default=None, description="A system-level instruction that frames the user's input, setting the persona, tone, and constraints for the generated response", serialization_alias="systemMessage")
+    user_message: TbUserMessage = Field(description="The actual user prompt that will be answered by the AI model", serialization_alias="userMessage")
+    chat_model_config: AiModelConfig = Field(description="Configuration of the AI chat model that should execute the request", serialization_alias="chatModelConfig")
     __properties: ClassVar[List[str]] = ["systemMessage", "userMessage", "chatModelConfig"]
 
     model_config = ConfigDict(
@@ -45,13 +45,18 @@ class TbChatRequest(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -94,9 +99,9 @@ class TbChatRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "systemMessage": obj.get("systemMessage"),
-            "userMessage": TbUserMessage.from_dict(obj["userMessage"]) if obj.get("userMessage") is not None else None,
-            "chatModelConfig": AiModelConfig.from_dict(obj["chatModelConfig"]) if obj.get("chatModelConfig") is not None else None
+            "system_message": obj.get("systemMessage"),
+            "user_message": TbUserMessage.from_dict(obj["userMessage"]) if obj.get("userMessage") is not None else None,
+            "chat_model_config": AiModelConfig.from_dict(obj["chatModelConfig"]) if obj.get("chatModelConfig") is not None else None
         })
         return _obj
 

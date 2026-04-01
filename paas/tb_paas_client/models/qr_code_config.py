@@ -31,11 +31,11 @@ class QRCodeConfig(BaseModel):
     """
     QRCodeConfig
     """ # noqa: E501
-    show_on_home_page: Optional[StrictBool] = Field(default=None, alias="showOnHomePage")
-    badge_enabled: Optional[StrictBool] = Field(default=None, alias="badgeEnabled")
-    qr_code_label_enabled: Optional[StrictBool] = Field(default=None, alias="qrCodeLabelEnabled")
-    badge_position: Optional[BadgePosition] = Field(default=None, alias="badgePosition")
-    qr_code_label: Optional[StrictStr] = Field(default=None, alias="qrCodeLabel")
+    show_on_home_page: Optional[StrictBool] = Field(default=None, serialization_alias="showOnHomePage")
+    badge_enabled: Optional[StrictBool] = Field(default=None, serialization_alias="badgeEnabled")
+    qr_code_label_enabled: Optional[StrictBool] = Field(default=None, serialization_alias="qrCodeLabelEnabled")
+    badge_position: Optional[BadgePosition] = Field(default=None, serialization_alias="badgePosition")
+    qr_code_label: Optional[StrictStr] = Field(default=None, serialization_alias="qrCodeLabel")
     __properties: ClassVar[List[str]] = ["showOnHomePage", "badgeEnabled", "qrCodeLabelEnabled", "badgePosition", "qrCodeLabel"]
 
     model_config = ConfigDict(
@@ -46,13 +46,18 @@ class QRCodeConfig(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -89,11 +94,11 @@ class QRCodeConfig(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "showOnHomePage": obj.get("showOnHomePage"),
-            "badgeEnabled": obj.get("badgeEnabled"),
-            "qrCodeLabelEnabled": obj.get("qrCodeLabelEnabled"),
-            "badgePosition": obj.get("badgePosition"),
-            "qrCodeLabel": obj.get("qrCodeLabel")
+            "show_on_home_page": obj.get("showOnHomePage"),
+            "badge_enabled": obj.get("badgeEnabled"),
+            "qr_code_label_enabled": obj.get("qrCodeLabelEnabled"),
+            "badge_position": obj.get("badgePosition"),
+            "qr_code_label": obj.get("qrCodeLabel")
         })
         return _obj
 

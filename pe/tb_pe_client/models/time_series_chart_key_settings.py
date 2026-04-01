@@ -36,13 +36,13 @@ class TimeSeriesChartKeySettings(DataKeySettings):
     """
     TimeSeriesChartKeySettings
     """ # noqa: E501
-    y_axis_id: Optional[StrictStr] = Field(default=None, alias="yAxisId")
-    show_in_legend: Optional[StrictBool] = Field(default=None, alias="showInLegend")
-    series_type: Optional[TimeSeriesChartSeriesType] = Field(default=None, alias="seriesType")
-    line_settings: Optional[LineSeriesSettings] = Field(default=None, alias="lineSettings")
-    bar_settings: Optional[BarSeriesSettings] = Field(default=None, alias="barSettings")
-    comparison_settings: Optional[DataKeyComparisonSettings] = Field(default=None, alias="comparisonSettings")
-    yaxis_id: Optional[StrictStr] = Field(default=None, alias="yaxisId")
+    y_axis_id: Optional[StrictStr] = Field(default=None, serialization_alias="yAxisId")
+    show_in_legend: Optional[StrictBool] = Field(default=None, serialization_alias="showInLegend")
+    series_type: Optional[TimeSeriesChartSeriesType] = Field(default=None, serialization_alias="seriesType")
+    line_settings: Optional[LineSeriesSettings] = Field(default=None, serialization_alias="lineSettings")
+    bar_settings: Optional[BarSeriesSettings] = Field(default=None, serialization_alias="barSettings")
+    comparison_settings: Optional[DataKeyComparisonSettings] = Field(default=None, serialization_alias="comparisonSettings")
+    yaxis_id: Optional[StrictStr] = Field(default=None, serialization_alias="yaxisId")
     __properties: ClassVar[List[str]] = ["type", "yAxisId", "showInLegend", "seriesType", "lineSettings", "barSettings", "comparisonSettings", "yaxisId"]
 
     model_config = ConfigDict(
@@ -53,13 +53,18 @@ class TimeSeriesChartKeySettings(DataKeySettings):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -106,13 +111,13 @@ class TimeSeriesChartKeySettings(DataKeySettings):
 
         _obj = cls.model_validate({
             "type": obj.get("type"),
-            "yAxisId": obj.get("yAxisId"),
-            "showInLegend": obj.get("showInLegend"),
-            "seriesType": obj.get("seriesType"),
-            "lineSettings": LineSeriesSettings.from_dict(obj["lineSettings"]) if obj.get("lineSettings") is not None else None,
-            "barSettings": BarSeriesSettings.from_dict(obj["barSettings"]) if obj.get("barSettings") is not None else None,
-            "comparisonSettings": DataKeyComparisonSettings.from_dict(obj["comparisonSettings"]) if obj.get("comparisonSettings") is not None else None,
-            "yaxisId": obj.get("yaxisId")
+            "y_axis_id": obj.get("yAxisId"),
+            "show_in_legend": obj.get("showInLegend"),
+            "series_type": obj.get("seriesType"),
+            "line_settings": LineSeriesSettings.from_dict(obj["lineSettings"]) if obj.get("lineSettings") is not None else None,
+            "bar_settings": BarSeriesSettings.from_dict(obj["barSettings"]) if obj.get("barSettings") is not None else None,
+            "comparison_settings": DataKeyComparisonSettings.from_dict(obj["comparisonSettings"]) if obj.get("comparisonSettings") is not None else None,
+            "yaxis_id": obj.get("yaxisId")
         })
         return _obj
 

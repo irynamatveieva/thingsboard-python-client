@@ -31,9 +31,9 @@ class AssetTypeFilter(EntityFilter):
     """
     AssetTypeFilter
     """ # noqa: E501
-    asset_types: Optional[List[StrictStr]] = Field(default=None, alias="assetTypes")
-    asset_name_filter: Optional[StrictStr] = Field(default=None, alias="assetNameFilter")
-    asset_type: Optional[StrictStr] = Field(default=None, alias="assetType")
+    asset_types: Optional[List[StrictStr]] = Field(default=None, serialization_alias="assetTypes")
+    asset_name_filter: Optional[StrictStr] = Field(default=None, serialization_alias="assetNameFilter")
+    asset_type: Optional[StrictStr] = Field(default=None, serialization_alias="assetType")
     __properties: ClassVar[List[str]] = ["type", "assetTypes", "assetNameFilter", "assetType"]
 
     model_config = ConfigDict(
@@ -44,13 +44,18 @@ class AssetTypeFilter(EntityFilter):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -88,9 +93,9 @@ class AssetTypeFilter(EntityFilter):
 
         _obj = cls.model_validate({
             "type": obj.get("type"),
-            "assetTypes": obj.get("assetTypes"),
-            "assetNameFilter": obj.get("assetNameFilter"),
-            "assetType": obj.get("assetType")
+            "asset_types": obj.get("assetTypes"),
+            "asset_name_filter": obj.get("assetNameFilter"),
+            "asset_type": obj.get("assetType")
         })
         return _obj
 

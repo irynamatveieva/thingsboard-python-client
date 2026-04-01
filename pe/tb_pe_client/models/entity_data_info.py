@@ -30,12 +30,12 @@ class EntityDataInfo(BaseModel):
     """
     EntityDataInfo
     """ # noqa: E501
-    has_relations: Optional[StrictBool] = Field(default=None, alias="hasRelations")
-    has_attributes: Optional[StrictBool] = Field(default=None, alias="hasAttributes")
-    has_credentials: Optional[StrictBool] = Field(default=None, alias="hasCredentials")
-    has_calculated_fields: Optional[StrictBool] = Field(default=None, alias="hasCalculatedFields")
-    has_permissions: Optional[StrictBool] = Field(default=None, alias="hasPermissions")
-    has_group_entities: Optional[StrictBool] = Field(default=None, alias="hasGroupEntities")
+    has_relations: Optional[StrictBool] = Field(default=None, serialization_alias="hasRelations")
+    has_attributes: Optional[StrictBool] = Field(default=None, serialization_alias="hasAttributes")
+    has_credentials: Optional[StrictBool] = Field(default=None, serialization_alias="hasCredentials")
+    has_calculated_fields: Optional[StrictBool] = Field(default=None, serialization_alias="hasCalculatedFields")
+    has_permissions: Optional[StrictBool] = Field(default=None, serialization_alias="hasPermissions")
+    has_group_entities: Optional[StrictBool] = Field(default=None, serialization_alias="hasGroupEntities")
     __properties: ClassVar[List[str]] = ["hasRelations", "hasAttributes", "hasCredentials", "hasCalculatedFields", "hasPermissions", "hasGroupEntities"]
 
     model_config = ConfigDict(
@@ -46,13 +46,18 @@ class EntityDataInfo(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -89,12 +94,12 @@ class EntityDataInfo(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "hasRelations": obj.get("hasRelations"),
-            "hasAttributes": obj.get("hasAttributes"),
-            "hasCredentials": obj.get("hasCredentials"),
-            "hasCalculatedFields": obj.get("hasCalculatedFields"),
-            "hasPermissions": obj.get("hasPermissions"),
-            "hasGroupEntities": obj.get("hasGroupEntities")
+            "has_relations": obj.get("hasRelations"),
+            "has_attributes": obj.get("hasAttributes"),
+            "has_credentials": obj.get("hasCredentials"),
+            "has_calculated_fields": obj.get("hasCalculatedFields"),
+            "has_permissions": obj.get("hasPermissions"),
+            "has_group_entities": obj.get("hasGroupEntities")
         })
         return _obj
 

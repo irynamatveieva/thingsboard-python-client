@@ -31,8 +31,8 @@ class ContactBasedObject(BaseModel):
     ContactBasedObject
     """ # noqa: E501
     id: Optional[Any] = None
-    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", alias="createdTime")
-    additional_info: Optional[Any] = Field(default=None, alias="additionalInfo")
+    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", serialization_alias="createdTime")
+    additional_info: Optional[Any] = Field(default=None, serialization_alias="additionalInfo")
     country: Optional[StrictStr] = None
     state: Optional[StrictStr] = None
     city: Optional[StrictStr] = None
@@ -52,13 +52,18 @@ class ContactBasedObject(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -108,8 +113,8 @@ class ContactBasedObject(BaseModel):
 
         _obj = cls.model_validate({
             "id": obj.get("id"),
-            "createdTime": obj.get("createdTime"),
-            "additionalInfo": obj.get("additionalInfo"),
+            "created_time": obj.get("createdTime"),
+            "additional_info": obj.get("additionalInfo"),
             "country": obj.get("country"),
             "state": obj.get("state"),
             "city": obj.get("city"),

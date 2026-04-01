@@ -32,7 +32,7 @@ class StateEntityFilter(EntityFilter):
     """
     StateEntityFilter
     """ # noqa: E501
-    default_state_entity: Optional[AliasEntityId] = Field(default=None, alias="defaultStateEntity")
+    default_state_entity: Optional[AliasEntityId] = Field(default=None, serialization_alias="defaultStateEntity")
     __properties: ClassVar[List[str]] = ["type", "defaultStateEntity"]
 
     model_config = ConfigDict(
@@ -43,13 +43,18 @@ class StateEntityFilter(EntityFilter):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -90,7 +95,7 @@ class StateEntityFilter(EntityFilter):
 
         _obj = cls.model_validate({
             "type": obj.get("type"),
-            "defaultStateEntity": AliasEntityId.from_dict(obj["defaultStateEntity"]) if obj.get("defaultStateEntity") is not None else None
+            "default_state_entity": AliasEntityId.from_dict(obj["defaultStateEntity"]) if obj.get("defaultStateEntity") is not None else None
         })
         return _obj
 

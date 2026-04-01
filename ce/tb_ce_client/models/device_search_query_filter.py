@@ -33,14 +33,14 @@ class DeviceSearchQueryFilter(EntityFilter):
     """
     DeviceSearchQueryFilter
     """ # noqa: E501
-    root_entity: Optional[AliasEntityId] = Field(default=None, alias="rootEntity")
-    relation_type: Optional[StrictStr] = Field(default=None, alias="relationType")
+    root_entity: Optional[AliasEntityId] = Field(default=None, serialization_alias="rootEntity")
+    relation_type: Optional[StrictStr] = Field(default=None, serialization_alias="relationType")
     direction: Optional[EntitySearchDirection] = None
-    max_level: Optional[StrictInt] = Field(default=None, alias="maxLevel")
-    fetch_last_level_only: Optional[StrictBool] = Field(default=None, alias="fetchLastLevelOnly")
-    root_state_entity: Optional[StrictBool] = Field(default=None, alias="rootStateEntity")
-    default_state_entity: Optional[AliasEntityId] = Field(default=None, alias="defaultStateEntity")
-    device_types: Optional[List[StrictStr]] = Field(default=None, alias="deviceTypes")
+    max_level: Optional[StrictInt] = Field(default=None, serialization_alias="maxLevel")
+    fetch_last_level_only: Optional[StrictBool] = Field(default=None, serialization_alias="fetchLastLevelOnly")
+    root_state_entity: Optional[StrictBool] = Field(default=None, serialization_alias="rootStateEntity")
+    default_state_entity: Optional[AliasEntityId] = Field(default=None, serialization_alias="defaultStateEntity")
+    device_types: Optional[List[StrictStr]] = Field(default=None, serialization_alias="deviceTypes")
     __properties: ClassVar[List[str]] = ["type", "rootEntity", "relationType", "direction", "maxLevel", "fetchLastLevelOnly", "rootStateEntity", "defaultStateEntity", "deviceTypes"]
 
     model_config = ConfigDict(
@@ -51,13 +51,18 @@ class DeviceSearchQueryFilter(EntityFilter):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -101,14 +106,14 @@ class DeviceSearchQueryFilter(EntityFilter):
 
         _obj = cls.model_validate({
             "type": obj.get("type"),
-            "rootEntity": AliasEntityId.from_dict(obj["rootEntity"]) if obj.get("rootEntity") is not None else None,
-            "relationType": obj.get("relationType"),
+            "root_entity": AliasEntityId.from_dict(obj["rootEntity"]) if obj.get("rootEntity") is not None else None,
+            "relation_type": obj.get("relationType"),
             "direction": obj.get("direction"),
-            "maxLevel": obj.get("maxLevel"),
-            "fetchLastLevelOnly": obj.get("fetchLastLevelOnly"),
-            "rootStateEntity": obj.get("rootStateEntity"),
-            "defaultStateEntity": AliasEntityId.from_dict(obj["defaultStateEntity"]) if obj.get("defaultStateEntity") is not None else None,
-            "deviceTypes": obj.get("deviceTypes")
+            "max_level": obj.get("maxLevel"),
+            "fetch_last_level_only": obj.get("fetchLastLevelOnly"),
+            "root_state_entity": obj.get("rootStateEntity"),
+            "default_state_entity": AliasEntityId.from_dict(obj["defaultStateEntity"]) if obj.get("defaultStateEntity") is not None else None,
+            "device_types": obj.get("deviceTypes")
         })
         return _obj
 

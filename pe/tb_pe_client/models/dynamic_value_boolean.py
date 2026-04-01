@@ -31,9 +31,9 @@ class DynamicValueBoolean(BaseModel):
     """
     DynamicValueBoolean
     """ # noqa: E501
-    resolved_value: Optional[StrictBool] = Field(default=None, alias="resolvedValue")
-    source_type: Optional[DynamicValueSourceType] = Field(default=None, alias="sourceType")
-    source_attribute: Optional[StrictStr] = Field(default=None, alias="sourceAttribute")
+    resolved_value: Optional[StrictBool] = Field(default=None, serialization_alias="resolvedValue")
+    source_type: Optional[DynamicValueSourceType] = Field(default=None, serialization_alias="sourceType")
+    source_attribute: Optional[StrictStr] = Field(default=None, serialization_alias="sourceAttribute")
     inherit: Optional[StrictBool] = None
     __properties: ClassVar[List[str]] = ["resolvedValue", "sourceType", "sourceAttribute", "inherit"]
 
@@ -45,13 +45,18 @@ class DynamicValueBoolean(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -88,9 +93,9 @@ class DynamicValueBoolean(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "resolvedValue": obj.get("resolvedValue"),
-            "sourceType": obj.get("sourceType"),
-            "sourceAttribute": obj.get("sourceAttribute"),
+            "resolved_value": obj.get("resolvedValue"),
+            "source_type": obj.get("sourceType"),
+            "source_attribute": obj.get("sourceAttribute"),
             "inherit": obj.get("inherit")
         })
         return _obj

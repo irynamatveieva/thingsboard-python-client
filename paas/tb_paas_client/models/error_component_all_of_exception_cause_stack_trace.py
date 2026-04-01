@@ -30,14 +30,14 @@ class ErrorComponentAllOfExceptionCauseStackTrace(BaseModel):
     """
     ErrorComponentAllOfExceptionCauseStackTrace
     """ # noqa: E501
-    class_loader_name: Optional[StrictStr] = Field(default=None, alias="classLoaderName")
-    module_name: Optional[StrictStr] = Field(default=None, alias="moduleName")
-    module_version: Optional[StrictStr] = Field(default=None, alias="moduleVersion")
-    method_name: Optional[StrictStr] = Field(default=None, alias="methodName")
-    file_name: Optional[StrictStr] = Field(default=None, alias="fileName")
-    line_number: Optional[StrictInt] = Field(default=None, alias="lineNumber")
-    class_name: Optional[StrictStr] = Field(default=None, alias="className")
-    native_method: Optional[StrictBool] = Field(default=None, alias="nativeMethod")
+    class_loader_name: Optional[StrictStr] = Field(default=None, serialization_alias="classLoaderName")
+    module_name: Optional[StrictStr] = Field(default=None, serialization_alias="moduleName")
+    module_version: Optional[StrictStr] = Field(default=None, serialization_alias="moduleVersion")
+    method_name: Optional[StrictStr] = Field(default=None, serialization_alias="methodName")
+    file_name: Optional[StrictStr] = Field(default=None, serialization_alias="fileName")
+    line_number: Optional[StrictInt] = Field(default=None, serialization_alias="lineNumber")
+    class_name: Optional[StrictStr] = Field(default=None, serialization_alias="className")
+    native_method: Optional[StrictBool] = Field(default=None, serialization_alias="nativeMethod")
     __properties: ClassVar[List[str]] = ["classLoaderName", "moduleName", "moduleVersion", "methodName", "fileName", "lineNumber", "className", "nativeMethod"]
 
     model_config = ConfigDict(
@@ -48,13 +48,18 @@ class ErrorComponentAllOfExceptionCauseStackTrace(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -91,14 +96,14 @@ class ErrorComponentAllOfExceptionCauseStackTrace(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "classLoaderName": obj.get("classLoaderName"),
-            "moduleName": obj.get("moduleName"),
-            "moduleVersion": obj.get("moduleVersion"),
-            "methodName": obj.get("methodName"),
-            "fileName": obj.get("fileName"),
-            "lineNumber": obj.get("lineNumber"),
-            "className": obj.get("className"),
-            "nativeMethod": obj.get("nativeMethod")
+            "class_loader_name": obj.get("classLoaderName"),
+            "module_name": obj.get("moduleName"),
+            "module_version": obj.get("moduleVersion"),
+            "method_name": obj.get("methodName"),
+            "file_name": obj.get("fileName"),
+            "line_number": obj.get("lineNumber"),
+            "class_name": obj.get("className"),
+            "native_method": obj.get("nativeMethod")
         })
         return _obj
 

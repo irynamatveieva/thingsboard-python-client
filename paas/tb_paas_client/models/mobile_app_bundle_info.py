@@ -38,19 +38,19 @@ class MobileAppBundleInfo(BaseModel):
     MobileAppBundleInfo
     """ # noqa: E501
     id: Optional[MobileAppBundleId] = None
-    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", alias="createdTime")
-    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id", alias="tenantId")
+    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", serialization_alias="createdTime")
+    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id", serialization_alias="tenantId")
     title: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Application bundle title. Cannot be empty")
     description: Optional[StrictStr] = Field(default=None, description="Application bundle description.")
-    android_app_id: Optional[MobileAppId] = Field(default=None, description="Android application id", alias="androidAppId")
-    ios_app_id: Optional[MobileAppId] = Field(default=None, description="IOS application id", alias="iosAppId")
-    layout_config: Optional[MobileLayoutConfig] = Field(default=None, description="Application layout configuration", alias="layoutConfig")
-    self_registration_params: Optional[MobileSelfRegistrationParams] = Field(default=None, description="Application self registration configuration", alias="selfRegistrationParams")
-    oauth2_enabled: Optional[StrictBool] = Field(default=None, description="Whether OAuth2 settings are enabled or not", alias="oauth2Enabled")
-    android_pkg_name: Optional[StrictStr] = Field(default=None, description="Android package name", alias="androidPkgName")
-    ios_pkg_name: Optional[StrictStr] = Field(default=None, description="IOS package name", alias="iosPkgName")
-    oauth2_client_infos: Optional[List[OAuth2ClientInfo]] = Field(default=None, description="List of available oauth2 clients", alias="oauth2ClientInfos")
-    qr_code_enabled: Optional[StrictBool] = Field(default=None, description="Indicates if qr code is available for bundle", alias="qrCodeEnabled")
+    android_app_id: Optional[MobileAppId] = Field(default=None, description="Android application id", serialization_alias="androidAppId")
+    ios_app_id: Optional[MobileAppId] = Field(default=None, description="IOS application id", serialization_alias="iosAppId")
+    layout_config: Optional[MobileLayoutConfig] = Field(default=None, description="Application layout configuration", serialization_alias="layoutConfig")
+    self_registration_params: Optional[MobileSelfRegistrationParams] = Field(default=None, description="Application self registration configuration", serialization_alias="selfRegistrationParams")
+    oauth2_enabled: Optional[StrictBool] = Field(default=None, description="Whether OAuth2 settings are enabled or not", serialization_alias="oauth2Enabled")
+    android_pkg_name: Optional[StrictStr] = Field(default=None, description="Android package name", serialization_alias="androidPkgName")
+    ios_pkg_name: Optional[StrictStr] = Field(default=None, description="IOS package name", serialization_alias="iosPkgName")
+    oauth2_client_infos: Optional[List[OAuth2ClientInfo]] = Field(default=None, description="List of available oauth2 clients", serialization_alias="oauth2ClientInfos")
+    qr_code_enabled: Optional[StrictBool] = Field(default=None, description="Indicates if qr code is available for bundle", serialization_alias="qrCodeEnabled")
     name: Optional[StrictStr] = Field(default=None, description="Mobile app bundle title")
     __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "title", "description", "androidAppId", "iosAppId", "layoutConfig", "selfRegistrationParams", "oauth2Enabled", "androidPkgName", "iosPkgName", "oauth2ClientInfos", "qrCodeEnabled", "name"]
 
@@ -62,13 +62,18 @@ class MobileAppBundleInfo(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -135,19 +140,19 @@ class MobileAppBundleInfo(BaseModel):
 
         _obj = cls.model_validate({
             "id": MobileAppBundleId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
+            "created_time": obj.get("createdTime"),
+            "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
             "title": obj.get("title"),
             "description": obj.get("description"),
-            "androidAppId": MobileAppId.from_dict(obj["androidAppId"]) if obj.get("androidAppId") is not None else None,
-            "iosAppId": MobileAppId.from_dict(obj["iosAppId"]) if obj.get("iosAppId") is not None else None,
-            "layoutConfig": MobileLayoutConfig.from_dict(obj["layoutConfig"]) if obj.get("layoutConfig") is not None else None,
-            "selfRegistrationParams": MobileSelfRegistrationParams.from_dict(obj["selfRegistrationParams"]) if obj.get("selfRegistrationParams") is not None else None,
-            "oauth2Enabled": obj.get("oauth2Enabled"),
-            "androidPkgName": obj.get("androidPkgName"),
-            "iosPkgName": obj.get("iosPkgName"),
-            "oauth2ClientInfos": [OAuth2ClientInfo.from_dict(_item) for _item in obj["oauth2ClientInfos"]] if obj.get("oauth2ClientInfos") is not None else None,
-            "qrCodeEnabled": obj.get("qrCodeEnabled"),
+            "android_app_id": MobileAppId.from_dict(obj["androidAppId"]) if obj.get("androidAppId") is not None else None,
+            "ios_app_id": MobileAppId.from_dict(obj["iosAppId"]) if obj.get("iosAppId") is not None else None,
+            "layout_config": MobileLayoutConfig.from_dict(obj["layoutConfig"]) if obj.get("layoutConfig") is not None else None,
+            "self_registration_params": MobileSelfRegistrationParams.from_dict(obj["selfRegistrationParams"]) if obj.get("selfRegistrationParams") is not None else None,
+            "oauth2_enabled": obj.get("oauth2Enabled"),
+            "android_pkg_name": obj.get("androidPkgName"),
+            "ios_pkg_name": obj.get("iosPkgName"),
+            "oauth2_client_infos": [OAuth2ClientInfo.from_dict(_item) for _item in obj["oauth2ClientInfos"]] if obj.get("oauth2ClientInfos") is not None else None,
+            "qr_code_enabled": obj.get("qrCodeEnabled"),
             "name": obj.get("name")
         })
         return _obj

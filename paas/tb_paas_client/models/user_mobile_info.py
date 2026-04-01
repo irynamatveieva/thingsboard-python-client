@@ -35,9 +35,9 @@ class UserMobileInfo(BaseModel):
     UserMobileInfo
     """ # noqa: E501
     user: Optional[User] = None
-    store_info: Optional[StoreInfo] = Field(default=None, alias="storeInfo")
-    version_info: Optional[MobileAppVersionInfo] = Field(default=None, alias="versionInfo")
-    home_dashboard_info: Optional[HomeDashboardInfo] = Field(default=None, alias="homeDashboardInfo")
+    store_info: Optional[StoreInfo] = Field(default=None, serialization_alias="storeInfo")
+    version_info: Optional[MobileAppVersionInfo] = Field(default=None, serialization_alias="versionInfo")
+    home_dashboard_info: Optional[HomeDashboardInfo] = Field(default=None, serialization_alias="homeDashboardInfo")
     pages: Optional[Any] = None
     __properties: ClassVar[List[str]] = ["user", "storeInfo", "versionInfo", "homeDashboardInfo", "pages"]
 
@@ -49,13 +49,18 @@ class UserMobileInfo(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -110,9 +115,9 @@ class UserMobileInfo(BaseModel):
 
         _obj = cls.model_validate({
             "user": User.from_dict(obj["user"]) if obj.get("user") is not None else None,
-            "storeInfo": StoreInfo.from_dict(obj["storeInfo"]) if obj.get("storeInfo") is not None else None,
-            "versionInfo": MobileAppVersionInfo.from_dict(obj["versionInfo"]) if obj.get("versionInfo") is not None else None,
-            "homeDashboardInfo": HomeDashboardInfo.from_dict(obj["homeDashboardInfo"]) if obj.get("homeDashboardInfo") is not None else None,
+            "store_info": StoreInfo.from_dict(obj["storeInfo"]) if obj.get("storeInfo") is not None else None,
+            "version_info": MobileAppVersionInfo.from_dict(obj["versionInfo"]) if obj.get("versionInfo") is not None else None,
+            "home_dashboard_info": HomeDashboardInfo.from_dict(obj["homeDashboardInfo"]) if obj.get("homeDashboardInfo") is not None else None,
             "pages": obj.get("pages")
         })
         return _obj

@@ -31,12 +31,12 @@ class ProtoTransportPayloadConfiguration(TransportPayloadTypeConfiguration):
     """
     ProtoTransportPayloadConfiguration
     """ # noqa: E501
-    device_telemetry_proto_schema: Optional[StrictStr] = Field(default=None, alias="deviceTelemetryProtoSchema")
-    device_attributes_proto_schema: Optional[StrictStr] = Field(default=None, alias="deviceAttributesProtoSchema")
-    device_rpc_request_proto_schema: Optional[StrictStr] = Field(default=None, alias="deviceRpcRequestProtoSchema")
-    device_rpc_response_proto_schema: Optional[StrictStr] = Field(default=None, alias="deviceRpcResponseProtoSchema")
-    enable_compatibility_with_json_payload_format: Optional[StrictBool] = Field(default=None, alias="enableCompatibilityWithJsonPayloadFormat")
-    use_json_payload_format_for_default_downlink_topics: Optional[StrictBool] = Field(default=None, alias="useJsonPayloadFormatForDefaultDownlinkTopics")
+    device_telemetry_proto_schema: Optional[StrictStr] = Field(default=None, serialization_alias="deviceTelemetryProtoSchema")
+    device_attributes_proto_schema: Optional[StrictStr] = Field(default=None, serialization_alias="deviceAttributesProtoSchema")
+    device_rpc_request_proto_schema: Optional[StrictStr] = Field(default=None, serialization_alias="deviceRpcRequestProtoSchema")
+    device_rpc_response_proto_schema: Optional[StrictStr] = Field(default=None, serialization_alias="deviceRpcResponseProtoSchema")
+    enable_compatibility_with_json_payload_format: Optional[StrictBool] = Field(default=None, serialization_alias="enableCompatibilityWithJsonPayloadFormat")
+    use_json_payload_format_for_default_downlink_topics: Optional[StrictBool] = Field(default=None, serialization_alias="useJsonPayloadFormatForDefaultDownlinkTopics")
     __properties: ClassVar[List[str]] = ["transportPayloadType", "deviceTelemetryProtoSchema", "deviceAttributesProtoSchema", "deviceRpcRequestProtoSchema", "deviceRpcResponseProtoSchema", "enableCompatibilityWithJsonPayloadFormat", "useJsonPayloadFormatForDefaultDownlinkTopics"]
 
     model_config = ConfigDict(
@@ -47,13 +47,18 @@ class ProtoTransportPayloadConfiguration(TransportPayloadTypeConfiguration):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -90,13 +95,13 @@ class ProtoTransportPayloadConfiguration(TransportPayloadTypeConfiguration):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "transportPayloadType": obj.get("transportPayloadType"),
-            "deviceTelemetryProtoSchema": obj.get("deviceTelemetryProtoSchema"),
-            "deviceAttributesProtoSchema": obj.get("deviceAttributesProtoSchema"),
-            "deviceRpcRequestProtoSchema": obj.get("deviceRpcRequestProtoSchema"),
-            "deviceRpcResponseProtoSchema": obj.get("deviceRpcResponseProtoSchema"),
-            "enableCompatibilityWithJsonPayloadFormat": obj.get("enableCompatibilityWithJsonPayloadFormat"),
-            "useJsonPayloadFormatForDefaultDownlinkTopics": obj.get("useJsonPayloadFormatForDefaultDownlinkTopics")
+            "transport_payload_type": obj.get("transportPayloadType"),
+            "device_telemetry_proto_schema": obj.get("deviceTelemetryProtoSchema"),
+            "device_attributes_proto_schema": obj.get("deviceAttributesProtoSchema"),
+            "device_rpc_request_proto_schema": obj.get("deviceRpcRequestProtoSchema"),
+            "device_rpc_response_proto_schema": obj.get("deviceRpcResponseProtoSchema"),
+            "enable_compatibility_with_json_payload_format": obj.get("enableCompatibilityWithJsonPayloadFormat"),
+            "use_json_payload_format_for_default_downlink_topics": obj.get("useJsonPayloadFormatForDefaultDownlinkTopics")
         })
         return _obj
 

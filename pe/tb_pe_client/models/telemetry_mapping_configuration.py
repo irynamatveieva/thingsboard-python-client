@@ -32,13 +32,13 @@ class TelemetryMappingConfiguration(BaseModel):
     """
     TelemetryMappingConfiguration
     """ # noqa: E501
-    key_name: Optional[Dict[str, StrictStr]] = Field(default=None, description="Map of LwM2M resource paths to telemetry key names", alias="keyName")
+    key_name: Optional[Dict[str, StrictStr]] = Field(default=None, description="Map of LwM2M resource paths to telemetry key names", serialization_alias="keyName")
     observe: Optional[List[StrictStr]] = Field(default=None, description="Set of resources to observe")
     attribute: Optional[List[StrictStr]] = Field(default=None, description="Set of attribute keys")
     telemetry: Optional[List[StrictStr]] = Field(default=None, description="Set of telemetry keys")
-    attribute_lwm2m: Optional[Dict[str, ObjectAttributes]] = Field(default=None, description="Map of resource paths to specific LwM2M object attributes", alias="attributeLwm2m")
-    init_attr_tel_as_obs_strategy: Optional[StrictBool] = Field(default=None, alias="initAttrTelAsObsStrategy")
-    observe_strategy: Optional[TelemetryObserveStrategy] = Field(default=None, description="Observation strategy for telemetry", alias="observeStrategy")
+    attribute_lwm2m: Optional[Dict[str, ObjectAttributes]] = Field(default=None, description="Map of resource paths to specific LwM2M object attributes", serialization_alias="attributeLwm2m")
+    init_attr_tel_as_obs_strategy: Optional[StrictBool] = Field(default=None, serialization_alias="initAttrTelAsObsStrategy")
+    observe_strategy: Optional[TelemetryObserveStrategy] = Field(default=None, description="Observation strategy for telemetry", serialization_alias="observeStrategy")
     __properties: ClassVar[List[str]] = ["keyName", "observe", "attribute", "telemetry", "attributeLwm2m", "initAttrTelAsObsStrategy", "observeStrategy"]
 
     model_config = ConfigDict(
@@ -49,13 +49,18 @@ class TelemetryMappingConfiguration(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -99,18 +104,18 @@ class TelemetryMappingConfiguration(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "keyName": obj.get("keyName"),
+            "key_name": obj.get("keyName"),
             "observe": obj.get("observe"),
             "attribute": obj.get("attribute"),
             "telemetry": obj.get("telemetry"),
-            "attributeLwm2m": dict(
+            "attribute_lwm2m": dict(
                 (_k, ObjectAttributes.from_dict(_v))
                 for _k, _v in obj["attributeLwm2m"].items()
             )
             if obj.get("attributeLwm2m") is not None
             else None,
-            "initAttrTelAsObsStrategy": obj.get("initAttrTelAsObsStrategy"),
-            "observeStrategy": obj.get("observeStrategy")
+            "init_attr_tel_as_obs_strategy": obj.get("initAttrTelAsObsStrategy"),
+            "observe_strategy": obj.get("observeStrategy")
         })
         return _obj
 

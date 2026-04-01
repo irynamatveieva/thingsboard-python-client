@@ -34,12 +34,12 @@ class RuleChainMetaData(BaseModel):
     """
     A JSON value representing the rule chain metadata.
     """ # noqa: E501
-    rule_chain_id: RuleChainId = Field(description="JSON object with Rule Chain Id.", alias="ruleChainId")
+    rule_chain_id: RuleChainId = Field(description="JSON object with Rule Chain Id.", serialization_alias="ruleChainId")
     version: Optional[StrictInt] = Field(default=None, description="Version of the Rule Chain")
-    first_node_index: StrictInt = Field(description="Index of the first rule node in the 'nodes' list", alias="firstNodeIndex")
+    first_node_index: StrictInt = Field(description="Index of the first rule node in the 'nodes' list", serialization_alias="firstNodeIndex")
     nodes: List[RuleNode] = Field(description="List of rule node JSON objects")
     connections: List[NodeConnectionInfo] = Field(description="List of JSON objects that represent connections between rule nodes")
-    rule_chain_connections: List[RuleChainConnectionInfo] = Field(description="List of JSON objects that represent connections between rule nodes and other rule chains.", alias="ruleChainConnections")
+    rule_chain_connections: List[RuleChainConnectionInfo] = Field(description="List of JSON objects that represent connections between rule nodes and other rule chains.", serialization_alias="ruleChainConnections")
     __properties: ClassVar[List[str]] = ["ruleChainId", "version", "firstNodeIndex", "nodes", "connections", "ruleChainConnections"]
 
     model_config = ConfigDict(
@@ -50,13 +50,18 @@ class RuleChainMetaData(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -119,12 +124,12 @@ class RuleChainMetaData(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "ruleChainId": RuleChainId.from_dict(obj["ruleChainId"]) if obj.get("ruleChainId") is not None else None,
+            "rule_chain_id": RuleChainId.from_dict(obj["ruleChainId"]) if obj.get("ruleChainId") is not None else None,
             "version": obj.get("version"),
-            "firstNodeIndex": obj.get("firstNodeIndex"),
+            "first_node_index": obj.get("firstNodeIndex"),
             "nodes": [RuleNode.from_dict(_item) for _item in obj["nodes"]] if obj.get("nodes") is not None else None,
             "connections": [NodeConnectionInfo.from_dict(_item) for _item in obj["connections"]] if obj.get("connections") is not None else None,
-            "ruleChainConnections": [RuleChainConnectionInfo.from_dict(_item) for _item in obj["ruleChainConnections"]] if obj.get("ruleChainConnections") is not None else None
+            "rule_chain_connections": [RuleChainConnectionInfo.from_dict(_item) for _item in obj["ruleChainConnections"]] if obj.get("ruleChainConnections") is not None else None
         })
         return _obj
 

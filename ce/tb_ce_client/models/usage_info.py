@@ -31,30 +31,30 @@ class UsageInfo(BaseModel):
     UsageInfo
     """ # noqa: E501
     devices: Optional[StrictInt] = None
-    max_devices: Optional[StrictInt] = Field(default=None, alias="maxDevices")
+    max_devices: Optional[StrictInt] = Field(default=None, serialization_alias="maxDevices")
     assets: Optional[StrictInt] = None
-    max_assets: Optional[StrictInt] = Field(default=None, alias="maxAssets")
+    max_assets: Optional[StrictInt] = Field(default=None, serialization_alias="maxAssets")
     customers: Optional[StrictInt] = None
-    max_customers: Optional[StrictInt] = Field(default=None, alias="maxCustomers")
+    max_customers: Optional[StrictInt] = Field(default=None, serialization_alias="maxCustomers")
     users: Optional[StrictInt] = None
-    max_users: Optional[StrictInt] = Field(default=None, alias="maxUsers")
+    max_users: Optional[StrictInt] = Field(default=None, serialization_alias="maxUsers")
     dashboards: Optional[StrictInt] = None
-    max_dashboards: Optional[StrictInt] = Field(default=None, alias="maxDashboards")
+    max_dashboards: Optional[StrictInt] = Field(default=None, serialization_alias="maxDashboards")
     edges: Optional[StrictInt] = None
-    max_edges: Optional[StrictInt] = Field(default=None, alias="maxEdges")
-    transport_messages: Optional[StrictInt] = Field(default=None, alias="transportMessages")
-    max_transport_messages: Optional[StrictInt] = Field(default=None, alias="maxTransportMessages")
-    js_executions: Optional[StrictInt] = Field(default=None, alias="jsExecutions")
-    tbel_executions: Optional[StrictInt] = Field(default=None, alias="tbelExecutions")
-    max_js_executions: Optional[StrictInt] = Field(default=None, alias="maxJsExecutions")
-    max_tbel_executions: Optional[StrictInt] = Field(default=None, alias="maxTbelExecutions")
+    max_edges: Optional[StrictInt] = Field(default=None, serialization_alias="maxEdges")
+    transport_messages: Optional[StrictInt] = Field(default=None, serialization_alias="transportMessages")
+    max_transport_messages: Optional[StrictInt] = Field(default=None, serialization_alias="maxTransportMessages")
+    js_executions: Optional[StrictInt] = Field(default=None, serialization_alias="jsExecutions")
+    tbel_executions: Optional[StrictInt] = Field(default=None, serialization_alias="tbelExecutions")
+    max_js_executions: Optional[StrictInt] = Field(default=None, serialization_alias="maxJsExecutions")
+    max_tbel_executions: Optional[StrictInt] = Field(default=None, serialization_alias="maxTbelExecutions")
     emails: Optional[StrictInt] = None
-    max_emails: Optional[StrictInt] = Field(default=None, alias="maxEmails")
+    max_emails: Optional[StrictInt] = Field(default=None, serialization_alias="maxEmails")
     sms: Optional[StrictInt] = None
-    max_sms: Optional[StrictInt] = Field(default=None, alias="maxSms")
-    sms_enabled: Optional[StrictBool] = Field(default=None, alias="smsEnabled")
+    max_sms: Optional[StrictInt] = Field(default=None, serialization_alias="maxSms")
+    sms_enabled: Optional[StrictBool] = Field(default=None, serialization_alias="smsEnabled")
     alarms: Optional[StrictInt] = None
-    max_alarms: Optional[StrictInt] = Field(default=None, alias="maxAlarms")
+    max_alarms: Optional[StrictInt] = Field(default=None, serialization_alias="maxAlarms")
     __properties: ClassVar[List[str]] = ["devices", "maxDevices", "assets", "maxAssets", "customers", "maxCustomers", "users", "maxUsers", "dashboards", "maxDashboards", "edges", "maxEdges", "transportMessages", "maxTransportMessages", "jsExecutions", "tbelExecutions", "maxJsExecutions", "maxTbelExecutions", "emails", "maxEmails", "sms", "maxSms", "smsEnabled", "alarms", "maxAlarms"]
 
     model_config = ConfigDict(
@@ -65,13 +65,18 @@ class UsageInfo(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -109,30 +114,30 @@ class UsageInfo(BaseModel):
 
         _obj = cls.model_validate({
             "devices": obj.get("devices"),
-            "maxDevices": obj.get("maxDevices"),
+            "max_devices": obj.get("maxDevices"),
             "assets": obj.get("assets"),
-            "maxAssets": obj.get("maxAssets"),
+            "max_assets": obj.get("maxAssets"),
             "customers": obj.get("customers"),
-            "maxCustomers": obj.get("maxCustomers"),
+            "max_customers": obj.get("maxCustomers"),
             "users": obj.get("users"),
-            "maxUsers": obj.get("maxUsers"),
+            "max_users": obj.get("maxUsers"),
             "dashboards": obj.get("dashboards"),
-            "maxDashboards": obj.get("maxDashboards"),
+            "max_dashboards": obj.get("maxDashboards"),
             "edges": obj.get("edges"),
-            "maxEdges": obj.get("maxEdges"),
-            "transportMessages": obj.get("transportMessages"),
-            "maxTransportMessages": obj.get("maxTransportMessages"),
-            "jsExecutions": obj.get("jsExecutions"),
-            "tbelExecutions": obj.get("tbelExecutions"),
-            "maxJsExecutions": obj.get("maxJsExecutions"),
-            "maxTbelExecutions": obj.get("maxTbelExecutions"),
+            "max_edges": obj.get("maxEdges"),
+            "transport_messages": obj.get("transportMessages"),
+            "max_transport_messages": obj.get("maxTransportMessages"),
+            "js_executions": obj.get("jsExecutions"),
+            "tbel_executions": obj.get("tbelExecutions"),
+            "max_js_executions": obj.get("maxJsExecutions"),
+            "max_tbel_executions": obj.get("maxTbelExecutions"),
             "emails": obj.get("emails"),
-            "maxEmails": obj.get("maxEmails"),
+            "max_emails": obj.get("maxEmails"),
             "sms": obj.get("sms"),
-            "maxSms": obj.get("maxSms"),
-            "smsEnabled": obj.get("smsEnabled"),
+            "max_sms": obj.get("maxSms"),
+            "sms_enabled": obj.get("smsEnabled"),
             "alarms": obj.get("alarms"),
-            "maxAlarms": obj.get("maxAlarms")
+            "max_alarms": obj.get("maxAlarms")
         })
         return _obj
 

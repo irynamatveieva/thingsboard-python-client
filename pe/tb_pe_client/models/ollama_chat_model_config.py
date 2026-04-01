@@ -34,16 +34,16 @@ class OllamaChatModelConfig(AiModelConfig):
     """
     OllamaChatModelConfig
     """ # noqa: E501
-    model_type: Optional[AiModelType] = Field(default=None, alias="modelType")
-    provider_config: OllamaProviderConfig = Field(alias="providerConfig")
-    model_id: Annotated[str, Field(min_length=1, strict=True)] = Field(alias="modelId")
+    model_type: Optional[AiModelType] = Field(default=None, serialization_alias="modelType")
+    provider_config: OllamaProviderConfig = Field(serialization_alias="providerConfig")
+    model_id: Annotated[str, Field(min_length=1, strict=True)] = Field(serialization_alias="modelId")
     temperature: Optional[Union[StrictFloat, StrictInt]] = None
-    top_p: Optional[Union[Annotated[float, Field(le=1, strict=True)], Annotated[int, Field(le=1, strict=True)]]] = Field(default=None, alias="topP")
-    top_k: Optional[StrictInt] = Field(default=None, alias="topK")
-    context_length: Optional[StrictInt] = Field(default=None, alias="contextLength")
-    max_output_tokens: Optional[StrictInt] = Field(default=None, alias="maxOutputTokens")
-    timeout_seconds: Optional[StrictInt] = Field(default=None, alias="timeoutSeconds")
-    max_retries: Optional[StrictInt] = Field(default=None, alias="maxRetries")
+    top_p: Optional[Union[Annotated[float, Field(le=1, strict=True)], Annotated[int, Field(le=1, strict=True)]]] = Field(default=None, serialization_alias="topP")
+    top_k: Optional[StrictInt] = Field(default=None, serialization_alias="topK")
+    context_length: Optional[StrictInt] = Field(default=None, serialization_alias="contextLength")
+    max_output_tokens: Optional[StrictInt] = Field(default=None, serialization_alias="maxOutputTokens")
+    timeout_seconds: Optional[StrictInt] = Field(default=None, serialization_alias="timeoutSeconds")
+    max_retries: Optional[StrictInt] = Field(default=None, serialization_alias="maxRetries")
     __properties: ClassVar[List[str]] = ["provider", "modelType", "providerConfig", "modelId", "temperature", "topP", "topK", "contextLength", "maxOutputTokens", "timeoutSeconds", "maxRetries"]
 
     model_config = ConfigDict(
@@ -54,13 +54,18 @@ class OllamaChatModelConfig(AiModelConfig):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -103,16 +108,16 @@ class OllamaChatModelConfig(AiModelConfig):
 
         _obj = cls.model_validate({
             "provider": obj.get("provider"),
-            "modelType": obj.get("modelType"),
-            "providerConfig": OllamaProviderConfig.from_dict(obj["providerConfig"]) if obj.get("providerConfig") is not None else None,
-            "modelId": obj.get("modelId"),
+            "model_type": obj.get("modelType"),
+            "provider_config": OllamaProviderConfig.from_dict(obj["providerConfig"]) if obj.get("providerConfig") is not None else None,
+            "model_id": obj.get("modelId"),
             "temperature": obj.get("temperature"),
-            "topP": obj.get("topP"),
-            "topK": obj.get("topK"),
-            "contextLength": obj.get("contextLength"),
-            "maxOutputTokens": obj.get("maxOutputTokens"),
-            "timeoutSeconds": obj.get("timeoutSeconds"),
-            "maxRetries": obj.get("maxRetries")
+            "top_p": obj.get("topP"),
+            "top_k": obj.get("topK"),
+            "context_length": obj.get("contextLength"),
+            "max_output_tokens": obj.get("maxOutputTokens"),
+            "timeout_seconds": obj.get("timeoutSeconds"),
+            "max_retries": obj.get("maxRetries")
         })
         return _obj
 

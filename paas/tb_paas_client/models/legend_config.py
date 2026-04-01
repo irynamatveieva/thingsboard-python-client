@@ -32,12 +32,12 @@ class LegendConfig(BaseModel):
     LegendConfig
     """ # noqa: E501
     position: Optional[LegendPosition] = None
-    sort_data_keys: Optional[StrictBool] = Field(default=None, alias="sortDataKeys")
-    show_min: Optional[StrictBool] = Field(default=None, alias="showMin")
-    show_max: Optional[StrictBool] = Field(default=None, alias="showMax")
-    show_avg: Optional[StrictBool] = Field(default=None, alias="showAvg")
-    show_total: Optional[StrictBool] = Field(default=None, alias="showTotal")
-    show_latest: Optional[StrictBool] = Field(default=None, alias="showLatest")
+    sort_data_keys: Optional[StrictBool] = Field(default=None, serialization_alias="sortDataKeys")
+    show_min: Optional[StrictBool] = Field(default=None, serialization_alias="showMin")
+    show_max: Optional[StrictBool] = Field(default=None, serialization_alias="showMax")
+    show_avg: Optional[StrictBool] = Field(default=None, serialization_alias="showAvg")
+    show_total: Optional[StrictBool] = Field(default=None, serialization_alias="showTotal")
+    show_latest: Optional[StrictBool] = Field(default=None, serialization_alias="showLatest")
     __properties: ClassVar[List[str]] = ["position", "sortDataKeys", "showMin", "showMax", "showAvg", "showTotal", "showLatest"]
 
     model_config = ConfigDict(
@@ -48,13 +48,18 @@ class LegendConfig(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -92,12 +97,12 @@ class LegendConfig(BaseModel):
 
         _obj = cls.model_validate({
             "position": obj.get("position"),
-            "sortDataKeys": obj.get("sortDataKeys"),
-            "showMin": obj.get("showMin"),
-            "showMax": obj.get("showMax"),
-            "showAvg": obj.get("showAvg"),
-            "showTotal": obj.get("showTotal"),
-            "showLatest": obj.get("showLatest")
+            "sort_data_keys": obj.get("sortDataKeys"),
+            "show_min": obj.get("showMin"),
+            "show_max": obj.get("showMax"),
+            "show_avg": obj.get("showAvg"),
+            "show_total": obj.get("showTotal"),
+            "show_latest": obj.get("showLatest")
         })
         return _obj
 

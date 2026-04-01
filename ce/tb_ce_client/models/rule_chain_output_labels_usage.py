@@ -32,10 +32,10 @@ class RuleChainOutputLabelsUsage(BaseModel):
     """
     RuleChainOutputLabelsUsage
     """ # noqa: E501
-    rule_chain_id: RuleChainId = Field(description="Rule Chain Id", alias="ruleChainId")
-    rule_node_id: RuleNodeId = Field(description="Rule Node Id", alias="ruleNodeId")
-    rule_chain_name: StrictStr = Field(description="Rule Chain Name", alias="ruleChainName")
-    rule_node_name: StrictStr = Field(description="Rule Node Name", alias="ruleNodeName")
+    rule_chain_id: RuleChainId = Field(description="Rule Chain Id", serialization_alias="ruleChainId")
+    rule_node_id: RuleNodeId = Field(description="Rule Node Id", serialization_alias="ruleNodeId")
+    rule_chain_name: StrictStr = Field(description="Rule Chain Name", serialization_alias="ruleChainName")
+    rule_node_name: StrictStr = Field(description="Rule Node Name", serialization_alias="ruleNodeName")
     labels: List[StrictStr] = Field(description="Output labels")
     __properties: ClassVar[List[str]] = ["ruleChainId", "ruleNodeId", "ruleChainName", "ruleNodeName", "labels"]
 
@@ -47,13 +47,18 @@ class RuleChainOutputLabelsUsage(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -104,10 +109,10 @@ class RuleChainOutputLabelsUsage(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "ruleChainId": RuleChainId.from_dict(obj["ruleChainId"]) if obj.get("ruleChainId") is not None else None,
-            "ruleNodeId": RuleNodeId.from_dict(obj["ruleNodeId"]) if obj.get("ruleNodeId") is not None else None,
-            "ruleChainName": obj.get("ruleChainName"),
-            "ruleNodeName": obj.get("ruleNodeName"),
+            "rule_chain_id": RuleChainId.from_dict(obj["ruleChainId"]) if obj.get("ruleChainId") is not None else None,
+            "rule_node_id": RuleNodeId.from_dict(obj["ruleNodeId"]) if obj.get("ruleNodeId") is not None else None,
+            "rule_chain_name": obj.get("ruleChainName"),
+            "rule_node_name": obj.get("ruleNodeName"),
             "labels": obj.get("labels")
         })
         return _obj

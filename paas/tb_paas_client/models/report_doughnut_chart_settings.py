@@ -37,8 +37,8 @@ class ReportDoughnutChartSettings(ReportLatestChartSettings):
     """ # noqa: E501
     layout: Optional[DoughnutLayout] = None
     clockwise: Optional[StrictBool] = None
-    total_value_font: Optional[Font] = Field(default=None, alias="totalValueFont")
-    total_value_color: Optional[StrictStr] = Field(default=None, alias="totalValueColor")
+    total_value_font: Optional[Font] = Field(default=None, serialization_alias="totalValueFont")
+    total_value_color: Optional[StrictStr] = Field(default=None, serialization_alias="totalValueColor")
     __properties: ClassVar[List[str]] = ["showTitle", "title", "titleFont", "titleColor", "titleAlignment", "units", "decimals", "autoScale", "sortSeries", "showTotal", "showLegend", "legendPosition", "legendLabelFont", "legendLabelColor", "legendValueFont", "legendValueColor", "legendShowTotal", "layout", "clockwise", "totalValueFont", "totalValueColor"]
 
     model_config = ConfigDict(
@@ -49,13 +49,18 @@ class ReportDoughnutChartSettings(ReportLatestChartSettings):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -104,27 +109,27 @@ class ReportDoughnutChartSettings(ReportLatestChartSettings):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "showTitle": obj.get("showTitle"),
+            "show_title": obj.get("showTitle"),
             "title": obj.get("title"),
-            "titleFont": Font.from_dict(obj["titleFont"]) if obj.get("titleFont") is not None else None,
-            "titleColor": obj.get("titleColor"),
-            "titleAlignment": obj.get("titleAlignment"),
+            "title_font": Font.from_dict(obj["titleFont"]) if obj.get("titleFont") is not None else None,
+            "title_color": obj.get("titleColor"),
+            "title_alignment": obj.get("titleAlignment"),
             "units": obj.get("units"),
             "decimals": obj.get("decimals"),
-            "autoScale": obj.get("autoScale"),
-            "sortSeries": obj.get("sortSeries"),
-            "showTotal": obj.get("showTotal"),
-            "showLegend": obj.get("showLegend"),
-            "legendPosition": obj.get("legendPosition"),
-            "legendLabelFont": Font.from_dict(obj["legendLabelFont"]) if obj.get("legendLabelFont") is not None else None,
-            "legendLabelColor": obj.get("legendLabelColor"),
-            "legendValueFont": Font.from_dict(obj["legendValueFont"]) if obj.get("legendValueFont") is not None else None,
-            "legendValueColor": obj.get("legendValueColor"),
-            "legendShowTotal": obj.get("legendShowTotal"),
+            "auto_scale": obj.get("autoScale"),
+            "sort_series": obj.get("sortSeries"),
+            "show_total": obj.get("showTotal"),
+            "show_legend": obj.get("showLegend"),
+            "legend_position": obj.get("legendPosition"),
+            "legend_label_font": Font.from_dict(obj["legendLabelFont"]) if obj.get("legendLabelFont") is not None else None,
+            "legend_label_color": obj.get("legendLabelColor"),
+            "legend_value_font": Font.from_dict(obj["legendValueFont"]) if obj.get("legendValueFont") is not None else None,
+            "legend_value_color": obj.get("legendValueColor"),
+            "legend_show_total": obj.get("legendShowTotal"),
             "layout": obj.get("layout"),
             "clockwise": obj.get("clockwise"),
-            "totalValueFont": Font.from_dict(obj["totalValueFont"]) if obj.get("totalValueFont") is not None else None,
-            "totalValueColor": obj.get("totalValueColor")
+            "total_value_font": Font.from_dict(obj["totalValueFont"]) if obj.get("totalValueFont") is not None else None,
+            "total_value_color": obj.get("totalValueColor")
         })
         return _obj
 

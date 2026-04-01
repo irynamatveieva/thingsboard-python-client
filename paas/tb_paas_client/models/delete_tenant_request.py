@@ -31,7 +31,7 @@ class DeleteTenantRequest(BaseModel):
     DeleteTenantRequest
     """ # noqa: E501
     reason: Optional[StrictStr] = None
-    additional_notes: Optional[StrictStr] = Field(default=None, alias="additionalNotes")
+    additional_notes: Optional[StrictStr] = Field(default=None, serialization_alias="additionalNotes")
     __properties: ClassVar[List[str]] = ["reason", "additionalNotes"]
 
     model_config = ConfigDict(
@@ -42,13 +42,18 @@ class DeleteTenantRequest(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -86,7 +91,7 @@ class DeleteTenantRequest(BaseModel):
 
         _obj = cls.model_validate({
             "reason": obj.get("reason"),
-            "additionalNotes": obj.get("additionalNotes")
+            "additional_notes": obj.get("additionalNotes")
         })
         return _obj
 

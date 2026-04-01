@@ -32,7 +32,7 @@ class NotificationRequestStats(BaseModel):
     """ # noqa: E501
     sent: Optional[Dict[str, StrictInt]] = Field(default=None, description="Number of successfully sent notifications per delivery method")
     errors: Optional[Dict[str, Dict[str, StrictStr]]] = Field(default=None, description="Errors per delivery method. Each entry maps recipient name to error message")
-    total_errors: Optional[StrictInt] = Field(default=None, description="Total number of errors across all delivery methods", alias="totalErrors")
+    total_errors: Optional[StrictInt] = Field(default=None, description="Total number of errors across all delivery methods", serialization_alias="totalErrors")
     error: Optional[StrictStr] = Field(default=None, description="General error message if the entire request failed")
     __properties: ClassVar[List[str]] = ["sent", "errors", "totalErrors", "error"]
 
@@ -44,13 +44,18 @@ class NotificationRequestStats(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -89,7 +94,7 @@ class NotificationRequestStats(BaseModel):
         _obj = cls.model_validate({
             "sent": obj.get("sent"),
             "errors": obj.get("errors"),
-            "totalErrors": obj.get("totalErrors"),
+            "total_errors": obj.get("totalErrors"),
             "error": obj.get("error")
         })
         return _obj

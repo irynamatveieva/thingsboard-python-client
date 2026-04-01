@@ -33,10 +33,10 @@ class QueueStats(BaseModel):
     QueueStats
     """ # noqa: E501
     id: Optional[QueueStatsId] = None
-    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", alias="createdTime")
-    tenant_id: Optional[TenantId] = Field(default=None, alias="tenantId")
-    queue_name: Optional[StrictStr] = Field(default=None, alias="queueName")
-    service_id: Optional[StrictStr] = Field(default=None, alias="serviceId")
+    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", serialization_alias="createdTime")
+    tenant_id: Optional[TenantId] = Field(default=None, serialization_alias="tenantId")
+    queue_name: Optional[StrictStr] = Field(default=None, serialization_alias="queueName")
+    service_id: Optional[StrictStr] = Field(default=None, serialization_alias="serviceId")
     __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "queueName", "serviceId"]
 
     model_config = ConfigDict(
@@ -47,13 +47,18 @@ class QueueStats(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -99,10 +104,10 @@ class QueueStats(BaseModel):
 
         _obj = cls.model_validate({
             "id": QueueStatsId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
-            "queueName": obj.get("queueName"),
-            "serviceId": obj.get("serviceId")
+            "created_time": obj.get("createdTime"),
+            "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
+            "queue_name": obj.get("queueName"),
+            "service_id": obj.get("serviceId")
         })
         return _obj
 

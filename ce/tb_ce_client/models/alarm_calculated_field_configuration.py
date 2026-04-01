@@ -35,12 +35,12 @@ class AlarmCalculatedFieldConfiguration(CalculatedFieldConfiguration):
     AlarmCalculatedFieldConfiguration
     """ # noqa: E501
     arguments: Dict[str, Argument]
-    create_rules: Dict[str, AlarmRuleDefinition] = Field(alias="createRules")
-    clear_rule: Optional[AlarmRuleDefinition] = Field(default=None, alias="clearRule")
+    create_rules: Dict[str, AlarmRuleDefinition] = Field(serialization_alias="createRules")
+    clear_rule: Optional[AlarmRuleDefinition] = Field(default=None, serialization_alias="clearRule")
     propagate: Optional[StrictBool] = None
-    propagate_to_owner: Optional[StrictBool] = Field(default=None, alias="propagateToOwner")
-    propagate_to_tenant: Optional[StrictBool] = Field(default=None, alias="propagateToTenant")
-    propagate_relation_types: Optional[List[StrictStr]] = Field(default=None, alias="propagateRelationTypes")
+    propagate_to_owner: Optional[StrictBool] = Field(default=None, serialization_alias="propagateToOwner")
+    propagate_to_tenant: Optional[StrictBool] = Field(default=None, serialization_alias="propagateToTenant")
+    propagate_relation_types: Optional[List[StrictStr]] = Field(default=None, serialization_alias="propagateRelationTypes")
     __properties: ClassVar[List[str]] = ["output", "type", "arguments", "createRules", "clearRule", "propagate", "propagateToOwner", "propagateToTenant", "propagateRelationTypes"]
 
     model_config = ConfigDict(
@@ -51,13 +51,18 @@ class AlarmCalculatedFieldConfiguration(CalculatedFieldConfiguration):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -122,17 +127,17 @@ class AlarmCalculatedFieldConfiguration(CalculatedFieldConfiguration):
             )
             if obj.get("arguments") is not None
             else None,
-            "createRules": dict(
+            "create_rules": dict(
                 (_k, AlarmRuleDefinition.from_dict(_v))
                 for _k, _v in obj["createRules"].items()
             )
             if obj.get("createRules") is not None
             else None,
-            "clearRule": AlarmRuleDefinition.from_dict(obj["clearRule"]) if obj.get("clearRule") is not None else None,
+            "clear_rule": AlarmRuleDefinition.from_dict(obj["clearRule"]) if obj.get("clearRule") is not None else None,
             "propagate": obj.get("propagate"),
-            "propagateToOwner": obj.get("propagateToOwner"),
-            "propagateToTenant": obj.get("propagateToTenant"),
-            "propagateRelationTypes": obj.get("propagateRelationTypes")
+            "propagate_to_owner": obj.get("propagateToOwner"),
+            "propagate_to_tenant": obj.get("propagateToTenant"),
+            "propagate_relation_types": obj.get("propagateRelationTypes")
         })
         return _obj
 

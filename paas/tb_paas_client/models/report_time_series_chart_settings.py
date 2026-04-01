@@ -47,31 +47,31 @@ class ReportTimeSeriesChartSettings(BaseModel):
     """
     ReportTimeSeriesChartSettings
     """ # noqa: E501
-    show_title: Optional[StrictBool] = Field(default=None, alias="showTitle")
+    show_title: Optional[StrictBool] = Field(default=None, serialization_alias="showTitle")
     title: Optional[StrictStr] = None
-    title_font: Optional[Font] = Field(default=None, alias="titleFont")
-    title_color: Optional[StrictStr] = Field(default=None, alias="titleColor")
-    title_alignment: Optional[TextAlignment] = Field(default=None, alias="titleAlignment")
+    title_font: Optional[Font] = Field(default=None, serialization_alias="titleFont")
+    title_color: Optional[StrictStr] = Field(default=None, serialization_alias="titleColor")
+    title_alignment: Optional[TextAlignment] = Field(default=None, serialization_alias="titleAlignment")
     thresholds: Optional[List[TimeSeriesChartThreshold]] = None
     stack: Optional[StrictBool] = None
     grid: Optional[TimeSeriesChartGridSettings] = None
-    y_axes: Optional[Dict[str, TimeSeriesChartYAxisSettings]] = Field(default=None, alias="yAxes")
-    x_axis: Optional[TimeSeriesChartXAxisSettings] = Field(default=None, alias="xAxis")
-    bar_width_settings: Optional[TimeSeriesChartBarWidthSettings] = Field(default=None, alias="barWidthSettings")
-    no_aggregation_bar_width_settings: Optional[TimeSeriesChartNoAggregationBarWidthSettings] = Field(default=None, alias="noAggregationBarWidthSettings")
+    y_axes: Optional[Dict[str, TimeSeriesChartYAxisSettings]] = Field(default=None, serialization_alias="yAxes")
+    x_axis: Optional[TimeSeriesChartXAxisSettings] = Field(default=None, serialization_alias="xAxis")
+    bar_width_settings: Optional[TimeSeriesChartBarWidthSettings] = Field(default=None, serialization_alias="barWidthSettings")
+    no_aggregation_bar_width_settings: Optional[TimeSeriesChartNoAggregationBarWidthSettings] = Field(default=None, serialization_alias="noAggregationBarWidthSettings")
     states: Optional[List[TimeSeriesChartStateSettings]] = None
-    comparison_enabled: Optional[StrictBool] = Field(default=None, alias="comparisonEnabled")
-    time_for_comparison: Optional[ComparisonDuration] = Field(default=None, alias="timeForComparison")
-    comparison_custom_interval_value: Optional[StrictInt] = Field(default=None, alias="comparisonCustomIntervalValue")
-    comparison_x_axis: Optional[TimeSeriesChartXAxisSettings] = Field(default=None, alias="comparisonXAxis")
-    show_legend: Optional[StrictBool] = Field(default=None, alias="showLegend")
-    legend_column_title_font: Optional[Font] = Field(default=None, alias="legendColumnTitleFont")
-    legend_column_title_color: Optional[StrictStr] = Field(default=None, alias="legendColumnTitleColor")
-    legend_label_font: Optional[Font] = Field(default=None, alias="legendLabelFont")
-    legend_label_color: Optional[StrictStr] = Field(default=None, alias="legendLabelColor")
-    legend_value_font: Optional[Font] = Field(default=None, alias="legendValueFont")
-    legend_value_color: Optional[StrictStr] = Field(default=None, alias="legendValueColor")
-    legend_config: Optional[LegendConfig] = Field(default=None, alias="legendConfig")
+    comparison_enabled: Optional[StrictBool] = Field(default=None, serialization_alias="comparisonEnabled")
+    time_for_comparison: Optional[ComparisonDuration] = Field(default=None, serialization_alias="timeForComparison")
+    comparison_custom_interval_value: Optional[StrictInt] = Field(default=None, serialization_alias="comparisonCustomIntervalValue")
+    comparison_x_axis: Optional[TimeSeriesChartXAxisSettings] = Field(default=None, serialization_alias="comparisonXAxis")
+    show_legend: Optional[StrictBool] = Field(default=None, serialization_alias="showLegend")
+    legend_column_title_font: Optional[Font] = Field(default=None, serialization_alias="legendColumnTitleFont")
+    legend_column_title_color: Optional[StrictStr] = Field(default=None, serialization_alias="legendColumnTitleColor")
+    legend_label_font: Optional[Font] = Field(default=None, serialization_alias="legendLabelFont")
+    legend_label_color: Optional[StrictStr] = Field(default=None, serialization_alias="legendLabelColor")
+    legend_value_font: Optional[Font] = Field(default=None, serialization_alias="legendValueFont")
+    legend_value_color: Optional[StrictStr] = Field(default=None, serialization_alias="legendValueColor")
+    legend_config: Optional[LegendConfig] = Field(default=None, serialization_alias="legendConfig")
     xaxis: Optional[TimeSeriesChartXAxisSettings] = None
     yaxes: Optional[Dict[str, TimeSeriesChartYAxisSettings]] = None
     __properties: ClassVar[List[str]] = ["showTitle", "title", "titleFont", "titleColor", "titleAlignment", "thresholds", "stack", "grid", "yAxes", "xAxis", "barWidthSettings", "noAggregationBarWidthSettings", "states", "comparisonEnabled", "timeForComparison", "comparisonCustomIntervalValue", "comparisonXAxis", "showLegend", "legendColumnTitleFont", "legendColumnTitleColor", "legendLabelFont", "legendLabelColor", "legendValueFont", "legendValueColor", "legendConfig", "xaxis", "yaxes"]
@@ -101,13 +101,18 @@ class ReportTimeSeriesChartSettings(BaseModel):
             return None
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Union[ReportBarChartWithLabelsSettings, ReportRangeChartSettings]]:

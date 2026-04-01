@@ -38,22 +38,22 @@ class GroupPermissionInfo(BaseModel):
     GroupPermissionInfo
     """ # noqa: E501
     id: Optional[GroupPermissionId] = Field(default=None, description="JSON object with the Group Permission Id. Specify this field to update the Group Permission. Referencing non-existing Group Permission Id will cause error. Omit this field to create new Group Permission.")
-    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the group permission creation, in milliseconds", alias="createdTime")
-    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with the Tenant Id.", alias="tenantId")
-    user_group_id: EntityGroupId = Field(description="JSON object with the User Group Id. Represents the user group that will have permissions to perform operations against the corresponding entity group.", alias="userGroupId")
-    role_id: RoleId = Field(description="JSON object with the Role Id. Represents the set of permissions. The role type (GENERIC or GROUP) determines whether 'entityGroupId' is required.", alias="roleId")
-    entity_group_id: Optional[EntityGroupId] = Field(default=None, description="JSON object with the Entity Group Id. Required when using a GROUP role — specifies the entity group to which the permissions apply. Must be null or omitted when using a GENERIC role.", alias="entityGroupId")
-    entity_group_type: Optional[EntityType] = Field(default=None, description="Type of the entities in the group: DEVICE, ASSET, CUSTOMER, etc. Auto-populated from the referenced entity group. Null for generic permissions.", alias="entityGroupType")
+    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the group permission creation, in milliseconds", serialization_alias="createdTime")
+    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with the Tenant Id.", serialization_alias="tenantId")
+    user_group_id: EntityGroupId = Field(description="JSON object with the User Group Id. Represents the user group that will have permissions to perform operations against the corresponding entity group.", serialization_alias="userGroupId")
+    role_id: RoleId = Field(description="JSON object with the Role Id. Represents the set of permissions. The role type (GENERIC or GROUP) determines whether 'entityGroupId' is required.", serialization_alias="roleId")
+    entity_group_id: Optional[EntityGroupId] = Field(default=None, description="JSON object with the Entity Group Id. Required when using a GROUP role — specifies the entity group to which the permissions apply. Must be null or omitted when using a GENERIC role.", serialization_alias="entityGroupId")
+    entity_group_type: Optional[EntityType] = Field(default=None, description="Type of the entities in the group: DEVICE, ASSET, CUSTOMER, etc. Auto-populated from the referenced entity group. Null for generic permissions.", serialization_alias="entityGroupType")
     role: Optional[Role] = Field(default=None, description="Represent set of permissions.")
-    entity_group_name: Optional[StrictStr] = Field(default=None, description="Entity Group Name.", alias="entityGroupName")
-    entity_group_owner_id: Optional[EntityId] = Field(default=None, description="Entity Group Owner Id (Tenant or Customer).", alias="entityGroupOwnerId")
-    entity_group_owner_name: Optional[StrictStr] = Field(default=None, description="Name of the entity group owner (Tenant or Customer title).", alias="entityGroupOwnerName")
-    user_group_name: Optional[StrictStr] = Field(default=None, description="User Group Name.", alias="userGroupName")
-    user_group_owner_id: Optional[EntityId] = Field(default=None, description="User Group Owner Id (Tenant or Customer).", alias="userGroupOwnerId")
-    user_group_owner_name: Optional[StrictStr] = Field(default=None, description="Name of the user group owner (Tenant or Customer title).", alias="userGroupOwnerName")
+    entity_group_name: Optional[StrictStr] = Field(default=None, description="Entity Group Name.", serialization_alias="entityGroupName")
+    entity_group_owner_id: Optional[EntityId] = Field(default=None, description="Entity Group Owner Id (Tenant or Customer).", serialization_alias="entityGroupOwnerId")
+    entity_group_owner_name: Optional[StrictStr] = Field(default=None, description="Name of the entity group owner (Tenant or Customer title).", serialization_alias="entityGroupOwnerName")
+    user_group_name: Optional[StrictStr] = Field(default=None, description="User Group Name.", serialization_alias="userGroupName")
+    user_group_owner_id: Optional[EntityId] = Field(default=None, description="User Group Owner Id (Tenant or Customer).", serialization_alias="userGroupOwnerId")
+    user_group_owner_name: Optional[StrictStr] = Field(default=None, description="Name of the user group owner (Tenant or Customer title).", serialization_alias="userGroupOwnerName")
     name: Optional[StrictStr] = Field(default=None, description="Name of the Group Permissions. Auto-generated")
     public: Optional[StrictBool] = None
-    read_only: Optional[StrictBool] = Field(default=None, alias="readOnly")
+    read_only: Optional[StrictBool] = Field(default=None, serialization_alias="readOnly")
     __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "userGroupId", "roleId", "entityGroupId", "entityGroupType", "role", "entityGroupName", "entityGroupOwnerId", "entityGroupOwnerName", "userGroupName", "userGroupOwnerId", "userGroupOwnerName", "name", "public", "readOnly"]
 
     model_config = ConfigDict(
@@ -64,13 +64,18 @@ class GroupPermissionInfo(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -140,22 +145,22 @@ class GroupPermissionInfo(BaseModel):
 
         _obj = cls.model_validate({
             "id": GroupPermissionId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
-            "userGroupId": EntityGroupId.from_dict(obj["userGroupId"]) if obj.get("userGroupId") is not None else None,
-            "roleId": RoleId.from_dict(obj["roleId"]) if obj.get("roleId") is not None else None,
-            "entityGroupId": EntityGroupId.from_dict(obj["entityGroupId"]) if obj.get("entityGroupId") is not None else None,
-            "entityGroupType": obj.get("entityGroupType"),
+            "created_time": obj.get("createdTime"),
+            "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
+            "user_group_id": EntityGroupId.from_dict(obj["userGroupId"]) if obj.get("userGroupId") is not None else None,
+            "role_id": RoleId.from_dict(obj["roleId"]) if obj.get("roleId") is not None else None,
+            "entity_group_id": EntityGroupId.from_dict(obj["entityGroupId"]) if obj.get("entityGroupId") is not None else None,
+            "entity_group_type": obj.get("entityGroupType"),
             "role": Role.from_dict(obj["role"]) if obj.get("role") is not None else None,
-            "entityGroupName": obj.get("entityGroupName"),
-            "entityGroupOwnerId": EntityId.from_dict(obj["entityGroupOwnerId"]) if obj.get("entityGroupOwnerId") is not None else None,
-            "entityGroupOwnerName": obj.get("entityGroupOwnerName"),
-            "userGroupName": obj.get("userGroupName"),
-            "userGroupOwnerId": EntityId.from_dict(obj["userGroupOwnerId"]) if obj.get("userGroupOwnerId") is not None else None,
-            "userGroupOwnerName": obj.get("userGroupOwnerName"),
+            "entity_group_name": obj.get("entityGroupName"),
+            "entity_group_owner_id": EntityId.from_dict(obj["entityGroupOwnerId"]) if obj.get("entityGroupOwnerId") is not None else None,
+            "entity_group_owner_name": obj.get("entityGroupOwnerName"),
+            "user_group_name": obj.get("userGroupName"),
+            "user_group_owner_id": EntityId.from_dict(obj["userGroupOwnerId"]) if obj.get("userGroupOwnerId") is not None else None,
+            "user_group_owner_name": obj.get("userGroupOwnerName"),
             "name": obj.get("name"),
             "public": obj.get("public"),
-            "readOnly": obj.get("readOnly")
+            "read_only": obj.get("readOnly")
         })
         return _obj
 

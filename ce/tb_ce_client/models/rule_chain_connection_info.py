@@ -31,9 +31,9 @@ class RuleChainConnectionInfo(BaseModel):
     """
     RuleChainConnectionInfo
     """ # noqa: E501
-    from_index: StrictInt = Field(description="Index of rule node in the 'nodes' array of the RuleChainMetaData. Indicates the 'from' part of the connection.", alias="fromIndex")
-    target_rule_chain_id: RuleChainId = Field(description="JSON object with the Rule Chain Id.", alias="targetRuleChainId")
-    additional_info: Optional[Any] = Field(description="JSON object with the additional information about the connection.", alias="additionalInfo")
+    from_index: StrictInt = Field(description="Index of rule node in the 'nodes' array of the RuleChainMetaData. Indicates the 'from' part of the connection.", serialization_alias="fromIndex")
+    target_rule_chain_id: RuleChainId = Field(description="JSON object with the Rule Chain Id.", serialization_alias="targetRuleChainId")
+    additional_info: Optional[Any] = Field(description="JSON object with the additional information about the connection.", serialization_alias="additionalInfo")
     type: StrictStr = Field(description="Type of the relation. Typically indicated the result of processing by the 'from' rule node. For example, 'Success' or 'Failure'")
     __properties: ClassVar[List[str]] = ["fromIndex", "targetRuleChainId", "additionalInfo", "type"]
 
@@ -45,13 +45,18 @@ class RuleChainConnectionInfo(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -96,9 +101,9 @@ class RuleChainConnectionInfo(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "fromIndex": obj.get("fromIndex"),
-            "targetRuleChainId": RuleChainId.from_dict(obj["targetRuleChainId"]) if obj.get("targetRuleChainId") is not None else None,
-            "additionalInfo": obj.get("additionalInfo"),
+            "from_index": obj.get("fromIndex"),
+            "target_rule_chain_id": RuleChainId.from_dict(obj["targetRuleChainId"]) if obj.get("targetRuleChainId") is not None else None,
+            "additional_info": obj.get("additionalInfo"),
             "type": obj.get("type")
         })
         return _obj

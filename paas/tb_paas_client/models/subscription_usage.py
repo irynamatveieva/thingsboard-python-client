@@ -35,21 +35,21 @@ class SubscriptionUsage(BaseModel):
     customers: Optional[StrictInt] = None
     users: Optional[StrictInt] = None
     dashboards: Optional[StrictInt] = None
-    rule_chains: Optional[StrictInt] = Field(default=None, alias="ruleChains")
+    rule_chains: Optional[StrictInt] = Field(default=None, serialization_alias="ruleChains")
     integrations: Optional[StrictInt] = None
     converters: Optional[StrictInt] = None
-    scheduler_events: Optional[StrictInt] = Field(default=None, alias="schedulerEvents")
+    scheduler_events: Optional[StrictInt] = Field(default=None, serialization_alias="schedulerEvents")
     edges: Optional[StrictInt] = None
-    transport_messages: Optional[StrictInt] = Field(default=None, alias="transportMessages")
-    transport_data_points: Optional[StrictInt] = Field(default=None, alias="transportDataPoints")
-    re_executions: Optional[StrictInt] = Field(default=None, alias="reExecutions")
-    js_executions: Optional[StrictInt] = Field(default=None, alias="jsExecutions")
-    dp_storage_days: Optional[StrictInt] = Field(default=None, alias="dpStorageDays")
+    transport_messages: Optional[StrictInt] = Field(default=None, serialization_alias="transportMessages")
+    transport_data_points: Optional[StrictInt] = Field(default=None, serialization_alias="transportDataPoints")
+    re_executions: Optional[StrictInt] = Field(default=None, serialization_alias="reExecutions")
+    js_executions: Optional[StrictInt] = Field(default=None, serialization_alias="jsExecutions")
+    dp_storage_days: Optional[StrictInt] = Field(default=None, serialization_alias="dpStorageDays")
     emails: Optional[StrictInt] = None
     sms: Optional[StrictInt] = None
     alarms: Optional[StrictInt] = None
     reports: Optional[StrictInt] = None
-    ai_credits: Optional[StrictInt] = Field(default=None, alias="aiCredits")
+    ai_credits: Optional[StrictInt] = Field(default=None, serialization_alias="aiCredits")
     __properties: ClassVar[List[str]] = ["devices", "assets", "customers", "users", "dashboards", "ruleChains", "integrations", "converters", "schedulerEvents", "edges", "transportMessages", "transportDataPoints", "reExecutions", "jsExecutions", "dpStorageDays", "emails", "sms", "alarms", "reports", "aiCredits"]
 
     model_config = ConfigDict(
@@ -60,13 +60,18 @@ class SubscriptionUsage(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -108,21 +113,21 @@ class SubscriptionUsage(BaseModel):
             "customers": obj.get("customers"),
             "users": obj.get("users"),
             "dashboards": obj.get("dashboards"),
-            "ruleChains": obj.get("ruleChains"),
+            "rule_chains": obj.get("ruleChains"),
             "integrations": obj.get("integrations"),
             "converters": obj.get("converters"),
-            "schedulerEvents": obj.get("schedulerEvents"),
+            "scheduler_events": obj.get("schedulerEvents"),
             "edges": obj.get("edges"),
-            "transportMessages": obj.get("transportMessages"),
-            "transportDataPoints": obj.get("transportDataPoints"),
-            "reExecutions": obj.get("reExecutions"),
-            "jsExecutions": obj.get("jsExecutions"),
-            "dpStorageDays": obj.get("dpStorageDays"),
+            "transport_messages": obj.get("transportMessages"),
+            "transport_data_points": obj.get("transportDataPoints"),
+            "re_executions": obj.get("reExecutions"),
+            "js_executions": obj.get("jsExecutions"),
+            "dp_storage_days": obj.get("dpStorageDays"),
             "emails": obj.get("emails"),
             "sms": obj.get("sms"),
             "alarms": obj.get("alarms"),
             "reports": obj.get("reports"),
-            "aiCredits": obj.get("aiCredits")
+            "ai_credits": obj.get("aiCredits")
         })
         return _obj
 

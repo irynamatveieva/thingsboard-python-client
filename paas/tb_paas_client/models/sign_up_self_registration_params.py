@@ -35,8 +35,8 @@ class SignUpSelfRegistrationParams(BaseModel):
     title: Optional[StrictStr] = None
     captcha: Optional[CaptchaParams] = None
     fields: Optional[List[SignUpField]] = None
-    show_privacy_policy: Optional[StrictBool] = Field(default=None, alias="showPrivacyPolicy")
-    show_terms_of_use: Optional[StrictBool] = Field(default=None, alias="showTermsOfUse")
+    show_privacy_policy: Optional[StrictBool] = Field(default=None, serialization_alias="showPrivacyPolicy")
+    show_terms_of_use: Optional[StrictBool] = Field(default=None, serialization_alias="showTermsOfUse")
     __properties: ClassVar[List[str]] = ["title", "captcha", "fields", "showPrivacyPolicy", "showTermsOfUse"]
 
     model_config = ConfigDict(
@@ -47,13 +47,18 @@ class SignUpSelfRegistrationParams(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -103,8 +108,8 @@ class SignUpSelfRegistrationParams(BaseModel):
             "title": obj.get("title"),
             "captcha": CaptchaParams.from_dict(obj["captcha"]) if obj.get("captcha") is not None else None,
             "fields": [SignUpField.from_dict(_item) for _item in obj["fields"]] if obj.get("fields") is not None else None,
-            "showPrivacyPolicy": obj.get("showPrivacyPolicy"),
-            "showTermsOfUse": obj.get("showTermsOfUse")
+            "show_privacy_policy": obj.get("showPrivacyPolicy"),
+            "show_terms_of_use": obj.get("showTermsOfUse")
         })
         return _obj
 

@@ -30,10 +30,10 @@ class MobileAppVersionInfo(BaseModel):
     """
     MobileAppVersionInfo
     """ # noqa: E501
-    min_version: Optional[StrictStr] = Field(default=None, description="Minimum supported version", alias="minVersion")
-    min_version_release_notes: Optional[StrictStr] = Field(default=None, description="Release notes of minimum supported version", alias="minVersionReleaseNotes")
-    latest_version: Optional[StrictStr] = Field(default=None, description="Latest supported version", alias="latestVersion")
-    latest_version_release_notes: Optional[StrictStr] = Field(default=None, description="Release notes of latest supported version", alias="latestVersionReleaseNotes")
+    min_version: Optional[StrictStr] = Field(default=None, description="Minimum supported version", serialization_alias="minVersion")
+    min_version_release_notes: Optional[StrictStr] = Field(default=None, description="Release notes of minimum supported version", serialization_alias="minVersionReleaseNotes")
+    latest_version: Optional[StrictStr] = Field(default=None, description="Latest supported version", serialization_alias="latestVersion")
+    latest_version_release_notes: Optional[StrictStr] = Field(default=None, description="Release notes of latest supported version", serialization_alias="latestVersionReleaseNotes")
     __properties: ClassVar[List[str]] = ["minVersion", "minVersionReleaseNotes", "latestVersion", "latestVersionReleaseNotes"]
 
     model_config = ConfigDict(
@@ -44,13 +44,18 @@ class MobileAppVersionInfo(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -87,10 +92,10 @@ class MobileAppVersionInfo(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "minVersion": obj.get("minVersion"),
-            "minVersionReleaseNotes": obj.get("minVersionReleaseNotes"),
-            "latestVersion": obj.get("latestVersion"),
-            "latestVersionReleaseNotes": obj.get("latestVersionReleaseNotes")
+            "min_version": obj.get("minVersion"),
+            "min_version_release_notes": obj.get("minVersionReleaseNotes"),
+            "latest_version": obj.get("latestVersion"),
+            "latest_version_release_notes": obj.get("latestVersionReleaseNotes")
         })
         return _obj
 

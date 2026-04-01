@@ -33,7 +33,7 @@ with ThingsboardClient("http://localhost:9090", username="tenant@thingsboard.org
     try:
         devices = client.get_tenant_devices(page_size=10, page=0)
         for device in devices.data:
-            print(device.name, device.id.id)
+            print(device.name, device.id.get_id())
     except ApiException as e:
         print(f"Error {e.status}: {e.reason}")
 # Connection pool released automatically
@@ -46,7 +46,7 @@ with ThingsboardClient("http://localhost:9090", username="tenant@thingsboard.org
 devices = client.get_tenant_devices(page_size=10, page=0)
 print(f"Total devices: {devices.total_elements}")
 for device in devices.data:
-    print(f"  {device.name} (id={device.id.id})")
+    print(f"  {device.name} (id={device.id.get_id()})")
 
 # Check if more pages exist
 if devices.has_next:

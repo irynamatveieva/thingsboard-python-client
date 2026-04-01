@@ -39,7 +39,7 @@ class EntityAggregationCalculatedFieldConfiguration(CalculatedFieldConfiguration
     arguments: Dict[str, Argument]
     interval: AggInterval
     metrics: Dict[str, AggMetric]
-    produce_intermediate_result: Optional[StrictBool] = Field(default=None, alias="produceIntermediateResult")
+    produce_intermediate_result: Optional[StrictBool] = Field(default=None, serialization_alias="produceIntermediateResult")
     watermark: Optional[Watermark] = None
     __properties: ClassVar[List[str]] = ["type", "output", "aiGenerated", "arguments", "interval", "metrics", "produceIntermediateResult", "watermark"]
 
@@ -51,13 +51,18 @@ class EntityAggregationCalculatedFieldConfiguration(CalculatedFieldConfiguration
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -119,7 +124,7 @@ class EntityAggregationCalculatedFieldConfiguration(CalculatedFieldConfiguration
         _obj = cls.model_validate({
             "type": obj.get("type"),
             "output": Output.from_dict(obj["output"]) if obj.get("output") is not None else None,
-            "aiGenerated": obj.get("aiGenerated"),
+            "ai_generated": obj.get("aiGenerated"),
             "arguments": dict(
                 (_k, Argument.from_dict(_v))
                 for _k, _v in obj["arguments"].items()
@@ -133,7 +138,7 @@ class EntityAggregationCalculatedFieldConfiguration(CalculatedFieldConfiguration
             )
             if obj.get("metrics") is not None
             else None,
-            "produceIntermediateResult": obj.get("produceIntermediateResult"),
+            "produce_intermediate_result": obj.get("produceIntermediateResult"),
             "watermark": Watermark.from_dict(obj["watermark"]) if obj.get("watermark") is not None else None
         })
         return _obj

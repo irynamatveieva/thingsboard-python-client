@@ -35,16 +35,16 @@ class EntityGroup(BaseModel):
     A JSON value representing the entity group.
     """ # noqa: E501
     id: Optional[EntityGroupId] = Field(default=None, description="JSON object with the EntityGroupId Id. Specify this field to update the Entity Group. Referencing non-existing Entity Group Id will cause error. Omit this field to create new Entity Group.")
-    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the entity group creation, in milliseconds", alias="createdTime")
+    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the entity group creation, in milliseconds", serialization_alias="createdTime")
     type: EntityType
     name: StrictStr = Field(description="Name of the entity group")
-    owner_id: Optional[EntityId] = Field(default=None, description="JSON object with the owner of the group - Tenant or Customer Id.", alias="ownerId")
-    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the entity group. May include: 'description' (string), 'isPublic' (boolean, whether this group is shared publicly), 'publicCustomerId' (string, UUID of the public customer associated with this group).", alias="additionalInfo")
+    owner_id: Optional[EntityId] = Field(default=None, description="JSON object with the owner of the group - Tenant or Customer Id.", serialization_alias="ownerId")
+    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the entity group. May include: 'description' (string), 'isPublic' (boolean, whether this group is shared publicly), 'publicCustomerId' (string, UUID of the public customer associated with this group).", serialization_alias="additionalInfo")
     configuration: Optional[Any] = Field(default=None, description="JSON with the configuration for UI components: list of columns, settings, actions, etc ")
     version: Optional[StrictInt] = None
-    edge_group_all: Optional[StrictBool] = Field(default=None, description="Indicates special edge group 'All' that contains all entities and can't be deleted.", alias="edgeGroupAll")
-    group_all: Optional[StrictBool] = Field(default=None, description="Indicates special group 'All' that contains all entities and can't be deleted.", alias="groupAll")
-    tenant_id: Optional[TenantId] = Field(default=None, alias="tenantId")
+    edge_group_all: Optional[StrictBool] = Field(default=None, description="Indicates special edge group 'All' that contains all entities and can't be deleted.", serialization_alias="edgeGroupAll")
+    group_all: Optional[StrictBool] = Field(default=None, description="Indicates special group 'All' that contains all entities and can't be deleted.", serialization_alias="groupAll")
+    tenant_id: Optional[TenantId] = Field(default=None, serialization_alias="tenantId")
     __properties: ClassVar[List[str]] = ["id", "createdTime", "type", "name", "ownerId", "additionalInfo", "configuration", "version", "edgeGroupAll", "groupAll", "tenantId"]
 
     @field_validator('type')
@@ -62,13 +62,18 @@ class EntityGroup(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -129,16 +134,16 @@ class EntityGroup(BaseModel):
 
         _obj = cls.model_validate({
             "id": EntityGroupId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
+            "created_time": obj.get("createdTime"),
             "type": obj.get("type"),
             "name": obj.get("name"),
-            "ownerId": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None,
-            "additionalInfo": obj.get("additionalInfo"),
+            "owner_id": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None,
+            "additional_info": obj.get("additionalInfo"),
             "configuration": obj.get("configuration"),
             "version": obj.get("version"),
-            "edgeGroupAll": obj.get("edgeGroupAll"),
-            "groupAll": obj.get("groupAll"),
-            "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None
+            "edge_group_all": obj.get("edgeGroupAll"),
+            "group_all": obj.get("groupAll"),
+            "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None
         })
         return _obj
 

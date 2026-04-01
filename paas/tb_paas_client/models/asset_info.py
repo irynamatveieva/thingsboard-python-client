@@ -37,18 +37,18 @@ class AssetInfo(BaseModel):
     AssetInfo
     """ # noqa: E501
     id: Optional[AssetId] = Field(default=None, description="JSON object with the asset Id. Specify this field to update the asset. Referencing non-existing asset Id will cause error. Omit this field to create new asset.")
-    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the asset creation, in milliseconds", alias="createdTime")
-    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the asset. May include: 'description' (string).", alias="additionalInfo")
-    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id.", alias="tenantId")
-    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id. Use 'assignAssetToCustomer' to change the Customer Id.", alias="customerId")
+    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the asset creation, in milliseconds", serialization_alias="createdTime")
+    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the asset. May include: 'description' (string).", serialization_alias="additionalInfo")
+    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id.", serialization_alias="tenantId")
+    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id. Use 'assignAssetToCustomer' to change the Customer Id.", serialization_alias="customerId")
     name: StrictStr = Field(description="Unique Asset Name in scope of Tenant")
     type: Optional[StrictStr] = Field(default=None, description="Asset type")
     label: Optional[StrictStr] = Field(default=None, description="Label that may be used in widgets")
-    asset_profile_id: Optional[AssetProfileId] = Field(default=None, description="JSON object with Asset Profile Id.", alias="assetProfileId")
+    asset_profile_id: Optional[AssetProfileId] = Field(default=None, description="JSON object with Asset Profile Id.", serialization_alias="assetProfileId")
     version: Optional[StrictInt] = None
-    owner_name: Optional[StrictStr] = Field(default=None, description="Owner name", alias="ownerName")
+    owner_name: Optional[StrictStr] = Field(default=None, description="Owner name", serialization_alias="ownerName")
     groups: Optional[List[EntityInfo]] = Field(default=None, description="Groups")
-    owner_id: Optional[EntityId] = Field(default=None, description="JSON object with Customer or Tenant Id", alias="ownerId")
+    owner_id: Optional[EntityId] = Field(default=None, description="JSON object with Customer or Tenant Id", serialization_alias="ownerId")
     __properties: ClassVar[List[str]] = ["id", "createdTime", "additionalInfo", "tenantId", "customerId", "name", "type", "label", "assetProfileId", "version", "ownerName", "groups", "ownerId"]
 
     model_config = ConfigDict(
@@ -59,13 +59,18 @@ class AssetInfo(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -140,18 +145,18 @@ class AssetInfo(BaseModel):
 
         _obj = cls.model_validate({
             "id": AssetId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "additionalInfo": obj.get("additionalInfo"),
-            "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
-            "customerId": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
+            "created_time": obj.get("createdTime"),
+            "additional_info": obj.get("additionalInfo"),
+            "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
+            "customer_id": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
             "name": obj.get("name"),
             "type": obj.get("type"),
             "label": obj.get("label"),
-            "assetProfileId": AssetProfileId.from_dict(obj["assetProfileId"]) if obj.get("assetProfileId") is not None else None,
+            "asset_profile_id": AssetProfileId.from_dict(obj["assetProfileId"]) if obj.get("assetProfileId") is not None else None,
             "version": obj.get("version"),
-            "ownerName": obj.get("ownerName"),
+            "owner_name": obj.get("ownerName"),
             "groups": [EntityInfo.from_dict(_item) for _item in obj["groups"]] if obj.get("groups") is not None else None,
-            "ownerId": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None
+            "owner_id": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None
         })
         return _obj
 

@@ -39,14 +39,14 @@ class Report(BaseModel):
     Report
     """ # noqa: E501
     id: Optional[ReportId] = None
-    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", alias="createdTime")
-    tenant_id: TenantId = Field(alias="tenantId")
-    customer_id: Optional[CustomerId] = Field(default=None, alias="customerId")
-    template_id: ReportTemplateId = Field(alias="templateId")
+    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", serialization_alias="createdTime")
+    tenant_id: TenantId = Field(serialization_alias="tenantId")
+    customer_id: Optional[CustomerId] = Field(default=None, serialization_alias="customerId")
+    template_id: ReportTemplateId = Field(serialization_alias="templateId")
     format: TbReportFormat
     name: Annotated[str, Field(min_length=1, strict=True)]
-    user_id: UserId = Field(alias="userId")
-    owner_id: Optional[EntityId] = Field(default=None, description="JSON object with Customer or Tenant Id", alias="ownerId")
+    user_id: UserId = Field(serialization_alias="userId")
+    owner_id: Optional[EntityId] = Field(default=None, description="JSON object with Customer or Tenant Id", serialization_alias="ownerId")
     __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "customerId", "templateId", "format", "name", "userId", "ownerId"]
 
     model_config = ConfigDict(
@@ -57,13 +57,18 @@ class Report(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -123,14 +128,14 @@ class Report(BaseModel):
 
         _obj = cls.model_validate({
             "id": ReportId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
-            "customerId": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
-            "templateId": ReportTemplateId.from_dict(obj["templateId"]) if obj.get("templateId") is not None else None,
+            "created_time": obj.get("createdTime"),
+            "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
+            "customer_id": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
+            "template_id": ReportTemplateId.from_dict(obj["templateId"]) if obj.get("templateId") is not None else None,
             "format": obj.get("format"),
             "name": obj.get("name"),
-            "userId": UserId.from_dict(obj["userId"]) if obj.get("userId") is not None else None,
-            "ownerId": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None
+            "user_id": UserId.from_dict(obj["userId"]) if obj.get("userId") is not None else None,
+            "owner_id": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None
         })
         return _obj
 

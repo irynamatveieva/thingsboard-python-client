@@ -30,8 +30,8 @@ class TrendzConfiguration(BaseModel):
     """
     TrendzConfiguration
     """ # noqa: E501
-    trendz_url: Optional[StrictStr] = Field(default=None, alias="trendzUrl")
-    tb_url: Optional[StrictStr] = Field(default=None, alias="tbUrl")
+    trendz_url: Optional[StrictStr] = Field(default=None, serialization_alias="trendzUrl")
+    tb_url: Optional[StrictStr] = Field(default=None, serialization_alias="tbUrl")
     __properties: ClassVar[List[str]] = ["trendzUrl", "tbUrl"]
 
     model_config = ConfigDict(
@@ -42,13 +42,18 @@ class TrendzConfiguration(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -85,8 +90,8 @@ class TrendzConfiguration(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "trendzUrl": obj.get("trendzUrl"),
-            "tbUrl": obj.get("tbUrl")
+            "trendz_url": obj.get("trendzUrl"),
+            "tb_url": obj.get("tbUrl")
         })
         return _obj
 

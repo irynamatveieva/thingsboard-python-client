@@ -32,12 +32,12 @@ class SecuritySettings(BaseModel):
     """
     A JSON value representing the Security Settings.
     """ # noqa: E501
-    password_policy: Optional[UserPasswordPolicy] = Field(default=None, description="The user password policy object.", alias="passwordPolicy")
-    max_failed_login_attempts: Optional[StrictInt] = Field(default=None, description="Maximum number of failed login attempts allowed before user account is locked.", alias="maxFailedLoginAttempts")
-    user_lockout_notification_email: Optional[StrictStr] = Field(default=None, description="Email to use for notifications about locked users.", alias="userLockoutNotificationEmail")
-    mobile_secret_key_length: Optional[StrictInt] = Field(default=None, description="Mobile secret key length", alias="mobileSecretKeyLength")
-    user_activation_token_ttl: Annotated[int, Field(le=24, strict=True, ge=1)] = Field(description="TTL in hours for user activation link", alias="userActivationTokenTtl")
-    password_reset_token_ttl: Annotated[int, Field(le=24, strict=True, ge=1)] = Field(description="TTL in hours for password reset link", alias="passwordResetTokenTtl")
+    password_policy: Optional[UserPasswordPolicy] = Field(default=None, description="The user password policy object.", serialization_alias="passwordPolicy")
+    max_failed_login_attempts: Optional[StrictInt] = Field(default=None, description="Maximum number of failed login attempts allowed before user account is locked.", serialization_alias="maxFailedLoginAttempts")
+    user_lockout_notification_email: Optional[StrictStr] = Field(default=None, description="Email to use for notifications about locked users.", serialization_alias="userLockoutNotificationEmail")
+    mobile_secret_key_length: Optional[StrictInt] = Field(default=None, description="Mobile secret key length", serialization_alias="mobileSecretKeyLength")
+    user_activation_token_ttl: Annotated[int, Field(le=24, strict=True, ge=1)] = Field(description="TTL in hours for user activation link", serialization_alias="userActivationTokenTtl")
+    password_reset_token_ttl: Annotated[int, Field(le=24, strict=True, ge=1)] = Field(description="TTL in hours for password reset link", serialization_alias="passwordResetTokenTtl")
     __properties: ClassVar[List[str]] = ["passwordPolicy", "maxFailedLoginAttempts", "userLockoutNotificationEmail", "mobileSecretKeyLength", "userActivationTokenTtl", "passwordResetTokenTtl"]
 
     model_config = ConfigDict(
@@ -48,13 +48,18 @@ class SecuritySettings(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -94,12 +99,12 @@ class SecuritySettings(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "passwordPolicy": UserPasswordPolicy.from_dict(obj["passwordPolicy"]) if obj.get("passwordPolicy") is not None else None,
-            "maxFailedLoginAttempts": obj.get("maxFailedLoginAttempts"),
-            "userLockoutNotificationEmail": obj.get("userLockoutNotificationEmail"),
-            "mobileSecretKeyLength": obj.get("mobileSecretKeyLength"),
-            "userActivationTokenTtl": obj.get("userActivationTokenTtl"),
-            "passwordResetTokenTtl": obj.get("passwordResetTokenTtl")
+            "password_policy": UserPasswordPolicy.from_dict(obj["passwordPolicy"]) if obj.get("passwordPolicy") is not None else None,
+            "max_failed_login_attempts": obj.get("maxFailedLoginAttempts"),
+            "user_lockout_notification_email": obj.get("userLockoutNotificationEmail"),
+            "mobile_secret_key_length": obj.get("mobileSecretKeyLength"),
+            "user_activation_token_ttl": obj.get("userActivationTokenTtl"),
+            "password_reset_token_ttl": obj.get("passwordResetTokenTtl")
         })
         return _obj
 

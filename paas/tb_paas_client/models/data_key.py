@@ -39,10 +39,10 @@ class DataKey(BaseModel):
     color: Optional[StrictStr] = None
     decimals: Optional[StrictInt] = None
     units: Optional[StrictStr] = None
-    aggregation_type: Optional[Aggregation] = Field(default=None, alias="aggregationType")
+    aggregation_type: Optional[Aggregation] = Field(default=None, serialization_alias="aggregationType")
     timewindow: Optional[TimeWindowConfiguration] = None
-    use_post_processing: Optional[StrictBool] = Field(default=None, alias="usePostProcessing")
-    post_func_body: Optional[StrictStr] = Field(default=None, alias="postFuncBody")
+    use_post_processing: Optional[StrictBool] = Field(default=None, serialization_alias="usePostProcessing")
+    post_func_body: Optional[StrictStr] = Field(default=None, serialization_alias="postFuncBody")
     settings: Optional[DataKeySettings] = None
     __properties: ClassVar[List[str]] = ["name", "type", "label", "color", "decimals", "units", "aggregationType", "timewindow", "usePostProcessing", "postFuncBody", "settings"]
 
@@ -54,13 +54,18 @@ class DataKey(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -109,10 +114,10 @@ class DataKey(BaseModel):
             "color": obj.get("color"),
             "decimals": obj.get("decimals"),
             "units": obj.get("units"),
-            "aggregationType": obj.get("aggregationType"),
+            "aggregation_type": obj.get("aggregationType"),
             "timewindow": TimeWindowConfiguration.from_dict(obj["timewindow"]) if obj.get("timewindow") is not None else None,
-            "usePostProcessing": obj.get("usePostProcessing"),
-            "postFuncBody": obj.get("postFuncBody"),
+            "use_post_processing": obj.get("usePostProcessing"),
+            "post_func_body": obj.get("postFuncBody"),
             "settings": DataKeySettings.from_dict(obj["settings"]) if obj.get("settings") is not None else None
         })
         return _obj

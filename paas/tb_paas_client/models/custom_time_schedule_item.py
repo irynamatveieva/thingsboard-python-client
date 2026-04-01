@@ -30,10 +30,10 @@ class CustomTimeScheduleItem(BaseModel):
     """
     CustomTimeScheduleItem
     """ # noqa: E501
-    day_of_week: Optional[StrictInt] = Field(default=None, alias="dayOfWeek")
+    day_of_week: Optional[StrictInt] = Field(default=None, serialization_alias="dayOfWeek")
     enabled: Optional[StrictBool] = None
-    ends_on: Optional[StrictInt] = Field(default=None, alias="endsOn")
-    starts_on: Optional[StrictInt] = Field(default=None, alias="startsOn")
+    ends_on: Optional[StrictInt] = Field(default=None, serialization_alias="endsOn")
+    starts_on: Optional[StrictInt] = Field(default=None, serialization_alias="startsOn")
     __properties: ClassVar[List[str]] = ["dayOfWeek", "enabled", "endsOn", "startsOn"]
 
     model_config = ConfigDict(
@@ -44,13 +44,18 @@ class CustomTimeScheduleItem(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -87,10 +92,10 @@ class CustomTimeScheduleItem(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "dayOfWeek": obj.get("dayOfWeek"),
+            "day_of_week": obj.get("dayOfWeek"),
             "enabled": obj.get("enabled"),
-            "endsOn": obj.get("endsOn"),
-            "startsOn": obj.get("startsOn")
+            "ends_on": obj.get("endsOn"),
+            "starts_on": obj.get("startsOn")
         })
         return _obj
 

@@ -38,9 +38,9 @@ class HomeMenuItem(MenuItem):
     name: Optional[StrictStr] = Field(default=None, description="Name of the menu item")
     icon: Optional[StrictStr] = Field(default=None, description="URL of the menu item icon. Overrides 'materialIcon'")
     pages: Optional[List[DefaultMenuItem]] = Field(default=None, description="List of child menu items")
-    home_type: Optional[HomeMenuItemType] = Field(default=None, description="DEFAULT or DASHBOARD. DASHBOARD means default home page presentation changed to refer to dashboard", alias="homeType")
-    dashboard_id: Optional[StrictStr] = Field(default=None, description="Id of the Dashboard to open, when user clicks the menu item", alias="dashboardId")
-    hide_dashboard_toolbar: Optional[StrictBool] = Field(default=None, description="Hide the dashboard toolbar", alias="hideDashboardToolbar")
+    home_type: Optional[HomeMenuItemType] = Field(default=None, description="DEFAULT or DASHBOARD. DASHBOARD means default home page presentation changed to refer to dashboard", serialization_alias="homeType")
+    dashboard_id: Optional[StrictStr] = Field(default=None, description="Id of the Dashboard to open, when user clicks the menu item", serialization_alias="dashboardId")
+    hide_dashboard_toolbar: Optional[StrictBool] = Field(default=None, description="Hide the dashboard toolbar", serialization_alias="hideDashboardToolbar")
     __properties: ClassVar[List[str]] = ["type", "visible", "id", "name", "icon", "pages", "homeType", "dashboardId", "hideDashboardToolbar"]
 
     model_config = ConfigDict(
@@ -51,13 +51,18 @@ class HomeMenuItem(MenuItem):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -109,9 +114,9 @@ class HomeMenuItem(MenuItem):
             "name": obj.get("name"),
             "icon": obj.get("icon"),
             "pages": [DefaultMenuItem.from_dict(_item) for _item in obj["pages"]] if obj.get("pages") is not None else None,
-            "homeType": obj.get("homeType"),
-            "dashboardId": obj.get("dashboardId"),
-            "hideDashboardToolbar": obj.get("hideDashboardToolbar")
+            "home_type": obj.get("homeType"),
+            "dashboard_id": obj.get("dashboardId"),
+            "hide_dashboard_toolbar": obj.get("hideDashboardToolbar")
         })
         return _obj
 

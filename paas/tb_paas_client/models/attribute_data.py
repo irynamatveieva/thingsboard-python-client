@@ -30,7 +30,7 @@ class AttributeData(BaseModel):
     """
     AttributeData
     """ # noqa: E501
-    last_update_ts: Optional[StrictInt] = Field(default=None, description="Timestamp last updated attribute, in milliseconds", alias="lastUpdateTs")
+    last_update_ts: Optional[StrictInt] = Field(default=None, description="Timestamp last updated attribute, in milliseconds", serialization_alias="lastUpdateTs")
     key: Optional[StrictStr] = Field(default=None, description="String representing attribute key")
     value: Optional[Any] = None
     __properties: ClassVar[List[str]] = ["lastUpdateTs", "key", "value"]
@@ -43,13 +43,18 @@ class AttributeData(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -95,7 +100,7 @@ class AttributeData(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "lastUpdateTs": obj.get("lastUpdateTs"),
+            "last_update_ts": obj.get("lastUpdateTs"),
             "key": obj.get("key"),
             "value": obj.get("value")
         })

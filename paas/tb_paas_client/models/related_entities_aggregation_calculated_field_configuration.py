@@ -36,12 +36,12 @@ class RelatedEntitiesAggregationCalculatedFieldConfiguration(CalculatedFieldConf
     RelatedEntitiesAggregationCalculatedFieldConfiguration
     """ # noqa: E501
     arguments: Dict[str, Argument]
-    deduplication_interval_in_sec: Optional[StrictInt] = Field(default=None, alias="deduplicationIntervalInSec")
+    deduplication_interval_in_sec: Optional[StrictInt] = Field(default=None, serialization_alias="deduplicationIntervalInSec")
     metrics: Dict[str, AggMetric]
     relation: RelationPathLevel
-    scheduled_update_enabled: Optional[StrictBool] = Field(default=None, alias="scheduledUpdateEnabled")
-    scheduled_update_interval: Optional[StrictInt] = Field(default=None, alias="scheduledUpdateInterval")
-    use_latest_ts: Optional[StrictBool] = Field(default=None, alias="useLatestTs")
+    scheduled_update_enabled: Optional[StrictBool] = Field(default=None, serialization_alias="scheduledUpdateEnabled")
+    scheduled_update_interval: Optional[StrictInt] = Field(default=None, serialization_alias="scheduledUpdateInterval")
+    use_latest_ts: Optional[StrictBool] = Field(default=None, serialization_alias="useLatestTs")
     __properties: ClassVar[List[str]] = ["type", "output", "aiGenerated", "arguments", "deduplicationIntervalInSec", "metrics", "relation", "scheduledUpdateEnabled", "scheduledUpdateInterval", "useLatestTs"]
 
     model_config = ConfigDict(
@@ -52,13 +52,18 @@ class RelatedEntitiesAggregationCalculatedFieldConfiguration(CalculatedFieldConf
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -117,14 +122,14 @@ class RelatedEntitiesAggregationCalculatedFieldConfiguration(CalculatedFieldConf
         _obj = cls.model_validate({
             "type": obj.get("type"),
             "output": Output.from_dict(obj["output"]) if obj.get("output") is not None else None,
-            "aiGenerated": obj.get("aiGenerated"),
+            "ai_generated": obj.get("aiGenerated"),
             "arguments": dict(
                 (_k, Argument.from_dict(_v))
                 for _k, _v in obj["arguments"].items()
             )
             if obj.get("arguments") is not None
             else None,
-            "deduplicationIntervalInSec": obj.get("deduplicationIntervalInSec"),
+            "deduplication_interval_in_sec": obj.get("deduplicationIntervalInSec"),
             "metrics": dict(
                 (_k, AggMetric.from_dict(_v))
                 for _k, _v in obj["metrics"].items()
@@ -132,9 +137,9 @@ class RelatedEntitiesAggregationCalculatedFieldConfiguration(CalculatedFieldConf
             if obj.get("metrics") is not None
             else None,
             "relation": RelationPathLevel.from_dict(obj["relation"]) if obj.get("relation") is not None else None,
-            "scheduledUpdateEnabled": obj.get("scheduledUpdateEnabled"),
-            "scheduledUpdateInterval": obj.get("scheduledUpdateInterval"),
-            "useLatestTs": obj.get("useLatestTs")
+            "scheduled_update_enabled": obj.get("scheduledUpdateEnabled"),
+            "scheduled_update_interval": obj.get("scheduledUpdateInterval"),
+            "use_latest_ts": obj.get("useLatestTs")
         })
         return _obj
 

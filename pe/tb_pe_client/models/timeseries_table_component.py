@@ -39,21 +39,21 @@ class TimeseriesTableComponent(ReportComponent):
     """
     TimeseriesTableComponent
     """ # noqa: E501
-    data_sources: Optional[List[DataSource]] = Field(default=None, alias="dataSources")
+    data_sources: Optional[List[DataSource]] = Field(default=None, serialization_alias="dataSources")
     margins: Optional[Insets] = None
     paddings: Optional[Insets] = None
     background: Optional[StrictStr] = None
-    border_width: Optional[StrictInt] = Field(default=None, alias="borderWidth")
-    border_radius: Optional[StrictInt] = Field(default=None, alias="borderRadius")
-    border_color: Optional[StrictStr] = Field(default=None, alias="borderColor")
-    show_table_heading: Optional[StrictBool] = Field(default=None, alias="showTableHeading")
-    table_heading: Optional[Heading] = Field(default=None, alias="tableHeading")
-    table_sort_order: Optional[TableSortOrder] = Field(default=None, alias="tableSortOrder")
+    border_width: Optional[StrictInt] = Field(default=None, serialization_alias="borderWidth")
+    border_radius: Optional[StrictInt] = Field(default=None, serialization_alias="borderRadius")
+    border_color: Optional[StrictStr] = Field(default=None, serialization_alias="borderColor")
+    show_table_heading: Optional[StrictBool] = Field(default=None, serialization_alias="showTableHeading")
+    table_heading: Optional[Heading] = Field(default=None, serialization_alias="tableHeading")
+    table_sort_order: Optional[TableSortOrder] = Field(default=None, serialization_alias="tableSortOrder")
     timewindow: Optional[TimeWindowConfiguration] = None
-    show_timestamp: Optional[StrictBool] = Field(default=None, alias="showTimestamp")
-    timestamp_label: Optional[StrictStr] = Field(default=None, alias="timestampLabel")
-    timestamp_pattern: Optional[StrictStr] = Field(default=None, alias="timestampPattern")
-    timestamp_column_settings: Optional[ColumnSettings] = Field(default=None, alias="timestampColumnSettings")
+    show_timestamp: Optional[StrictBool] = Field(default=None, serialization_alias="showTimestamp")
+    timestamp_label: Optional[StrictStr] = Field(default=None, serialization_alias="timestampLabel")
+    timestamp_pattern: Optional[StrictStr] = Field(default=None, serialization_alias="timestampPattern")
+    timestamp_column_settings: Optional[ColumnSettings] = Field(default=None, serialization_alias="timestampColumnSettings")
     __properties: ClassVar[List[str]] = ["subType", "type", "dataSources", "margins", "paddings", "background", "borderWidth", "borderRadius", "borderColor", "showTableHeading", "tableHeading", "tableSortOrder", "timewindow", "showTimestamp", "timestampLabel", "timestampPattern", "timestampColumnSettings"]
 
     model_config = ConfigDict(
@@ -64,13 +64,18 @@ class TimeseriesTableComponent(ReportComponent):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -132,23 +137,23 @@ class TimeseriesTableComponent(ReportComponent):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "subType": obj.get("subType"),
+            "sub_type": obj.get("subType"),
             "type": obj.get("type"),
-            "dataSources": [DataSource.from_dict(_item) for _item in obj["dataSources"]] if obj.get("dataSources") is not None else None,
+            "data_sources": [DataSource.from_dict(_item) for _item in obj["dataSources"]] if obj.get("dataSources") is not None else None,
             "margins": Insets.from_dict(obj["margins"]) if obj.get("margins") is not None else None,
             "paddings": Insets.from_dict(obj["paddings"]) if obj.get("paddings") is not None else None,
             "background": obj.get("background"),
-            "borderWidth": obj.get("borderWidth"),
-            "borderRadius": obj.get("borderRadius"),
-            "borderColor": obj.get("borderColor"),
-            "showTableHeading": obj.get("showTableHeading"),
-            "tableHeading": Heading.from_dict(obj["tableHeading"]) if obj.get("tableHeading") is not None else None,
-            "tableSortOrder": TableSortOrder.from_dict(obj["tableSortOrder"]) if obj.get("tableSortOrder") is not None else None,
+            "border_width": obj.get("borderWidth"),
+            "border_radius": obj.get("borderRadius"),
+            "border_color": obj.get("borderColor"),
+            "show_table_heading": obj.get("showTableHeading"),
+            "table_heading": Heading.from_dict(obj["tableHeading"]) if obj.get("tableHeading") is not None else None,
+            "table_sort_order": TableSortOrder.from_dict(obj["tableSortOrder"]) if obj.get("tableSortOrder") is not None else None,
             "timewindow": TimeWindowConfiguration.from_dict(obj["timewindow"]) if obj.get("timewindow") is not None else None,
-            "showTimestamp": obj.get("showTimestamp"),
-            "timestampLabel": obj.get("timestampLabel"),
-            "timestampPattern": obj.get("timestampPattern"),
-            "timestampColumnSettings": ColumnSettings.from_dict(obj["timestampColumnSettings"]) if obj.get("timestampColumnSettings") is not None else None
+            "show_timestamp": obj.get("showTimestamp"),
+            "timestamp_label": obj.get("timestampLabel"),
+            "timestamp_pattern": obj.get("timestampPattern"),
+            "timestamp_column_settings": ColumnSettings.from_dict(obj["timestampColumnSettings"]) if obj.get("timestampColumnSettings") is not None else None
         })
         return _obj
 

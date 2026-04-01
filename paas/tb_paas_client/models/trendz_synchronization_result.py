@@ -33,7 +33,7 @@ class TrendzSynchronizationResult(BaseModel):
     TrendzSynchronizationResult
     """ # noqa: E501
     version: Optional[StrictStr] = None
-    updated_ts: Optional[StrictInt] = Field(default=None, alias="updatedTs")
+    updated_ts: Optional[StrictInt] = Field(default=None, serialization_alias="updatedTs")
     type: Optional[TrendzSynchronizationResultType] = None
     status: Optional[TrendzSynchronizationStatus] = None
     __properties: ClassVar[List[str]] = ["version", "updatedTs", "type", "status"]
@@ -46,13 +46,18 @@ class TrendzSynchronizationResult(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -90,7 +95,7 @@ class TrendzSynchronizationResult(BaseModel):
 
         _obj = cls.model_validate({
             "version": obj.get("version"),
-            "updatedTs": obj.get("updatedTs"),
+            "updated_ts": obj.get("updatedTs"),
             "type": obj.get("type"),
             "status": obj.get("status")
         })

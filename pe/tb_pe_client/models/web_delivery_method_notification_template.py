@@ -33,7 +33,7 @@ class WebDeliveryMethodNotificationTemplate(DeliveryMethodNotificationTemplate):
     WebDeliveryMethodNotificationTemplate
     """ # noqa: E501
     subject: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Subject line for the web notification")
-    additional_config: Optional[Any] = Field(default=None, description="Additional JSON configuration for web buttons/actions", alias="additionalConfig")
+    additional_config: Optional[Any] = Field(default=None, description="Additional JSON configuration for web buttons/actions", serialization_alias="additionalConfig")
     __properties: ClassVar[List[str]] = ["enabled", "body", "method", "subject", "additionalConfig"]
 
     model_config = ConfigDict(
@@ -44,13 +44,18 @@ class WebDeliveryMethodNotificationTemplate(DeliveryMethodNotificationTemplate):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -96,7 +101,7 @@ class WebDeliveryMethodNotificationTemplate(DeliveryMethodNotificationTemplate):
             "body": obj.get("body"),
             "method": obj.get("method"),
             "subject": obj.get("subject"),
-            "additionalConfig": obj.get("additionalConfig")
+            "additional_config": obj.get("additionalConfig")
         })
         return _obj
 

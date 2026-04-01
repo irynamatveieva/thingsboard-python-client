@@ -33,13 +33,13 @@ class ThingsboardCredentialsExpiredResponse(BaseModel):
     """
     ThingsboardCredentialsExpiredResponse
     """ # noqa: E501
-    error_code: Optional[ThingsboardErrorCode] = Field(default=None, alias="errorCode")
+    error_code: Optional[ThingsboardErrorCode] = Field(default=None, serialization_alias="errorCode")
     message: Optional[StrictStr] = Field(default=None, description="Error message")
-    reset_token: Optional[StrictStr] = Field(default=None, description="Password reset token", alias="resetToken")
+    reset_token: Optional[StrictStr] = Field(default=None, description="Password reset token", serialization_alias="resetToken")
     status: Optional[StrictInt] = Field(default=None, description="HTTP Response Status Code")
-    subscription_entry: Optional[SubscriptionEntry] = Field(default=None, alias="subscriptionEntry")
-    subscription_error_code: Optional[SubscriptionExceptionErrorCode] = Field(default=None, alias="subscriptionErrorCode")
-    subscription_value: Optional[Any] = Field(default=None, alias="subscriptionValue")
+    subscription_entry: Optional[SubscriptionEntry] = Field(default=None, serialization_alias="subscriptionEntry")
+    subscription_error_code: Optional[SubscriptionExceptionErrorCode] = Field(default=None, serialization_alias="subscriptionErrorCode")
+    subscription_value: Optional[Any] = Field(default=None, serialization_alias="subscriptionValue")
     timestamp: Optional[StrictInt] = Field(default=None, description="Timestamp")
     __properties: ClassVar[List[str]] = ["errorCode", "message", "resetToken", "status", "subscriptionEntry", "subscriptionErrorCode", "subscriptionValue", "timestamp"]
 
@@ -51,13 +51,18 @@ class ThingsboardCredentialsExpiredResponse(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -107,13 +112,13 @@ class ThingsboardCredentialsExpiredResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "errorCode": obj.get("errorCode"),
+            "error_code": obj.get("errorCode"),
             "message": obj.get("message"),
-            "resetToken": obj.get("resetToken"),
+            "reset_token": obj.get("resetToken"),
             "status": obj.get("status"),
-            "subscriptionEntry": obj.get("subscriptionEntry"),
-            "subscriptionErrorCode": obj.get("subscriptionErrorCode"),
-            "subscriptionValue": obj.get("subscriptionValue"),
+            "subscription_entry": obj.get("subscriptionEntry"),
+            "subscription_error_code": obj.get("subscriptionErrorCode"),
+            "subscription_value": obj.get("subscriptionValue"),
             "timestamp": obj.get("timestamp")
         })
         return _obj

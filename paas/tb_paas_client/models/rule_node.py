@@ -34,18 +34,18 @@ class RuleNode(BaseModel):
     RuleNode
     """ # noqa: E501
     id: Optional[RuleNodeId] = Field(default=None, description="JSON object with the Rule Node Id. Specify this field to update the Rule Node. Referencing non-existing Rule Node Id will cause error. Omit this field to create new rule node.")
-    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the rule node creation, in milliseconds", alias="createdTime")
-    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the rule node. May include: 'layoutX' (number, X coordinate for visualization), 'layoutY' (number, Y coordinate for visualization), 'description' (string).", alias="additionalInfo")
-    rule_chain_id: Optional[RuleChainId] = Field(default=None, description="JSON object with the Rule Chain Id. ", alias="ruleChainId")
+    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the rule node creation, in milliseconds", serialization_alias="createdTime")
+    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the rule node. May include: 'layoutX' (number, X coordinate for visualization), 'layoutY' (number, Y coordinate for visualization), 'description' (string).", serialization_alias="additionalInfo")
+    rule_chain_id: Optional[RuleChainId] = Field(default=None, description="JSON object with the Rule Chain Id. ", serialization_alias="ruleChainId")
     type: Optional[StrictStr] = Field(default=None, description="Full Java Class Name of the rule node implementation. ")
     name: Optional[StrictStr] = Field(default=None, description="User defined name of the rule node. Used on UI and for logging. ")
-    debug_settings: Optional[DebugSettings] = Field(default=None, description="Debug settings object.", alias="debugSettings")
-    singleton_mode: Optional[StrictBool] = Field(default=None, description="Enable/disable singleton mode. ", alias="singletonMode")
-    queue_name: Optional[StrictStr] = Field(default=None, description="Queue name. ", alias="queueName")
-    configuration_version: Optional[StrictInt] = Field(default=None, description="Version of rule node configuration. ", alias="configurationVersion")
+    debug_settings: Optional[DebugSettings] = Field(default=None, description="Debug settings object.", serialization_alias="debugSettings")
+    singleton_mode: Optional[StrictBool] = Field(default=None, description="Enable/disable singleton mode. ", serialization_alias="singletonMode")
+    queue_name: Optional[StrictStr] = Field(default=None, description="Queue name. ", serialization_alias="queueName")
+    configuration_version: Optional[StrictInt] = Field(default=None, description="Version of rule node configuration. ", serialization_alias="configurationVersion")
     configuration: Optional[Any] = Field(default=None, description="JSON with the rule node configuration. Structure depends on the rule node implementation.")
-    external_id: Optional[RuleNodeId] = Field(default=None, alias="externalId")
-    debug_mode: Optional[StrictBool] = Field(default=None, alias="debugMode")
+    external_id: Optional[RuleNodeId] = Field(default=None, serialization_alias="externalId")
+    debug_mode: Optional[StrictBool] = Field(default=None, serialization_alias="debugMode")
     __properties: ClassVar[List[str]] = ["id", "createdTime", "additionalInfo", "ruleChainId", "type", "name", "debugSettings", "singletonMode", "queueName", "configurationVersion", "configuration", "externalId", "debugMode"]
 
     model_config = ConfigDict(
@@ -56,13 +56,18 @@ class RuleNode(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -126,18 +131,18 @@ class RuleNode(BaseModel):
 
         _obj = cls.model_validate({
             "id": RuleNodeId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "additionalInfo": obj.get("additionalInfo"),
-            "ruleChainId": RuleChainId.from_dict(obj["ruleChainId"]) if obj.get("ruleChainId") is not None else None,
+            "created_time": obj.get("createdTime"),
+            "additional_info": obj.get("additionalInfo"),
+            "rule_chain_id": RuleChainId.from_dict(obj["ruleChainId"]) if obj.get("ruleChainId") is not None else None,
             "type": obj.get("type"),
             "name": obj.get("name"),
-            "debugSettings": DebugSettings.from_dict(obj["debugSettings"]) if obj.get("debugSettings") is not None else None,
-            "singletonMode": obj.get("singletonMode"),
-            "queueName": obj.get("queueName"),
-            "configurationVersion": obj.get("configurationVersion"),
+            "debug_settings": DebugSettings.from_dict(obj["debugSettings"]) if obj.get("debugSettings") is not None else None,
+            "singleton_mode": obj.get("singletonMode"),
+            "queue_name": obj.get("queueName"),
+            "configuration_version": obj.get("configurationVersion"),
             "configuration": obj.get("configuration"),
-            "externalId": RuleNodeId.from_dict(obj["externalId"]) if obj.get("externalId") is not None else None,
-            "debugMode": obj.get("debugMode")
+            "external_id": RuleNodeId.from_dict(obj["externalId"]) if obj.get("externalId") is not None else None,
+            "debug_mode": obj.get("debugMode")
         })
         return _obj
 

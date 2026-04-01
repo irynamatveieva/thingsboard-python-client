@@ -32,14 +32,14 @@ class Discount(BaseModel):
     """
     Discount
     """ # noqa: E501
-    coupon_code: Optional[StrictStr] = Field(default=None, alias="couponCode")
-    coupon_valid: Optional[StrictBool] = Field(default=None, alias="couponValid")
-    amount_off: Optional[StrictInt] = Field(default=None, alias="amountOff")
-    percent_off: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, alias="percentOff")
-    coupon_id: Optional[CouponId] = Field(default=None, alias="couponId")
+    coupon_code: Optional[StrictStr] = Field(default=None, serialization_alias="couponCode")
+    coupon_valid: Optional[StrictBool] = Field(default=None, serialization_alias="couponValid")
+    amount_off: Optional[StrictInt] = Field(default=None, serialization_alias="amountOff")
+    percent_off: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, serialization_alias="percentOff")
+    coupon_id: Optional[CouponId] = Field(default=None, serialization_alias="couponId")
     duration: Optional[CouponDuration] = None
-    duration_in_months: Optional[StrictInt] = Field(default=None, alias="durationInMonths")
-    end_date: Optional[StrictInt] = Field(default=None, alias="endDate")
+    duration_in_months: Optional[StrictInt] = Field(default=None, serialization_alias="durationInMonths")
+    end_date: Optional[StrictInt] = Field(default=None, serialization_alias="endDate")
     package: Optional[StrictBool] = None
     __properties: ClassVar[List[str]] = ["couponCode", "couponValid", "amountOff", "percentOff", "couponId", "duration", "durationInMonths", "endDate", "package"]
 
@@ -51,13 +51,18 @@ class Discount(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -97,14 +102,14 @@ class Discount(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "couponCode": obj.get("couponCode"),
-            "couponValid": obj.get("couponValid"),
-            "amountOff": obj.get("amountOff"),
-            "percentOff": obj.get("percentOff"),
-            "couponId": CouponId.from_dict(obj["couponId"]) if obj.get("couponId") is not None else None,
+            "coupon_code": obj.get("couponCode"),
+            "coupon_valid": obj.get("couponValid"),
+            "amount_off": obj.get("amountOff"),
+            "percent_off": obj.get("percentOff"),
+            "coupon_id": CouponId.from_dict(obj["couponId"]) if obj.get("couponId") is not None else None,
             "duration": obj.get("duration"),
-            "durationInMonths": obj.get("durationInMonths"),
-            "endDate": obj.get("endDate"),
+            "duration_in_months": obj.get("durationInMonths"),
+            "end_date": obj.get("endDate"),
             "package": obj.get("package")
         })
         return _obj

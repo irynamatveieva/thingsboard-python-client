@@ -36,12 +36,12 @@ class CustomMenuItem(MenuItem):
     """ # noqa: E501
     name: StrictStr = Field(description="Name of the menu item")
     icon: Optional[StrictStr] = Field(default=None, description="URL of the menu item icon. Overrides 'materialIcon'")
-    menu_item_type: CMItemType = Field(description="Type of menu item (LINK or SECTION). LINK type means item has no child items, SECTION type should have at least one child", alias="menuItemType")
-    link_type: Optional[CMItemLinkType] = Field(default=None, description="Type of menu item (URL or DASHBOARD)", alias="linkType")
-    dashboard_id: Optional[StrictStr] = Field(default=None, description="Id of the Dashboard to open, when user clicks the menu item", alias="dashboardId")
-    hide_dashboard_toolbar: Optional[StrictBool] = Field(default=None, description="Hide the dashboard toolbar", alias="hideDashboardToolbar")
+    menu_item_type: CMItemType = Field(description="Type of menu item (LINK or SECTION). LINK type means item has no child items, SECTION type should have at least one child", serialization_alias="menuItemType")
+    link_type: Optional[CMItemLinkType] = Field(default=None, description="Type of menu item (URL or DASHBOARD)", serialization_alias="linkType")
+    dashboard_id: Optional[StrictStr] = Field(default=None, description="Id of the Dashboard to open, when user clicks the menu item", serialization_alias="dashboardId")
+    hide_dashboard_toolbar: Optional[StrictBool] = Field(default=None, description="Hide the dashboard toolbar", serialization_alias="hideDashboardToolbar")
     url: Optional[StrictStr] = Field(default=None, description="URL to open in the iframe, when user clicks the menu item")
-    set_access_token: Optional[StrictBool] = Field(default=None, description="Set the access token of the current user to a new dashboard", alias="setAccessToken")
+    set_access_token: Optional[StrictBool] = Field(default=None, description="Set the access token of the current user to a new dashboard", serialization_alias="setAccessToken")
     visible: Optional[StrictBool] = Field(default=None, description="Mark if menu item is visible for user")
     pages: Optional[List[CustomMenuItem]] = Field(default=None, description="List of child menu items")
     __properties: ClassVar[List[str]] = ["type", "visible", "name", "icon", "menuItemType", "linkType", "dashboardId", "hideDashboardToolbar", "url", "setAccessToken", "pages"]
@@ -54,13 +54,18 @@ class CustomMenuItem(MenuItem):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -108,12 +113,12 @@ class CustomMenuItem(MenuItem):
             "visible": obj.get("visible"),
             "name": obj.get("name"),
             "icon": obj.get("icon"),
-            "menuItemType": obj.get("menuItemType"),
-            "linkType": obj.get("linkType"),
-            "dashboardId": obj.get("dashboardId"),
-            "hideDashboardToolbar": obj.get("hideDashboardToolbar"),
+            "menu_item_type": obj.get("menuItemType"),
+            "link_type": obj.get("linkType"),
+            "dashboard_id": obj.get("dashboardId"),
+            "hide_dashboard_toolbar": obj.get("hideDashboardToolbar"),
             "url": obj.get("url"),
-            "setAccessToken": obj.get("setAccessToken"),
+            "set_access_token": obj.get("setAccessToken"),
             "pages": [CustomMenuItem.from_dict(_item) for _item in obj["pages"]] if obj.get("pages") is not None else None
         })
         return _obj

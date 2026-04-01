@@ -42,13 +42,18 @@ class DummyJobResult(JobResult):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -92,16 +97,16 @@ class DummyJobResult(JobResult):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "successfulCount": obj.get("successfulCount"),
-            "failedCount": obj.get("failedCount"),
-            "discardedCount": obj.get("discardedCount"),
-            "totalCount": obj.get("totalCount"),
+            "successful_count": obj.get("successfulCount"),
+            "failed_count": obj.get("failedCount"),
+            "discarded_count": obj.get("discardedCount"),
+            "total_count": obj.get("totalCount"),
             "results": [TaskResult.from_dict(_item) for _item in obj["results"]] if obj.get("results") is not None else None,
-            "generalError": obj.get("generalError"),
-            "startTs": obj.get("startTs"),
-            "finishTs": obj.get("finishTs"),
-            "cancellationTs": obj.get("cancellationTs"),
-            "jobType": obj.get("jobType")
+            "general_error": obj.get("generalError"),
+            "start_ts": obj.get("startTs"),
+            "finish_ts": obj.get("finishTs"),
+            "cancellation_ts": obj.get("cancellationTs"),
+            "job_type": obj.get("jobType")
         })
         return _obj
 

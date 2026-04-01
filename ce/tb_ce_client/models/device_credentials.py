@@ -34,11 +34,11 @@ class DeviceCredentials(BaseModel):
     A JSON value representing the device credentials.
     """ # noqa: E501
     id: DeviceCredentialsId = Field(description="The Id is automatically generated during device creation. Use 'getDeviceCredentialsByDeviceId' to obtain the id based on device id. Use 'updateDeviceCredentials' to update device credentials. ")
-    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the device credentials creation, in milliseconds", alias="createdTime")
-    device_id: DeviceId = Field(description="JSON object with the device Id.", alias="deviceId")
-    credentials_type: Optional[DeviceCredentialsType] = Field(default=None, description="Type of the credentials", alias="credentialsType")
-    credentials_id: StrictStr = Field(description="Unique Credentials Id per platform instance. Used to lookup credentials from the database. By default, new access token for your device. Depends on the type of the credentials.", alias="credentialsId")
-    credentials_value: Optional[StrictStr] = Field(default=None, description="Value of the credentials. Null in case of ACCESS_TOKEN credentials type. Base64 value in case of X509_CERTIFICATE. Complex object in case of MQTT_BASIC and LWM2M_CREDENTIALS", alias="credentialsValue")
+    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the device credentials creation, in milliseconds", serialization_alias="createdTime")
+    device_id: DeviceId = Field(description="JSON object with the device Id.", serialization_alias="deviceId")
+    credentials_type: Optional[DeviceCredentialsType] = Field(default=None, description="Type of the credentials", serialization_alias="credentialsType")
+    credentials_id: StrictStr = Field(description="Unique Credentials Id per platform instance. Used to lookup credentials from the database. By default, new access token for your device. Depends on the type of the credentials.", serialization_alias="credentialsId")
+    credentials_value: Optional[StrictStr] = Field(default=None, description="Value of the credentials. Null in case of ACCESS_TOKEN credentials type. Base64 value in case of X509_CERTIFICATE. Complex object in case of MQTT_BASIC and LWM2M_CREDENTIALS", serialization_alias="credentialsValue")
     version: Optional[StrictInt] = None
     __properties: ClassVar[List[str]] = ["id", "createdTime", "deviceId", "credentialsType", "credentialsId", "credentialsValue", "version"]
 
@@ -50,13 +50,18 @@ class DeviceCredentials(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -102,11 +107,11 @@ class DeviceCredentials(BaseModel):
 
         _obj = cls.model_validate({
             "id": DeviceCredentialsId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "deviceId": DeviceId.from_dict(obj["deviceId"]) if obj.get("deviceId") is not None else None,
-            "credentialsType": obj.get("credentialsType"),
-            "credentialsId": obj.get("credentialsId"),
-            "credentialsValue": obj.get("credentialsValue"),
+            "created_time": obj.get("createdTime"),
+            "device_id": DeviceId.from_dict(obj["deviceId"]) if obj.get("deviceId") is not None else None,
+            "credentials_type": obj.get("credentialsType"),
+            "credentials_id": obj.get("credentialsId"),
+            "credentials_value": obj.get("credentialsValue"),
             "version": obj.get("version")
         })
         return _obj

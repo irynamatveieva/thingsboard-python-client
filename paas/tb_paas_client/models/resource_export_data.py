@@ -35,13 +35,13 @@ class ResourceExportData(BaseModel):
     link: Optional[StrictStr] = None
     title: Optional[StrictStr] = None
     type: Optional[ResourceType] = None
-    sub_type: Optional[ResourceSubType] = Field(default=None, alias="subType")
-    resource_key: Optional[StrictStr] = Field(default=None, alias="resourceKey")
-    file_name: Optional[StrictStr] = Field(default=None, alias="fileName")
-    public_resource_key: Optional[StrictStr] = Field(default=None, alias="publicResourceKey")
-    media_type: Optional[StrictStr] = Field(default=None, alias="mediaType")
+    sub_type: Optional[ResourceSubType] = Field(default=None, serialization_alias="subType")
+    resource_key: Optional[StrictStr] = Field(default=None, serialization_alias="resourceKey")
+    file_name: Optional[StrictStr] = Field(default=None, serialization_alias="fileName")
+    public_resource_key: Optional[StrictStr] = Field(default=None, serialization_alias="publicResourceKey")
+    media_type: Optional[StrictStr] = Field(default=None, serialization_alias="mediaType")
     data: Optional[StrictStr] = None
-    is_public: Optional[StrictBool] = Field(default=None, alias="isPublic")
+    is_public: Optional[StrictBool] = Field(default=None, serialization_alias="isPublic")
     public: Optional[StrictBool] = None
     __properties: ClassVar[List[str]] = ["link", "title", "type", "subType", "resourceKey", "fileName", "publicResourceKey", "mediaType", "data", "isPublic", "public"]
 
@@ -53,13 +53,18 @@ class ResourceExportData(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -99,13 +104,13 @@ class ResourceExportData(BaseModel):
             "link": obj.get("link"),
             "title": obj.get("title"),
             "type": obj.get("type"),
-            "subType": obj.get("subType"),
-            "resourceKey": obj.get("resourceKey"),
-            "fileName": obj.get("fileName"),
-            "publicResourceKey": obj.get("publicResourceKey"),
-            "mediaType": obj.get("mediaType"),
+            "sub_type": obj.get("subType"),
+            "resource_key": obj.get("resourceKey"),
+            "file_name": obj.get("fileName"),
+            "public_resource_key": obj.get("publicResourceKey"),
+            "media_type": obj.get("mediaType"),
             "data": obj.get("data"),
-            "isPublic": obj.get("isPublic"),
+            "is_public": obj.get("isPublic"),
             "public": obj.get("public")
         })
         return _obj

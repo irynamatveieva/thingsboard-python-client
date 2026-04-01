@@ -31,7 +31,7 @@ class HomeDashboardParams(BaseModel):
     HomeDashboardParams
     """ # noqa: E501
     id: Optional[StrictStr] = Field(default=None, description="Home dashboard Id to assign for the new user.")
-    hide_toolbar: Optional[StrictBool] = Field(default=None, description="Indicates if hide toolbar should be hidden.", alias="hideToolbar")
+    hide_toolbar: Optional[StrictBool] = Field(default=None, description="Indicates if hide toolbar should be hidden.", serialization_alias="hideToolbar")
     __properties: ClassVar[List[str]] = ["id", "hideToolbar"]
 
     model_config = ConfigDict(
@@ -42,13 +42,18 @@ class HomeDashboardParams(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -86,7 +91,7 @@ class HomeDashboardParams(BaseModel):
 
         _obj = cls.model_validate({
             "id": obj.get("id"),
-            "hideToolbar": obj.get("hideToolbar")
+            "hide_toolbar": obj.get("hideToolbar")
         })
         return _obj
 

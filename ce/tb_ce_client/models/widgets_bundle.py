@@ -33,8 +33,8 @@ class WidgetsBundle(BaseModel):
     A JSON value representing the Widget Bundle.
     """ # noqa: E501
     id: Optional[WidgetsBundleId] = Field(default=None, description="JSON object with the Widget Bundle Id. Specify this field to update the Widget Bundle. Referencing non-existing Widget Bundle Id will cause error. Omit this field to create new Widget Bundle.")
-    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the Widget Bundle creation, in milliseconds", alias="createdTime")
-    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id.", alias="tenantId")
+    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the Widget Bundle creation, in milliseconds", serialization_alias="createdTime")
+    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id.", serialization_alias="tenantId")
     alias: Optional[StrictStr] = Field(default=None, description="Unique alias that is used in widget types as a reference widget bundle")
     title: Optional[StrictStr] = Field(default=None, description="Title used in search and UI")
     image: Optional[StrictStr] = Field(default=None, description="Relative or external image URL. Replaced with image data URL (Base64) in case of relative URL and 'inlineImages' option enabled.")
@@ -53,13 +53,18 @@ class WidgetsBundle(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -121,8 +126,8 @@ class WidgetsBundle(BaseModel):
 
         _obj = cls.model_validate({
             "id": WidgetsBundleId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
+            "created_time": obj.get("createdTime"),
+            "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
             "alias": obj.get("alias"),
             "title": obj.get("title"),
             "image": obj.get("image"),

@@ -35,12 +35,12 @@ class ZoneGroupConfiguration(BaseModel):
     """
     ZoneGroupConfiguration
     """ # noqa: E501
-    ref_entity_id: Optional[EntityId] = Field(default=None, alias="refEntityId")
-    ref_dynamic_source_configuration: Optional[CfArgumentDynamicSourceConfiguration] = Field(default=None, alias="refDynamicSourceConfiguration")
-    perimeter_key_name: Annotated[str, Field(min_length=1, strict=True)] = Field(alias="perimeterKeyName")
-    report_strategy: GeofencingReportStrategy = Field(alias="reportStrategy")
-    create_relations_with_matched_zones: Optional[StrictBool] = Field(default=None, alias="createRelationsWithMatchedZones")
-    relation_type: Optional[StrictStr] = Field(default=None, alias="relationType")
+    ref_entity_id: Optional[EntityId] = Field(default=None, serialization_alias="refEntityId")
+    ref_dynamic_source_configuration: Optional[CfArgumentDynamicSourceConfiguration] = Field(default=None, serialization_alias="refDynamicSourceConfiguration")
+    perimeter_key_name: Annotated[str, Field(min_length=1, strict=True)] = Field(serialization_alias="perimeterKeyName")
+    report_strategy: GeofencingReportStrategy = Field(serialization_alias="reportStrategy")
+    create_relations_with_matched_zones: Optional[StrictBool] = Field(default=None, serialization_alias="createRelationsWithMatchedZones")
+    relation_type: Optional[StrictStr] = Field(default=None, serialization_alias="relationType")
     direction: Optional[EntitySearchDirection] = None
     __properties: ClassVar[List[str]] = ["refEntityId", "refDynamicSourceConfiguration", "perimeterKeyName", "reportStrategy", "createRelationsWithMatchedZones", "relationType", "direction"]
 
@@ -52,13 +52,18 @@ class ZoneGroupConfiguration(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -101,12 +106,12 @@ class ZoneGroupConfiguration(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "refEntityId": EntityId.from_dict(obj["refEntityId"]) if obj.get("refEntityId") is not None else None,
-            "refDynamicSourceConfiguration": CfArgumentDynamicSourceConfiguration.from_dict(obj["refDynamicSourceConfiguration"]) if obj.get("refDynamicSourceConfiguration") is not None else None,
-            "perimeterKeyName": obj.get("perimeterKeyName"),
-            "reportStrategy": obj.get("reportStrategy"),
-            "createRelationsWithMatchedZones": obj.get("createRelationsWithMatchedZones"),
-            "relationType": obj.get("relationType"),
+            "ref_entity_id": EntityId.from_dict(obj["refEntityId"]) if obj.get("refEntityId") is not None else None,
+            "ref_dynamic_source_configuration": CfArgumentDynamicSourceConfiguration.from_dict(obj["refDynamicSourceConfiguration"]) if obj.get("refDynamicSourceConfiguration") is not None else None,
+            "perimeter_key_name": obj.get("perimeterKeyName"),
+            "report_strategy": obj.get("reportStrategy"),
+            "create_relations_with_matched_zones": obj.get("createRelationsWithMatchedZones"),
+            "relation_type": obj.get("relationType"),
             "direction": obj.get("direction")
         })
         return _obj

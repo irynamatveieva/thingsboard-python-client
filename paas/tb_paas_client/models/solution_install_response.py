@@ -33,10 +33,10 @@ class SolutionInstallResponse(BaseModel):
     """
     SolutionInstallResponse
     """ # noqa: E501
-    dashboard_group_id: Optional[EntityGroupId] = Field(default=None, description="Id of the group that contains main dashboard of the solution", alias="dashboardGroupId")
-    dashboard_id: Optional[DashboardId] = Field(default=None, description="Id of the main dashboard of the solution", alias="dashboardId")
-    public_id: Optional[CustomerId] = Field(default=None, description="Id of the public customer if solution has public entities", alias="publicId")
-    main_dashboard_public: Optional[StrictBool] = Field(default=None, description="Is the main dashboard public", alias="mainDashboardPublic")
+    dashboard_group_id: Optional[EntityGroupId] = Field(default=None, description="Id of the group that contains main dashboard of the solution", serialization_alias="dashboardGroupId")
+    dashboard_id: Optional[DashboardId] = Field(default=None, description="Id of the main dashboard of the solution", serialization_alias="dashboardId")
+    public_id: Optional[CustomerId] = Field(default=None, description="Id of the public customer if solution has public entities", serialization_alias="publicId")
+    main_dashboard_public: Optional[StrictBool] = Field(default=None, description="Is the main dashboard public", serialization_alias="mainDashboardPublic")
     details: Optional[StrictStr] = Field(default=None, description="Markdown with solution usage instructions")
     success: Optional[StrictBool] = Field(default=None, description="Indicates that template was installed successfully")
     __properties: ClassVar[List[str]] = ["dashboardGroupId", "dashboardId", "publicId", "mainDashboardPublic", "details", "success"]
@@ -49,13 +49,18 @@ class SolutionInstallResponse(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -101,10 +106,10 @@ class SolutionInstallResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "dashboardGroupId": EntityGroupId.from_dict(obj["dashboardGroupId"]) if obj.get("dashboardGroupId") is not None else None,
-            "dashboardId": DashboardId.from_dict(obj["dashboardId"]) if obj.get("dashboardId") is not None else None,
-            "publicId": CustomerId.from_dict(obj["publicId"]) if obj.get("publicId") is not None else None,
-            "mainDashboardPublic": obj.get("mainDashboardPublic"),
+            "dashboard_group_id": EntityGroupId.from_dict(obj["dashboardGroupId"]) if obj.get("dashboardGroupId") is not None else None,
+            "dashboard_id": DashboardId.from_dict(obj["dashboardId"]) if obj.get("dashboardId") is not None else None,
+            "public_id": CustomerId.from_dict(obj["publicId"]) if obj.get("publicId") is not None else None,
+            "main_dashboard_public": obj.get("mainDashboardPublic"),
             "details": obj.get("details"),
             "success": obj.get("success")
         })

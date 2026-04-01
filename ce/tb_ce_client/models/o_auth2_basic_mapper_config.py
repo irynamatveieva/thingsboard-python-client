@@ -31,14 +31,14 @@ class OAuth2BasicMapperConfig(BaseModel):
     """
     OAuth2BasicMapperConfig
     """ # noqa: E501
-    email_attribute_key: Optional[StrictStr] = Field(default=None, description="Email attribute key of OAuth2 principal attributes. Must be specified for BASIC mapper type and cannot be specified for GITHUB type", alias="emailAttributeKey")
-    first_name_attribute_key: Optional[StrictStr] = Field(default=None, description="First name attribute key", alias="firstNameAttributeKey")
-    last_name_attribute_key: Optional[StrictStr] = Field(default=None, description="Last name attribute key", alias="lastNameAttributeKey")
-    tenant_name_strategy: TenantNameStrategyType = Field(description="Tenant naming strategy. For DOMAIN type, domain for tenant name will be taken from the email (substring before '@')", alias="tenantNameStrategy")
-    tenant_name_pattern: Optional[StrictStr] = Field(default=None, description="Tenant name pattern for CUSTOM naming strategy. OAuth2 attributes in the pattern can be used by enclosing attribute key in '%{' and '}'", alias="tenantNamePattern")
-    customer_name_pattern: Optional[StrictStr] = Field(default=None, description="Customer name pattern. When creating a user on the first OAuth2 log in, if specified, customer name will be used to create or find existing customer in the platform and assign customerId to the user", alias="customerNamePattern")
-    default_dashboard_name: Optional[StrictStr] = Field(default=None, description="Name of the tenant's dashboard to set as default dashboard for newly created user", alias="defaultDashboardName")
-    always_full_screen: Optional[StrictBool] = Field(default=None, description="Whether default dashboard should be open in full screen", alias="alwaysFullScreen")
+    email_attribute_key: Optional[StrictStr] = Field(default=None, description="Email attribute key of OAuth2 principal attributes. Must be specified for BASIC mapper type and cannot be specified for GITHUB type", serialization_alias="emailAttributeKey")
+    first_name_attribute_key: Optional[StrictStr] = Field(default=None, description="First name attribute key", serialization_alias="firstNameAttributeKey")
+    last_name_attribute_key: Optional[StrictStr] = Field(default=None, description="Last name attribute key", serialization_alias="lastNameAttributeKey")
+    tenant_name_strategy: TenantNameStrategyType = Field(description="Tenant naming strategy. For DOMAIN type, domain for tenant name will be taken from the email (substring before '@')", serialization_alias="tenantNameStrategy")
+    tenant_name_pattern: Optional[StrictStr] = Field(default=None, description="Tenant name pattern for CUSTOM naming strategy. OAuth2 attributes in the pattern can be used by enclosing attribute key in '%{' and '}'", serialization_alias="tenantNamePattern")
+    customer_name_pattern: Optional[StrictStr] = Field(default=None, description="Customer name pattern. When creating a user on the first OAuth2 log in, if specified, customer name will be used to create or find existing customer in the platform and assign customerId to the user", serialization_alias="customerNamePattern")
+    default_dashboard_name: Optional[StrictStr] = Field(default=None, description="Name of the tenant's dashboard to set as default dashboard for newly created user", serialization_alias="defaultDashboardName")
+    always_full_screen: Optional[StrictBool] = Field(default=None, description="Whether default dashboard should be open in full screen", serialization_alias="alwaysFullScreen")
     __properties: ClassVar[List[str]] = ["emailAttributeKey", "firstNameAttributeKey", "lastNameAttributeKey", "tenantNameStrategy", "tenantNamePattern", "customerNamePattern", "defaultDashboardName", "alwaysFullScreen"]
 
     model_config = ConfigDict(
@@ -49,13 +49,18 @@ class OAuth2BasicMapperConfig(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -92,14 +97,14 @@ class OAuth2BasicMapperConfig(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "emailAttributeKey": obj.get("emailAttributeKey"),
-            "firstNameAttributeKey": obj.get("firstNameAttributeKey"),
-            "lastNameAttributeKey": obj.get("lastNameAttributeKey"),
-            "tenantNameStrategy": obj.get("tenantNameStrategy"),
-            "tenantNamePattern": obj.get("tenantNamePattern"),
-            "customerNamePattern": obj.get("customerNamePattern"),
-            "defaultDashboardName": obj.get("defaultDashboardName"),
-            "alwaysFullScreen": obj.get("alwaysFullScreen")
+            "email_attribute_key": obj.get("emailAttributeKey"),
+            "first_name_attribute_key": obj.get("firstNameAttributeKey"),
+            "last_name_attribute_key": obj.get("lastNameAttributeKey"),
+            "tenant_name_strategy": obj.get("tenantNameStrategy"),
+            "tenant_name_pattern": obj.get("tenantNamePattern"),
+            "customer_name_pattern": obj.get("customerNamePattern"),
+            "default_dashboard_name": obj.get("defaultDashboardName"),
+            "always_full_screen": obj.get("alwaysFullScreen")
         })
         return _obj
 

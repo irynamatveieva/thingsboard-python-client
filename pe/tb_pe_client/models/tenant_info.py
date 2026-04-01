@@ -33,8 +33,8 @@ class TenantInfo(BaseModel):
     TenantInfo
     """ # noqa: E501
     id: Optional[TenantId] = Field(default=None, description="JSON object with the tenant Id. Specify this field to update the tenant. Referencing non-existing tenant Id will cause error. Omit this field to create new tenant.")
-    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the tenant creation, in milliseconds", alias="createdTime")
-    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the tenant. May include: 'description' (string), 'homeDashboardId' (string, UUID of the home dashboard), 'homeDashboardHideToolbar' (boolean, whether to hide the dashboard toolbar).", alias="additionalInfo")
+    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the tenant creation, in milliseconds", serialization_alias="createdTime")
+    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the tenant. May include: 'description' (string), 'homeDashboardId' (string, UUID of the home dashboard), 'homeDashboardHideToolbar' (boolean, whether to hide the dashboard toolbar).", serialization_alias="additionalInfo")
     country: Optional[StrictStr] = Field(default=None, description="Country")
     state: Optional[StrictStr] = Field(default=None, description="State")
     city: Optional[StrictStr] = Field(default=None, description="City")
@@ -45,9 +45,9 @@ class TenantInfo(BaseModel):
     email: Optional[StrictStr] = Field(default=None, description="Email")
     title: StrictStr = Field(description="Title of the tenant")
     region: Optional[StrictStr] = Field(default=None, description="Geo region of the tenant")
-    tenant_profile_id: Optional[TenantProfileId] = Field(default=None, description="JSON object with Tenant Profile Id", alias="tenantProfileId")
+    tenant_profile_id: Optional[TenantProfileId] = Field(default=None, description="JSON object with Tenant Profile Id", serialization_alias="tenantProfileId")
     version: Optional[StrictInt] = None
-    tenant_profile_name: Optional[StrictStr] = Field(default=None, description="Tenant Profile name", alias="tenantProfileName")
+    tenant_profile_name: Optional[StrictStr] = Field(default=None, description="Tenant Profile name", serialization_alias="tenantProfileName")
     name: Optional[StrictStr] = Field(default=None, description="Name of the tenant. Read-only, duplicated from title for backward compatibility")
     __properties: ClassVar[List[str]] = ["id", "createdTime", "additionalInfo", "country", "state", "city", "address", "address2", "zip", "phone", "email", "title", "region", "tenantProfileId", "version", "tenantProfileName", "name"]
 
@@ -59,13 +59,18 @@ class TenantInfo(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -118,8 +123,8 @@ class TenantInfo(BaseModel):
 
         _obj = cls.model_validate({
             "id": TenantId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "additionalInfo": obj.get("additionalInfo"),
+            "created_time": obj.get("createdTime"),
+            "additional_info": obj.get("additionalInfo"),
             "country": obj.get("country"),
             "state": obj.get("state"),
             "city": obj.get("city"),
@@ -130,9 +135,9 @@ class TenantInfo(BaseModel):
             "email": obj.get("email"),
             "title": obj.get("title"),
             "region": obj.get("region"),
-            "tenantProfileId": TenantProfileId.from_dict(obj["tenantProfileId"]) if obj.get("tenantProfileId") is not None else None,
+            "tenant_profile_id": TenantProfileId.from_dict(obj["tenantProfileId"]) if obj.get("tenantProfileId") is not None else None,
             "version": obj.get("version"),
-            "tenantProfileName": obj.get("tenantProfileName"),
+            "tenant_profile_name": obj.get("tenantProfileName"),
             "name": obj.get("name")
         })
         return _obj

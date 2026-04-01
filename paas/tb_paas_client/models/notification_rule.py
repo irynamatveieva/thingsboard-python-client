@@ -39,15 +39,15 @@ class NotificationRule(BaseModel):
     NotificationRule
     """ # noqa: E501
     id: Optional[NotificationRuleId] = None
-    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", alias="createdTime")
-    tenant_id: Optional[TenantId] = Field(default=None, alias="tenantId")
+    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", serialization_alias="createdTime")
+    tenant_id: Optional[TenantId] = Field(default=None, serialization_alias="tenantId")
     name: Annotated[str, Field(min_length=1, strict=True)]
     enabled: Optional[StrictBool] = None
-    template_id: NotificationTemplateId = Field(alias="templateId")
-    trigger_type: NotificationRuleTriggerType = Field(alias="triggerType")
-    trigger_config: NotificationRuleTriggerConfig = Field(alias="triggerConfig")
-    recipients_config: NotificationRuleRecipientsConfig = Field(alias="recipientsConfig")
-    additional_config: Optional[NotificationRuleConfig] = Field(default=None, alias="additionalConfig")
+    template_id: NotificationTemplateId = Field(serialization_alias="templateId")
+    trigger_type: NotificationRuleTriggerType = Field(serialization_alias="triggerType")
+    trigger_config: NotificationRuleTriggerConfig = Field(serialization_alias="triggerConfig")
+    recipients_config: NotificationRuleRecipientsConfig = Field(serialization_alias="recipientsConfig")
+    additional_config: Optional[NotificationRuleConfig] = Field(default=None, serialization_alias="additionalConfig")
     __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "name", "enabled", "templateId", "triggerType", "triggerConfig", "recipientsConfig", "additionalConfig"]
 
     model_config = ConfigDict(
@@ -58,13 +58,18 @@ class NotificationRule(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -122,15 +127,15 @@ class NotificationRule(BaseModel):
 
         _obj = cls.model_validate({
             "id": NotificationRuleId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
+            "created_time": obj.get("createdTime"),
+            "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
             "name": obj.get("name"),
             "enabled": obj.get("enabled"),
-            "templateId": NotificationTemplateId.from_dict(obj["templateId"]) if obj.get("templateId") is not None else None,
-            "triggerType": obj.get("triggerType"),
-            "triggerConfig": NotificationRuleTriggerConfig.from_dict(obj["triggerConfig"]) if obj.get("triggerConfig") is not None else None,
-            "recipientsConfig": NotificationRuleRecipientsConfig.from_dict(obj["recipientsConfig"]) if obj.get("recipientsConfig") is not None else None,
-            "additionalConfig": NotificationRuleConfig.from_dict(obj["additionalConfig"]) if obj.get("additionalConfig") is not None else None
+            "template_id": NotificationTemplateId.from_dict(obj["templateId"]) if obj.get("templateId") is not None else None,
+            "trigger_type": obj.get("triggerType"),
+            "trigger_config": NotificationRuleTriggerConfig.from_dict(obj["triggerConfig"]) if obj.get("triggerConfig") is not None else None,
+            "recipients_config": NotificationRuleRecipientsConfig.from_dict(obj["recipientsConfig"]) if obj.get("recipientsConfig") is not None else None,
+            "additional_config": NotificationRuleConfig.from_dict(obj["additionalConfig"]) if obj.get("additionalConfig") is not None else None
         })
         return _obj
 

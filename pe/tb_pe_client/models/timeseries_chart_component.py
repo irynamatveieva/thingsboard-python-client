@@ -39,19 +39,19 @@ class TimeseriesChartComponent(ReportComponent):
     """
     TimeseriesChartComponent
     """ # noqa: E501
-    data_sources: Optional[List[DataSource]] = Field(default=None, alias="dataSources")
+    data_sources: Optional[List[DataSource]] = Field(default=None, serialization_alias="dataSources")
     margins: Optional[Insets] = None
     paddings: Optional[Insets] = None
     background: Optional[StrictStr] = None
-    border_width: Optional[StrictInt] = Field(default=None, alias="borderWidth")
-    border_radius: Optional[StrictInt] = Field(default=None, alias="borderRadius")
-    border_color: Optional[StrictStr] = Field(default=None, alias="borderColor")
-    width_type: Optional[ImageWidthType] = Field(default=None, alias="widthType")
-    custom_width: Optional[StrictInt] = Field(default=None, alias="customWidth")
+    border_width: Optional[StrictInt] = Field(default=None, serialization_alias="borderWidth")
+    border_radius: Optional[StrictInt] = Field(default=None, serialization_alias="borderRadius")
+    border_color: Optional[StrictStr] = Field(default=None, serialization_alias="borderColor")
+    width_type: Optional[ImageWidthType] = Field(default=None, serialization_alias="widthType")
+    custom_width: Optional[StrictInt] = Field(default=None, serialization_alias="customWidth")
     alignment: Optional[ImageAlignment] = None
     height: Optional[StrictInt] = None
     timewindow: Optional[TimeWindowConfiguration] = None
-    time_series_chart_settings: Optional[ReportTimeSeriesChartSettings] = Field(default=None, alias="timeSeriesChartSettings")
+    time_series_chart_settings: Optional[ReportTimeSeriesChartSettings] = Field(default=None, serialization_alias="timeSeriesChartSettings")
     __properties: ClassVar[List[str]] = ["subType", "type", "dataSources", "margins", "paddings", "background", "borderWidth", "borderRadius", "borderColor", "widthType", "customWidth", "alignment", "height", "timewindow", "timeSeriesChartSettings"]
 
     model_config = ConfigDict(
@@ -62,13 +62,18 @@ class TimeseriesChartComponent(ReportComponent):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -124,21 +129,21 @@ class TimeseriesChartComponent(ReportComponent):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "subType": obj.get("subType"),
+            "sub_type": obj.get("subType"),
             "type": obj.get("type"),
-            "dataSources": [DataSource.from_dict(_item) for _item in obj["dataSources"]] if obj.get("dataSources") is not None else None,
+            "data_sources": [DataSource.from_dict(_item) for _item in obj["dataSources"]] if obj.get("dataSources") is not None else None,
             "margins": Insets.from_dict(obj["margins"]) if obj.get("margins") is not None else None,
             "paddings": Insets.from_dict(obj["paddings"]) if obj.get("paddings") is not None else None,
             "background": obj.get("background"),
-            "borderWidth": obj.get("borderWidth"),
-            "borderRadius": obj.get("borderRadius"),
-            "borderColor": obj.get("borderColor"),
-            "widthType": obj.get("widthType"),
-            "customWidth": obj.get("customWidth"),
+            "border_width": obj.get("borderWidth"),
+            "border_radius": obj.get("borderRadius"),
+            "border_color": obj.get("borderColor"),
+            "width_type": obj.get("widthType"),
+            "custom_width": obj.get("customWidth"),
             "alignment": obj.get("alignment"),
             "height": obj.get("height"),
             "timewindow": TimeWindowConfiguration.from_dict(obj["timewindow"]) if obj.get("timewindow") is not None else None,
-            "timeSeriesChartSettings": ReportTimeSeriesChartSettings.from_dict(obj["timeSeriesChartSettings"]) if obj.get("timeSeriesChartSettings") is not None else None
+            "time_series_chart_settings": ReportTimeSeriesChartSettings.from_dict(obj["timeSeriesChartSettings"]) if obj.get("timeSeriesChartSettings") is not None else None
         })
         return _obj
 

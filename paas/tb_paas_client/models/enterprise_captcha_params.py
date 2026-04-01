@@ -31,12 +31,12 @@ class EnterpriseCaptchaParams(CaptchaParams):
     """
     EnterpriseCaptchaParams
     """ # noqa: E501
-    project_id: Optional[StrictStr] = Field(default=None, description="Your Google Cloud project ID", alias="projectId")
-    service_account_credentials: Optional[StrictStr] = Field(default=None, description="Service account credentials", alias="serviceAccountCredentials")
-    service_account_credentials_file_name: Optional[StrictStr] = Field(default=None, description="Service account credentials file name", alias="serviceAccountCredentialsFileName")
-    android_key: Optional[StrictStr] = Field(default=None, description="The reCAPTCHA key associated with android app.", alias="androidKey")
-    ios_key: Optional[StrictStr] = Field(default=None, description="The reCAPTCHA key associated with iOS app.", alias="iosKey")
-    log_action_name: Optional[StrictStr] = Field(default=None, description="Optional action name used for logging", alias="logActionName")
+    project_id: Optional[StrictStr] = Field(default=None, description="Your Google Cloud project ID", serialization_alias="projectId")
+    service_account_credentials: Optional[StrictStr] = Field(default=None, description="Service account credentials", serialization_alias="serviceAccountCredentials")
+    service_account_credentials_file_name: Optional[StrictStr] = Field(default=None, description="Service account credentials file name", serialization_alias="serviceAccountCredentialsFileName")
+    android_key: Optional[StrictStr] = Field(default=None, description="The reCAPTCHA key associated with android app.", serialization_alias="androidKey")
+    ios_key: Optional[StrictStr] = Field(default=None, description="The reCAPTCHA key associated with iOS app.", serialization_alias="iosKey")
+    log_action_name: Optional[StrictStr] = Field(default=None, description="Optional action name used for logging", serialization_alias="logActionName")
     __properties: ClassVar[List[str]] = ["version", "projectId", "serviceAccountCredentials", "serviceAccountCredentialsFileName", "androidKey", "iosKey", "logActionName"]
 
     model_config = ConfigDict(
@@ -47,13 +47,18 @@ class EnterpriseCaptchaParams(CaptchaParams):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -91,12 +96,12 @@ class EnterpriseCaptchaParams(CaptchaParams):
 
         _obj = cls.model_validate({
             "version": obj.get("version"),
-            "projectId": obj.get("projectId"),
-            "serviceAccountCredentials": obj.get("serviceAccountCredentials"),
-            "serviceAccountCredentialsFileName": obj.get("serviceAccountCredentialsFileName"),
-            "androidKey": obj.get("androidKey"),
-            "iosKey": obj.get("iosKey"),
-            "logActionName": obj.get("logActionName")
+            "project_id": obj.get("projectId"),
+            "service_account_credentials": obj.get("serviceAccountCredentials"),
+            "service_account_credentials_file_name": obj.get("serviceAccountCredentialsFileName"),
+            "android_key": obj.get("androidKey"),
+            "ios_key": obj.get("iosKey"),
+            "log_action_name": obj.get("logActionName")
         })
         return _obj
 

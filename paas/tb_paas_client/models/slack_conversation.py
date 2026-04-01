@@ -35,7 +35,7 @@ class SlackConversation(BaseModel):
     type: SlackConversationType
     id: Annotated[str, Field(min_length=1, strict=True)]
     name: Annotated[str, Field(min_length=1, strict=True)]
-    whole_name: Optional[StrictStr] = Field(default=None, alias="wholeName")
+    whole_name: Optional[StrictStr] = Field(default=None, serialization_alias="wholeName")
     email: Optional[StrictStr] = None
     title: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["type", "id", "name", "wholeName", "email", "title"]
@@ -48,13 +48,18 @@ class SlackConversation(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -94,7 +99,7 @@ class SlackConversation(BaseModel):
             "type": obj.get("type"),
             "id": obj.get("id"),
             "name": obj.get("name"),
-            "wholeName": obj.get("wholeName"),
+            "whole_name": obj.get("wholeName"),
             "email": obj.get("email"),
             "title": obj.get("title")
         })

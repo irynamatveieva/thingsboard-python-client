@@ -33,10 +33,10 @@ class NotificationTemplateConfig(BaseModel):
     """
     NotificationTemplateConfig
     """ # noqa: E501
-    delivery_methods_templates: Dict[str, DeliveryMethodNotificationTemplate] = Field(alias="deliveryMethodsTemplates")
-    attach_report: Optional[StrictBool] = Field(default=None, alias="attachReport")
-    report_template_id: Optional[ReportTemplateId] = Field(default=None, alias="reportTemplateId")
-    user_id: Optional[UserId] = Field(default=None, alias="userId")
+    delivery_methods_templates: Dict[str, DeliveryMethodNotificationTemplate] = Field(serialization_alias="deliveryMethodsTemplates")
+    attach_report: Optional[StrictBool] = Field(default=None, serialization_alias="attachReport")
+    report_template_id: Optional[ReportTemplateId] = Field(default=None, serialization_alias="reportTemplateId")
+    user_id: Optional[UserId] = Field(default=None, serialization_alias="userId")
     timezone: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["deliveryMethodsTemplates", "attachReport", "reportTemplateId", "userId", "timezone"]
 
@@ -48,13 +48,18 @@ class NotificationTemplateConfig(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -104,15 +109,15 @@ class NotificationTemplateConfig(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "deliveryMethodsTemplates": dict(
+            "delivery_methods_templates": dict(
                 (_k, DeliveryMethodNotificationTemplate.from_dict(_v))
                 for _k, _v in obj["deliveryMethodsTemplates"].items()
             )
             if obj.get("deliveryMethodsTemplates") is not None
             else None,
-            "attachReport": obj.get("attachReport"),
-            "reportTemplateId": ReportTemplateId.from_dict(obj["reportTemplateId"]) if obj.get("reportTemplateId") is not None else None,
-            "userId": UserId.from_dict(obj["userId"]) if obj.get("userId") is not None else None,
+            "attach_report": obj.get("attachReport"),
+            "report_template_id": ReportTemplateId.from_dict(obj["reportTemplateId"]) if obj.get("reportTemplateId") is not None else None,
+            "user_id": UserId.from_dict(obj["userId"]) if obj.get("userId") is not None else None,
             "timezone": obj.get("timezone")
         })
         return _obj

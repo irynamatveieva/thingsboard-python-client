@@ -34,11 +34,11 @@ class EntityDataQuery(BaseModel):
     """
     Entity data query to find entities. Page size is capped at 100.
     """ # noqa: E501
-    entity_filter: Optional[EntityFilter] = Field(default=None, alias="entityFilter")
-    key_filters: Optional[List[KeyFilter]] = Field(default=None, alias="keyFilters")
-    page_link: Optional[EntityDataPageLink] = Field(default=None, alias="pageLink")
-    entity_fields: Optional[List[EntityKey]] = Field(default=None, alias="entityFields")
-    latest_values: Optional[List[EntityKey]] = Field(default=None, alias="latestValues")
+    entity_filter: Optional[EntityFilter] = Field(default=None, serialization_alias="entityFilter")
+    key_filters: Optional[List[KeyFilter]] = Field(default=None, serialization_alias="keyFilters")
+    page_link: Optional[EntityDataPageLink] = Field(default=None, serialization_alias="pageLink")
+    entity_fields: Optional[List[EntityKey]] = Field(default=None, serialization_alias="entityFields")
+    latest_values: Optional[List[EntityKey]] = Field(default=None, serialization_alias="latestValues")
     __properties: ClassVar[List[str]] = ["entityFilter", "keyFilters", "pageLink", "entityFields", "latestValues"]
 
     model_config = ConfigDict(
@@ -49,13 +49,18 @@ class EntityDataQuery(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -119,11 +124,11 @@ class EntityDataQuery(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "entityFilter": EntityFilter.from_dict(obj["entityFilter"]) if obj.get("entityFilter") is not None else None,
-            "keyFilters": [KeyFilter.from_dict(_item) for _item in obj["keyFilters"]] if obj.get("keyFilters") is not None else None,
-            "pageLink": EntityDataPageLink.from_dict(obj["pageLink"]) if obj.get("pageLink") is not None else None,
-            "entityFields": [EntityKey.from_dict(_item) for _item in obj["entityFields"]] if obj.get("entityFields") is not None else None,
-            "latestValues": [EntityKey.from_dict(_item) for _item in obj["latestValues"]] if obj.get("latestValues") is not None else None
+            "entity_filter": EntityFilter.from_dict(obj["entityFilter"]) if obj.get("entityFilter") is not None else None,
+            "key_filters": [KeyFilter.from_dict(_item) for _item in obj["keyFilters"]] if obj.get("keyFilters") is not None else None,
+            "page_link": EntityDataPageLink.from_dict(obj["pageLink"]) if obj.get("pageLink") is not None else None,
+            "entity_fields": [EntityKey.from_dict(_item) for _item in obj["entityFields"]] if obj.get("entityFields") is not None else None,
+            "latest_values": [EntityKey.from_dict(_item) for _item in obj["latestValues"]] if obj.get("latestValues") is not None else None
         })
         return _obj
 

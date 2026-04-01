@@ -33,7 +33,7 @@ class WeekSunSatInterval(AggInterval):
     WeekSunSatInterval
     """ # noqa: E501
     tz: Annotated[str, Field(min_length=1, strict=True)]
-    offset_sec: Optional[StrictInt] = Field(default=None, alias="offsetSec")
+    offset_sec: Optional[StrictInt] = Field(default=None, serialization_alias="offsetSec")
     __properties: ClassVar[List[str]] = ["type", "tz", "offsetSec"]
 
     model_config = ConfigDict(
@@ -44,13 +44,18 @@ class WeekSunSatInterval(AggInterval):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -89,7 +94,7 @@ class WeekSunSatInterval(AggInterval):
         _obj = cls.model_validate({
             "type": obj.get("type"),
             "tz": obj.get("tz"),
-            "offsetSec": obj.get("offsetSec")
+            "offset_sec": obj.get("offsetSec")
         })
         return _obj
 

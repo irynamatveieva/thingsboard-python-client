@@ -34,7 +34,7 @@ class SingleEntityVersionCreateRequest(VersionCreateRequest):
     """
     SingleEntityVersionCreateRequest
     """ # noqa: E501
-    entity_id: Optional[EntityId] = Field(default=None, alias="entityId")
+    entity_id: Optional[EntityId] = Field(default=None, serialization_alias="entityId")
     config: Optional[VersionCreateConfig] = None
     __properties: ClassVar[List[str]] = ["versionName", "branch", "type", "entityId", "config"]
 
@@ -46,13 +46,18 @@ class SingleEntityVersionCreateRequest(VersionCreateRequest):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -95,10 +100,10 @@ class SingleEntityVersionCreateRequest(VersionCreateRequest):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "versionName": obj.get("versionName"),
+            "version_name": obj.get("versionName"),
             "branch": obj.get("branch"),
             "type": obj.get("type"),
-            "entityId": EntityId.from_dict(obj["entityId"]) if obj.get("entityId") is not None else None,
+            "entity_id": EntityId.from_dict(obj["entityId"]) if obj.get("entityId") is not None else None,
             "config": VersionCreateConfig.from_dict(obj["config"]) if obj.get("config") is not None else None
         })
         return _obj

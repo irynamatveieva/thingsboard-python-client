@@ -36,16 +36,16 @@ class SnmpDeviceTransportConfiguration(DeviceTransportConfiguration):
     """ # noqa: E501
     host: Optional[StrictStr] = None
     port: Optional[StrictInt] = None
-    protocol_version: Optional[SnmpProtocolVersion] = Field(default=None, alias="protocolVersion")
+    protocol_version: Optional[SnmpProtocolVersion] = Field(default=None, serialization_alias="protocolVersion")
     community: Optional[StrictStr] = None
     username: Optional[StrictStr] = None
-    security_name: Optional[StrictStr] = Field(default=None, alias="securityName")
-    context_name: Optional[StrictStr] = Field(default=None, alias="contextName")
-    authentication_protocol: Optional[AuthenticationProtocol] = Field(default=None, alias="authenticationProtocol")
-    authentication_passphrase: Optional[StrictStr] = Field(default=None, alias="authenticationPassphrase")
-    privacy_protocol: Optional[PrivacyProtocol] = Field(default=None, alias="privacyProtocol")
-    privacy_passphrase: Optional[StrictStr] = Field(default=None, alias="privacyPassphrase")
-    engine_id: Optional[StrictStr] = Field(default=None, alias="engineId")
+    security_name: Optional[StrictStr] = Field(default=None, serialization_alias="securityName")
+    context_name: Optional[StrictStr] = Field(default=None, serialization_alias="contextName")
+    authentication_protocol: Optional[AuthenticationProtocol] = Field(default=None, serialization_alias="authenticationProtocol")
+    authentication_passphrase: Optional[StrictStr] = Field(default=None, serialization_alias="authenticationPassphrase")
+    privacy_protocol: Optional[PrivacyProtocol] = Field(default=None, serialization_alias="privacyProtocol")
+    privacy_passphrase: Optional[StrictStr] = Field(default=None, serialization_alias="privacyPassphrase")
+    engine_id: Optional[StrictStr] = Field(default=None, serialization_alias="engineId")
     __properties: ClassVar[List[str]] = ["type", "host", "port", "protocolVersion", "community", "username", "securityName", "contextName", "authenticationProtocol", "authenticationPassphrase", "privacyProtocol", "privacyPassphrase", "engineId"]
 
     model_config = ConfigDict(
@@ -56,13 +56,18 @@ class SnmpDeviceTransportConfiguration(DeviceTransportConfiguration):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -102,16 +107,16 @@ class SnmpDeviceTransportConfiguration(DeviceTransportConfiguration):
             "type": obj.get("type"),
             "host": obj.get("host"),
             "port": obj.get("port"),
-            "protocolVersion": obj.get("protocolVersion"),
+            "protocol_version": obj.get("protocolVersion"),
             "community": obj.get("community"),
             "username": obj.get("username"),
-            "securityName": obj.get("securityName"),
-            "contextName": obj.get("contextName"),
-            "authenticationProtocol": obj.get("authenticationProtocol"),
-            "authenticationPassphrase": obj.get("authenticationPassphrase"),
-            "privacyProtocol": obj.get("privacyProtocol"),
-            "privacyPassphrase": obj.get("privacyPassphrase"),
-            "engineId": obj.get("engineId")
+            "security_name": obj.get("securityName"),
+            "context_name": obj.get("contextName"),
+            "authentication_protocol": obj.get("authenticationProtocol"),
+            "authentication_passphrase": obj.get("authenticationPassphrase"),
+            "privacy_protocol": obj.get("privacyProtocol"),
+            "privacy_passphrase": obj.get("privacyPassphrase"),
+            "engine_id": obj.get("engineId")
         })
         return _obj
 

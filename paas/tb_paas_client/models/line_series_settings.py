@@ -36,22 +36,22 @@ class LineSeriesSettings(BaseModel):
     """
     LineSeriesSettings
     """ # noqa: E501
-    show_line: Optional[StrictBool] = Field(default=None, alias="showLine")
+    show_line: Optional[StrictBool] = Field(default=None, serialization_alias="showLine")
     step: Optional[StrictBool] = None
-    step_type: Optional[LineSeriesStepType] = Field(default=None, alias="stepType")
+    step_type: Optional[LineSeriesStepType] = Field(default=None, serialization_alias="stepType")
     smooth: Optional[StrictBool] = None
-    line_type: Optional[ChartLineType] = Field(default=None, alias="lineType")
-    line_width: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, alias="lineWidth")
-    show_points: Optional[StrictBool] = Field(default=None, alias="showPoints")
-    show_point_label: Optional[StrictBool] = Field(default=None, alias="showPointLabel")
-    point_label_position: Optional[ChartLabelPosition] = Field(default=None, alias="pointLabelPosition")
-    point_label_font: Optional[Font] = Field(default=None, alias="pointLabelFont")
-    point_label_color: Optional[StrictStr] = Field(default=None, alias="pointLabelColor")
-    enable_point_label_background: Optional[StrictBool] = Field(default=None, alias="enablePointLabelBackground")
-    point_label_background: Optional[StrictStr] = Field(default=None, alias="pointLabelBackground")
-    point_shape: Optional[ChartShape] = Field(default=None, alias="pointShape")
-    point_size: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, alias="pointSize")
-    fill_area_settings: Optional[ChartFillSettings] = Field(default=None, alias="fillAreaSettings")
+    line_type: Optional[ChartLineType] = Field(default=None, serialization_alias="lineType")
+    line_width: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, serialization_alias="lineWidth")
+    show_points: Optional[StrictBool] = Field(default=None, serialization_alias="showPoints")
+    show_point_label: Optional[StrictBool] = Field(default=None, serialization_alias="showPointLabel")
+    point_label_position: Optional[ChartLabelPosition] = Field(default=None, serialization_alias="pointLabelPosition")
+    point_label_font: Optional[Font] = Field(default=None, serialization_alias="pointLabelFont")
+    point_label_color: Optional[StrictStr] = Field(default=None, serialization_alias="pointLabelColor")
+    enable_point_label_background: Optional[StrictBool] = Field(default=None, serialization_alias="enablePointLabelBackground")
+    point_label_background: Optional[StrictStr] = Field(default=None, serialization_alias="pointLabelBackground")
+    point_shape: Optional[ChartShape] = Field(default=None, serialization_alias="pointShape")
+    point_size: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, serialization_alias="pointSize")
+    fill_area_settings: Optional[ChartFillSettings] = Field(default=None, serialization_alias="fillAreaSettings")
     __properties: ClassVar[List[str]] = ["showLine", "step", "stepType", "smooth", "lineType", "lineWidth", "showPoints", "showPointLabel", "pointLabelPosition", "pointLabelFont", "pointLabelColor", "enablePointLabelBackground", "pointLabelBackground", "pointShape", "pointSize", "fillAreaSettings"]
 
     model_config = ConfigDict(
@@ -62,13 +62,18 @@ class LineSeriesSettings(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -111,22 +116,22 @@ class LineSeriesSettings(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "showLine": obj.get("showLine"),
+            "show_line": obj.get("showLine"),
             "step": obj.get("step"),
-            "stepType": obj.get("stepType"),
+            "step_type": obj.get("stepType"),
             "smooth": obj.get("smooth"),
-            "lineType": obj.get("lineType"),
-            "lineWidth": obj.get("lineWidth"),
-            "showPoints": obj.get("showPoints"),
-            "showPointLabel": obj.get("showPointLabel"),
-            "pointLabelPosition": obj.get("pointLabelPosition"),
-            "pointLabelFont": Font.from_dict(obj["pointLabelFont"]) if obj.get("pointLabelFont") is not None else None,
-            "pointLabelColor": obj.get("pointLabelColor"),
-            "enablePointLabelBackground": obj.get("enablePointLabelBackground"),
-            "pointLabelBackground": obj.get("pointLabelBackground"),
-            "pointShape": obj.get("pointShape"),
-            "pointSize": obj.get("pointSize"),
-            "fillAreaSettings": ChartFillSettings.from_dict(obj["fillAreaSettings"]) if obj.get("fillAreaSettings") is not None else None
+            "line_type": obj.get("lineType"),
+            "line_width": obj.get("lineWidth"),
+            "show_points": obj.get("showPoints"),
+            "show_point_label": obj.get("showPointLabel"),
+            "point_label_position": obj.get("pointLabelPosition"),
+            "point_label_font": Font.from_dict(obj["pointLabelFont"]) if obj.get("pointLabelFont") is not None else None,
+            "point_label_color": obj.get("pointLabelColor"),
+            "enable_point_label_background": obj.get("enablePointLabelBackground"),
+            "point_label_background": obj.get("pointLabelBackground"),
+            "point_shape": obj.get("pointShape"),
+            "point_size": obj.get("pointSize"),
+            "fill_area_settings": ChartFillSettings.from_dict(obj["fillAreaSettings"]) if obj.get("fillAreaSettings") is not None else None
         })
         return _obj
 

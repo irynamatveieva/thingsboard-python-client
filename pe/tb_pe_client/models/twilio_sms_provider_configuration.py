@@ -31,9 +31,9 @@ class TwilioSmsProviderConfiguration(SmsProviderConfiguration):
     """
     TwilioSmsProviderConfiguration
     """ # noqa: E501
-    account_sid: Optional[StrictStr] = Field(default=None, description="Twilio account Sid.", alias="accountSid")
-    account_token: Optional[StrictStr] = Field(default=None, description="Twilio account Token.", alias="accountToken")
-    number_from: Optional[StrictStr] = Field(default=None, description="The number/id of a sender.", alias="numberFrom")
+    account_sid: Optional[StrictStr] = Field(default=None, description="Twilio account Sid.", serialization_alias="accountSid")
+    account_token: Optional[StrictStr] = Field(default=None, description="Twilio account Token.", serialization_alias="accountToken")
+    number_from: Optional[StrictStr] = Field(default=None, description="The number/id of a sender.", serialization_alias="numberFrom")
     __properties: ClassVar[List[str]] = ["type", "accountSid", "accountToken", "numberFrom"]
 
     model_config = ConfigDict(
@@ -44,13 +44,18 @@ class TwilioSmsProviderConfiguration(SmsProviderConfiguration):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -88,9 +93,9 @@ class TwilioSmsProviderConfiguration(SmsProviderConfiguration):
 
         _obj = cls.model_validate({
             "type": obj.get("type"),
-            "accountSid": obj.get("accountSid"),
-            "accountToken": obj.get("accountToken"),
-            "numberFrom": obj.get("numberFrom")
+            "account_sid": obj.get("accountSid"),
+            "account_token": obj.get("accountToken"),
+            "number_from": obj.get("numberFrom")
         })
         return _obj
 

@@ -34,12 +34,12 @@ class RelationsSearchParameters(BaseModel):
     """
     RelationsSearchParameters
     """ # noqa: E501
-    root_id: Optional[UUID] = Field(default=None, description="Root entity id to start search from.", alias="rootId")
-    root_type: Optional[EntityType] = Field(default=None, description="Type of the root entity.", alias="rootType")
+    root_id: Optional[UUID] = Field(default=None, description="Root entity id to start search from.", serialization_alias="rootId")
+    root_type: Optional[EntityType] = Field(default=None, description="Type of the root entity.", serialization_alias="rootType")
     direction: Optional[EntitySearchDirection] = Field(default=None, description="Type of the root entity.")
-    relation_type_group: Optional[RelationTypeGroup] = Field(default=None, description="Type of the relation.", alias="relationTypeGroup")
-    max_level: Optional[StrictInt] = Field(default=None, description="Maximum level of the search depth.", alias="maxLevel")
-    fetch_last_level_only: Optional[StrictBool] = Field(default=None, description="Fetch entities that match the last level of search. Useful to find Devices that are strictly 'maxLevel' relations away from the root entity.", alias="fetchLastLevelOnly")
+    relation_type_group: Optional[RelationTypeGroup] = Field(default=None, description="Type of the relation.", serialization_alias="relationTypeGroup")
+    max_level: Optional[StrictInt] = Field(default=None, description="Maximum level of the search depth.", serialization_alias="maxLevel")
+    fetch_last_level_only: Optional[StrictBool] = Field(default=None, description="Fetch entities that match the last level of search. Useful to find Devices that are strictly 'maxLevel' relations away from the root entity.", serialization_alias="fetchLastLevelOnly")
     __properties: ClassVar[List[str]] = ["rootId", "rootType", "direction", "relationTypeGroup", "maxLevel", "fetchLastLevelOnly"]
 
     model_config = ConfigDict(
@@ -50,13 +50,18 @@ class RelationsSearchParameters(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -93,12 +98,12 @@ class RelationsSearchParameters(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "rootId": obj.get("rootId"),
-            "rootType": obj.get("rootType"),
+            "root_id": obj.get("rootId"),
+            "root_type": obj.get("rootType"),
             "direction": obj.get("direction"),
-            "relationTypeGroup": obj.get("relationTypeGroup"),
-            "maxLevel": obj.get("maxLevel"),
-            "fetchLastLevelOnly": obj.get("fetchLastLevelOnly")
+            "relation_type_group": obj.get("relationTypeGroup"),
+            "max_level": obj.get("maxLevel"),
+            "fetch_last_level_only": obj.get("fetchLastLevelOnly")
         })
         return _obj
 

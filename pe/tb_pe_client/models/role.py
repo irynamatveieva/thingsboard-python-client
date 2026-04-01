@@ -36,15 +36,15 @@ class Role(BaseModel):
     A JSON value representing the role.
     """ # noqa: E501
     id: Optional[RoleId] = Field(default=None, description="JSON object with the Role Id. Specify this field to update the Role. Referencing non-existing Role Id will cause error. Omit this field to create new Role.")
-    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the role creation, in milliseconds", alias="createdTime")
-    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the role. May include: 'description' (string).", alias="additionalInfo")
-    tenant_id: TenantId = Field(description="JSON object with Tenant Id.", alias="tenantId")
-    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id. ", alias="customerId")
+    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the role creation, in milliseconds", serialization_alias="createdTime")
+    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the role. May include: 'description' (string).", serialization_alias="additionalInfo")
+    tenant_id: TenantId = Field(description="JSON object with Tenant Id.", serialization_alias="tenantId")
+    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id. ", serialization_alias="customerId")
     name: StrictStr = Field(description="Role Name")
     type: RoleType = Field(description="Type of the role: generic or group")
     permissions: Optional[Any] = None
     version: Optional[StrictInt] = None
-    owner_id: Optional[EntityId] = Field(default=None, description="JSON object with Customer or Tenant Id", alias="ownerId")
+    owner_id: Optional[EntityId] = Field(default=None, description="JSON object with Customer or Tenant Id", serialization_alias="ownerId")
     __properties: ClassVar[List[str]] = ["id", "createdTime", "additionalInfo", "tenantId", "customerId", "name", "type", "permissions", "version", "ownerId"]
 
     model_config = ConfigDict(
@@ -55,13 +55,18 @@ class Role(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -129,15 +134,15 @@ class Role(BaseModel):
 
         _obj = cls.model_validate({
             "id": RoleId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "additionalInfo": obj.get("additionalInfo"),
-            "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
-            "customerId": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
+            "created_time": obj.get("createdTime"),
+            "additional_info": obj.get("additionalInfo"),
+            "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
+            "customer_id": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
             "name": obj.get("name"),
             "type": obj.get("type"),
             "permissions": obj.get("permissions"),
             "version": obj.get("version"),
-            "ownerId": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None
+            "owner_id": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None
         })
         return _obj
 

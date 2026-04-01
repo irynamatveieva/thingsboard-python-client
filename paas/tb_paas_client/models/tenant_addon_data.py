@@ -30,26 +30,26 @@ class TenantAddonData(BaseModel):
     """
     TenantAddonData
     """ # noqa: E501
-    max_devices: Optional[StrictInt] = Field(default=None, alias="maxDevices")
-    max_assets: Optional[StrictInt] = Field(default=None, alias="maxAssets")
-    max_customers: Optional[StrictInt] = Field(default=None, alias="maxCustomers")
-    max_users: Optional[StrictInt] = Field(default=None, alias="maxUsers")
-    max_integrations: Optional[StrictInt] = Field(default=None, alias="maxIntegrations")
-    max_converters: Optional[StrictInt] = Field(default=None, alias="maxConverters")
-    max_calculated_fields_per_entity: Optional[StrictInt] = Field(default=None, alias="maxCalculatedFieldsPerEntity")
-    max_transport_messages: Optional[StrictInt] = Field(default=None, alias="maxTransportMessages")
-    max_transport_data_points: Optional[StrictInt] = Field(default=None, alias="maxTransportDataPoints")
-    max_re_executions: Optional[StrictInt] = Field(default=None, alias="maxREExecutions")
-    max_js_executions: Optional[StrictInt] = Field(default=None, alias="maxJSExecutions")
-    max_dp_storage_days: Optional[StrictInt] = Field(default=None, alias="maxDPStorageDays")
-    max_created_alarms: Optional[StrictInt] = Field(default=None, alias="maxCreatedAlarms")
-    max_emails: Optional[StrictInt] = Field(default=None, alias="maxEmails")
-    max_sms: Optional[StrictInt] = Field(default=None, alias="maxSms")
-    max_ai_credits: Optional[StrictInt] = Field(default=None, alias="maxAiCredits")
-    edge_enabled: Optional[StrictBool] = Field(default=None, alias="edgeEnabled")
-    max_edges: Optional[StrictInt] = Field(default=None, alias="maxEdges")
-    trendz_enabled: Optional[StrictBool] = Field(default=None, alias="trendzEnabled")
-    white_labeling_enabled: Optional[StrictBool] = Field(default=None, alias="whiteLabelingEnabled")
+    max_devices: Optional[StrictInt] = Field(default=None, serialization_alias="maxDevices")
+    max_assets: Optional[StrictInt] = Field(default=None, serialization_alias="maxAssets")
+    max_customers: Optional[StrictInt] = Field(default=None, serialization_alias="maxCustomers")
+    max_users: Optional[StrictInt] = Field(default=None, serialization_alias="maxUsers")
+    max_integrations: Optional[StrictInt] = Field(default=None, serialization_alias="maxIntegrations")
+    max_converters: Optional[StrictInt] = Field(default=None, serialization_alias="maxConverters")
+    max_calculated_fields_per_entity: Optional[StrictInt] = Field(default=None, serialization_alias="maxCalculatedFieldsPerEntity")
+    max_transport_messages: Optional[StrictInt] = Field(default=None, serialization_alias="maxTransportMessages")
+    max_transport_data_points: Optional[StrictInt] = Field(default=None, serialization_alias="maxTransportDataPoints")
+    max_re_executions: Optional[StrictInt] = Field(default=None, serialization_alias="maxREExecutions")
+    max_js_executions: Optional[StrictInt] = Field(default=None, serialization_alias="maxJSExecutions")
+    max_dp_storage_days: Optional[StrictInt] = Field(default=None, serialization_alias="maxDPStorageDays")
+    max_created_alarms: Optional[StrictInt] = Field(default=None, serialization_alias="maxCreatedAlarms")
+    max_emails: Optional[StrictInt] = Field(default=None, serialization_alias="maxEmails")
+    max_sms: Optional[StrictInt] = Field(default=None, serialization_alias="maxSms")
+    max_ai_credits: Optional[StrictInt] = Field(default=None, serialization_alias="maxAiCredits")
+    edge_enabled: Optional[StrictBool] = Field(default=None, serialization_alias="edgeEnabled")
+    max_edges: Optional[StrictInt] = Field(default=None, serialization_alias="maxEdges")
+    trendz_enabled: Optional[StrictBool] = Field(default=None, serialization_alias="trendzEnabled")
+    white_labeling_enabled: Optional[StrictBool] = Field(default=None, serialization_alias="whiteLabelingEnabled")
     default: Optional[StrictBool] = None
     __properties: ClassVar[List[str]] = ["maxDevices", "maxAssets", "maxCustomers", "maxUsers", "maxIntegrations", "maxConverters", "maxCalculatedFieldsPerEntity", "maxTransportMessages", "maxTransportDataPoints", "maxREExecutions", "maxJSExecutions", "maxDPStorageDays", "maxCreatedAlarms", "maxEmails", "maxSms", "maxAiCredits", "edgeEnabled", "maxEdges", "trendzEnabled", "whiteLabelingEnabled", "default"]
 
@@ -61,13 +61,18 @@ class TenantAddonData(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -104,26 +109,26 @@ class TenantAddonData(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "maxDevices": obj.get("maxDevices"),
-            "maxAssets": obj.get("maxAssets"),
-            "maxCustomers": obj.get("maxCustomers"),
-            "maxUsers": obj.get("maxUsers"),
-            "maxIntegrations": obj.get("maxIntegrations"),
-            "maxConverters": obj.get("maxConverters"),
-            "maxCalculatedFieldsPerEntity": obj.get("maxCalculatedFieldsPerEntity"),
-            "maxTransportMessages": obj.get("maxTransportMessages"),
-            "maxTransportDataPoints": obj.get("maxTransportDataPoints"),
-            "maxREExecutions": obj.get("maxREExecutions"),
-            "maxJSExecutions": obj.get("maxJSExecutions"),
-            "maxDPStorageDays": obj.get("maxDPStorageDays"),
-            "maxCreatedAlarms": obj.get("maxCreatedAlarms"),
-            "maxEmails": obj.get("maxEmails"),
-            "maxSms": obj.get("maxSms"),
-            "maxAiCredits": obj.get("maxAiCredits"),
-            "edgeEnabled": obj.get("edgeEnabled"),
-            "maxEdges": obj.get("maxEdges"),
-            "trendzEnabled": obj.get("trendzEnabled"),
-            "whiteLabelingEnabled": obj.get("whiteLabelingEnabled"),
+            "max_devices": obj.get("maxDevices"),
+            "max_assets": obj.get("maxAssets"),
+            "max_customers": obj.get("maxCustomers"),
+            "max_users": obj.get("maxUsers"),
+            "max_integrations": obj.get("maxIntegrations"),
+            "max_converters": obj.get("maxConverters"),
+            "max_calculated_fields_per_entity": obj.get("maxCalculatedFieldsPerEntity"),
+            "max_transport_messages": obj.get("maxTransportMessages"),
+            "max_transport_data_points": obj.get("maxTransportDataPoints"),
+            "max_r_e_executions": obj.get("maxREExecutions"),
+            "max_j_s_executions": obj.get("maxJSExecutions"),
+            "max_d_p_storage_days": obj.get("maxDPStorageDays"),
+            "max_created_alarms": obj.get("maxCreatedAlarms"),
+            "max_emails": obj.get("maxEmails"),
+            "max_sms": obj.get("maxSms"),
+            "max_ai_credits": obj.get("maxAiCredits"),
+            "edge_enabled": obj.get("edgeEnabled"),
+            "max_edges": obj.get("maxEdges"),
+            "trendz_enabled": obj.get("trendzEnabled"),
+            "white_labeling_enabled": obj.get("whiteLabelingEnabled"),
             "default": obj.get("default")
         })
         return _obj

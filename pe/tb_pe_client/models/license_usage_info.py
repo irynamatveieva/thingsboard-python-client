@@ -30,15 +30,15 @@ class LicenseUsageInfo(BaseModel):
     """
     LicenseUsageInfo
     """ # noqa: E501
-    max_devices: Optional[StrictInt] = Field(default=None, alias="maxDevices")
-    max_assets: Optional[StrictInt] = Field(default=None, alias="maxAssets")
-    white_labeling_enabled: Optional[StrictBool] = Field(default=None, alias="whiteLabelingEnabled")
+    max_devices: Optional[StrictInt] = Field(default=None, serialization_alias="maxDevices")
+    max_assets: Optional[StrictInt] = Field(default=None, serialization_alias="maxAssets")
+    white_labeling_enabled: Optional[StrictBool] = Field(default=None, serialization_alias="whiteLabelingEnabled")
     development: Optional[StrictBool] = None
     plan: Optional[StrictStr] = None
-    devices_count: Optional[StrictInt] = Field(default=None, alias="devicesCount")
-    assets_count: Optional[StrictInt] = Field(default=None, alias="assetsCount")
-    dashboards_count: Optional[StrictInt] = Field(default=None, alias="dashboardsCount")
-    integrations_count: Optional[StrictInt] = Field(default=None, alias="integrationsCount")
+    devices_count: Optional[StrictInt] = Field(default=None, serialization_alias="devicesCount")
+    assets_count: Optional[StrictInt] = Field(default=None, serialization_alias="assetsCount")
+    dashboards_count: Optional[StrictInt] = Field(default=None, serialization_alias="dashboardsCount")
+    integrations_count: Optional[StrictInt] = Field(default=None, serialization_alias="integrationsCount")
     __properties: ClassVar[List[str]] = ["maxDevices", "maxAssets", "whiteLabelingEnabled", "development", "plan", "devicesCount", "assetsCount", "dashboardsCount", "integrationsCount"]
 
     model_config = ConfigDict(
@@ -49,13 +49,18 @@ class LicenseUsageInfo(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -92,15 +97,15 @@ class LicenseUsageInfo(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "maxDevices": obj.get("maxDevices"),
-            "maxAssets": obj.get("maxAssets"),
-            "whiteLabelingEnabled": obj.get("whiteLabelingEnabled"),
+            "max_devices": obj.get("maxDevices"),
+            "max_assets": obj.get("maxAssets"),
+            "white_labeling_enabled": obj.get("whiteLabelingEnabled"),
             "development": obj.get("development"),
             "plan": obj.get("plan"),
-            "devicesCount": obj.get("devicesCount"),
-            "assetsCount": obj.get("assetsCount"),
-            "dashboardsCount": obj.get("dashboardsCount"),
-            "integrationsCount": obj.get("integrationsCount")
+            "devices_count": obj.get("devicesCount"),
+            "assets_count": obj.get("assetsCount"),
+            "dashboards_count": obj.get("dashboardsCount"),
+            "integrations_count": obj.get("integrationsCount")
         })
         return _obj
 

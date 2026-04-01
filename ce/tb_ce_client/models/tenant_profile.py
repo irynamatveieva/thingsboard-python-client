@@ -33,12 +33,12 @@ class TenantProfile(BaseModel):
     A JSON value representing the tenant profile.
     """ # noqa: E501
     id: Optional[TenantProfileId] = Field(default=None, description="JSON object with the tenant profile Id. Specify this field to update the tenant profile. Referencing non-existing tenant profile Id will cause error. Omit this field to create new tenant profile.")
-    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the tenant profile creation, in milliseconds", alias="createdTime")
+    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the tenant profile creation, in milliseconds", serialization_alias="createdTime")
     name: Optional[StrictStr] = Field(default=None, description="Name of the tenant profile")
     description: Optional[StrictStr] = Field(default=None, description="Description of the tenant profile")
     default: Optional[StrictBool] = Field(default=None, description="Default Tenant profile to be used.")
-    isolated_tb_rule_engine: Optional[StrictBool] = Field(default=None, description="If enabled, will push all messages related to this tenant and processed by the rule engine into separate queue. Useful for complex microservices deployments, to isolate processing of the data for specific tenants", alias="isolatedTbRuleEngine")
-    profile_data: Optional[TenantProfileData] = Field(default=None, alias="profileData")
+    isolated_tb_rule_engine: Optional[StrictBool] = Field(default=None, description="If enabled, will push all messages related to this tenant and processed by the rule engine into separate queue. Useful for complex microservices deployments, to isolate processing of the data for specific tenants", serialization_alias="isolatedTbRuleEngine")
+    profile_data: Optional[TenantProfileData] = Field(default=None, serialization_alias="profileData")
     __properties: ClassVar[List[str]] = ["id", "createdTime", "name", "description", "default", "isolatedTbRuleEngine", "profileData"]
 
     model_config = ConfigDict(
@@ -49,13 +49,18 @@ class TenantProfile(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -101,12 +106,12 @@ class TenantProfile(BaseModel):
 
         _obj = cls.model_validate({
             "id": TenantProfileId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
+            "created_time": obj.get("createdTime"),
             "name": obj.get("name"),
             "description": obj.get("description"),
             "default": obj.get("default"),
-            "isolatedTbRuleEngine": obj.get("isolatedTbRuleEngine"),
-            "profileData": TenantProfileData.from_dict(obj["profileData"]) if obj.get("profileData") is not None else None
+            "isolated_tb_rule_engine": obj.get("isolatedTbRuleEngine"),
+            "profile_data": TenantProfileData.from_dict(obj["profileData"]) if obj.get("profileData") is not None else None
         })
         return _obj
 

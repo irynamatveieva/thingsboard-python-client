@@ -37,11 +37,11 @@ class RelatedEntitiesAggregationCalculatedFieldConfiguration(CalculatedFieldConf
     """ # noqa: E501
     relation: RelationPathLevel
     arguments: Dict[str, Argument]
-    deduplication_interval_in_sec: Optional[StrictInt] = Field(default=None, alias="deduplicationIntervalInSec")
+    deduplication_interval_in_sec: Optional[StrictInt] = Field(default=None, serialization_alias="deduplicationIntervalInSec")
     metrics: Dict[str, AggMetric]
-    use_latest_ts: Optional[StrictBool] = Field(default=None, alias="useLatestTs")
-    scheduled_update_interval: Optional[StrictInt] = Field(default=None, alias="scheduledUpdateInterval")
-    scheduled_update_enabled: Optional[StrictBool] = Field(default=None, alias="scheduledUpdateEnabled")
+    use_latest_ts: Optional[StrictBool] = Field(default=None, serialization_alias="useLatestTs")
+    scheduled_update_interval: Optional[StrictInt] = Field(default=None, serialization_alias="scheduledUpdateInterval")
+    scheduled_update_enabled: Optional[StrictBool] = Field(default=None, serialization_alias="scheduledUpdateEnabled")
     __properties: ClassVar[List[str]] = ["output", "type", "relation", "arguments", "deduplicationIntervalInSec", "metrics", "useLatestTs", "scheduledUpdateInterval", "scheduledUpdateEnabled"]
 
     model_config = ConfigDict(
@@ -52,13 +52,18 @@ class RelatedEntitiesAggregationCalculatedFieldConfiguration(CalculatedFieldConf
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -124,16 +129,16 @@ class RelatedEntitiesAggregationCalculatedFieldConfiguration(CalculatedFieldConf
             )
             if obj.get("arguments") is not None
             else None,
-            "deduplicationIntervalInSec": obj.get("deduplicationIntervalInSec"),
+            "deduplication_interval_in_sec": obj.get("deduplicationIntervalInSec"),
             "metrics": dict(
                 (_k, AggMetric.from_dict(_v))
                 for _k, _v in obj["metrics"].items()
             )
             if obj.get("metrics") is not None
             else None,
-            "useLatestTs": obj.get("useLatestTs"),
-            "scheduledUpdateInterval": obj.get("scheduledUpdateInterval"),
-            "scheduledUpdateEnabled": obj.get("scheduledUpdateEnabled")
+            "use_latest_ts": obj.get("useLatestTs"),
+            "scheduled_update_interval": obj.get("scheduledUpdateInterval"),
+            "scheduled_update_enabled": obj.get("scheduledUpdateEnabled")
         })
         return _obj
 

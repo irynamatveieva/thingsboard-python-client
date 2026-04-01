@@ -33,21 +33,21 @@ class OAuth2ClientRegistrationTemplate(BaseModel):
     OAuth2ClientRegistrationTemplate
     """ # noqa: E501
     id: Optional[OAuth2ClientRegistrationTemplateId] = None
-    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", alias="createdTime")
-    additional_info: Optional[Any] = Field(default=None, alias="additionalInfo")
-    provider_id: StrictStr = Field(description="OAuth2 provider identifier (e.g. its name)", alias="providerId")
-    mapper_config: Optional[OAuth2MapperConfig] = Field(default=None, description="Default config for mapping OAuth2 log in response to platform entities", alias="mapperConfig")
-    authorization_uri: Optional[StrictStr] = Field(default=None, description="Default authorization URI of the OAuth2 provider", alias="authorizationUri")
-    access_token_uri: Optional[StrictStr] = Field(default=None, description="Default access token URI of the OAuth2 provider", alias="accessTokenUri")
+    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", serialization_alias="createdTime")
+    additional_info: Optional[Any] = Field(default=None, serialization_alias="additionalInfo")
+    provider_id: StrictStr = Field(description="OAuth2 provider identifier (e.g. its name)", serialization_alias="providerId")
+    mapper_config: Optional[OAuth2MapperConfig] = Field(default=None, description="Default config for mapping OAuth2 log in response to platform entities", serialization_alias="mapperConfig")
+    authorization_uri: Optional[StrictStr] = Field(default=None, description="Default authorization URI of the OAuth2 provider", serialization_alias="authorizationUri")
+    access_token_uri: Optional[StrictStr] = Field(default=None, description="Default access token URI of the OAuth2 provider", serialization_alias="accessTokenUri")
     scope: Optional[List[StrictStr]] = Field(default=None, description="Default OAuth scopes that will be requested from OAuth2 platform")
-    user_info_uri: Optional[StrictStr] = Field(default=None, description="Default user info URI of the OAuth2 provider", alias="userInfoUri")
-    user_name_attribute_name: Optional[StrictStr] = Field(default=None, description="Default name of the username attribute in OAuth2 provider log in response", alias="userNameAttributeName")
-    jwk_set_uri: Optional[StrictStr] = Field(default=None, description="Default JSON Web Key URI of the OAuth2 provider", alias="jwkSetUri")
-    client_authentication_method: Optional[StrictStr] = Field(default=None, description="Default client authentication method to use: 'BASIC' or 'POST'", alias="clientAuthenticationMethod")
+    user_info_uri: Optional[StrictStr] = Field(default=None, description="Default user info URI of the OAuth2 provider", serialization_alias="userInfoUri")
+    user_name_attribute_name: Optional[StrictStr] = Field(default=None, description="Default name of the username attribute in OAuth2 provider log in response", serialization_alias="userNameAttributeName")
+    jwk_set_uri: Optional[StrictStr] = Field(default=None, description="Default JSON Web Key URI of the OAuth2 provider", serialization_alias="jwkSetUri")
+    client_authentication_method: Optional[StrictStr] = Field(default=None, description="Default client authentication method to use: 'BASIC' or 'POST'", serialization_alias="clientAuthenticationMethod")
     comment: Optional[StrictStr] = Field(default=None, description="Comment for OAuth2 provider")
-    login_button_icon: Optional[StrictStr] = Field(default=None, description="Default log in button icon for OAuth2 provider", alias="loginButtonIcon")
-    login_button_label: Optional[StrictStr] = Field(default=None, description="Default OAuth2 provider label", alias="loginButtonLabel")
-    help_link: Optional[StrictStr] = Field(default=None, description="Help link for OAuth2 provider", alias="helpLink")
+    login_button_icon: Optional[StrictStr] = Field(default=None, description="Default log in button icon for OAuth2 provider", serialization_alias="loginButtonIcon")
+    login_button_label: Optional[StrictStr] = Field(default=None, description="Default OAuth2 provider label", serialization_alias="loginButtonLabel")
+    help_link: Optional[StrictStr] = Field(default=None, description="Help link for OAuth2 provider", serialization_alias="helpLink")
     name: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["id", "createdTime", "additionalInfo", "providerId", "mapperConfig", "authorizationUri", "accessTokenUri", "scope", "userInfoUri", "userNameAttributeName", "jwkSetUri", "clientAuthenticationMethod", "comment", "loginButtonIcon", "loginButtonLabel", "helpLink", "name"]
 
@@ -59,13 +59,18 @@ class OAuth2ClientRegistrationTemplate(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -116,21 +121,21 @@ class OAuth2ClientRegistrationTemplate(BaseModel):
 
         _obj = cls.model_validate({
             "id": OAuth2ClientRegistrationTemplateId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "additionalInfo": obj.get("additionalInfo"),
-            "providerId": obj.get("providerId"),
-            "mapperConfig": OAuth2MapperConfig.from_dict(obj["mapperConfig"]) if obj.get("mapperConfig") is not None else None,
-            "authorizationUri": obj.get("authorizationUri"),
-            "accessTokenUri": obj.get("accessTokenUri"),
+            "created_time": obj.get("createdTime"),
+            "additional_info": obj.get("additionalInfo"),
+            "provider_id": obj.get("providerId"),
+            "mapper_config": OAuth2MapperConfig.from_dict(obj["mapperConfig"]) if obj.get("mapperConfig") is not None else None,
+            "authorization_uri": obj.get("authorizationUri"),
+            "access_token_uri": obj.get("accessTokenUri"),
             "scope": obj.get("scope"),
-            "userInfoUri": obj.get("userInfoUri"),
-            "userNameAttributeName": obj.get("userNameAttributeName"),
-            "jwkSetUri": obj.get("jwkSetUri"),
-            "clientAuthenticationMethod": obj.get("clientAuthenticationMethod"),
+            "user_info_uri": obj.get("userInfoUri"),
+            "user_name_attribute_name": obj.get("userNameAttributeName"),
+            "jwk_set_uri": obj.get("jwkSetUri"),
+            "client_authentication_method": obj.get("clientAuthenticationMethod"),
             "comment": obj.get("comment"),
-            "loginButtonIcon": obj.get("loginButtonIcon"),
-            "loginButtonLabel": obj.get("loginButtonLabel"),
-            "helpLink": obj.get("helpLink"),
+            "login_button_icon": obj.get("loginButtonIcon"),
+            "login_button_label": obj.get("loginButtonLabel"),
+            "help_link": obj.get("helpLink"),
             "name": obj.get("name")
         })
         return _obj

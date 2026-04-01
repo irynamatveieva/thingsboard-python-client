@@ -33,13 +33,13 @@ class CertificateInfo(BaseModel):
     CertificateInfo
     """ # noqa: E501
     status: Optional[CertificateStatus] = None
-    domain_name: Optional[StrictStr] = Field(default=None, alias="domainName")
-    serial_number: Optional[StrictStr] = Field(default=None, alias="serialNumber")
-    not_before: Optional[StrictInt] = Field(default=None, alias="notBefore")
-    not_after: Optional[StrictInt] = Field(default=None, alias="notAfter")
-    requested_at: Optional[StrictInt] = Field(default=None, alias="requestedAt")
-    issued_at: Optional[StrictInt] = Field(default=None, alias="issuedAt")
-    acme_certificate_id: Optional[AcmeCertificateId] = Field(default=None, alias="acmeCertificateId")
+    domain_name: Optional[StrictStr] = Field(default=None, serialization_alias="domainName")
+    serial_number: Optional[StrictStr] = Field(default=None, serialization_alias="serialNumber")
+    not_before: Optional[StrictInt] = Field(default=None, serialization_alias="notBefore")
+    not_after: Optional[StrictInt] = Field(default=None, serialization_alias="notAfter")
+    requested_at: Optional[StrictInt] = Field(default=None, serialization_alias="requestedAt")
+    issued_at: Optional[StrictInt] = Field(default=None, serialization_alias="issuedAt")
+    acme_certificate_id: Optional[AcmeCertificateId] = Field(default=None, serialization_alias="acmeCertificateId")
     __properties: ClassVar[List[str]] = ["status", "domainName", "serialNumber", "notBefore", "notAfter", "requestedAt", "issuedAt", "acmeCertificateId"]
 
     model_config = ConfigDict(
@@ -50,13 +50,18 @@ class CertificateInfo(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -97,13 +102,13 @@ class CertificateInfo(BaseModel):
 
         _obj = cls.model_validate({
             "status": obj.get("status"),
-            "domainName": obj.get("domainName"),
-            "serialNumber": obj.get("serialNumber"),
-            "notBefore": obj.get("notBefore"),
-            "notAfter": obj.get("notAfter"),
-            "requestedAt": obj.get("requestedAt"),
-            "issuedAt": obj.get("issuedAt"),
-            "acmeCertificateId": AcmeCertificateId.from_dict(obj["acmeCertificateId"]) if obj.get("acmeCertificateId") is not None else None
+            "domain_name": obj.get("domainName"),
+            "serial_number": obj.get("serialNumber"),
+            "not_before": obj.get("notBefore"),
+            "not_after": obj.get("notAfter"),
+            "requested_at": obj.get("requestedAt"),
+            "issued_at": obj.get("issuedAt"),
+            "acme_certificate_id": AcmeCertificateId.from_dict(obj["acmeCertificateId"]) if obj.get("acmeCertificateId") is not None else None
         })
         return _obj
 

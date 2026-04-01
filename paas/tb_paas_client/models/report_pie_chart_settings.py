@@ -35,12 +35,12 @@ class ReportPieChartSettings(ReportLatestChartSettings):
     """
     ReportPieChartSettings
     """ # noqa: E501
-    show_label: Optional[StrictBool] = Field(default=None, alias="showLabel")
-    label_position: Optional[PieChartLabelPosition] = Field(default=None, alias="labelPosition")
-    label_font: Optional[Font] = Field(default=None, alias="labelFont")
-    label_color: Optional[StrictStr] = Field(default=None, alias="labelColor")
-    border_width: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, alias="borderWidth")
-    border_color: Optional[StrictStr] = Field(default=None, alias="borderColor")
+    show_label: Optional[StrictBool] = Field(default=None, serialization_alias="showLabel")
+    label_position: Optional[PieChartLabelPosition] = Field(default=None, serialization_alias="labelPosition")
+    label_font: Optional[Font] = Field(default=None, serialization_alias="labelFont")
+    label_color: Optional[StrictStr] = Field(default=None, serialization_alias="labelColor")
+    border_width: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, serialization_alias="borderWidth")
+    border_color: Optional[StrictStr] = Field(default=None, serialization_alias="borderColor")
     radius: Optional[Union[StrictFloat, StrictInt]] = None
     clockwise: Optional[StrictBool] = None
     __properties: ClassVar[List[str]] = ["showTitle", "title", "titleFont", "titleColor", "titleAlignment", "units", "decimals", "autoScale", "sortSeries", "showTotal", "showLegend", "legendPosition", "legendLabelFont", "legendLabelColor", "legendValueFont", "legendValueColor", "legendShowTotal", "showLabel", "labelPosition", "labelFont", "labelColor", "borderWidth", "borderColor", "radius", "clockwise"]
@@ -53,13 +53,18 @@ class ReportPieChartSettings(ReportLatestChartSettings):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -108,29 +113,29 @@ class ReportPieChartSettings(ReportLatestChartSettings):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "showTitle": obj.get("showTitle"),
+            "show_title": obj.get("showTitle"),
             "title": obj.get("title"),
-            "titleFont": Font.from_dict(obj["titleFont"]) if obj.get("titleFont") is not None else None,
-            "titleColor": obj.get("titleColor"),
-            "titleAlignment": obj.get("titleAlignment"),
+            "title_font": Font.from_dict(obj["titleFont"]) if obj.get("titleFont") is not None else None,
+            "title_color": obj.get("titleColor"),
+            "title_alignment": obj.get("titleAlignment"),
             "units": obj.get("units"),
             "decimals": obj.get("decimals"),
-            "autoScale": obj.get("autoScale"),
-            "sortSeries": obj.get("sortSeries"),
-            "showTotal": obj.get("showTotal"),
-            "showLegend": obj.get("showLegend"),
-            "legendPosition": obj.get("legendPosition"),
-            "legendLabelFont": Font.from_dict(obj["legendLabelFont"]) if obj.get("legendLabelFont") is not None else None,
-            "legendLabelColor": obj.get("legendLabelColor"),
-            "legendValueFont": Font.from_dict(obj["legendValueFont"]) if obj.get("legendValueFont") is not None else None,
-            "legendValueColor": obj.get("legendValueColor"),
-            "legendShowTotal": obj.get("legendShowTotal"),
-            "showLabel": obj.get("showLabel"),
-            "labelPosition": obj.get("labelPosition"),
-            "labelFont": Font.from_dict(obj["labelFont"]) if obj.get("labelFont") is not None else None,
-            "labelColor": obj.get("labelColor"),
-            "borderWidth": obj.get("borderWidth"),
-            "borderColor": obj.get("borderColor"),
+            "auto_scale": obj.get("autoScale"),
+            "sort_series": obj.get("sortSeries"),
+            "show_total": obj.get("showTotal"),
+            "show_legend": obj.get("showLegend"),
+            "legend_position": obj.get("legendPosition"),
+            "legend_label_font": Font.from_dict(obj["legendLabelFont"]) if obj.get("legendLabelFont") is not None else None,
+            "legend_label_color": obj.get("legendLabelColor"),
+            "legend_value_font": Font.from_dict(obj["legendValueFont"]) if obj.get("legendValueFont") is not None else None,
+            "legend_value_color": obj.get("legendValueColor"),
+            "legend_show_total": obj.get("legendShowTotal"),
+            "show_label": obj.get("showLabel"),
+            "label_position": obj.get("labelPosition"),
+            "label_font": Font.from_dict(obj["labelFont"]) if obj.get("labelFont") is not None else None,
+            "label_color": obj.get("labelColor"),
+            "border_width": obj.get("borderWidth"),
+            "border_color": obj.get("borderColor"),
             "radius": obj.get("radius"),
             "clockwise": obj.get("clockwise")
         })

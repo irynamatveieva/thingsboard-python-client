@@ -36,8 +36,8 @@ class DeviceActivityNotificationRuleTriggerConfig(NotificationRuleTriggerConfig)
     DeviceActivityNotificationRuleTriggerConfig
     """ # noqa: E501
     devices: Optional[List[UUID]] = None
-    device_profiles: Optional[List[UUID]] = Field(default=None, alias="deviceProfiles")
-    notify_on: Annotated[List[DeviceEvent], Field(min_length=1)] = Field(alias="notifyOn")
+    device_profiles: Optional[List[UUID]] = Field(default=None, serialization_alias="deviceProfiles")
+    notify_on: Annotated[List[DeviceEvent], Field(min_length=1)] = Field(serialization_alias="notifyOn")
     __properties: ClassVar[List[str]] = ["triggerType", "devices", "deviceProfiles", "notifyOn"]
 
     model_config = ConfigDict(
@@ -48,13 +48,18 @@ class DeviceActivityNotificationRuleTriggerConfig(NotificationRuleTriggerConfig)
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -91,10 +96,10 @@ class DeviceActivityNotificationRuleTriggerConfig(NotificationRuleTriggerConfig)
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "triggerType": obj.get("triggerType"),
+            "trigger_type": obj.get("triggerType"),
             "devices": obj.get("devices"),
-            "deviceProfiles": obj.get("deviceProfiles"),
-            "notifyOn": obj.get("notifyOn")
+            "device_profiles": obj.get("deviceProfiles"),
+            "notify_on": obj.get("notifyOn")
         })
         return _obj
 

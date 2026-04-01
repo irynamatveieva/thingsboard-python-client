@@ -30,10 +30,10 @@ class JwtSettings(BaseModel):
     """
     A JSON value representing the JWT Settings.
     """ # noqa: E501
-    token_expiration_time: Optional[StrictInt] = Field(default=None, description="The JWT will expire after seconds.", alias="tokenExpirationTime")
-    refresh_token_exp_time: Optional[StrictInt] = Field(default=None, description="The JWT can be refreshed during seconds.", alias="refreshTokenExpTime")
-    token_issuer: Optional[StrictStr] = Field(default=None, description="The JWT issuer.", alias="tokenIssuer")
-    token_signing_key: Optional[StrictStr] = Field(default=None, description="The JWT key is used to sing token. Base64 encoded.", alias="tokenSigningKey")
+    token_expiration_time: Optional[StrictInt] = Field(default=None, description="The JWT will expire after seconds.", serialization_alias="tokenExpirationTime")
+    refresh_token_exp_time: Optional[StrictInt] = Field(default=None, description="The JWT can be refreshed during seconds.", serialization_alias="refreshTokenExpTime")
+    token_issuer: Optional[StrictStr] = Field(default=None, description="The JWT issuer.", serialization_alias="tokenIssuer")
+    token_signing_key: Optional[StrictStr] = Field(default=None, description="The JWT key is used to sing token. Base64 encoded.", serialization_alias="tokenSigningKey")
     __properties: ClassVar[List[str]] = ["tokenExpirationTime", "refreshTokenExpTime", "tokenIssuer", "tokenSigningKey"]
 
     model_config = ConfigDict(
@@ -44,13 +44,18 @@ class JwtSettings(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -87,10 +92,10 @@ class JwtSettings(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "tokenExpirationTime": obj.get("tokenExpirationTime"),
-            "refreshTokenExpTime": obj.get("refreshTokenExpTime"),
-            "tokenIssuer": obj.get("tokenIssuer"),
-            "tokenSigningKey": obj.get("tokenSigningKey")
+            "token_expiration_time": obj.get("tokenExpirationTime"),
+            "refresh_token_exp_time": obj.get("refreshTokenExpTime"),
+            "token_issuer": obj.get("tokenIssuer"),
+            "token_signing_key": obj.get("tokenSigningKey")
         })
         return _obj
 

@@ -38,10 +38,10 @@ class DeviceProfileInfo(BaseModel):
     id: Optional[EntityId] = Field(default=None, description="JSON object with the entity Id. ")
     name: Optional[StrictStr] = Field(default=None, description="Entity Name")
     image: Optional[StrictStr] = Field(default=None, description="Either URL or Base64 data of the icon. Used in the mobile application to visualize set of device profiles in the grid view. ")
-    default_dashboard_id: Optional[DashboardId] = Field(default=None, description="Reference to the dashboard. Used in the mobile application to open the default dashboard when user navigates to device details.", alias="defaultDashboardId")
+    default_dashboard_id: Optional[DashboardId] = Field(default=None, description="Reference to the dashboard. Used in the mobile application to open the default dashboard when user navigates to device details.", serialization_alias="defaultDashboardId")
     type: Optional[DeviceProfileType] = Field(default=None, description="Type of the profile. Always 'DEFAULT' for now. Reserved for future use.")
-    transport_type: Optional[DeviceTransportType] = Field(default=None, description="Type of the transport used to connect the device. Default transport supports HTTP, CoAP and MQTT.", alias="transportType")
-    tenant_id: Optional[TenantId] = Field(default=None, description="Tenant id.", alias="tenantId")
+    transport_type: Optional[DeviceTransportType] = Field(default=None, description="Type of the transport used to connect the device. Default transport supports HTTP, CoAP and MQTT.", serialization_alias="transportType")
+    tenant_id: Optional[TenantId] = Field(default=None, description="Tenant id.", serialization_alias="tenantId")
     __properties: ClassVar[List[str]] = ["id", "name", "image", "defaultDashboardId", "type", "transportType", "tenantId"]
 
     model_config = ConfigDict(
@@ -52,13 +52,18 @@ class DeviceProfileInfo(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -107,10 +112,10 @@ class DeviceProfileInfo(BaseModel):
             "id": EntityId.from_dict(obj["id"]) if obj.get("id") is not None else None,
             "name": obj.get("name"),
             "image": obj.get("image"),
-            "defaultDashboardId": DashboardId.from_dict(obj["defaultDashboardId"]) if obj.get("defaultDashboardId") is not None else None,
+            "default_dashboard_id": DashboardId.from_dict(obj["defaultDashboardId"]) if obj.get("defaultDashboardId") is not None else None,
             "type": obj.get("type"),
-            "transportType": obj.get("transportType"),
-            "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None
+            "transport_type": obj.get("transportType"),
+            "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None
         })
         return _obj
 

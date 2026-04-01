@@ -31,8 +31,8 @@ class AmazonBedrockProviderConfig(BaseModel):
     AmazonBedrockProviderConfig
     """ # noqa: E501
     region: StrictStr
-    access_key_id: StrictStr = Field(alias="accessKeyId")
-    secret_access_key: StrictStr = Field(alias="secretAccessKey")
+    access_key_id: StrictStr = Field(serialization_alias="accessKeyId")
+    secret_access_key: StrictStr = Field(serialization_alias="secretAccessKey")
     __properties: ClassVar[List[str]] = ["region", "accessKeyId", "secretAccessKey"]
 
     model_config = ConfigDict(
@@ -43,13 +43,18 @@ class AmazonBedrockProviderConfig(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -87,8 +92,8 @@ class AmazonBedrockProviderConfig(BaseModel):
 
         _obj = cls.model_validate({
             "region": obj.get("region"),
-            "accessKeyId": obj.get("accessKeyId"),
-            "secretAccessKey": obj.get("secretAccessKey")
+            "access_key_id": obj.get("accessKeyId"),
+            "secret_access_key": obj.get("secretAccessKey")
         })
         return _obj
 

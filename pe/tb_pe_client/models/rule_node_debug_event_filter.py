@@ -33,16 +33,16 @@ class RuleNodeDebugEventFilter(EventFilter):
     RuleNodeDebugEventFilter
     """ # noqa: E501
     server: Optional[StrictStr] = Field(default=None, description="String value representing the server name, identifier or ip address where the platform is running")
-    is_error: Optional[StrictBool] = Field(default=None, description="Boolean value to filter the errors", alias="isError")
-    error_str: Optional[StrictStr] = Field(default=None, description="The case insensitive 'contains' filter based on error message", alias="errorStr")
-    msg_direction_type: Optional[StrictStr] = Field(default=None, description="String value representing msg direction type (incoming to entity or outcoming from entity)", alias="msgDirectionType")
-    entity_id: Optional[StrictStr] = Field(default=None, description="String value representing the entity id in the event body (originator of the message)", alias="entityId")
-    entity_type: Optional[StrictStr] = Field(default=None, description="String value representing the entity type", alias="entityType")
-    msg_id: Optional[StrictStr] = Field(default=None, description="String value representing the message id in the rule engine", alias="msgId")
-    msg_type: Optional[StrictStr] = Field(default=None, description="String value representing the message type", alias="msgType")
-    relation_type: Optional[StrictStr] = Field(default=None, description="String value representing the type of message routing", alias="relationType")
-    data_search: Optional[StrictStr] = Field(default=None, description="The case insensitive 'contains' filter based on data (key and value) for the message.", alias="dataSearch")
-    metadata_search: Optional[StrictStr] = Field(default=None, description="The case insensitive 'contains' filter based on metadata (key and value) for the message.", alias="metadataSearch")
+    is_error: Optional[StrictBool] = Field(default=None, description="Boolean value to filter the errors", serialization_alias="isError")
+    error_str: Optional[StrictStr] = Field(default=None, description="The case insensitive 'contains' filter based on error message", serialization_alias="errorStr")
+    msg_direction_type: Optional[StrictStr] = Field(default=None, description="String value representing msg direction type (incoming to entity or outcoming from entity)", serialization_alias="msgDirectionType")
+    entity_id: Optional[StrictStr] = Field(default=None, description="String value representing the entity id in the event body (originator of the message)", serialization_alias="entityId")
+    entity_type: Optional[StrictStr] = Field(default=None, description="String value representing the entity type", serialization_alias="entityType")
+    msg_id: Optional[StrictStr] = Field(default=None, description="String value representing the message id in the rule engine", serialization_alias="msgId")
+    msg_type: Optional[StrictStr] = Field(default=None, description="String value representing the message type", serialization_alias="msgType")
+    relation_type: Optional[StrictStr] = Field(default=None, description="String value representing the type of message routing", serialization_alias="relationType")
+    data_search: Optional[StrictStr] = Field(default=None, description="The case insensitive 'contains' filter based on data (key and value) for the message.", serialization_alias="dataSearch")
+    metadata_search: Optional[StrictStr] = Field(default=None, description="The case insensitive 'contains' filter based on metadata (key and value) for the message.", serialization_alias="metadataSearch")
     __properties: ClassVar[List[str]] = ["eventType", "notEmpty", "server", "isError", "errorStr", "msgDirectionType", "entityId", "entityType", "msgId", "msgType", "relationType", "dataSearch", "metadataSearch"]
 
     @field_validator('is_error')
@@ -83,13 +83,18 @@ class RuleNodeDebugEventFilter(EventFilter):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -126,19 +131,19 @@ class RuleNodeDebugEventFilter(EventFilter):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "eventType": obj.get("eventType"),
-            "notEmpty": obj.get("notEmpty"),
+            "event_type": obj.get("eventType"),
+            "not_empty": obj.get("notEmpty"),
             "server": obj.get("server"),
-            "isError": obj.get("isError"),
-            "errorStr": obj.get("errorStr"),
-            "msgDirectionType": obj.get("msgDirectionType"),
-            "entityId": obj.get("entityId"),
-            "entityType": obj.get("entityType"),
-            "msgId": obj.get("msgId"),
-            "msgType": obj.get("msgType"),
-            "relationType": obj.get("relationType"),
-            "dataSearch": obj.get("dataSearch"),
-            "metadataSearch": obj.get("metadataSearch")
+            "is_error": obj.get("isError"),
+            "error_str": obj.get("errorStr"),
+            "msg_direction_type": obj.get("msgDirectionType"),
+            "entity_id": obj.get("entityId"),
+            "entity_type": obj.get("entityType"),
+            "msg_id": obj.get("msgId"),
+            "msg_type": obj.get("msgType"),
+            "relation_type": obj.get("relationType"),
+            "data_search": obj.get("dataSearch"),
+            "metadata_search": obj.get("metadataSearch")
         })
         return _obj
 

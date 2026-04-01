@@ -31,10 +31,10 @@ class EntityDataPageLink(BaseModel):
     """
     EntityDataPageLink
     """ # noqa: E501
-    page_size: Optional[StrictInt] = Field(default=None, alias="pageSize")
+    page_size: Optional[StrictInt] = Field(default=None, serialization_alias="pageSize")
     page: Optional[StrictInt] = None
-    text_search: Optional[StrictStr] = Field(default=None, alias="textSearch")
-    sort_order: Optional[EntityDataSortOrder] = Field(default=None, alias="sortOrder")
+    text_search: Optional[StrictStr] = Field(default=None, serialization_alias="textSearch")
+    sort_order: Optional[EntityDataSortOrder] = Field(default=None, serialization_alias="sortOrder")
     dynamic: Optional[StrictBool] = None
     __properties: ClassVar[List[str]] = ["pageSize", "page", "textSearch", "sortOrder", "dynamic"]
 
@@ -46,13 +46,18 @@ class EntityDataPageLink(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -92,10 +97,10 @@ class EntityDataPageLink(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "pageSize": obj.get("pageSize"),
+            "page_size": obj.get("pageSize"),
             "page": obj.get("page"),
-            "textSearch": obj.get("textSearch"),
-            "sortOrder": EntityDataSortOrder.from_dict(obj["sortOrder"]) if obj.get("sortOrder") is not None else None,
+            "text_search": obj.get("textSearch"),
+            "sort_order": EntityDataSortOrder.from_dict(obj["sortOrder"]) if obj.get("sortOrder") is not None else None,
             "dynamic": obj.get("dynamic")
         })
         return _obj

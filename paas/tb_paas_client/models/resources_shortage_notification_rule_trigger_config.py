@@ -33,9 +33,9 @@ class ResourcesShortageNotificationRuleTriggerConfig(NotificationRuleTriggerConf
     """
     ResourcesShortageNotificationRuleTriggerConfig
     """ # noqa: E501
-    cpu_threshold: Optional[Union[Annotated[float, Field(le=1, strict=True)], Annotated[int, Field(le=1, strict=True)]]] = Field(default=None, alias="cpuThreshold")
-    ram_threshold: Optional[Union[Annotated[float, Field(le=1, strict=True)], Annotated[int, Field(le=1, strict=True)]]] = Field(default=None, alias="ramThreshold")
-    storage_threshold: Optional[Union[Annotated[float, Field(le=1, strict=True)], Annotated[int, Field(le=1, strict=True)]]] = Field(default=None, alias="storageThreshold")
+    cpu_threshold: Optional[Union[Annotated[float, Field(le=1, strict=True)], Annotated[int, Field(le=1, strict=True)]]] = Field(default=None, serialization_alias="cpuThreshold")
+    ram_threshold: Optional[Union[Annotated[float, Field(le=1, strict=True)], Annotated[int, Field(le=1, strict=True)]]] = Field(default=None, serialization_alias="ramThreshold")
+    storage_threshold: Optional[Union[Annotated[float, Field(le=1, strict=True)], Annotated[int, Field(le=1, strict=True)]]] = Field(default=None, serialization_alias="storageThreshold")
     __properties: ClassVar[List[str]] = ["triggerType", "cpuThreshold", "ramThreshold", "storageThreshold"]
 
     model_config = ConfigDict(
@@ -46,13 +46,18 @@ class ResourcesShortageNotificationRuleTriggerConfig(NotificationRuleTriggerConf
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -89,10 +94,10 @@ class ResourcesShortageNotificationRuleTriggerConfig(NotificationRuleTriggerConf
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "triggerType": obj.get("triggerType"),
-            "cpuThreshold": obj.get("cpuThreshold"),
-            "ramThreshold": obj.get("ramThreshold"),
-            "storageThreshold": obj.get("storageThreshold")
+            "trigger_type": obj.get("triggerType"),
+            "cpu_threshold": obj.get("cpuThreshold"),
+            "ram_threshold": obj.get("ramThreshold"),
+            "storage_threshold": obj.get("storageThreshold")
         })
         return _obj
 

@@ -29,7 +29,7 @@ client = ThingsboardClient(
 ```python
 devices = client.get_tenant_devices(page_size=10, page=0)
 for device in devices.data:
-    print(device.name, device.id.id)
+    print(device.name, device.id.get_id())
 ```
 
 ### Handle errors

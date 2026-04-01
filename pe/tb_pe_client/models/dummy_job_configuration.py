@@ -32,15 +32,15 @@ class DummyJobConfiguration(JobConfiguration):
     """
     Dummy job configuration
     """ # noqa: E501
-    task_processing_time_ms: Optional[StrictInt] = Field(default=None, alias="taskProcessingTimeMs")
-    successful_tasks_count: Optional[StrictInt] = Field(default=None, alias="successfulTasksCount")
-    failed_tasks_count: Optional[StrictInt] = Field(default=None, alias="failedTasksCount")
-    permanently_failed_tasks_count: Optional[StrictInt] = Field(default=None, alias="permanentlyFailedTasksCount")
+    task_processing_time_ms: Optional[StrictInt] = Field(default=None, serialization_alias="taskProcessingTimeMs")
+    successful_tasks_count: Optional[StrictInt] = Field(default=None, serialization_alias="successfulTasksCount")
+    failed_tasks_count: Optional[StrictInt] = Field(default=None, serialization_alias="failedTasksCount")
+    permanently_failed_tasks_count: Optional[StrictInt] = Field(default=None, serialization_alias="permanentlyFailedTasksCount")
     errors: Optional[List[StrictStr]] = None
     retries: Optional[StrictInt] = None
-    task_processing_timeout_ms: Optional[StrictInt] = Field(default=None, alias="taskProcessingTimeoutMs")
-    general_error: Optional[StrictStr] = Field(default=None, alias="generalError")
-    submitted_tasks_before_general_error: Optional[StrictInt] = Field(default=None, alias="submittedTasksBeforeGeneralError")
+    task_processing_timeout_ms: Optional[StrictInt] = Field(default=None, serialization_alias="taskProcessingTimeoutMs")
+    general_error: Optional[StrictStr] = Field(default=None, serialization_alias="generalError")
+    submitted_tasks_before_general_error: Optional[StrictInt] = Field(default=None, serialization_alias="submittedTasksBeforeGeneralError")
     __properties: ClassVar[List[str]] = ["tasksKey", "toReprocess", "type", "taskProcessingTimeMs", "successfulTasksCount", "failedTasksCount", "permanentlyFailedTasksCount", "errors", "retries", "taskProcessingTimeoutMs", "generalError", "submittedTasksBeforeGeneralError"]
 
     model_config = ConfigDict(
@@ -51,13 +51,18 @@ class DummyJobConfiguration(JobConfiguration):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -101,18 +106,18 @@ class DummyJobConfiguration(JobConfiguration):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "tasksKey": obj.get("tasksKey"),
-            "toReprocess": [TaskResult.from_dict(_item) for _item in obj["toReprocess"]] if obj.get("toReprocess") is not None else None,
+            "tasks_key": obj.get("tasksKey"),
+            "to_reprocess": [TaskResult.from_dict(_item) for _item in obj["toReprocess"]] if obj.get("toReprocess") is not None else None,
             "type": obj.get("type"),
-            "taskProcessingTimeMs": obj.get("taskProcessingTimeMs"),
-            "successfulTasksCount": obj.get("successfulTasksCount"),
-            "failedTasksCount": obj.get("failedTasksCount"),
-            "permanentlyFailedTasksCount": obj.get("permanentlyFailedTasksCount"),
+            "task_processing_time_ms": obj.get("taskProcessingTimeMs"),
+            "successful_tasks_count": obj.get("successfulTasksCount"),
+            "failed_tasks_count": obj.get("failedTasksCount"),
+            "permanently_failed_tasks_count": obj.get("permanentlyFailedTasksCount"),
             "errors": obj.get("errors"),
             "retries": obj.get("retries"),
-            "taskProcessingTimeoutMs": obj.get("taskProcessingTimeoutMs"),
-            "generalError": obj.get("generalError"),
-            "submittedTasksBeforeGeneralError": obj.get("submittedTasksBeforeGeneralError")
+            "task_processing_timeout_ms": obj.get("taskProcessingTimeoutMs"),
+            "general_error": obj.get("generalError"),
+            "submitted_tasks_before_general_error": obj.get("submittedTasksBeforeGeneralError")
         })
         return _obj
 

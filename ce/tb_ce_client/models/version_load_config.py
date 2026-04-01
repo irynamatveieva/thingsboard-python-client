@@ -30,10 +30,10 @@ class VersionLoadConfig(BaseModel):
     """
     VersionLoadConfig
     """ # noqa: E501
-    load_relations: Optional[StrictBool] = Field(default=None, alias="loadRelations")
-    load_attributes: Optional[StrictBool] = Field(default=None, alias="loadAttributes")
-    load_credentials: Optional[StrictBool] = Field(default=None, alias="loadCredentials")
-    load_calculated_fields: Optional[StrictBool] = Field(default=None, alias="loadCalculatedFields")
+    load_relations: Optional[StrictBool] = Field(default=None, serialization_alias="loadRelations")
+    load_attributes: Optional[StrictBool] = Field(default=None, serialization_alias="loadAttributes")
+    load_credentials: Optional[StrictBool] = Field(default=None, serialization_alias="loadCredentials")
+    load_calculated_fields: Optional[StrictBool] = Field(default=None, serialization_alias="loadCalculatedFields")
     __properties: ClassVar[List[str]] = ["loadRelations", "loadAttributes", "loadCredentials", "loadCalculatedFields"]
 
     model_config = ConfigDict(
@@ -44,13 +44,18 @@ class VersionLoadConfig(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -87,10 +92,10 @@ class VersionLoadConfig(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "loadRelations": obj.get("loadRelations"),
-            "loadAttributes": obj.get("loadAttributes"),
-            "loadCredentials": obj.get("loadCredentials"),
-            "loadCalculatedFields": obj.get("loadCalculatedFields")
+            "load_relations": obj.get("loadRelations"),
+            "load_attributes": obj.get("loadAttributes"),
+            "load_credentials": obj.get("loadCredentials"),
+            "load_calculated_fields": obj.get("loadCalculatedFields")
         })
         return _obj
 

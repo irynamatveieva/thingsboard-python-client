@@ -31,8 +31,8 @@ class RelationEntityTypeFilter(BaseModel):
     """
     RelationEntityTypeFilter
     """ # noqa: E501
-    relation_type: Optional[StrictStr] = Field(default=None, description="Type of the relation between root entity and other entity (e.g. 'Contains' or 'Manages').", alias="relationType")
-    entity_types: Optional[List[EntityType]] = Field(default=None, description="Array of entity types to filter the related entities (e.g. 'DEVICE', 'ASSET').", alias="entityTypes")
+    relation_type: Optional[StrictStr] = Field(default=None, description="Type of the relation between root entity and other entity (e.g. 'Contains' or 'Manages').", serialization_alias="relationType")
+    entity_types: Optional[List[EntityType]] = Field(default=None, description="Array of entity types to filter the related entities (e.g. 'DEVICE', 'ASSET').", serialization_alias="entityTypes")
     negate: Optional[StrictBool] = Field(default=None, description="Negate relation type between root entity and other entity.")
     __properties: ClassVar[List[str]] = ["relationType", "entityTypes", "negate"]
 
@@ -44,13 +44,18 @@ class RelationEntityTypeFilter(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -87,8 +92,8 @@ class RelationEntityTypeFilter(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "relationType": obj.get("relationType"),
-            "entityTypes": obj.get("entityTypes"),
+            "relation_type": obj.get("relationType"),
+            "entity_types": obj.get("entityTypes"),
             "negate": obj.get("negate")
         })
         return _obj

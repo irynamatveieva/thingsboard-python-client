@@ -31,9 +31,9 @@ class ErrorComponentAllOfExceptionCause(BaseModel):
     """
     ErrorComponentAllOfExceptionCause
     """ # noqa: E501
-    stack_trace: Optional[List[ErrorComponentAllOfExceptionCauseStackTrace]] = Field(default=None, alias="stackTrace")
+    stack_trace: Optional[List[ErrorComponentAllOfExceptionCauseStackTrace]] = Field(default=None, serialization_alias="stackTrace")
     message: Optional[StrictStr] = None
-    localized_message: Optional[StrictStr] = Field(default=None, alias="localizedMessage")
+    localized_message: Optional[StrictStr] = Field(default=None, serialization_alias="localizedMessage")
     __properties: ClassVar[List[str]] = ["stackTrace", "message", "localizedMessage"]
 
     model_config = ConfigDict(
@@ -44,13 +44,18 @@ class ErrorComponentAllOfExceptionCause(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -94,9 +99,9 @@ class ErrorComponentAllOfExceptionCause(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "stackTrace": [ErrorComponentAllOfExceptionCauseStackTrace.from_dict(_item) for _item in obj["stackTrace"]] if obj.get("stackTrace") is not None else None,
+            "stack_trace": [ErrorComponentAllOfExceptionCauseStackTrace.from_dict(_item) for _item in obj["stackTrace"]] if obj.get("stackTrace") is not None else None,
             "message": obj.get("message"),
-            "localizedMessage": obj.get("localizedMessage")
+            "localized_message": obj.get("localizedMessage")
         })
         return _obj
 

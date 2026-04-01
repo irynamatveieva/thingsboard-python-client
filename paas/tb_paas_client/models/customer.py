@@ -35,8 +35,8 @@ class Customer(BaseModel):
     Customer
     """ # noqa: E501
     id: Optional[CustomerId] = Field(default=None, description="JSON object with the customer Id. Specify this field to update the customer. Referencing non-existing customer Id will cause error. Omit this field to create new customer.")
-    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the customer creation, in milliseconds", alias="createdTime")
-    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the customer. May include: 'description' (string), 'homeDashboardId' (string, UUID of the home dashboard), 'homeDashboardHideToolbar' (boolean, whether to hide the dashboard toolbar), 'isPublic' (boolean, whether this is a public customer).", alias="additionalInfo")
+    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the customer creation, in milliseconds", serialization_alias="createdTime")
+    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the customer. May include: 'description' (string), 'homeDashboardId' (string, UUID of the home dashboard), 'homeDashboardHideToolbar' (boolean, whether to hide the dashboard toolbar), 'isPublic' (boolean, whether this is a public customer).", serialization_alias="additionalInfo")
     country: Optional[StrictStr] = Field(default=None, description="Country")
     state: Optional[StrictStr] = Field(default=None, description="State")
     city: Optional[StrictStr] = Field(default=None, description="City")
@@ -46,13 +46,13 @@ class Customer(BaseModel):
     phone: Optional[StrictStr] = Field(default=None, description="Phone number")
     email: StrictStr = Field(description="Email")
     title: StrictStr = Field(description="Title of the customer")
-    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id", alias="tenantId")
-    parent_customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with parent Customer Id", alias="parentCustomerId")
+    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id", serialization_alias="tenantId")
+    parent_customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with parent Customer Id", serialization_alias="parentCustomerId")
     version: Optional[StrictInt] = None
-    custom_menu_id: Optional[CustomMenuId] = Field(default=None, alias="customMenuId")
-    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with parent Customer Id", alias="customerId")
+    custom_menu_id: Optional[CustomMenuId] = Field(default=None, serialization_alias="customMenuId")
+    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with parent Customer Id", serialization_alias="customerId")
     name: Optional[StrictStr] = Field(default=None, description="Name of the customer. Read-only, duplicated from title for backward compatibility")
-    owner_id: Optional[EntityId] = Field(default=None, description="JSON object with Customer or Tenant Id", alias="ownerId")
+    owner_id: Optional[EntityId] = Field(default=None, description="JSON object with Customer or Tenant Id", serialization_alias="ownerId")
     __properties: ClassVar[List[str]] = ["id", "createdTime", "additionalInfo", "country", "state", "city", "address", "address2", "zip", "phone", "email", "title", "tenantId", "parentCustomerId", "version", "customMenuId", "customerId", "name", "ownerId"]
 
     model_config = ConfigDict(
@@ -63,13 +63,18 @@ class Customer(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -138,8 +143,8 @@ class Customer(BaseModel):
 
         _obj = cls.model_validate({
             "id": CustomerId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "additionalInfo": obj.get("additionalInfo"),
+            "created_time": obj.get("createdTime"),
+            "additional_info": obj.get("additionalInfo"),
             "country": obj.get("country"),
             "state": obj.get("state"),
             "city": obj.get("city"),
@@ -149,13 +154,13 @@ class Customer(BaseModel):
             "phone": obj.get("phone"),
             "email": obj.get("email"),
             "title": obj.get("title"),
-            "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
-            "parentCustomerId": CustomerId.from_dict(obj["parentCustomerId"]) if obj.get("parentCustomerId") is not None else None,
+            "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
+            "parent_customer_id": CustomerId.from_dict(obj["parentCustomerId"]) if obj.get("parentCustomerId") is not None else None,
             "version": obj.get("version"),
-            "customMenuId": CustomMenuId.from_dict(obj["customMenuId"]) if obj.get("customMenuId") is not None else None,
-            "customerId": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
+            "custom_menu_id": CustomMenuId.from_dict(obj["customMenuId"]) if obj.get("customMenuId") is not None else None,
+            "customer_id": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
             "name": obj.get("name"),
-            "ownerId": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None
+            "owner_id": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None
         })
         return _obj
 

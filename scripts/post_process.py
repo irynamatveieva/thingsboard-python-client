@@ -8,6 +8,8 @@ Example: python3 scripts/post_process.py ce/tb_ce_client tb_ce_client
 Steps performed:
   1. Strip generated OpenAPI comment blocks (# coding: utf-8 + docstring)
   2. Fix JsonNode/object references (broken imports, from_dict calls, to_dict calls)
+  2a. Convert alias= to serialization_alias= for PEP 8 __init__ signatures
+  2b. Add __str__/__repr__ to models and get_id() to EntityId
   3. Rewrite __init__.py files for lazy imports (models/ and root)
   4. Apply Apache 2.0 license headers to all .py files
   5. Clean up unwanted generated files (README, setup.py, etc.)
@@ -208,6 +210,238 @@ def fix_jsonnode_references(
             f.write_text(new_content, encoding="utf-8")
 
     return import_removals, from_dict_fixes, to_dict_fixes
+
+
+# ---------------------------------------------------------------------------
+# Step 2a: Convert alias= to serialization_alias= (PEP 8 __init__ params)
+# ---------------------------------------------------------------------------
+
+# Match alias="..." in Field() definitions, but NOT by_alias=
+_FIELD_ALIAS_RE = re.compile(r'(?<![a-z_])alias="([^"]+)"')
+
+# Fix to_json(): replace json.dumps(self.to_dict()) with model_dump_json()
+_TO_JSON_OLD = '        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead\n        return json.dumps(self.to_dict())'
+_TO_JSON_NEW = '        return self.model_dump_json(by_alias=True, exclude_unset=True)'
+
+
+def _camel_to_snake(name: str) -> str:
+    """Convert camelCase to snake_case."""
+    return re.sub(r'(?<!^)(?=[A-Z])', '_', name).lower()
+
+
+def _convert_model_validate_keys(content: str) -> Tuple[str, int]:
+    """Convert camelCase dict keys to snake_case inside model_validate({...}) blocks.
+
+    Only converts the dict-key position (first quoted string before ':' on each line
+    inside the block). Preserves camelCase in obj["key"] and obj.get("key") on the
+    right-hand side.
+    """
+    count = 0
+
+    def _process_block(block_match: re.Match) -> str:
+        nonlocal count
+        block = block_match.group(0)
+
+        def _convert_key(key_match: re.Match) -> str:
+            nonlocal count
+            prefix = key_match.group(1)
+            key = key_match.group(2)
+            suffix = key_match.group(3)
+            snake = _camel_to_snake(key)
+            if snake != key:
+                count += 1
+            return f'{prefix}"{snake}"{suffix}'
+
+        # Match dict keys: leading whitespace + "key" + colon
+        return re.sub(r'(\n\s+)"(\w+)"(\s*:)', _convert_key, block)
+
+    new_content = re.sub(
+        r'cls\.model_validate\(\{.*?\}\)',
+        _process_block,
+        content,
+        flags=re.DOTALL,
+    )
+    return new_content, count
+
+
+def convert_field_aliases(models_dir: Path) -> Tuple[int, int]:
+    """Convert alias= to serialization_alias= and fix from_dict() keys.
+
+    This makes model __init__ signatures use snake_case parameter names
+    (PEP 8 compliant) while keeping camelCase for JSON serialization.
+
+    Returns (alias_conversions, from_dict_key_fixes).
+    """
+    if not models_dir.exists():
+        return 0, 0
+
+    alias_conversions = 0
+    key_fixes = 0
+
+    for f in sorted(models_dir.glob("*.py")):
+        if f.name == "__init__.py":
+            continue
+
+        content = f.read_text(encoding="utf-8")
+        original = content
+
+        # Fix to_json(): use model_dump_json() instead of json.dumps(to_dict())
+        content = content.replace(_TO_JSON_OLD, _TO_JSON_NEW)
+
+        # Convert alias= to serialization_alias= (skip if already done)
+        if 'serialization_alias=' not in content:
+            new_content, n = _FIELD_ALIAS_RE.subn(r'serialization_alias="\1"', content)
+            alias_conversions += n
+            content = new_content
+
+            # Convert model_validate dict keys from camelCase to snake_case
+            content, n = _convert_model_validate_keys(content)
+            key_fixes += n
+
+        if content != original:
+            f.write_text(content, encoding="utf-8")
+
+    return alias_conversions, key_fixes
+
+
+# ---------------------------------------------------------------------------
+# Step 2b: Add __str__/__repr__ to models and get_id() to EntityId
+# ---------------------------------------------------------------------------
+
+_TO_STR_RETURN_OLD = "        return pprint.pformat(self.model_dump(by_alias=True))"
+_TO_STR_RETURN_NEW = "        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))"
+_TO_STR_DOC_OLD = '"""Returns the string representation of the model using alias"""'
+_TO_STR_DOC_NEW = '"""Returns the string representation of the model"""'
+# oneOf union models use a different to_str() pattern (no by_alias arg)
+_TO_STR_ONEOF_OLD = "        return pprint.pformat(self.model_dump())"
+_TO_STR_ONEOF_NEW = "        return pprint.pformat(self.model_dump(mode='json'))"
+
+_MODEL_STR_METHODS = '''
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
+'''
+
+_ENTITY_ID_METHODS = '''
+    def get_id(self) -> str:
+        """Returns the entity ID as a string."""
+        return str(self.id)
+
+    def __str__(self) -> str:
+        return str(self.id)
+
+    def __repr__(self) -> str:
+        return f"{type(self).__name__}(entity_type={self.entity_type.value!r}, id={str(self.id)!r})"
+'''
+
+# For ID classes that extend BaseModel directly (EventId, AuditLogId, etc.)
+# — they have id: UUID but no entity_type field.
+_BASEMODEL_ID_METHODS = '''
+    def get_id(self) -> str:
+        """Returns the entity ID as a string."""
+        return str(self.id)
+
+    def __str__(self) -> str:
+        return str(self.id)
+
+    def __repr__(self) -> str:
+        return f"{type(self).__name__}(id={str(self.id)!r})"
+'''
+
+
+def _is_entity_id_subclass(content: str) -> bool:
+    """Check if a model file defines a class that extends EntityId."""
+    return bool(re.search(r'^class \w+\(EntityId\):', content, re.MULTILINE))
+
+
+def _is_basemodel_id_class(content: str) -> bool:
+    """Check if a model file defines an Id class that extends BaseModel directly."""
+    return bool(re.search(r'^class \w+Id\(BaseModel\):', content, re.MULTILINE))
+
+
+def add_model_str_methods(models_dir: Path) -> Tuple[int, int, int]:
+    """Add __str__/__repr__ to models and get_id() to EntityId.
+
+    - Changes to_str() output from camelCase to snake_case with JSON-safe
+      serialization (by_alias=False, mode='json')
+    - Adds __str__/__repr__ to regular models (delegating to to_str())
+    - Adds get_id(), __str__, __repr__ to EntityId base class
+    - EntityId subclasses inherit from EntityId, so no injection needed
+    - BaseModel ID classes (EventId, AuditLogId, etc.) get their own
+      get_id(), __str__, __repr__ since they can't inherit from EntityId
+
+    Returns (to_str_fixes, str_injections, entity_id_patched).
+    """
+    if not models_dir.exists():
+        return 0, 0, 0
+
+    to_str_fixes = 0
+    str_injections = 0
+    entity_id_patched = 0
+
+    for f in sorted(models_dir.glob("*.py")):
+        if f.name == "__init__.py":
+            continue
+
+        content = f.read_text(encoding="utf-8")
+        original = content
+
+        # Skip if already patched
+        if 'def __str__(self)' in content:
+            continue
+
+        # Fix to_str(): by_alias=True -> by_alias=False, mode='json'
+        if _TO_STR_RETURN_OLD in content:
+            content = content.replace(_TO_STR_RETURN_OLD, _TO_STR_RETURN_NEW, 1)
+            content = content.replace(_TO_STR_DOC_OLD, _TO_STR_DOC_NEW, 1)
+            to_str_fixes += 1
+        elif _TO_STR_ONEOF_OLD in content:
+            # oneOf union models use model_dump() without by_alias
+            content = content.replace(_TO_STR_ONEOF_OLD, _TO_STR_ONEOF_NEW, 1)
+            to_str_fixes += 1
+
+        is_entity_id_file = f.name == 'entity_id.py'
+        is_entity_id_sub = _is_entity_id_subclass(content)
+        is_basemodel_id = _is_basemodel_id_class(content)
+
+        if is_entity_id_file:
+            # Inject get_id(), __str__, __repr__ for EntityId base class
+            content = content.replace(
+                _TO_STR_RETURN_NEW + '\n',
+                _TO_STR_RETURN_NEW + '\n' + _ENTITY_ID_METHODS,
+                1,
+            )
+            entity_id_patched = 1
+            str_injections += 1
+        elif is_entity_id_sub:
+            # EntityId subclasses inherit __str__/__repr__ from base — skip
+            pass
+        elif is_basemodel_id:
+            # BaseModel ID classes (EventId, AuditLogId, etc.)
+            content = content.replace(
+                _TO_STR_RETURN_NEW + '\n',
+                _TO_STR_RETURN_NEW + '\n' + _BASEMODEL_ID_METHODS,
+                1,
+            )
+            str_injections += 1
+        else:
+            # Regular models (including oneOf unions): inject __str__ and __repr__
+            for anchor in (_TO_STR_RETURN_NEW, _TO_STR_ONEOF_NEW):
+                if anchor in content:
+                    content = content.replace(
+                        anchor + '\n',
+                        anchor + '\n' + _MODEL_STR_METHODS,
+                        1,
+                    )
+                    str_injections += 1
+                    break
+
+        if content != original:
+            f.write_text(content, encoding="utf-8")
+
+    return to_str_fixes, str_injections, entity_id_patched
 
 
 # ---------------------------------------------------------------------------
@@ -794,13 +1028,11 @@ def apply_license_headers(py_files: List[Path]) -> int:
     Returns the number of files modified.
     """
     modified = 0
-    # The first meaningful line of the header (after the blank line guard)
-    header_check = "# Copyright 2026 ThingsBoard, Inc."
 
     for f in py_files:
         content = f.read_text(encoding="utf-8")
-        # Skip if already has the license header
-        if header_check in content[:200]:
+        # Skip if already has a license header (either format)
+        if "# Copyright" in content[:200] and "ThingsBoard" in content[:200]:
             continue
         f.write_text(LICENSE_HEADER + content, encoding="utf-8")
         modified += 1
@@ -885,6 +1117,33 @@ def main(package_dir: Path, package_name: str) -> None:
     else:
         print("  Step 2 — Skipped (no models/ directory)")
         import_removals, from_dict_fixes, to_dict_fixes = 0, 0, 0
+
+    # -------------------------------------------------------------------
+    # Step 2a: Convert alias= to serialization_alias= (PEP 8 __init__)
+    # -------------------------------------------------------------------
+    if models_dir.exists():
+        alias_conv, key_fixes = convert_field_aliases(models_dir)
+        print(
+            f"  Step 2a — PEP 8 aliases: "
+            f"{alias_conv} alias= converted to serialization_alias=, "
+            f"{key_fixes} from_dict() keys converted to snake_case"
+        )
+    else:
+        print("  Step 2a — Skipped (no models/ directory)")
+
+    # -------------------------------------------------------------------
+    # Step 2b: Add __str__/__repr__ and EntityId convenience methods
+    # -------------------------------------------------------------------
+    if models_dir.exists():
+        to_str_fixes, str_injections, eid_patched = add_model_str_methods(models_dir)
+        print(
+            f"  Step 2b — Model str methods: "
+            f"{to_str_fixes} to_str() fixed to snake_case, "
+            f"{str_injections} __str__/__repr__ added"
+            + (", EntityId patched with get_id()" if eid_patched else "")
+        )
+    else:
+        print("  Step 2b — Skipped (no models/ directory)")
 
     # -------------------------------------------------------------------
     # Step 3: Rewrite __init__.py files for lazy imports

@@ -30,9 +30,9 @@ class StoreInfo(BaseModel):
     """
     StoreInfo
     """ # noqa: E501
-    app_id: Optional[StrictStr] = Field(default=None, alias="appId")
-    sha256_cert_fingerprints: Optional[StrictStr] = Field(default=None, alias="sha256CertFingerprints")
-    store_link: Optional[StrictStr] = Field(default=None, alias="storeLink")
+    app_id: Optional[StrictStr] = Field(default=None, serialization_alias="appId")
+    sha256_cert_fingerprints: Optional[StrictStr] = Field(default=None, serialization_alias="sha256CertFingerprints")
+    store_link: Optional[StrictStr] = Field(default=None, serialization_alias="storeLink")
     __properties: ClassVar[List[str]] = ["appId", "sha256CertFingerprints", "storeLink"]
 
     model_config = ConfigDict(
@@ -43,13 +43,18 @@ class StoreInfo(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -86,9 +91,9 @@ class StoreInfo(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "appId": obj.get("appId"),
-            "sha256CertFingerprints": obj.get("sha256CertFingerprints"),
-            "storeLink": obj.get("storeLink")
+            "app_id": obj.get("appId"),
+            "sha256_cert_fingerprints": obj.get("sha256CertFingerprints"),
+            "store_link": obj.get("storeLink")
         })
         return _obj
 

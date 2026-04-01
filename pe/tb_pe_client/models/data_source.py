@@ -34,12 +34,12 @@ class DataSource(BaseModel):
     DataSource
     """ # noqa: E501
     type: Optional[DataSourceType] = None
-    device_id: Optional[StrictStr] = Field(default=None, alias="deviceId")
-    entity_alias_id: Optional[StrictStr] = Field(default=None, alias="entityAliasId")
-    filter_id: Optional[StrictStr] = Field(default=None, alias="filterId")
-    data_keys: Optional[List[DataKey]] = Field(default=None, alias="dataKeys")
-    latest_data_keys: Optional[List[DataKey]] = Field(default=None, alias="latestDataKeys")
-    alarm_filter_config: Optional[AlarmFilterConfig] = Field(default=None, alias="alarmFilterConfig")
+    device_id: Optional[StrictStr] = Field(default=None, serialization_alias="deviceId")
+    entity_alias_id: Optional[StrictStr] = Field(default=None, serialization_alias="entityAliasId")
+    filter_id: Optional[StrictStr] = Field(default=None, serialization_alias="filterId")
+    data_keys: Optional[List[DataKey]] = Field(default=None, serialization_alias="dataKeys")
+    latest_data_keys: Optional[List[DataKey]] = Field(default=None, serialization_alias="latestDataKeys")
+    alarm_filter_config: Optional[AlarmFilterConfig] = Field(default=None, serialization_alias="alarmFilterConfig")
     __properties: ClassVar[List[str]] = ["type", "deviceId", "entityAliasId", "filterId", "dataKeys", "latestDataKeys", "alarmFilterConfig"]
 
     model_config = ConfigDict(
@@ -50,13 +50,18 @@ class DataSource(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -111,12 +116,12 @@ class DataSource(BaseModel):
 
         _obj = cls.model_validate({
             "type": obj.get("type"),
-            "deviceId": obj.get("deviceId"),
-            "entityAliasId": obj.get("entityAliasId"),
-            "filterId": obj.get("filterId"),
-            "dataKeys": [DataKey.from_dict(_item) for _item in obj["dataKeys"]] if obj.get("dataKeys") is not None else None,
-            "latestDataKeys": [DataKey.from_dict(_item) for _item in obj["latestDataKeys"]] if obj.get("latestDataKeys") is not None else None,
-            "alarmFilterConfig": AlarmFilterConfig.from_dict(obj["alarmFilterConfig"]) if obj.get("alarmFilterConfig") is not None else None
+            "device_id": obj.get("deviceId"),
+            "entity_alias_id": obj.get("entityAliasId"),
+            "filter_id": obj.get("filterId"),
+            "data_keys": [DataKey.from_dict(_item) for _item in obj["dataKeys"]] if obj.get("dataKeys") is not None else None,
+            "latest_data_keys": [DataKey.from_dict(_item) for _item in obj["latestDataKeys"]] if obj.get("latestDataKeys") is not None else None,
+            "alarm_filter_config": AlarmFilterConfig.from_dict(obj["alarmFilterConfig"]) if obj.get("alarmFilterConfig") is not None else None
         })
         return _obj
 

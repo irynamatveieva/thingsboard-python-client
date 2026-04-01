@@ -35,8 +35,8 @@ class DeviceProfileData(BaseModel):
     DeviceProfileData
     """ # noqa: E501
     configuration: Optional[DeviceProfileConfiguration] = Field(default=None, description="JSON object of device profile configuration")
-    transport_configuration: Optional[DeviceProfileTransportConfiguration] = Field(default=None, description="JSON object of device profile transport configuration", alias="transportConfiguration")
-    provision_configuration: Optional[DeviceProfileProvisionConfiguration] = Field(default=None, description="JSON object of provisioning strategy type per device profile", alias="provisionConfiguration")
+    transport_configuration: Optional[DeviceProfileTransportConfiguration] = Field(default=None, description="JSON object of device profile transport configuration", serialization_alias="transportConfiguration")
+    provision_configuration: Optional[DeviceProfileProvisionConfiguration] = Field(default=None, description="JSON object of provisioning strategy type per device profile", serialization_alias="provisionConfiguration")
     alarms: Optional[List[DeviceProfileAlarm]] = None
     __properties: ClassVar[List[str]] = ["configuration", "transportConfiguration", "provisionConfiguration", "alarms"]
 
@@ -48,13 +48,18 @@ class DeviceProfileData(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -108,8 +113,8 @@ class DeviceProfileData(BaseModel):
 
         _obj = cls.model_validate({
             "configuration": DeviceProfileConfiguration.from_dict(obj["configuration"]) if obj.get("configuration") is not None else None,
-            "transportConfiguration": DeviceProfileTransportConfiguration.from_dict(obj["transportConfiguration"]) if obj.get("transportConfiguration") is not None else None,
-            "provisionConfiguration": DeviceProfileProvisionConfiguration.from_dict(obj["provisionConfiguration"]) if obj.get("provisionConfiguration") is not None else None,
+            "transport_configuration": DeviceProfileTransportConfiguration.from_dict(obj["transportConfiguration"]) if obj.get("transportConfiguration") is not None else None,
+            "provision_configuration": DeviceProfileProvisionConfiguration.from_dict(obj["provisionConfiguration"]) if obj.get("provisionConfiguration") is not None else None,
             "alarms": [DeviceProfileAlarm.from_dict(_item) for _item in obj["alarms"]] if obj.get("alarms") is not None else None
         })
         return _obj

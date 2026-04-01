@@ -34,7 +34,7 @@ class RawDataEventFilter(EventFilter):
     """ # noqa: E501
     server: Optional[StrictStr] = Field(default=None, description="String value representing the server name, identifier or ip address where the platform is running")
     uuid: Optional[StrictStr] = Field(default=None, description="String value representing the uuid")
-    message_type: Optional[StrictStr] = Field(default=None, description="String value representing the message type", alias="messageType")
+    message_type: Optional[StrictStr] = Field(default=None, description="String value representing the message type", serialization_alias="messageType")
     message: Optional[StrictStr] = Field(default=None, description="String value representing the message")
     __properties: ClassVar[List[str]] = ["eventType", "notEmpty", "server", "uuid", "messageType", "message"]
 
@@ -46,13 +46,18 @@ class RawDataEventFilter(EventFilter):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -89,11 +94,11 @@ class RawDataEventFilter(EventFilter):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "eventType": obj.get("eventType"),
-            "notEmpty": obj.get("notEmpty"),
+            "event_type": obj.get("eventType"),
+            "not_empty": obj.get("notEmpty"),
             "server": obj.get("server"),
             "uuid": obj.get("uuid"),
-            "messageType": obj.get("messageType"),
+            "message_type": obj.get("messageType"),
             "message": obj.get("message")
         })
         return _obj

@@ -31,12 +31,12 @@ class AttributeExportData(BaseModel):
     AttributeExportData
     """ # noqa: E501
     key: Optional[StrictStr] = None
-    last_update_ts: Optional[StrictInt] = Field(default=None, alias="lastUpdateTs")
-    boolean_value: Optional[StrictBool] = Field(default=None, alias="booleanValue")
-    str_value: Optional[StrictStr] = Field(default=None, alias="strValue")
-    long_value: Optional[StrictInt] = Field(default=None, alias="longValue")
-    double_value: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, alias="doubleValue")
-    json_value: Optional[StrictStr] = Field(default=None, alias="jsonValue")
+    last_update_ts: Optional[StrictInt] = Field(default=None, serialization_alias="lastUpdateTs")
+    boolean_value: Optional[StrictBool] = Field(default=None, serialization_alias="booleanValue")
+    str_value: Optional[StrictStr] = Field(default=None, serialization_alias="strValue")
+    long_value: Optional[StrictInt] = Field(default=None, serialization_alias="longValue")
+    double_value: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, serialization_alias="doubleValue")
+    json_value: Optional[StrictStr] = Field(default=None, serialization_alias="jsonValue")
     __properties: ClassVar[List[str]] = ["key", "lastUpdateTs", "booleanValue", "strValue", "longValue", "doubleValue", "jsonValue"]
 
     model_config = ConfigDict(
@@ -47,13 +47,18 @@ class AttributeExportData(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -91,12 +96,12 @@ class AttributeExportData(BaseModel):
 
         _obj = cls.model_validate({
             "key": obj.get("key"),
-            "lastUpdateTs": obj.get("lastUpdateTs"),
-            "booleanValue": obj.get("booleanValue"),
-            "strValue": obj.get("strValue"),
-            "longValue": obj.get("longValue"),
-            "doubleValue": obj.get("doubleValue"),
-            "jsonValue": obj.get("jsonValue")
+            "last_update_ts": obj.get("lastUpdateTs"),
+            "boolean_value": obj.get("booleanValue"),
+            "str_value": obj.get("strValue"),
+            "long_value": obj.get("longValue"),
+            "double_value": obj.get("doubleValue"),
+            "json_value": obj.get("jsonValue")
         })
         return _obj
 

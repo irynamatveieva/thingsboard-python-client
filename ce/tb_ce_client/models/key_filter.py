@@ -34,7 +34,7 @@ class KeyFilter(BaseModel):
     KeyFilter
     """ # noqa: E501
     key: Optional[EntityKey] = None
-    value_type: Optional[EntityKeyValueType] = Field(default=None, alias="valueType")
+    value_type: Optional[EntityKeyValueType] = Field(default=None, serialization_alias="valueType")
     predicate: Optional[KeyFilterPredicate] = None
     __properties: ClassVar[List[str]] = ["key", "valueType", "predicate"]
 
@@ -46,13 +46,18 @@ class KeyFilter(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -96,7 +101,7 @@ class KeyFilter(BaseModel):
 
         _obj = cls.model_validate({
             "key": EntityKey.from_dict(obj["key"]) if obj.get("key") is not None else None,
-            "valueType": obj.get("valueType"),
+            "value_type": obj.get("valueType"),
             "predicate": KeyFilterPredicate.from_dict(obj["predicate"]) if obj.get("predicate") is not None else None
         })
         return _obj

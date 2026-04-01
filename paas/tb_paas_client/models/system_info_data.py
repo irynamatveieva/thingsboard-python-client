@@ -30,14 +30,14 @@ class SystemInfoData(BaseModel):
     """
     SystemInfoData
     """ # noqa: E501
-    service_id: Optional[StrictStr] = Field(default=None, description="Service Id.", alias="serviceId")
-    service_type: Optional[StrictStr] = Field(default=None, description="Service type.", alias="serviceType")
-    cpu_usage: Optional[StrictInt] = Field(default=None, description="CPU usage, in percent.", alias="cpuUsage")
-    cpu_count: Optional[StrictInt] = Field(default=None, description="Total CPU usage.", alias="cpuCount")
-    memory_usage: Optional[StrictInt] = Field(default=None, description="Memory usage, in percent.", alias="memoryUsage")
-    total_memory: Optional[StrictInt] = Field(default=None, description="Total memory in bytes.", alias="totalMemory")
-    disc_usage: Optional[StrictInt] = Field(default=None, description="Disk usage, in percent.", alias="discUsage")
-    total_disc_space: Optional[StrictInt] = Field(default=None, description="Total disc space in bytes.", alias="totalDiscSpace")
+    service_id: Optional[StrictStr] = Field(default=None, description="Service Id.", serialization_alias="serviceId")
+    service_type: Optional[StrictStr] = Field(default=None, description="Service type.", serialization_alias="serviceType")
+    cpu_usage: Optional[StrictInt] = Field(default=None, description="CPU usage, in percent.", serialization_alias="cpuUsage")
+    cpu_count: Optional[StrictInt] = Field(default=None, description="Total CPU usage.", serialization_alias="cpuCount")
+    memory_usage: Optional[StrictInt] = Field(default=None, description="Memory usage, in percent.", serialization_alias="memoryUsage")
+    total_memory: Optional[StrictInt] = Field(default=None, description="Total memory in bytes.", serialization_alias="totalMemory")
+    disc_usage: Optional[StrictInt] = Field(default=None, description="Disk usage, in percent.", serialization_alias="discUsage")
+    total_disc_space: Optional[StrictInt] = Field(default=None, description="Total disc space in bytes.", serialization_alias="totalDiscSpace")
     __properties: ClassVar[List[str]] = ["serviceId", "serviceType", "cpuUsage", "cpuCount", "memoryUsage", "totalMemory", "discUsage", "totalDiscSpace"]
 
     model_config = ConfigDict(
@@ -48,13 +48,18 @@ class SystemInfoData(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -91,14 +96,14 @@ class SystemInfoData(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "serviceId": obj.get("serviceId"),
-            "serviceType": obj.get("serviceType"),
-            "cpuUsage": obj.get("cpuUsage"),
-            "cpuCount": obj.get("cpuCount"),
-            "memoryUsage": obj.get("memoryUsage"),
-            "totalMemory": obj.get("totalMemory"),
-            "discUsage": obj.get("discUsage"),
-            "totalDiscSpace": obj.get("totalDiscSpace")
+            "service_id": obj.get("serviceId"),
+            "service_type": obj.get("serviceType"),
+            "cpu_usage": obj.get("cpuUsage"),
+            "cpu_count": obj.get("cpuCount"),
+            "memory_usage": obj.get("memoryUsage"),
+            "total_memory": obj.get("totalMemory"),
+            "disc_usage": obj.get("discUsage"),
+            "total_disc_space": obj.get("totalDiscSpace")
         })
         return _obj
 

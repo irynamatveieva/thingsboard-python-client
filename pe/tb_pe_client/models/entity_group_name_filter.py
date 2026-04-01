@@ -32,8 +32,8 @@ class EntityGroupNameFilter(EntityFilter):
     """
     EntityGroupNameFilter
     """ # noqa: E501
-    group_type: Optional[EntityType] = Field(default=None, alias="groupType")
-    entity_group_name_filter: Optional[StrictStr] = Field(default=None, alias="entityGroupNameFilter")
+    group_type: Optional[EntityType] = Field(default=None, serialization_alias="groupType")
+    entity_group_name_filter: Optional[StrictStr] = Field(default=None, serialization_alias="entityGroupNameFilter")
     __properties: ClassVar[List[str]] = ["type", "groupType", "entityGroupNameFilter"]
 
     model_config = ConfigDict(
@@ -44,13 +44,18 @@ class EntityGroupNameFilter(EntityFilter):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -88,8 +93,8 @@ class EntityGroupNameFilter(EntityFilter):
 
         _obj = cls.model_validate({
             "type": obj.get("type"),
-            "groupType": obj.get("groupType"),
-            "entityGroupNameFilter": obj.get("entityGroupNameFilter")
+            "group_type": obj.get("groupType"),
+            "entity_group_name_filter": obj.get("entityGroupNameFilter")
         })
         return _obj
 

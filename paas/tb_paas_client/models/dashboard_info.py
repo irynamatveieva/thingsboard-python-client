@@ -38,21 +38,21 @@ class DashboardInfo(BaseModel):
     DashboardInfo
     """ # noqa: E501
     id: Optional[DashboardId] = Field(default=None, description="JSON object with the dashboard Id. Specify existing dashboard Id to update the dashboard. Referencing non-existing dashboard id will cause error. Omit this field to create new dashboard.")
-    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the dashboard creation, in milliseconds", alias="createdTime")
-    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id. Tenant Id of the dashboard can't be changed.", alias="tenantId")
-    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id. ", alias="customerId")
-    owner_id: Optional[EntityId] = Field(default=None, description="JSON object with Customer or Tenant Id", alias="ownerId")
+    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the dashboard creation, in milliseconds", serialization_alias="createdTime")
+    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id. Tenant Id of the dashboard can't be changed.", serialization_alias="tenantId")
+    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id. ", serialization_alias="customerId")
+    owner_id: Optional[EntityId] = Field(default=None, description="JSON object with Customer or Tenant Id", serialization_alias="ownerId")
     title: Optional[StrictStr] = Field(default=None, description="Title of the dashboard.")
     name: Optional[StrictStr] = Field(default=None, description="Same as title of the dashboard. Read-only field. Update the 'title' to change the 'name' of the dashboard.")
     image: Optional[StrictStr] = Field(default=None, description="Thumbnail picture for rendering of the dashboards in a grid view on mobile devices.")
-    assigned_customers: Optional[List[ShortCustomerInfo]] = Field(default=None, description="List of assigned customers with their info.", alias="assignedCustomers")
-    mobile_hide: Optional[StrictBool] = Field(default=None, description="Hide dashboard from mobile devices. Useful if the dashboard is not designed for small screens.", alias="mobileHide")
-    mobile_order: Optional[StrictInt] = Field(default=None, description="Order on mobile devices. Useful to adjust sorting of the dashboards for mobile applications", alias="mobileOrder")
+    assigned_customers: Optional[List[ShortCustomerInfo]] = Field(default=None, description="List of assigned customers with their info.", serialization_alias="assignedCustomers")
+    mobile_hide: Optional[StrictBool] = Field(default=None, description="Hide dashboard from mobile devices. Useful if the dashboard is not designed for small screens.", serialization_alias="mobileHide")
+    mobile_order: Optional[StrictInt] = Field(default=None, description="Order on mobile devices. Useful to adjust sorting of the dashboards for mobile applications", serialization_alias="mobileOrder")
     configuration: Optional[Any] = None
     resources: Optional[List[ResourceExportData]] = None
     version: Optional[StrictInt] = None
     groups: Optional[List[EntityInfo]] = Field(default=None, description="Groups")
-    owner_name: Optional[StrictStr] = Field(default=None, description="Owner name", alias="ownerName")
+    owner_name: Optional[StrictStr] = Field(default=None, description="Owner name", serialization_alias="ownerName")
     __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "customerId", "ownerId", "title", "name", "image", "assignedCustomers", "mobileHide", "mobileOrder", "configuration", "resources", "version", "groups", "ownerName"]
 
     model_config = ConfigDict(
@@ -63,13 +63,18 @@ class DashboardInfo(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -161,21 +166,21 @@ class DashboardInfo(BaseModel):
 
         _obj = cls.model_validate({
             "id": DashboardId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
-            "customerId": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
-            "ownerId": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None,
+            "created_time": obj.get("createdTime"),
+            "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
+            "customer_id": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
+            "owner_id": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None,
             "title": obj.get("title"),
             "name": obj.get("name"),
             "image": obj.get("image"),
-            "assignedCustomers": [ShortCustomerInfo.from_dict(_item) for _item in obj["assignedCustomers"]] if obj.get("assignedCustomers") is not None else None,
-            "mobileHide": obj.get("mobileHide"),
-            "mobileOrder": obj.get("mobileOrder"),
+            "assigned_customers": [ShortCustomerInfo.from_dict(_item) for _item in obj["assignedCustomers"]] if obj.get("assignedCustomers") is not None else None,
+            "mobile_hide": obj.get("mobileHide"),
+            "mobile_order": obj.get("mobileOrder"),
             "configuration": obj.get("configuration"),
             "resources": [ResourceExportData.from_dict(_item) for _item in obj["resources"]] if obj.get("resources") is not None else None,
             "version": obj.get("version"),
             "groups": [EntityInfo.from_dict(_item) for _item in obj["groups"]] if obj.get("groups") is not None else None,
-            "ownerName": obj.get("ownerName")
+            "owner_name": obj.get("ownerName")
         })
         return _obj
 

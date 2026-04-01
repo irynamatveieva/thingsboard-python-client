@@ -31,8 +31,8 @@ class X509CertificateChainProvisionConfiguration(DeviceProfileProvisionConfigura
     """
     X509CertificateChainProvisionConfiguration
     """ # noqa: E501
-    certificate_reg_ex_pattern: Optional[StrictStr] = Field(default=None, alias="certificateRegExPattern")
-    allow_create_new_devices_by_x509_certificate: Optional[StrictBool] = Field(default=None, alias="allowCreateNewDevicesByX509Certificate")
+    certificate_reg_ex_pattern: Optional[StrictStr] = Field(default=None, serialization_alias="certificateRegExPattern")
+    allow_create_new_devices_by_x509_certificate: Optional[StrictBool] = Field(default=None, serialization_alias="allowCreateNewDevicesByX509Certificate")
     __properties: ClassVar[List[str]] = ["provisionDeviceSecret", "type", "certificateRegExPattern", "allowCreateNewDevicesByX509Certificate"]
 
     model_config = ConfigDict(
@@ -43,13 +43,18 @@ class X509CertificateChainProvisionConfiguration(DeviceProfileProvisionConfigura
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -86,10 +91,10 @@ class X509CertificateChainProvisionConfiguration(DeviceProfileProvisionConfigura
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "provisionDeviceSecret": obj.get("provisionDeviceSecret"),
+            "provision_device_secret": obj.get("provisionDeviceSecret"),
             "type": obj.get("type"),
-            "certificateRegExPattern": obj.get("certificateRegExPattern"),
-            "allowCreateNewDevicesByX509Certificate": obj.get("allowCreateNewDevicesByX509Certificate")
+            "certificate_reg_ex_pattern": obj.get("certificateRegExPattern"),
+            "allow_create_new_devices_by_x509_certificate": obj.get("allowCreateNewDevicesByX509Certificate")
         })
         return _obj
 

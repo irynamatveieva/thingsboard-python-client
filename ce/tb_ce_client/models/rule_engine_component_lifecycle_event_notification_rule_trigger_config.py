@@ -34,12 +34,12 @@ class RuleEngineComponentLifecycleEventNotificationRuleTriggerConfig(Notificatio
     """
     RuleEngineComponentLifecycleEventNotificationRuleTriggerConfig
     """ # noqa: E501
-    rule_chains: Optional[List[UUID]] = Field(default=None, alias="ruleChains")
-    rule_chain_events: Optional[List[ComponentLifecycleEvent]] = Field(default=None, alias="ruleChainEvents")
-    only_rule_chain_lifecycle_failures: Optional[StrictBool] = Field(default=None, alias="onlyRuleChainLifecycleFailures")
-    track_rule_node_events: Optional[StrictBool] = Field(default=None, alias="trackRuleNodeEvents")
-    rule_node_events: Optional[List[ComponentLifecycleEvent]] = Field(default=None, alias="ruleNodeEvents")
-    only_rule_node_lifecycle_failures: Optional[StrictBool] = Field(default=None, alias="onlyRuleNodeLifecycleFailures")
+    rule_chains: Optional[List[UUID]] = Field(default=None, serialization_alias="ruleChains")
+    rule_chain_events: Optional[List[ComponentLifecycleEvent]] = Field(default=None, serialization_alias="ruleChainEvents")
+    only_rule_chain_lifecycle_failures: Optional[StrictBool] = Field(default=None, serialization_alias="onlyRuleChainLifecycleFailures")
+    track_rule_node_events: Optional[StrictBool] = Field(default=None, serialization_alias="trackRuleNodeEvents")
+    rule_node_events: Optional[List[ComponentLifecycleEvent]] = Field(default=None, serialization_alias="ruleNodeEvents")
+    only_rule_node_lifecycle_failures: Optional[StrictBool] = Field(default=None, serialization_alias="onlyRuleNodeLifecycleFailures")
     __properties: ClassVar[List[str]] = ["triggerType", "ruleChains", "ruleChainEvents", "onlyRuleChainLifecycleFailures", "trackRuleNodeEvents", "ruleNodeEvents", "onlyRuleNodeLifecycleFailures"]
 
     model_config = ConfigDict(
@@ -50,13 +50,18 @@ class RuleEngineComponentLifecycleEventNotificationRuleTriggerConfig(Notificatio
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -93,13 +98,13 @@ class RuleEngineComponentLifecycleEventNotificationRuleTriggerConfig(Notificatio
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "triggerType": obj.get("triggerType"),
-            "ruleChains": obj.get("ruleChains"),
-            "ruleChainEvents": obj.get("ruleChainEvents"),
-            "onlyRuleChainLifecycleFailures": obj.get("onlyRuleChainLifecycleFailures"),
-            "trackRuleNodeEvents": obj.get("trackRuleNodeEvents"),
-            "ruleNodeEvents": obj.get("ruleNodeEvents"),
-            "onlyRuleNodeLifecycleFailures": obj.get("onlyRuleNodeLifecycleFailures")
+            "trigger_type": obj.get("triggerType"),
+            "rule_chains": obj.get("ruleChains"),
+            "rule_chain_events": obj.get("ruleChainEvents"),
+            "only_rule_chain_lifecycle_failures": obj.get("onlyRuleChainLifecycleFailures"),
+            "track_rule_node_events": obj.get("trackRuleNodeEvents"),
+            "rule_node_events": obj.get("ruleNodeEvents"),
+            "only_rule_node_lifecycle_failures": obj.get("onlyRuleNodeLifecycleFailures")
         })
         return _obj
 

@@ -34,13 +34,13 @@ class TenantProfileQueueConfiguration(BaseModel):
     """ # noqa: E501
     name: Optional[StrictStr] = None
     topic: Optional[StrictStr] = None
-    poll_interval: Optional[StrictInt] = Field(default=None, alias="pollInterval")
+    poll_interval: Optional[StrictInt] = Field(default=None, serialization_alias="pollInterval")
     partitions: Optional[StrictInt] = None
-    consumer_per_partition: Optional[StrictBool] = Field(default=None, alias="consumerPerPartition")
-    pack_processing_timeout: Optional[StrictInt] = Field(default=None, alias="packProcessingTimeout")
-    submit_strategy: Optional[SubmitStrategy] = Field(default=None, alias="submitStrategy")
-    processing_strategy: Optional[ProcessingStrategy] = Field(default=None, alias="processingStrategy")
-    additional_info: Optional[Any] = Field(default=None, alias="additionalInfo")
+    consumer_per_partition: Optional[StrictBool] = Field(default=None, serialization_alias="consumerPerPartition")
+    pack_processing_timeout: Optional[StrictInt] = Field(default=None, serialization_alias="packProcessingTimeout")
+    submit_strategy: Optional[SubmitStrategy] = Field(default=None, serialization_alias="submitStrategy")
+    processing_strategy: Optional[ProcessingStrategy] = Field(default=None, serialization_alias="processingStrategy")
+    additional_info: Optional[Any] = Field(default=None, serialization_alias="additionalInfo")
     __properties: ClassVar[List[str]] = ["name", "topic", "pollInterval", "partitions", "consumerPerPartition", "packProcessingTimeout", "submitStrategy", "processingStrategy", "additionalInfo"]
 
     model_config = ConfigDict(
@@ -51,13 +51,18 @@ class TenantProfileQueueConfiguration(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -107,13 +112,13 @@ class TenantProfileQueueConfiguration(BaseModel):
         _obj = cls.model_validate({
             "name": obj.get("name"),
             "topic": obj.get("topic"),
-            "pollInterval": obj.get("pollInterval"),
+            "poll_interval": obj.get("pollInterval"),
             "partitions": obj.get("partitions"),
-            "consumerPerPartition": obj.get("consumerPerPartition"),
-            "packProcessingTimeout": obj.get("packProcessingTimeout"),
-            "submitStrategy": SubmitStrategy.from_dict(obj["submitStrategy"]) if obj.get("submitStrategy") is not None else None,
-            "processingStrategy": ProcessingStrategy.from_dict(obj["processingStrategy"]) if obj.get("processingStrategy") is not None else None,
-            "additionalInfo": obj.get("additionalInfo")
+            "consumer_per_partition": obj.get("consumerPerPartition"),
+            "pack_processing_timeout": obj.get("packProcessingTimeout"),
+            "submit_strategy": SubmitStrategy.from_dict(obj["submitStrategy"]) if obj.get("submitStrategy") is not None else None,
+            "processing_strategy": ProcessingStrategy.from_dict(obj["processingStrategy"]) if obj.get("processingStrategy") is not None else None,
+            "additional_info": obj.get("additionalInfo")
         })
         return _obj
 

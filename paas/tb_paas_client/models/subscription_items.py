@@ -30,21 +30,21 @@ class SubscriptionItems(BaseModel):
     """
     SubscriptionItems
     """ # noqa: E501
-    extra_device_pack_count: Optional[StrictInt] = Field(default=None, alias="extraDevicePackCount")
-    extra_customer_pack_count: Optional[StrictInt] = Field(default=None, alias="extraCustomerPackCount")
-    extra_integration_pack_count: Optional[StrictInt] = Field(default=None, alias="extraIntegrationPackCount")
-    extra_calculated_field_count: Optional[StrictInt] = Field(default=None, alias="extraCalculatedFieldCount")
-    traffic_pack_count: Optional[StrictInt] = Field(default=None, alias="trafficPackCount")
-    compute_pack_count: Optional[StrictInt] = Field(default=None, alias="computePackCount")
-    storage_pack_count: Optional[StrictInt] = Field(default=None, alias="storagePackCount")
-    alarm_pack_count: Optional[StrictInt] = Field(default=None, alias="alarmPackCount")
-    email_pack_count: Optional[StrictInt] = Field(default=None, alias="emailPackCount")
-    sms_pack_count: Optional[StrictInt] = Field(default=None, alias="smsPackCount")
-    ai_credits_pack_count: Optional[StrictInt] = Field(default=None, alias="aiCreditsPackCount")
-    edge_enabled: Optional[StrictBool] = Field(default=None, alias="edgeEnabled")
-    extra_edge_count: Optional[StrictInt] = Field(default=None, alias="extraEdgeCount")
-    trendz_enabled: Optional[StrictBool] = Field(default=None, alias="trendzEnabled")
-    white_labeling_addon_enabled: Optional[StrictBool] = Field(default=None, alias="whiteLabelingAddonEnabled")
+    extra_device_pack_count: Optional[StrictInt] = Field(default=None, serialization_alias="extraDevicePackCount")
+    extra_customer_pack_count: Optional[StrictInt] = Field(default=None, serialization_alias="extraCustomerPackCount")
+    extra_integration_pack_count: Optional[StrictInt] = Field(default=None, serialization_alias="extraIntegrationPackCount")
+    extra_calculated_field_count: Optional[StrictInt] = Field(default=None, serialization_alias="extraCalculatedFieldCount")
+    traffic_pack_count: Optional[StrictInt] = Field(default=None, serialization_alias="trafficPackCount")
+    compute_pack_count: Optional[StrictInt] = Field(default=None, serialization_alias="computePackCount")
+    storage_pack_count: Optional[StrictInt] = Field(default=None, serialization_alias="storagePackCount")
+    alarm_pack_count: Optional[StrictInt] = Field(default=None, serialization_alias="alarmPackCount")
+    email_pack_count: Optional[StrictInt] = Field(default=None, serialization_alias="emailPackCount")
+    sms_pack_count: Optional[StrictInt] = Field(default=None, serialization_alias="smsPackCount")
+    ai_credits_pack_count: Optional[StrictInt] = Field(default=None, serialization_alias="aiCreditsPackCount")
+    edge_enabled: Optional[StrictBool] = Field(default=None, serialization_alias="edgeEnabled")
+    extra_edge_count: Optional[StrictInt] = Field(default=None, serialization_alias="extraEdgeCount")
+    trendz_enabled: Optional[StrictBool] = Field(default=None, serialization_alias="trendzEnabled")
+    white_labeling_addon_enabled: Optional[StrictBool] = Field(default=None, serialization_alias="whiteLabelingAddonEnabled")
     __properties: ClassVar[List[str]] = ["extraDevicePackCount", "extraCustomerPackCount", "extraIntegrationPackCount", "extraCalculatedFieldCount", "trafficPackCount", "computePackCount", "storagePackCount", "alarmPackCount", "emailPackCount", "smsPackCount", "aiCreditsPackCount", "edgeEnabled", "extraEdgeCount", "trendzEnabled", "whiteLabelingAddonEnabled"]
 
     model_config = ConfigDict(
@@ -55,13 +55,18 @@ class SubscriptionItems(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -98,21 +103,21 @@ class SubscriptionItems(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "extraDevicePackCount": obj.get("extraDevicePackCount"),
-            "extraCustomerPackCount": obj.get("extraCustomerPackCount"),
-            "extraIntegrationPackCount": obj.get("extraIntegrationPackCount"),
-            "extraCalculatedFieldCount": obj.get("extraCalculatedFieldCount"),
-            "trafficPackCount": obj.get("trafficPackCount"),
-            "computePackCount": obj.get("computePackCount"),
-            "storagePackCount": obj.get("storagePackCount"),
-            "alarmPackCount": obj.get("alarmPackCount"),
-            "emailPackCount": obj.get("emailPackCount"),
-            "smsPackCount": obj.get("smsPackCount"),
-            "aiCreditsPackCount": obj.get("aiCreditsPackCount"),
-            "edgeEnabled": obj.get("edgeEnabled"),
-            "extraEdgeCount": obj.get("extraEdgeCount"),
-            "trendzEnabled": obj.get("trendzEnabled"),
-            "whiteLabelingAddonEnabled": obj.get("whiteLabelingAddonEnabled")
+            "extra_device_pack_count": obj.get("extraDevicePackCount"),
+            "extra_customer_pack_count": obj.get("extraCustomerPackCount"),
+            "extra_integration_pack_count": obj.get("extraIntegrationPackCount"),
+            "extra_calculated_field_count": obj.get("extraCalculatedFieldCount"),
+            "traffic_pack_count": obj.get("trafficPackCount"),
+            "compute_pack_count": obj.get("computePackCount"),
+            "storage_pack_count": obj.get("storagePackCount"),
+            "alarm_pack_count": obj.get("alarmPackCount"),
+            "email_pack_count": obj.get("emailPackCount"),
+            "sms_pack_count": obj.get("smsPackCount"),
+            "ai_credits_pack_count": obj.get("aiCreditsPackCount"),
+            "edge_enabled": obj.get("edgeEnabled"),
+            "extra_edge_count": obj.get("extraEdgeCount"),
+            "trendz_enabled": obj.get("trendzEnabled"),
+            "white_labeling_addon_enabled": obj.get("whiteLabelingAddonEnabled")
         })
         return _obj
 

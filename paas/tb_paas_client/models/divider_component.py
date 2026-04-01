@@ -39,12 +39,12 @@ class DividerComponent(ReportComponent):
     margins: Optional[Insets] = None
     paddings: Optional[Insets] = None
     background: Optional[StrictStr] = None
-    border_width: Optional[StrictInt] = Field(default=None, alias="borderWidth")
-    border_radius: Optional[StrictInt] = Field(default=None, alias="borderRadius")
-    border_color: Optional[StrictStr] = Field(default=None, alias="borderColor")
+    border_width: Optional[StrictInt] = Field(default=None, serialization_alias="borderWidth")
+    border_radius: Optional[StrictInt] = Field(default=None, serialization_alias="borderRadius")
+    border_color: Optional[StrictStr] = Field(default=None, serialization_alias="borderColor")
     length: Optional[BorderLength] = None
-    border_type: Optional[BorderType] = Field(default=None, alias="borderType")
-    width_px: Optional[StrictInt] = Field(default=None, alias="widthPx")
+    border_type: Optional[BorderType] = Field(default=None, serialization_alias="borderType")
+    width_px: Optional[StrictInt] = Field(default=None, serialization_alias="widthPx")
     color: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["subType", "type", "margins", "paddings", "background", "borderWidth", "borderRadius", "borderColor", "length", "borderType", "widthPx", "color"]
 
@@ -56,13 +56,18 @@ class DividerComponent(ReportComponent):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -105,17 +110,17 @@ class DividerComponent(ReportComponent):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "subType": obj.get("subType"),
+            "sub_type": obj.get("subType"),
             "type": obj.get("type"),
             "margins": Insets.from_dict(obj["margins"]) if obj.get("margins") is not None else None,
             "paddings": Insets.from_dict(obj["paddings"]) if obj.get("paddings") is not None else None,
             "background": obj.get("background"),
-            "borderWidth": obj.get("borderWidth"),
-            "borderRadius": obj.get("borderRadius"),
-            "borderColor": obj.get("borderColor"),
+            "border_width": obj.get("borderWidth"),
+            "border_radius": obj.get("borderRadius"),
+            "border_color": obj.get("borderColor"),
             "length": obj.get("length"),
-            "borderType": obj.get("borderType"),
-            "widthPx": obj.get("widthPx"),
+            "border_type": obj.get("borderType"),
+            "width_px": obj.get("widthPx"),
             "color": obj.get("color")
         })
         return _obj

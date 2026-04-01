@@ -31,13 +31,13 @@ class EntityTypeLoadResult(BaseModel):
     """
     EntityTypeLoadResult
     """ # noqa: E501
-    entity_type: Optional[EntityType] = Field(default=None, alias="entityType")
+    entity_type: Optional[EntityType] = Field(default=None, serialization_alias="entityType")
     created: Optional[StrictInt] = None
     updated: Optional[StrictInt] = None
     deleted: Optional[StrictInt] = None
-    groups_created: Optional[StrictInt] = Field(default=None, alias="groupsCreated")
-    groups_updated: Optional[StrictInt] = Field(default=None, alias="groupsUpdated")
-    groups_deleted: Optional[StrictInt] = Field(default=None, alias="groupsDeleted")
+    groups_created: Optional[StrictInt] = Field(default=None, serialization_alias="groupsCreated")
+    groups_updated: Optional[StrictInt] = Field(default=None, serialization_alias="groupsUpdated")
+    groups_deleted: Optional[StrictInt] = Field(default=None, serialization_alias="groupsDeleted")
     __properties: ClassVar[List[str]] = ["entityType", "created", "updated", "deleted", "groupsCreated", "groupsUpdated", "groupsDeleted"]
 
     model_config = ConfigDict(
@@ -48,13 +48,18 @@ class EntityTypeLoadResult(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -91,13 +96,13 @@ class EntityTypeLoadResult(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "entityType": obj.get("entityType"),
+            "entity_type": obj.get("entityType"),
             "created": obj.get("created"),
             "updated": obj.get("updated"),
             "deleted": obj.get("deleted"),
-            "groupsCreated": obj.get("groupsCreated"),
-            "groupsUpdated": obj.get("groupsUpdated"),
-            "groupsDeleted": obj.get("groupsDeleted")
+            "groups_created": obj.get("groupsCreated"),
+            "groups_updated": obj.get("groupsUpdated"),
+            "groups_deleted": obj.get("groupsDeleted")
         })
         return _obj
 

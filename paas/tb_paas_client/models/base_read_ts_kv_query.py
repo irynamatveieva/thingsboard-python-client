@@ -34,9 +34,9 @@ class BaseReadTsKvQuery(BaseModel):
     """ # noqa: E501
     id: Optional[StrictInt] = None
     key: Optional[StrictStr] = None
-    start_ts: Optional[StrictInt] = Field(default=None, alias="startTs")
-    end_ts: Optional[StrictInt] = Field(default=None, alias="endTs")
-    agg_parameters: Optional[AggregationParams] = Field(default=None, alias="aggParameters")
+    start_ts: Optional[StrictInt] = Field(default=None, serialization_alias="startTs")
+    end_ts: Optional[StrictInt] = Field(default=None, serialization_alias="endTs")
+    agg_parameters: Optional[AggregationParams] = Field(default=None, serialization_alias="aggParameters")
     limit: Optional[StrictInt] = None
     order: Optional[StrictStr] = None
     aggregation: Optional[Aggregation] = None
@@ -51,13 +51,18 @@ class BaseReadTsKvQuery(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -99,9 +104,9 @@ class BaseReadTsKvQuery(BaseModel):
         _obj = cls.model_validate({
             "id": obj.get("id"),
             "key": obj.get("key"),
-            "startTs": obj.get("startTs"),
-            "endTs": obj.get("endTs"),
-            "aggParameters": AggregationParams.from_dict(obj["aggParameters"]) if obj.get("aggParameters") is not None else None,
+            "start_ts": obj.get("startTs"),
+            "end_ts": obj.get("endTs"),
+            "agg_parameters": AggregationParams.from_dict(obj["aggParameters"]) if obj.get("aggParameters") is not None else None,
             "limit": obj.get("limit"),
             "order": obj.get("order"),
             "aggregation": obj.get("aggregation"),

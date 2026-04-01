@@ -41,23 +41,23 @@ class ReportLatestChartSettings(BaseModel):
     """
     ReportLatestChartSettings
     """ # noqa: E501
-    show_title: Optional[StrictBool] = Field(default=None, alias="showTitle")
+    show_title: Optional[StrictBool] = Field(default=None, serialization_alias="showTitle")
     title: Optional[StrictStr] = None
-    title_font: Optional[Font] = Field(default=None, alias="titleFont")
-    title_color: Optional[StrictStr] = Field(default=None, alias="titleColor")
-    title_alignment: Optional[TextAlignment] = Field(default=None, alias="titleAlignment")
+    title_font: Optional[Font] = Field(default=None, serialization_alias="titleFont")
+    title_color: Optional[StrictStr] = Field(default=None, serialization_alias="titleColor")
+    title_alignment: Optional[TextAlignment] = Field(default=None, serialization_alias="titleAlignment")
     units: Optional[StrictStr] = None
     decimals: Optional[StrictInt] = None
-    auto_scale: Optional[StrictBool] = Field(default=None, alias="autoScale")
-    sort_series: Optional[StrictBool] = Field(default=None, alias="sortSeries")
-    show_total: Optional[StrictBool] = Field(default=None, alias="showTotal")
-    show_legend: Optional[StrictBool] = Field(default=None, alias="showLegend")
-    legend_position: Optional[LegendPosition] = Field(default=None, alias="legendPosition")
-    legend_label_font: Optional[Font] = Field(default=None, alias="legendLabelFont")
-    legend_label_color: Optional[StrictStr] = Field(default=None, alias="legendLabelColor")
-    legend_value_font: Optional[Font] = Field(default=None, alias="legendValueFont")
-    legend_value_color: Optional[StrictStr] = Field(default=None, alias="legendValueColor")
-    legend_show_total: Optional[StrictBool] = Field(default=None, alias="legendShowTotal")
+    auto_scale: Optional[StrictBool] = Field(default=None, serialization_alias="autoScale")
+    sort_series: Optional[StrictBool] = Field(default=None, serialization_alias="sortSeries")
+    show_total: Optional[StrictBool] = Field(default=None, serialization_alias="showTotal")
+    show_legend: Optional[StrictBool] = Field(default=None, serialization_alias="showLegend")
+    legend_position: Optional[LegendPosition] = Field(default=None, serialization_alias="legendPosition")
+    legend_label_font: Optional[Font] = Field(default=None, serialization_alias="legendLabelFont")
+    legend_label_color: Optional[StrictStr] = Field(default=None, serialization_alias="legendLabelColor")
+    legend_value_font: Optional[Font] = Field(default=None, serialization_alias="legendValueFont")
+    legend_value_color: Optional[StrictStr] = Field(default=None, serialization_alias="legendValueColor")
+    legend_show_total: Optional[StrictBool] = Field(default=None, serialization_alias="legendShowTotal")
     __properties: ClassVar[List[str]] = ["showTitle", "title", "titleFont", "titleColor", "titleAlignment", "units", "decimals", "autoScale", "sortSeries", "showTotal", "showLegend", "legendPosition", "legendLabelFont", "legendLabelColor", "legendValueFont", "legendValueColor", "legendShowTotal"]
 
     model_config = ConfigDict(
@@ -85,13 +85,18 @@ class ReportLatestChartSettings(BaseModel):
             return None
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Union[ReportDoughnutChartSettings, ReportDoughnutChartSettings, ReportBarChartSettings, ReportPieChartSettings]]:

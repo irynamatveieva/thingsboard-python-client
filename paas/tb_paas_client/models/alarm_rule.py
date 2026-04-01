@@ -34,8 +34,8 @@ class AlarmRule(BaseModel):
     AlarmRule
     """ # noqa: E501
     condition: Optional[AlarmCondition] = Field(default=None, description="JSON object representing the alarm rule condition")
-    alarm_details: Optional[StrictStr] = Field(default=None, description="String value representing the additional details for an alarm rule", alias="alarmDetails")
-    dashboard_id: Optional[DashboardId] = Field(default=None, description="JSON object with the dashboard Id representing the reference to alarm details dashboard used by mobile application", alias="dashboardId")
+    alarm_details: Optional[StrictStr] = Field(default=None, description="String value representing the additional details for an alarm rule", serialization_alias="alarmDetails")
+    dashboard_id: Optional[DashboardId] = Field(default=None, description="JSON object with the dashboard Id representing the reference to alarm details dashboard used by mobile application", serialization_alias="dashboardId")
     schedule: Optional[AlarmSchedule] = Field(default=None, description="JSON object representing time interval during which the rule is active")
     __properties: ClassVar[List[str]] = ["condition", "alarmDetails", "dashboardId", "schedule"]
 
@@ -47,13 +47,18 @@ class AlarmRule(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -100,8 +105,8 @@ class AlarmRule(BaseModel):
 
         _obj = cls.model_validate({
             "condition": AlarmCondition.from_dict(obj["condition"]) if obj.get("condition") is not None else None,
-            "alarmDetails": obj.get("alarmDetails"),
-            "dashboardId": DashboardId.from_dict(obj["dashboardId"]) if obj.get("dashboardId") is not None else None,
+            "alarm_details": obj.get("alarmDetails"),
+            "dashboard_id": DashboardId.from_dict(obj["dashboardId"]) if obj.get("dashboardId") is not None else None,
             "schedule": AlarmSchedule.from_dict(obj["schedule"]) if obj.get("schedule") is not None else None
         })
         return _obj

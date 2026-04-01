@@ -33,7 +33,7 @@ class TenantProfileData(BaseModel):
     TenantProfileData
     """ # noqa: E501
     configuration: Optional[TenantProfileConfiguration] = Field(default=None, description="Complex JSON object that contains profile settings: max devices, max assets, rate limits, etc.")
-    queue_configuration: Optional[List[TenantProfileQueueConfiguration]] = Field(default=None, description="JSON array of queue configuration per tenant profile", alias="queueConfiguration")
+    queue_configuration: Optional[List[TenantProfileQueueConfiguration]] = Field(default=None, description="JSON array of queue configuration per tenant profile", serialization_alias="queueConfiguration")
     __properties: ClassVar[List[str]] = ["configuration", "queueConfiguration"]
 
     model_config = ConfigDict(
@@ -44,13 +44,18 @@ class TenantProfileData(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -98,7 +103,7 @@ class TenantProfileData(BaseModel):
 
         _obj = cls.model_validate({
             "configuration": TenantProfileConfiguration.from_dict(obj["configuration"]) if obj.get("configuration") is not None else None,
-            "queueConfiguration": [TenantProfileQueueConfiguration.from_dict(_item) for _item in obj["queueConfiguration"]] if obj.get("queueConfiguration") is not None else None
+            "queue_configuration": [TenantProfileQueueConfiguration.from_dict(_item) for _item in obj["queueConfiguration"]] if obj.get("queueConfiguration") is not None else None
         })
         return _obj
 

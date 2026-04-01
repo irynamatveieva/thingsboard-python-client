@@ -37,18 +37,18 @@ class CalculatedFieldInfo(BaseModel):
     CalculatedFieldInfo
     """ # noqa: E501
     id: Optional[CalculatedFieldId] = Field(default=None, description="JSON object with the Calculated Field Id. Referencing non-existing Calculated Field Id will cause error.")
-    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the calculated field creation, in milliseconds", alias="createdTime")
-    tenant_id: Optional[TenantId] = Field(default=None, alias="tenantId")
-    entity_id: Optional[EntityId] = Field(default=None, alias="entityId")
+    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the calculated field creation, in milliseconds", serialization_alias="createdTime")
+    tenant_id: Optional[TenantId] = Field(default=None, serialization_alias="tenantId")
+    entity_id: Optional[EntityId] = Field(default=None, serialization_alias="entityId")
     type: Optional[CalculatedFieldType] = None
     name: Optional[StrictStr] = Field(default=None, description="User defined name of the calculated field.")
-    debug_settings: Optional[DebugSettings] = Field(default=None, description="Debug settings object.", alias="debugSettings")
-    configuration_version: Optional[StrictInt] = Field(default=None, description="Version of calculated field configuration.", alias="configurationVersion")
+    debug_settings: Optional[DebugSettings] = Field(default=None, description="Debug settings object.", serialization_alias="debugSettings")
+    configuration_version: Optional[StrictInt] = Field(default=None, description="Version of calculated field configuration.", serialization_alias="configurationVersion")
     configuration: CalculatedFieldConfiguration
     version: Optional[StrictInt] = None
-    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the calculated field", alias="additionalInfo")
-    entity_name: Optional[StrictStr] = Field(default=None, alias="entityName")
-    debug_mode: Optional[StrictBool] = Field(default=None, alias="debugMode")
+    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the calculated field", serialization_alias="additionalInfo")
+    entity_name: Optional[StrictStr] = Field(default=None, serialization_alias="entityName")
+    debug_mode: Optional[StrictBool] = Field(default=None, serialization_alias="debugMode")
     __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "entityId", "type", "name", "debugSettings", "configurationVersion", "configuration", "version", "additionalInfo", "entityName", "debugMode"]
 
     model_config = ConfigDict(
@@ -59,13 +59,18 @@ class CalculatedFieldInfo(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -125,18 +130,18 @@ class CalculatedFieldInfo(BaseModel):
 
         _obj = cls.model_validate({
             "id": CalculatedFieldId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
-            "entityId": EntityId.from_dict(obj["entityId"]) if obj.get("entityId") is not None else None,
+            "created_time": obj.get("createdTime"),
+            "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
+            "entity_id": EntityId.from_dict(obj["entityId"]) if obj.get("entityId") is not None else None,
             "type": obj.get("type"),
             "name": obj.get("name"),
-            "debugSettings": DebugSettings.from_dict(obj["debugSettings"]) if obj.get("debugSettings") is not None else None,
-            "configurationVersion": obj.get("configurationVersion"),
+            "debug_settings": DebugSettings.from_dict(obj["debugSettings"]) if obj.get("debugSettings") is not None else None,
+            "configuration_version": obj.get("configurationVersion"),
             "configuration": CalculatedFieldConfiguration.from_dict(obj["configuration"]) if obj.get("configuration") is not None else None,
             "version": obj.get("version"),
-            "additionalInfo": obj.get("additionalInfo"),
-            "entityName": obj.get("entityName"),
-            "debugMode": obj.get("debugMode")
+            "additional_info": obj.get("additionalInfo"),
+            "entity_name": obj.get("entityName"),
+            "debug_mode": obj.get("debugMode")
         })
         return _obj
 

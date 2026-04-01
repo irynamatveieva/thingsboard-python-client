@@ -33,7 +33,7 @@ class BackupCodeTwoFaAccountConfig(TwoFaAccountConfig):
     BackupCodeTwoFaAccountConfig
     """ # noqa: E501
     codes: Annotated[List[StrictStr], Field(min_length=1)]
-    codes_left: Optional[StrictInt] = Field(default=None, alias="codesLeft")
+    codes_left: Optional[StrictInt] = Field(default=None, serialization_alias="codesLeft")
     __properties: ClassVar[List[str]] = ["useByDefault", "providerType", "codes", "codesLeft"]
 
     model_config = ConfigDict(
@@ -44,13 +44,18 @@ class BackupCodeTwoFaAccountConfig(TwoFaAccountConfig):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -87,10 +92,10 @@ class BackupCodeTwoFaAccountConfig(TwoFaAccountConfig):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "useByDefault": obj.get("useByDefault"),
-            "providerType": obj.get("providerType"),
+            "use_by_default": obj.get("useByDefault"),
+            "provider_type": obj.get("providerType"),
             "codes": obj.get("codes"),
-            "codesLeft": obj.get("codesLeft")
+            "codes_left": obj.get("codesLeft")
         })
         return _obj
 

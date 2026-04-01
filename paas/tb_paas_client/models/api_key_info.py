@@ -35,10 +35,10 @@ class ApiKeyInfo(BaseModel):
     A JSON value representing the API key.
     """ # noqa: E501
     id: Optional[ApiKeyId] = Field(default=None, description="JSON object with the API Key Id. Specify this field to update the API Key. Referencing non-existing API Key Id will cause error. Omit this field to create new API Key.")
-    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", alias="createdTime")
-    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id. Tenant Id of the API key cannot be changed.", alias="tenantId")
-    user_id: Optional[UserId] = Field(default=None, description="JSON object with User Id. User Id of the API key cannot be changed.", alias="userId")
-    expiration_time: Optional[StrictInt] = Field(default=None, description="Expiration time of the API key.", alias="expirationTime")
+    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", serialization_alias="createdTime")
+    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id. Tenant Id of the API key cannot be changed.", serialization_alias="tenantId")
+    user_id: Optional[UserId] = Field(default=None, description="JSON object with User Id. User Id of the API key cannot be changed.", serialization_alias="userId")
+    expiration_time: Optional[StrictInt] = Field(default=None, description="Expiration time of the API key.", serialization_alias="expirationTime")
     description: Annotated[str, Field(min_length=1, strict=True)] = Field(description="API Key description.")
     enabled: Optional[StrictBool] = Field(default=None, description="Enabled/disabled API key.")
     expired: Optional[StrictBool] = Field(default=None, description="Indicates if the API key is expired based on current time. Returns false if expirationTime is 0 (no expiry).")
@@ -52,13 +52,18 @@ class ApiKeyInfo(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -111,10 +116,10 @@ class ApiKeyInfo(BaseModel):
 
         _obj = cls.model_validate({
             "id": ApiKeyId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
-            "userId": UserId.from_dict(obj["userId"]) if obj.get("userId") is not None else None,
-            "expirationTime": obj.get("expirationTime"),
+            "created_time": obj.get("createdTime"),
+            "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
+            "user_id": UserId.from_dict(obj["userId"]) if obj.get("userId") is not None else None,
+            "expiration_time": obj.get("expirationTime"),
             "description": obj.get("description"),
             "enabled": obj.get("enabled"),
             "expired": obj.get("expired")

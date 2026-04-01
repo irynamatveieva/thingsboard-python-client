@@ -34,8 +34,8 @@ class WidgetTypeInfo(BaseModel):
     WidgetTypeInfo
     """ # noqa: E501
     id: Optional[WidgetTypeId] = Field(default=None, description="JSON object with the Widget Type Id. Specify this field to update the Widget Type. Referencing non-existing Widget Type Id will cause error. Omit this field to create new Widget Type.")
-    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the Widget Type creation, in milliseconds", alias="createdTime")
-    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id.", alias="tenantId")
+    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the Widget Type creation, in milliseconds", serialization_alias="createdTime")
+    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id.", serialization_alias="tenantId")
     fqn: Optional[StrictStr] = Field(default=None, description="Unique FQN that is used in dashboards as a reference widget type")
     name: Optional[StrictStr] = Field(default=None, description="Widget name used in search and UI")
     deprecated: Optional[StrictBool] = Field(default=None, description="Whether widget type is deprecated.")
@@ -44,7 +44,7 @@ class WidgetTypeInfo(BaseModel):
     image: Optional[StrictStr] = Field(default=None, description="Base64 encoded widget thumbnail")
     description: Optional[StrictStr] = Field(default=None, description="Description of the widget type")
     tags: Optional[List[StrictStr]] = Field(default=None, description="Tags of the widget type")
-    widget_type: Optional[StrictStr] = Field(default=None, description="Type of the widget (timeseries, latest, control, alarm or static)", alias="widgetType")
+    widget_type: Optional[StrictStr] = Field(default=None, description="Type of the widget (timeseries, latest, control, alarm or static)", serialization_alias="widgetType")
     bundles: Optional[List[WidgetBundleInfo]] = Field(default=None, description="Bundles")
     __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "fqn", "name", "deprecated", "scada", "version", "image", "description", "tags", "widgetType", "bundles"]
 
@@ -56,13 +56,18 @@ class WidgetTypeInfo(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -127,8 +132,8 @@ class WidgetTypeInfo(BaseModel):
 
         _obj = cls.model_validate({
             "id": WidgetTypeId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
+            "created_time": obj.get("createdTime"),
+            "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
             "fqn": obj.get("fqn"),
             "name": obj.get("name"),
             "deprecated": obj.get("deprecated"),
@@ -137,7 +142,7 @@ class WidgetTypeInfo(BaseModel):
             "image": obj.get("image"),
             "description": obj.get("description"),
             "tags": obj.get("tags"),
-            "widgetType": obj.get("widgetType"),
+            "widget_type": obj.get("widgetType"),
             "bundles": [WidgetBundleInfo.from_dict(_item) for _item in obj["bundles"]] if obj.get("bundles") is not None else None
         })
         return _obj

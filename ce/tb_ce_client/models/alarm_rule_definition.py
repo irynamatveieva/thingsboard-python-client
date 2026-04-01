@@ -32,9 +32,9 @@ class AlarmRuleDefinition(BaseModel):
     """
     AlarmRuleDefinition
     """ # noqa: E501
-    alarm_details: Optional[StrictStr] = Field(default=None, alias="alarmDetails")
+    alarm_details: Optional[StrictStr] = Field(default=None, serialization_alias="alarmDetails")
     condition: AlarmRuleCondition
-    dashboard_id: Optional[DashboardId] = Field(default=None, alias="dashboardId")
+    dashboard_id: Optional[DashboardId] = Field(default=None, serialization_alias="dashboardId")
     __properties: ClassVar[List[str]] = ["alarmDetails", "condition", "dashboardId"]
 
     model_config = ConfigDict(
@@ -45,13 +45,18 @@ class AlarmRuleDefinition(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -94,9 +99,9 @@ class AlarmRuleDefinition(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "alarmDetails": obj.get("alarmDetails"),
+            "alarm_details": obj.get("alarmDetails"),
             "condition": AlarmRuleCondition.from_dict(obj["condition"]) if obj.get("condition") is not None else None,
-            "dashboardId": DashboardId.from_dict(obj["dashboardId"]) if obj.get("dashboardId") is not None else None
+            "dashboard_id": DashboardId.from_dict(obj["dashboardId"]) if obj.get("dashboardId") is not None else None
         })
         return _obj
 

@@ -37,7 +37,7 @@ class PropagationCalculatedFieldConfiguration(CalculatedFieldConfiguration):
     arguments: Dict[str, Argument]
     expression: Optional[StrictStr] = None
     relation: RelationPathLevel
-    apply_expression_to_resolved_arguments: Optional[StrictBool] = Field(default=None, alias="applyExpressionToResolvedArguments")
+    apply_expression_to_resolved_arguments: Optional[StrictBool] = Field(default=None, serialization_alias="applyExpressionToResolvedArguments")
     __properties: ClassVar[List[str]] = ["output", "type", "arguments", "expression", "relation", "applyExpressionToResolvedArguments"]
 
     model_config = ConfigDict(
@@ -48,13 +48,18 @@ class PropagationCalculatedFieldConfiguration(CalculatedFieldConfiguration):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -114,7 +119,7 @@ class PropagationCalculatedFieldConfiguration(CalculatedFieldConfiguration):
             else None,
             "expression": obj.get("expression"),
             "relation": RelationPathLevel.from_dict(obj["relation"]) if obj.get("relation") is not None else None,
-            "applyExpressionToResolvedArguments": obj.get("applyExpressionToResolvedArguments")
+            "apply_expression_to_resolved_arguments": obj.get("applyExpressionToResolvedArguments")
         })
         return _obj
 

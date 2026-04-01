@@ -36,17 +36,17 @@ class EntityView(BaseModel):
     A JSON object representing the entity view.
     """ # noqa: E501
     id: Optional[EntityViewId] = Field(default=None, description="JSON object with the Entity View Id. Specify this field to update the Entity View. Referencing non-existing Entity View Id will cause error. Omit this field to create new Entity View.")
-    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the Entity View creation, in milliseconds", alias="createdTime")
-    entity_id: EntityId = Field(description="JSON object with the referenced Entity Id (Device or Asset).", alias="entityId")
-    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id.", alias="tenantId")
-    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id. Use 'assignEntityViewToCustomer' to change the Customer Id.", alias="customerId")
+    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the Entity View creation, in milliseconds", serialization_alias="createdTime")
+    entity_id: EntityId = Field(description="JSON object with the referenced Entity Id (Device or Asset).", serialization_alias="entityId")
+    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id.", serialization_alias="tenantId")
+    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id. Use 'assignEntityViewToCustomer' to change the Customer Id.", serialization_alias="customerId")
     name: StrictStr = Field(description="Entity View name")
     type: StrictStr = Field(description="Device Profile Name")
     keys: Optional[TelemetryEntityView] = Field(default=None, description="Set of telemetry and attribute keys to expose via Entity View.")
-    start_time_ms: Optional[StrictInt] = Field(default=None, description="Represents the start time of the interval that is used to limit access to target device telemetry. Customer will not be able to see entity telemetry that is outside the specified interval;", alias="startTimeMs")
-    end_time_ms: Optional[StrictInt] = Field(default=None, description="Represents the end time of the interval that is used to limit access to target device telemetry. Customer will not be able to see entity telemetry that is outside the specified interval;", alias="endTimeMs")
+    start_time_ms: Optional[StrictInt] = Field(default=None, description="Represents the start time of the interval that is used to limit access to target device telemetry. Customer will not be able to see entity telemetry that is outside the specified interval;", serialization_alias="startTimeMs")
+    end_time_ms: Optional[StrictInt] = Field(default=None, description="Represents the end time of the interval that is used to limit access to target device telemetry. Customer will not be able to see entity telemetry that is outside the specified interval;", serialization_alias="endTimeMs")
     version: Optional[StrictInt] = None
-    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the entity view. May include: 'description' (string).", alias="additionalInfo")
+    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the entity view. May include: 'description' (string).", serialization_alias="additionalInfo")
     __properties: ClassVar[List[str]] = ["id", "createdTime", "entityId", "tenantId", "customerId", "name", "type", "keys", "startTimeMs", "endTimeMs", "version", "additionalInfo"]
 
     model_config = ConfigDict(
@@ -57,13 +57,18 @@ class EntityView(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -127,17 +132,17 @@ class EntityView(BaseModel):
 
         _obj = cls.model_validate({
             "id": EntityViewId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "entityId": EntityId.from_dict(obj["entityId"]) if obj.get("entityId") is not None else None,
-            "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
-            "customerId": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
+            "created_time": obj.get("createdTime"),
+            "entity_id": EntityId.from_dict(obj["entityId"]) if obj.get("entityId") is not None else None,
+            "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
+            "customer_id": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
             "name": obj.get("name"),
             "type": obj.get("type"),
             "keys": TelemetryEntityView.from_dict(obj["keys"]) if obj.get("keys") is not None else None,
-            "startTimeMs": obj.get("startTimeMs"),
-            "endTimeMs": obj.get("endTimeMs"),
+            "start_time_ms": obj.get("startTimeMs"),
+            "end_time_ms": obj.get("endTimeMs"),
             "version": obj.get("version"),
-            "additionalInfo": obj.get("additionalInfo")
+            "additional_info": obj.get("additionalInfo")
         })
         return _obj
 

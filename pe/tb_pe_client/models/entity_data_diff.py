@@ -31,8 +31,8 @@ class EntityDataDiff(BaseModel):
     """
     EntityDataDiff
     """ # noqa: E501
-    current_version: Optional[EntityExportData] = Field(default=None, alias="currentVersion")
-    other_version: Optional[EntityExportData] = Field(default=None, alias="otherVersion")
+    current_version: Optional[EntityExportData] = Field(default=None, serialization_alias="currentVersion")
+    other_version: Optional[EntityExportData] = Field(default=None, serialization_alias="otherVersion")
     __properties: ClassVar[List[str]] = ["currentVersion", "otherVersion"]
 
     model_config = ConfigDict(
@@ -43,13 +43,18 @@ class EntityDataDiff(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -92,8 +97,8 @@ class EntityDataDiff(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "currentVersion": EntityExportData.from_dict(obj["currentVersion"]) if obj.get("currentVersion") is not None else None,
-            "otherVersion": EntityExportData.from_dict(obj["otherVersion"]) if obj.get("otherVersion") is not None else None
+            "current_version": EntityExportData.from_dict(obj["currentVersion"]) if obj.get("currentVersion") is not None else None,
+            "other_version": EntityExportData.from_dict(obj["otherVersion"]) if obj.get("otherVersion") is not None else None
         })
         return _obj
 

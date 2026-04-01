@@ -36,7 +36,7 @@ class CoapDeviceTypeConfiguration(BaseModel):
     """
     CoAP device type configuration
     """ # noqa: E501
-    coap_device_type: StrictStr = Field(alias="coapDeviceType")
+    coap_device_type: StrictStr = Field(serialization_alias="coapDeviceType")
     __properties: ClassVar[List[str]] = ["coapDeviceType"]
 
     model_config = ConfigDict(
@@ -64,13 +64,18 @@ class CoapDeviceTypeConfiguration(BaseModel):
             return None
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Union[DefaultCoapDeviceTypeConfiguration, EfentoCoapDeviceTypeConfiguration]]:

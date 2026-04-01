@@ -33,9 +33,9 @@ class OAuth2ClientInfo(BaseModel):
     OAuth2ClientInfo
     """ # noqa: E501
     id: Optional[OAuth2ClientId] = None
-    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", alias="createdTime")
+    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", serialization_alias="createdTime")
     title: Optional[StrictStr] = Field(default=None, description="Oauth2 client registration title (e.g. My google)")
-    provider_name: Optional[StrictStr] = Field(default=None, description="Oauth2 client provider name (e.g. Google)", alias="providerName")
+    provider_name: Optional[StrictStr] = Field(default=None, description="Oauth2 client provider name (e.g. Google)", serialization_alias="providerName")
     platforms: Optional[List[PlatformType]] = Field(default=None, description="List of platforms for which usage of the OAuth2 client is allowed (empty for all allowed)")
     name: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["id", "createdTime", "title", "providerName", "platforms", "name"]
@@ -48,13 +48,18 @@ class OAuth2ClientInfo(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -99,9 +104,9 @@ class OAuth2ClientInfo(BaseModel):
 
         _obj = cls.model_validate({
             "id": OAuth2ClientId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
+            "created_time": obj.get("createdTime"),
             "title": obj.get("title"),
-            "providerName": obj.get("providerName"),
+            "provider_name": obj.get("providerName"),
             "platforms": obj.get("platforms"),
             "name": obj.get("name")
         })

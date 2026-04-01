@@ -34,8 +34,8 @@ class ComplexVersionCreateRequest(VersionCreateRequest):
     """
     ComplexVersionCreateRequest
     """ # noqa: E501
-    sync_strategy: Optional[SyncStrategy] = Field(default=None, alias="syncStrategy")
-    entity_types: Optional[Dict[str, EntityTypeVersionCreateConfig]] = Field(default=None, alias="entityTypes")
+    sync_strategy: Optional[SyncStrategy] = Field(default=None, serialization_alias="syncStrategy")
+    entity_types: Optional[Dict[str, EntityTypeVersionCreateConfig]] = Field(default=None, serialization_alias="entityTypes")
     __properties: ClassVar[List[str]] = ["versionName", "branch", "type", "syncStrategy", "entityTypes"]
 
     model_config = ConfigDict(
@@ -46,13 +46,18 @@ class ComplexVersionCreateRequest(VersionCreateRequest):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -96,11 +101,11 @@ class ComplexVersionCreateRequest(VersionCreateRequest):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "versionName": obj.get("versionName"),
+            "version_name": obj.get("versionName"),
             "branch": obj.get("branch"),
             "type": obj.get("type"),
-            "syncStrategy": obj.get("syncStrategy"),
-            "entityTypes": dict(
+            "sync_strategy": obj.get("syncStrategy"),
+            "entity_types": dict(
                 (_k, EntityTypeVersionCreateConfig.from_dict(_v))
                 for _k, _v in obj["entityTypes"].items()
             )

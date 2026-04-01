@@ -30,12 +30,12 @@ class FeaturesInfo(BaseModel):
     """
     FeaturesInfo
     """ # noqa: E501
-    white_labeling_enabled: Optional[StrictBool] = Field(default=None, alias="whiteLabelingEnabled")
-    email_enabled: Optional[StrictBool] = Field(default=None, alias="emailEnabled")
-    sms_enabled: Optional[StrictBool] = Field(default=None, alias="smsEnabled")
-    notification_enabled: Optional[StrictBool] = Field(default=None, alias="notificationEnabled")
-    oauth_enabled: Optional[StrictBool] = Field(default=None, alias="oauthEnabled")
-    two_fa_enabled: Optional[StrictBool] = Field(default=None, alias="twoFaEnabled")
+    white_labeling_enabled: Optional[StrictBool] = Field(default=None, serialization_alias="whiteLabelingEnabled")
+    email_enabled: Optional[StrictBool] = Field(default=None, serialization_alias="emailEnabled")
+    sms_enabled: Optional[StrictBool] = Field(default=None, serialization_alias="smsEnabled")
+    notification_enabled: Optional[StrictBool] = Field(default=None, serialization_alias="notificationEnabled")
+    oauth_enabled: Optional[StrictBool] = Field(default=None, serialization_alias="oauthEnabled")
+    two_fa_enabled: Optional[StrictBool] = Field(default=None, serialization_alias="twoFaEnabled")
     __properties: ClassVar[List[str]] = ["whiteLabelingEnabled", "emailEnabled", "smsEnabled", "notificationEnabled", "oauthEnabled", "twoFaEnabled"]
 
     model_config = ConfigDict(
@@ -46,13 +46,18 @@ class FeaturesInfo(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -89,12 +94,12 @@ class FeaturesInfo(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "whiteLabelingEnabled": obj.get("whiteLabelingEnabled"),
-            "emailEnabled": obj.get("emailEnabled"),
-            "smsEnabled": obj.get("smsEnabled"),
-            "notificationEnabled": obj.get("notificationEnabled"),
-            "oauthEnabled": obj.get("oauthEnabled"),
-            "twoFaEnabled": obj.get("twoFaEnabled")
+            "white_labeling_enabled": obj.get("whiteLabelingEnabled"),
+            "email_enabled": obj.get("emailEnabled"),
+            "sms_enabled": obj.get("smsEnabled"),
+            "notification_enabled": obj.get("notificationEnabled"),
+            "oauth_enabled": obj.get("oauthEnabled"),
+            "two_fa_enabled": obj.get("twoFaEnabled")
         })
         return _obj
 

@@ -35,10 +35,10 @@ class DeviceGroupOtaPackage(BaseModel):
     DeviceGroupOtaPackage
     """ # noqa: E501
     id: Optional[UUID] = None
-    group_id: Optional[EntityGroupId] = Field(default=None, alias="groupId")
-    ota_package_type: Optional[OtaPackageType] = Field(default=None, alias="otaPackageType")
-    ota_package_id: Optional[OtaPackageId] = Field(default=None, alias="otaPackageId")
-    ota_package_update_time: Optional[StrictInt] = Field(default=None, alias="otaPackageUpdateTime")
+    group_id: Optional[EntityGroupId] = Field(default=None, serialization_alias="groupId")
+    ota_package_type: Optional[OtaPackageType] = Field(default=None, serialization_alias="otaPackageType")
+    ota_package_id: Optional[OtaPackageId] = Field(default=None, serialization_alias="otaPackageId")
+    ota_package_update_time: Optional[StrictInt] = Field(default=None, serialization_alias="otaPackageUpdateTime")
     __properties: ClassVar[List[str]] = ["id", "groupId", "otaPackageType", "otaPackageId", "otaPackageUpdateTime"]
 
     model_config = ConfigDict(
@@ -49,13 +49,18 @@ class DeviceGroupOtaPackage(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -99,10 +104,10 @@ class DeviceGroupOtaPackage(BaseModel):
 
         _obj = cls.model_validate({
             "id": obj.get("id"),
-            "groupId": EntityGroupId.from_dict(obj["groupId"]) if obj.get("groupId") is not None else None,
-            "otaPackageType": obj.get("otaPackageType"),
-            "otaPackageId": OtaPackageId.from_dict(obj["otaPackageId"]) if obj.get("otaPackageId") is not None else None,
-            "otaPackageUpdateTime": obj.get("otaPackageUpdateTime")
+            "group_id": EntityGroupId.from_dict(obj["groupId"]) if obj.get("groupId") is not None else None,
+            "ota_package_type": obj.get("otaPackageType"),
+            "ota_package_id": OtaPackageId.from_dict(obj["otaPackageId"]) if obj.get("otaPackageId") is not None else None,
+            "ota_package_update_time": obj.get("otaPackageUpdateTime")
         })
         return _obj
 

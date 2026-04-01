@@ -36,16 +36,16 @@ class JobResult(BaseModel):
     """
     Job execution result
     """ # noqa: E501
-    successful_count: Optional[StrictInt] = Field(default=None, description="Count of successfully completed tasks", alias="successfulCount")
-    failed_count: Optional[StrictInt] = Field(default=None, description="Count of failed tasks", alias="failedCount")
-    discarded_count: Optional[StrictInt] = Field(default=None, description="Count of discarded tasks", alias="discardedCount")
-    total_count: Optional[StrictInt] = Field(default=None, description="Total number of tasks, set when all tasks are submitted", alias="totalCount")
+    successful_count: Optional[StrictInt] = Field(default=None, description="Count of successfully completed tasks", serialization_alias="successfulCount")
+    failed_count: Optional[StrictInt] = Field(default=None, description="Count of failed tasks", serialization_alias="failedCount")
+    discarded_count: Optional[StrictInt] = Field(default=None, description="Count of discarded tasks", serialization_alias="discardedCount")
+    total_count: Optional[StrictInt] = Field(default=None, description="Total number of tasks, set when all tasks are submitted", serialization_alias="totalCount")
     results: Optional[List[TaskResult]] = None
-    general_error: Optional[StrictStr] = Field(default=None, description="General error message if the job failed", alias="generalError")
-    start_ts: Optional[StrictInt] = Field(default=None, description="Timestamp of the job start, in milliseconds", alias="startTs")
-    finish_ts: Optional[StrictInt] = Field(default=None, description="Timestamp of the job finish, in milliseconds", alias="finishTs")
-    cancellation_ts: Optional[StrictInt] = Field(default=None, description="Timestamp of the job cancellation, in milliseconds", alias="cancellationTs")
-    job_type: StrictStr = Field(alias="jobType")
+    general_error: Optional[StrictStr] = Field(default=None, description="General error message if the job failed", serialization_alias="generalError")
+    start_ts: Optional[StrictInt] = Field(default=None, description="Timestamp of the job start, in milliseconds", serialization_alias="startTs")
+    finish_ts: Optional[StrictInt] = Field(default=None, description="Timestamp of the job finish, in milliseconds", serialization_alias="finishTs")
+    cancellation_ts: Optional[StrictInt] = Field(default=None, description="Timestamp of the job cancellation, in milliseconds", serialization_alias="cancellationTs")
+    job_type: StrictStr = Field(serialization_alias="jobType")
     __properties: ClassVar[List[str]] = ["successfulCount", "failedCount", "discardedCount", "totalCount", "results", "generalError", "startTs", "finishTs", "cancellationTs", "jobType"]
 
     model_config = ConfigDict(
@@ -73,13 +73,18 @@ class JobResult(BaseModel):
             return None
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Union[DummyJobResult]]:

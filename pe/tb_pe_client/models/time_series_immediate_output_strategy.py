@@ -32,10 +32,10 @@ class TimeSeriesImmediateOutputStrategy(TimeSeriesOutputStrategy):
     TimeSeriesImmediateOutputStrategy
     """ # noqa: E501
     ttl: Optional[StrictInt] = None
-    save_time_series: Optional[StrictBool] = Field(default=None, alias="saveTimeSeries")
-    save_latest: Optional[StrictBool] = Field(default=None, alias="saveLatest")
-    send_ws_update: Optional[StrictBool] = Field(default=None, alias="sendWsUpdate")
-    process_cfs: Optional[StrictBool] = Field(default=None, alias="processCfs")
+    save_time_series: Optional[StrictBool] = Field(default=None, serialization_alias="saveTimeSeries")
+    save_latest: Optional[StrictBool] = Field(default=None, serialization_alias="saveLatest")
+    send_ws_update: Optional[StrictBool] = Field(default=None, serialization_alias="sendWsUpdate")
+    process_cfs: Optional[StrictBool] = Field(default=None, serialization_alias="processCfs")
     __properties: ClassVar[List[str]] = ["type", "ttl", "saveTimeSeries", "saveLatest", "sendWsUpdate", "processCfs"]
 
     model_config = ConfigDict(
@@ -46,13 +46,18 @@ class TimeSeriesImmediateOutputStrategy(TimeSeriesOutputStrategy):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -91,10 +96,10 @@ class TimeSeriesImmediateOutputStrategy(TimeSeriesOutputStrategy):
         _obj = cls.model_validate({
             "type": obj.get("type"),
             "ttl": obj.get("ttl"),
-            "saveTimeSeries": obj.get("saveTimeSeries"),
-            "saveLatest": obj.get("saveLatest"),
-            "sendWsUpdate": obj.get("sendWsUpdate"),
-            "processCfs": obj.get("processCfs")
+            "save_time_series": obj.get("saveTimeSeries"),
+            "save_latest": obj.get("saveLatest"),
+            "send_ws_update": obj.get("sendWsUpdate"),
+            "process_cfs": obj.get("processCfs")
         })
         return _obj
 

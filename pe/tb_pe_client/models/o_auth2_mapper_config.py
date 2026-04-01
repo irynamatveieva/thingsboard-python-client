@@ -33,8 +33,8 @@ class OAuth2MapperConfig(BaseModel):
     """
     OAuth2MapperConfig
     """ # noqa: E501
-    allow_user_creation: Optional[StrictBool] = Field(default=None, description="Whether user should be created if not yet present on the platform after successful authentication", alias="allowUserCreation")
-    activate_user: Optional[StrictBool] = Field(default=None, description="Whether user credentials should be activated when user is created after successful authentication", alias="activateUser")
+    allow_user_creation: Optional[StrictBool] = Field(default=None, description="Whether user should be created if not yet present on the platform after successful authentication", serialization_alias="allowUserCreation")
+    activate_user: Optional[StrictBool] = Field(default=None, description="Whether user credentials should be activated when user is created after successful authentication", serialization_alias="activateUser")
     type: MapperType = Field(description="Type of OAuth2 mapper. Depending on this param, different mapper config fields must be specified")
     basic: Optional[OAuth2BasicMapperConfig] = Field(default=None, description="Mapper config for BASIC and GITHUB mapper types")
     custom: Optional[OAuth2CustomMapperConfig] = Field(default=None, description="Mapper config for CUSTOM mapper type")
@@ -48,13 +48,18 @@ class OAuth2MapperConfig(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -97,8 +102,8 @@ class OAuth2MapperConfig(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "allowUserCreation": obj.get("allowUserCreation"),
-            "activateUser": obj.get("activateUser"),
+            "allow_user_creation": obj.get("allowUserCreation"),
+            "activate_user": obj.get("activateUser"),
             "type": obj.get("type"),
             "basic": OAuth2BasicMapperConfig.from_dict(obj["basic"]) if obj.get("basic") is not None else None,
             "custom": OAuth2CustomMapperConfig.from_dict(obj["custom"]) if obj.get("custom") is not None else None

@@ -31,10 +31,10 @@ class NotificationRequestPreview(BaseModel):
     """
     NotificationRequestPreview
     """ # noqa: E501
-    processed_templates: Optional[Dict[str, DeliveryMethodNotificationTemplate]] = Field(default=None, alias="processedTemplates")
-    total_recipients_count: Optional[StrictInt] = Field(default=None, alias="totalRecipientsCount")
-    recipients_count_by_target: Optional[Dict[str, StrictInt]] = Field(default=None, alias="recipientsCountByTarget")
-    recipients_preview: Optional[List[StrictStr]] = Field(default=None, alias="recipientsPreview")
+    processed_templates: Optional[Dict[str, DeliveryMethodNotificationTemplate]] = Field(default=None, serialization_alias="processedTemplates")
+    total_recipients_count: Optional[StrictInt] = Field(default=None, serialization_alias="totalRecipientsCount")
+    recipients_count_by_target: Optional[Dict[str, StrictInt]] = Field(default=None, serialization_alias="recipientsCountByTarget")
+    recipients_preview: Optional[List[StrictStr]] = Field(default=None, serialization_alias="recipientsPreview")
     __properties: ClassVar[List[str]] = ["processedTemplates", "totalRecipientsCount", "recipientsCountByTarget", "recipientsPreview"]
 
     model_config = ConfigDict(
@@ -45,13 +45,18 @@ class NotificationRequestPreview(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -95,15 +100,15 @@ class NotificationRequestPreview(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "processedTemplates": dict(
+            "processed_templates": dict(
                 (_k, DeliveryMethodNotificationTemplate.from_dict(_v))
                 for _k, _v in obj["processedTemplates"].items()
             )
             if obj.get("processedTemplates") is not None
             else None,
-            "totalRecipientsCount": obj.get("totalRecipientsCount"),
-            "recipientsCountByTarget": obj.get("recipientsCountByTarget"),
-            "recipientsPreview": obj.get("recipientsPreview")
+            "total_recipients_count": obj.get("totalRecipientsCount"),
+            "recipients_count_by_target": obj.get("recipientsCountByTarget"),
+            "recipients_preview": obj.get("recipientsPreview")
         })
         return _obj
 

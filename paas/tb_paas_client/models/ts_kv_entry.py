@@ -34,13 +34,13 @@ class TsKvEntry(BaseModel):
     ts: Optional[StrictInt] = None
     value: Optional[Any] = None
     key: Optional[StrictStr] = None
-    double_value: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, alias="doubleValue")
-    long_value: Optional[StrictInt] = Field(default=None, alias="longValue")
-    boolean_value: Optional[StrictBool] = Field(default=None, alias="booleanValue")
-    value_as_string: Optional[StrictStr] = Field(default=None, alias="valueAsString")
-    data_type: Optional[DataType] = Field(default=None, alias="dataType")
-    json_value: Optional[StrictStr] = Field(default=None, alias="jsonValue")
-    str_value: Optional[StrictStr] = Field(default=None, alias="strValue")
+    double_value: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, serialization_alias="doubleValue")
+    long_value: Optional[StrictInt] = Field(default=None, serialization_alias="longValue")
+    boolean_value: Optional[StrictBool] = Field(default=None, serialization_alias="booleanValue")
+    value_as_string: Optional[StrictStr] = Field(default=None, serialization_alias="valueAsString")
+    data_type: Optional[DataType] = Field(default=None, serialization_alias="dataType")
+    json_value: Optional[StrictStr] = Field(default=None, serialization_alias="jsonValue")
+    str_value: Optional[StrictStr] = Field(default=None, serialization_alias="strValue")
     version: Optional[StrictInt] = None
     __properties: ClassVar[List[str]] = ["ts", "value", "key", "doubleValue", "longValue", "booleanValue", "valueAsString", "dataType", "jsonValue", "strValue", "version"]
 
@@ -52,13 +52,18 @@ class TsKvEntry(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -103,13 +108,13 @@ class TsKvEntry(BaseModel):
             "ts": obj.get("ts"),
             "value": obj.get("value"),
             "key": obj.get("key"),
-            "doubleValue": obj.get("doubleValue"),
-            "longValue": obj.get("longValue"),
-            "booleanValue": obj.get("booleanValue"),
-            "valueAsString": obj.get("valueAsString"),
-            "dataType": obj.get("dataType"),
-            "jsonValue": obj.get("jsonValue"),
-            "strValue": obj.get("strValue"),
+            "double_value": obj.get("doubleValue"),
+            "long_value": obj.get("longValue"),
+            "boolean_value": obj.get("booleanValue"),
+            "value_as_string": obj.get("valueAsString"),
+            "data_type": obj.get("dataType"),
+            "json_value": obj.get("jsonValue"),
+            "str_value": obj.get("strValue"),
             "version": obj.get("version")
         })
         return _obj

@@ -33,7 +33,7 @@ class AlarmConditionFilter(BaseModel):
     """
     AlarmConditionFilter
     """ # noqa: E501
-    value_type: Optional[EntityKeyValueType] = Field(default=None, description="String representation of the type of the value", alias="valueType")
+    value_type: Optional[EntityKeyValueType] = Field(default=None, description="String representation of the type of the value", serialization_alias="valueType")
     key: Optional[AlarmConditionFilterKey] = Field(default=None, description="JSON object for specifying alarm condition by specific key")
     predicate: Optional[KeyFilterPredicate] = Field(default=None, description="JSON object representing filter condition")
     value: Optional[Any] = None
@@ -47,13 +47,18 @@ class AlarmConditionFilter(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -101,7 +106,7 @@ class AlarmConditionFilter(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "valueType": obj.get("valueType"),
+            "value_type": obj.get("valueType"),
             "key": AlarmConditionFilterKey.from_dict(obj["key"]) if obj.get("key") is not None else None,
             "predicate": KeyFilterPredicate.from_dict(obj["predicate"]) if obj.get("predicate") is not None else None,
             "value": obj.get("value")

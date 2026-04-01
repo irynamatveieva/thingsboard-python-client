@@ -39,22 +39,22 @@ class DeviceInfo(BaseModel):
     DeviceInfo
     """ # noqa: E501
     id: Optional[DeviceId] = Field(default=None, description="JSON object with the Device Id. Specify this field to update the Device. Referencing non-existing Device Id will cause error. Omit this field to create new Device.")
-    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the device creation, in milliseconds", alias="createdTime")
-    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the device. May include: 'gateway' (boolean, whether the device is a gateway), 'description' (string), 'lastConnectedGateway' (string, UUID of the last gateway that connected this device).", alias="additionalInfo")
-    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id. Use 'assignDeviceToTenant' to change the Tenant Id.", alias="tenantId")
-    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id. Use 'assignDeviceToCustomer' to change the Customer Id.", alias="customerId")
+    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the device creation, in milliseconds", serialization_alias="createdTime")
+    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the device. May include: 'gateway' (boolean, whether the device is a gateway), 'description' (string), 'lastConnectedGateway' (string, UUID of the last gateway that connected this device).", serialization_alias="additionalInfo")
+    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id. Use 'assignDeviceToTenant' to change the Tenant Id.", serialization_alias="tenantId")
+    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id. Use 'assignDeviceToCustomer' to change the Customer Id.", serialization_alias="customerId")
     name: Optional[StrictStr] = Field(default=None, description="Unique Device Name in scope of Tenant")
     type: Optional[StrictStr] = Field(default=None, description="Device Profile Name")
     label: Optional[StrictStr] = Field(default=None, description="Label that may be used in widgets")
-    device_profile_id: DeviceProfileId = Field(description="JSON object with Device Profile Id.", alias="deviceProfileId")
-    device_data: Optional[DeviceData] = Field(default=None, description="JSON object with content specific to type of transport in the device profile.", alias="deviceData")
-    firmware_id: Optional[OtaPackageId] = Field(default=None, description="JSON object with Ota Package Id.", alias="firmwareId")
-    software_id: Optional[OtaPackageId] = Field(default=None, description="JSON object with Ota Package Id.", alias="softwareId")
+    device_profile_id: DeviceProfileId = Field(description="JSON object with Device Profile Id.", serialization_alias="deviceProfileId")
+    device_data: Optional[DeviceData] = Field(default=None, description="JSON object with content specific to type of transport in the device profile.", serialization_alias="deviceData")
+    firmware_id: Optional[OtaPackageId] = Field(default=None, description="JSON object with Ota Package Id.", serialization_alias="firmwareId")
+    software_id: Optional[OtaPackageId] = Field(default=None, description="JSON object with Ota Package Id.", serialization_alias="softwareId")
     version: Optional[StrictInt] = None
-    owner_name: Optional[StrictStr] = Field(default=None, description="Owner name", alias="ownerName")
+    owner_name: Optional[StrictStr] = Field(default=None, description="Owner name", serialization_alias="ownerName")
     groups: Optional[List[EntityInfo]] = Field(default=None, description="Groups")
     active: Optional[StrictBool] = Field(default=None, description="Device active flag.")
-    owner_id: Optional[EntityId] = Field(default=None, description="JSON object with Customer or Tenant Id", alias="ownerId")
+    owner_id: Optional[EntityId] = Field(default=None, description="JSON object with Customer or Tenant Id", serialization_alias="ownerId")
     __properties: ClassVar[List[str]] = ["id", "createdTime", "additionalInfo", "tenantId", "customerId", "name", "type", "label", "deviceProfileId", "deviceData", "firmwareId", "softwareId", "version", "ownerName", "groups", "active", "ownerId"]
 
     model_config = ConfigDict(
@@ -65,13 +65,18 @@ class DeviceInfo(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -157,22 +162,22 @@ class DeviceInfo(BaseModel):
 
         _obj = cls.model_validate({
             "id": DeviceId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "additionalInfo": obj.get("additionalInfo"),
-            "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
-            "customerId": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
+            "created_time": obj.get("createdTime"),
+            "additional_info": obj.get("additionalInfo"),
+            "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
+            "customer_id": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
             "name": obj.get("name"),
             "type": obj.get("type"),
             "label": obj.get("label"),
-            "deviceProfileId": DeviceProfileId.from_dict(obj["deviceProfileId"]) if obj.get("deviceProfileId") is not None else None,
-            "deviceData": DeviceData.from_dict(obj["deviceData"]) if obj.get("deviceData") is not None else None,
-            "firmwareId": OtaPackageId.from_dict(obj["firmwareId"]) if obj.get("firmwareId") is not None else None,
-            "softwareId": OtaPackageId.from_dict(obj["softwareId"]) if obj.get("softwareId") is not None else None,
+            "device_profile_id": DeviceProfileId.from_dict(obj["deviceProfileId"]) if obj.get("deviceProfileId") is not None else None,
+            "device_data": DeviceData.from_dict(obj["deviceData"]) if obj.get("deviceData") is not None else None,
+            "firmware_id": OtaPackageId.from_dict(obj["firmwareId"]) if obj.get("firmwareId") is not None else None,
+            "software_id": OtaPackageId.from_dict(obj["softwareId"]) if obj.get("softwareId") is not None else None,
             "version": obj.get("version"),
-            "ownerName": obj.get("ownerName"),
+            "owner_name": obj.get("ownerName"),
             "groups": [EntityInfo.from_dict(_item) for _item in obj["groups"]] if obj.get("groups") is not None else None,
             "active": obj.get("active"),
-            "ownerId": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None
+            "owner_id": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None
         })
         return _obj
 

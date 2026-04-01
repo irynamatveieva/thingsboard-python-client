@@ -32,8 +32,8 @@ class SmsTwoFaProviderConfig(TwoFaProviderConfig):
     """
     SmsTwoFaProviderConfig
     """ # noqa: E501
-    verification_code_lifetime: Optional[Annotated[int, Field(strict=True, ge=1)]] = Field(default=None, alias="verificationCodeLifetime")
-    sms_verification_message_template: Annotated[str, Field(min_length=1, strict=True)] = Field(alias="smsVerificationMessageTemplate")
+    verification_code_lifetime: Optional[Annotated[int, Field(strict=True, ge=1)]] = Field(default=None, serialization_alias="verificationCodeLifetime")
+    sms_verification_message_template: Annotated[str, Field(min_length=1, strict=True)] = Field(serialization_alias="smsVerificationMessageTemplate")
     __properties: ClassVar[List[str]] = ["providerType", "verificationCodeLifetime", "smsVerificationMessageTemplate"]
 
     @field_validator('sms_verification_message_template')
@@ -51,13 +51,18 @@ class SmsTwoFaProviderConfig(TwoFaProviderConfig):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -94,9 +99,9 @@ class SmsTwoFaProviderConfig(TwoFaProviderConfig):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "providerType": obj.get("providerType"),
-            "verificationCodeLifetime": obj.get("verificationCodeLifetime"),
-            "smsVerificationMessageTemplate": obj.get("smsVerificationMessageTemplate")
+            "provider_type": obj.get("providerType"),
+            "verification_code_lifetime": obj.get("verificationCodeLifetime"),
+            "sms_verification_message_template": obj.get("smsVerificationMessageTemplate")
         })
         return _obj
 

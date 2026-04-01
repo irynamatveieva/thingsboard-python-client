@@ -31,8 +31,8 @@ class TestSmsRequest(BaseModel):
     """
     A JSON value representing the Test SMS request.
     """ # noqa: E501
-    provider_configuration: Optional[SmsProviderConfiguration] = Field(default=None, description="The SMS provider configuration", alias="providerConfiguration")
-    number_to: Optional[StrictStr] = Field(default=None, description="The phone number or other identifier to specify as a recipient of the SMS.", alias="numberTo")
+    provider_configuration: Optional[SmsProviderConfiguration] = Field(default=None, description="The SMS provider configuration", serialization_alias="providerConfiguration")
+    number_to: Optional[StrictStr] = Field(default=None, description="The phone number or other identifier to specify as a recipient of the SMS.", serialization_alias="numberTo")
     message: Optional[StrictStr] = Field(default=None, description="The test message")
     __properties: ClassVar[List[str]] = ["providerConfiguration", "numberTo", "message"]
 
@@ -44,13 +44,18 @@ class TestSmsRequest(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -90,8 +95,8 @@ class TestSmsRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "providerConfiguration": SmsProviderConfiguration.from_dict(obj["providerConfiguration"]) if obj.get("providerConfiguration") is not None else None,
-            "numberTo": obj.get("numberTo"),
+            "provider_configuration": SmsProviderConfiguration.from_dict(obj["providerConfiguration"]) if obj.get("providerConfiguration") is not None else None,
+            "number_to": obj.get("numberTo"),
             "message": obj.get("message")
         })
         return _obj

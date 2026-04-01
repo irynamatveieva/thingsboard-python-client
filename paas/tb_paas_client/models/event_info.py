@@ -34,11 +34,11 @@ class EventInfo(BaseModel):
     EventInfo
     """ # noqa: E501
     id: Optional[EventId] = None
-    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the event creation, in milliseconds", alias="createdTime")
-    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id.", alias="tenantId")
+    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the event creation, in milliseconds", serialization_alias="createdTime")
+    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id.", serialization_alias="tenantId")
     type: Optional[StrictStr] = Field(default=None, description="Event type")
     uid: Optional[StrictStr] = Field(default=None, description="string")
-    entity_id: Optional[EntityId] = Field(default=None, description="JSON object with Entity Id for which event is created.", alias="entityId")
+    entity_id: Optional[EntityId] = Field(default=None, description="JSON object with Entity Id for which event is created.", serialization_alias="entityId")
     body: Optional[Any] = None
     __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "type", "uid", "entityId", "body"]
 
@@ -50,13 +50,18 @@ class EventInfo(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -114,11 +119,11 @@ class EventInfo(BaseModel):
 
         _obj = cls.model_validate({
             "id": EventId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
+            "created_time": obj.get("createdTime"),
+            "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
             "type": obj.get("type"),
             "uid": obj.get("uid"),
-            "entityId": EntityId.from_dict(obj["entityId"]) if obj.get("entityId") is not None else None,
+            "entity_id": EntityId.from_dict(obj["entityId"]) if obj.get("entityId") is not None else None,
             "body": obj.get("body")
         })
         return _obj

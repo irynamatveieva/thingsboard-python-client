@@ -33,12 +33,12 @@ class MergedUserPermissions(BaseModel):
     """
     MergedUserPermissions
     """ # noqa: E501
-    generic_permissions: Optional[Dict[str, List[Operation]]] = Field(default=None, description="Map of permissions defined using generic roles ('Customer Administrator', etc)", alias="genericPermissions")
-    group_permissions: Optional[Dict[str, MergedGroupPermissionInfo]] = Field(default=None, description="Map of permissions defined using group roles ('Read' or 'Write' access to specific entity group, etc)", alias="groupPermissions")
-    read_group_permissions: Optional[Dict[str, MergedGroupTypePermissionInfo]] = Field(default=None, description="Map of read permissions per entity type. Used on the UI to enable/disable certain components.", alias="readGroupPermissions")
-    read_entity_permissions: Optional[Dict[str, MergedGroupTypePermissionInfo]] = Field(default=None, description="Map of read permissions per resource. Used on the UI to enable/disable certain components.", alias="readEntityPermissions")
-    read_attr_permissions: Optional[Dict[str, MergedGroupTypePermissionInfo]] = Field(default=None, description="Map of read entity attributes permissions per resource. Used on the UI to enable/disable certain tabs.", alias="readAttrPermissions")
-    read_ts_permissions: Optional[Dict[str, MergedGroupTypePermissionInfo]] = Field(default=None, description="Map of read entity time-series permissions per resource. Used on the UI to enable/disable certain tabs.", alias="readTsPermissions")
+    generic_permissions: Optional[Dict[str, List[Operation]]] = Field(default=None, description="Map of permissions defined using generic roles ('Customer Administrator', etc)", serialization_alias="genericPermissions")
+    group_permissions: Optional[Dict[str, MergedGroupPermissionInfo]] = Field(default=None, description="Map of permissions defined using group roles ('Read' or 'Write' access to specific entity group, etc)", serialization_alias="groupPermissions")
+    read_group_permissions: Optional[Dict[str, MergedGroupTypePermissionInfo]] = Field(default=None, description="Map of read permissions per entity type. Used on the UI to enable/disable certain components.", serialization_alias="readGroupPermissions")
+    read_entity_permissions: Optional[Dict[str, MergedGroupTypePermissionInfo]] = Field(default=None, description="Map of read permissions per resource. Used on the UI to enable/disable certain components.", serialization_alias="readEntityPermissions")
+    read_attr_permissions: Optional[Dict[str, MergedGroupTypePermissionInfo]] = Field(default=None, description="Map of read entity attributes permissions per resource. Used on the UI to enable/disable certain tabs.", serialization_alias="readAttrPermissions")
+    read_ts_permissions: Optional[Dict[str, MergedGroupTypePermissionInfo]] = Field(default=None, description="Map of read entity time-series permissions per resource. Used on the UI to enable/disable certain tabs.", serialization_alias="readTsPermissions")
     __properties: ClassVar[List[str]] = ["genericPermissions", "groupPermissions", "readGroupPermissions", "readEntityPermissions", "readAttrPermissions", "readTsPermissions"]
 
     model_config = ConfigDict(
@@ -49,13 +49,18 @@ class MergedUserPermissions(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -136,7 +141,7 @@ class MergedUserPermissions(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "genericPermissions": dict(
+            "generic_permissions": dict(
                 (_k,
                         [Operation.from_dict(_item) for _item in _v]
                         if _v is not None

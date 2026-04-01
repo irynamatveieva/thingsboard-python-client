@@ -33,10 +33,10 @@ class ErrorComponentAllOfException(BaseModel):
     ErrorComponentAllOfException
     """ # noqa: E501
     cause: Optional[ErrorComponentAllOfExceptionCause] = None
-    stack_trace: Optional[List[ErrorComponentAllOfExceptionCauseStackTrace]] = Field(default=None, alias="stackTrace")
+    stack_trace: Optional[List[ErrorComponentAllOfExceptionCauseStackTrace]] = Field(default=None, serialization_alias="stackTrace")
     message: Optional[StrictStr] = None
     suppressed: Optional[List[ErrorComponentAllOfExceptionCause]] = None
-    localized_message: Optional[StrictStr] = Field(default=None, alias="localizedMessage")
+    localized_message: Optional[StrictStr] = Field(default=None, serialization_alias="localizedMessage")
     __properties: ClassVar[List[str]] = ["cause", "stackTrace", "message", "suppressed", "localizedMessage"]
 
     model_config = ConfigDict(
@@ -47,13 +47,18 @@ class ErrorComponentAllOfException(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -108,10 +113,10 @@ class ErrorComponentAllOfException(BaseModel):
 
         _obj = cls.model_validate({
             "cause": ErrorComponentAllOfExceptionCause.from_dict(obj["cause"]) if obj.get("cause") is not None else None,
-            "stackTrace": [ErrorComponentAllOfExceptionCauseStackTrace.from_dict(_item) for _item in obj["stackTrace"]] if obj.get("stackTrace") is not None else None,
+            "stack_trace": [ErrorComponentAllOfExceptionCauseStackTrace.from_dict(_item) for _item in obj["stackTrace"]] if obj.get("stackTrace") is not None else None,
             "message": obj.get("message"),
             "suppressed": [ErrorComponentAllOfExceptionCause.from_dict(_item) for _item in obj["suppressed"]] if obj.get("suppressed") is not None else None,
-            "localizedMessage": obj.get("localizedMessage")
+            "localized_message": obj.get("localizedMessage")
         })
         return _obj
 

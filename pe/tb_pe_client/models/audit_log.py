@@ -38,17 +38,17 @@ class AuditLog(BaseModel):
     AuditLog
     """ # noqa: E501
     id: Optional[AuditLogId] = Field(default=None, description="JSON object with the auditLog Id")
-    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the auditLog creation, in milliseconds", alias="createdTime")
-    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id", alias="tenantId")
-    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id", alias="customerId")
-    entity_id: Optional[EntityId] = Field(default=None, description="JSON object with Entity id", alias="entityId")
-    entity_name: Optional[StrictStr] = Field(default=None, description="Name of the logged entity", alias="entityName")
-    user_id: Optional[UserId] = Field(default=None, description="JSON object with User id.", alias="userId")
-    user_name: Optional[StrictStr] = Field(default=None, description="Unique user name(email) of the user that performed some action on logged entity", alias="userName")
-    action_type: Optional[ActionType] = Field(default=None, description="String represented Action type", alias="actionType")
-    action_data: Optional[Any] = Field(default=None, description="JsonNode represented action data", alias="actionData")
-    action_status: Optional[ActionStatus] = Field(default=None, description="String represented Action status", alias="actionStatus")
-    action_failure_details: Optional[StrictStr] = Field(default=None, description="Failure action details info. An empty string in case of action status type 'SUCCESS', otherwise includes stack trace of the caused exception.", alias="actionFailureDetails")
+    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the auditLog creation, in milliseconds", serialization_alias="createdTime")
+    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id", serialization_alias="tenantId")
+    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id", serialization_alias="customerId")
+    entity_id: Optional[EntityId] = Field(default=None, description="JSON object with Entity id", serialization_alias="entityId")
+    entity_name: Optional[StrictStr] = Field(default=None, description="Name of the logged entity", serialization_alias="entityName")
+    user_id: Optional[UserId] = Field(default=None, description="JSON object with User id.", serialization_alias="userId")
+    user_name: Optional[StrictStr] = Field(default=None, description="Unique user name(email) of the user that performed some action on logged entity", serialization_alias="userName")
+    action_type: Optional[ActionType] = Field(default=None, description="String represented Action type", serialization_alias="actionType")
+    action_data: Optional[Any] = Field(default=None, description="JsonNode represented action data", serialization_alias="actionData")
+    action_status: Optional[ActionStatus] = Field(default=None, description="String represented Action status", serialization_alias="actionStatus")
+    action_failure_details: Optional[StrictStr] = Field(default=None, description="Failure action details info. An empty string in case of action status type 'SUCCESS', otherwise includes stack trace of the caused exception.", serialization_alias="actionFailureDetails")
     __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "customerId", "entityId", "entityName", "userId", "userName", "actionType", "actionData", "actionStatus", "actionFailureDetails"]
 
     model_config = ConfigDict(
@@ -59,13 +59,18 @@ class AuditLog(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -145,17 +150,17 @@ class AuditLog(BaseModel):
 
         _obj = cls.model_validate({
             "id": AuditLogId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
-            "customerId": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
-            "entityId": EntityId.from_dict(obj["entityId"]) if obj.get("entityId") is not None else None,
-            "entityName": obj.get("entityName"),
-            "userId": UserId.from_dict(obj["userId"]) if obj.get("userId") is not None else None,
-            "userName": obj.get("userName"),
-            "actionType": obj.get("actionType"),
-            "actionData": obj.get("actionData"),
-            "actionStatus": obj.get("actionStatus"),
-            "actionFailureDetails": obj.get("actionFailureDetails")
+            "created_time": obj.get("createdTime"),
+            "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
+            "customer_id": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
+            "entity_id": EntityId.from_dict(obj["entityId"]) if obj.get("entityId") is not None else None,
+            "entity_name": obj.get("entityName"),
+            "user_id": UserId.from_dict(obj["userId"]) if obj.get("userId") is not None else None,
+            "user_name": obj.get("userName"),
+            "action_type": obj.get("actionType"),
+            "action_data": obj.get("actionData"),
+            "action_status": obj.get("actionStatus"),
+            "action_failure_details": obj.get("actionFailureDetails")
         })
         return _obj
 

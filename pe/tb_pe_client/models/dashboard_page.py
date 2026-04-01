@@ -34,7 +34,7 @@ class DashboardPage(MobilePage):
     """ # noqa: E501
     label: Optional[StrictStr] = Field(default=None, description="Page label")
     icon: Optional[StrictStr] = Field(default=None, description="URL of the page icon")
-    dashboard_id: Optional[StrictStr] = Field(default=None, description="Dashboard id", alias="dashboardId")
+    dashboard_id: Optional[StrictStr] = Field(default=None, description="Dashboard id", serialization_alias="dashboardId")
     __properties: ClassVar[List[str]] = ["type", "visible", "label", "icon", "dashboardId"]
 
     model_config = ConfigDict(
@@ -45,13 +45,18 @@ class DashboardPage(MobilePage):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -92,7 +97,7 @@ class DashboardPage(MobilePage):
             "visible": obj.get("visible"),
             "label": obj.get("label"),
             "icon": obj.get("icon"),
-            "dashboardId": obj.get("dashboardId")
+            "dashboard_id": obj.get("dashboardId")
         })
         return _obj
 

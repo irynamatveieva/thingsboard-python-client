@@ -37,16 +37,16 @@ class EdgeEvent(BaseModel):
     EdgeEvent
     """ # noqa: E501
     id: Optional[EdgeEventId] = None
-    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", alias="createdTime")
-    seq_id: Optional[StrictInt] = Field(default=None, alias="seqId")
-    tenant_id: Optional[TenantId] = Field(default=None, alias="tenantId")
-    edge_id: Optional[EdgeId] = Field(default=None, alias="edgeId")
+    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", serialization_alias="createdTime")
+    seq_id: Optional[StrictInt] = Field(default=None, serialization_alias="seqId")
+    tenant_id: Optional[TenantId] = Field(default=None, serialization_alias="tenantId")
+    edge_id: Optional[EdgeId] = Field(default=None, serialization_alias="edgeId")
     action: Optional[EdgeEventActionType] = None
-    entity_id: Optional[UUID] = Field(default=None, alias="entityId")
+    entity_id: Optional[UUID] = Field(default=None, serialization_alias="entityId")
     uid: Optional[StrictStr] = None
     type: Optional[EdgeEventType] = None
     body: Optional[Any] = None
-    entity_group_id: Optional[UUID] = Field(default=None, alias="entityGroupId")
+    entity_group_id: Optional[UUID] = Field(default=None, serialization_alias="entityGroupId")
     __properties: ClassVar[List[str]] = ["id", "createdTime", "seqId", "tenantId", "edgeId", "action", "entityId", "uid", "type", "body", "entityGroupId"]
 
     model_config = ConfigDict(
@@ -57,13 +57,18 @@ class EdgeEvent(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -117,16 +122,16 @@ class EdgeEvent(BaseModel):
 
         _obj = cls.model_validate({
             "id": EdgeEventId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "seqId": obj.get("seqId"),
-            "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
-            "edgeId": EdgeId.from_dict(obj["edgeId"]) if obj.get("edgeId") is not None else None,
+            "created_time": obj.get("createdTime"),
+            "seq_id": obj.get("seqId"),
+            "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
+            "edge_id": EdgeId.from_dict(obj["edgeId"]) if obj.get("edgeId") is not None else None,
             "action": obj.get("action"),
-            "entityId": obj.get("entityId"),
+            "entity_id": obj.get("entityId"),
             "uid": obj.get("uid"),
             "type": obj.get("type"),
             "body": obj.get("body"),
-            "entityGroupId": obj.get("entityGroupId")
+            "entity_group_id": obj.get("entityGroupId")
         })
         return _obj
 

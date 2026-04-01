@@ -34,10 +34,10 @@ class Lwm2mDeviceProfileTransportConfiguration(DeviceProfileTransportConfigurati
     """
     Lwm2mDeviceProfileTransportConfiguration
     """ # noqa: E501
-    observe_attr: Optional[TelemetryMappingConfiguration] = Field(default=None, description="Configuration for mapping LwM2M resources to telemetry and attributes", alias="observeAttr")
-    bootstrap_server_update_enable: Optional[StrictBool] = Field(default=None, description="Flag indicating whether LwM2M bootstrap server update is enabled", alias="bootstrapServerUpdateEnable")
+    observe_attr: Optional[TelemetryMappingConfiguration] = Field(default=None, description="Configuration for mapping LwM2M resources to telemetry and attributes", serialization_alias="observeAttr")
+    bootstrap_server_update_enable: Optional[StrictBool] = Field(default=None, description="Flag indicating whether LwM2M bootstrap server update is enabled", serialization_alias="bootstrapServerUpdateEnable")
     bootstrap: Optional[List[LwM2MBootstrapServerCredential]] = None
-    client_lw_m2m_settings: Optional[OtherConfiguration] = Field(default=None, description="Other LwM2M client settings", alias="clientLwM2mSettings")
+    client_lw_m2m_settings: Optional[OtherConfiguration] = Field(default=None, description="Other LwM2M client settings", serialization_alias="clientLwM2mSettings")
     __properties: ClassVar[List[str]] = ["type", "observeAttr", "bootstrapServerUpdateEnable", "bootstrap", "clientLwM2mSettings"]
 
     model_config = ConfigDict(
@@ -48,13 +48,18 @@ class Lwm2mDeviceProfileTransportConfiguration(DeviceProfileTransportConfigurati
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -105,10 +110,10 @@ class Lwm2mDeviceProfileTransportConfiguration(DeviceProfileTransportConfigurati
 
         _obj = cls.model_validate({
             "type": obj.get("type"),
-            "observeAttr": TelemetryMappingConfiguration.from_dict(obj["observeAttr"]) if obj.get("observeAttr") is not None else None,
-            "bootstrapServerUpdateEnable": obj.get("bootstrapServerUpdateEnable"),
+            "observe_attr": TelemetryMappingConfiguration.from_dict(obj["observeAttr"]) if obj.get("observeAttr") is not None else None,
+            "bootstrap_server_update_enable": obj.get("bootstrapServerUpdateEnable"),
             "bootstrap": [LwM2MBootstrapServerCredential.from_dict(_item) for _item in obj["bootstrap"]] if obj.get("bootstrap") is not None else None,
-            "clientLwM2mSettings": OtherConfiguration.from_dict(obj["clientLwM2mSettings"]) if obj.get("clientLwM2mSettings") is not None else None
+            "client_lw_m2m_settings": OtherConfiguration.from_dict(obj["clientLwM2mSettings"]) if obj.get("clientLwM2mSettings") is not None else None
         })
         return _obj
 

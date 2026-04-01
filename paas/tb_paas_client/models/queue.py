@@ -35,17 +35,17 @@ class Queue(BaseModel):
     A JSON value representing the queue.
     """ # noqa: E501
     id: Optional[QueueId] = None
-    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", alias="createdTime")
-    additional_info: Optional[Any] = Field(default=None, alias="additionalInfo")
-    tenant_id: Optional[TenantId] = Field(default=None, alias="tenantId")
+    created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", serialization_alias="createdTime")
+    additional_info: Optional[Any] = Field(default=None, serialization_alias="additionalInfo")
+    tenant_id: Optional[TenantId] = Field(default=None, serialization_alias="tenantId")
     name: Optional[StrictStr] = None
     topic: Optional[StrictStr] = None
-    poll_interval: Optional[StrictInt] = Field(default=None, alias="pollInterval")
+    poll_interval: Optional[StrictInt] = Field(default=None, serialization_alias="pollInterval")
     partitions: Optional[StrictInt] = None
-    consumer_per_partition: Optional[StrictBool] = Field(default=None, alias="consumerPerPartition")
-    pack_processing_timeout: Optional[StrictInt] = Field(default=None, alias="packProcessingTimeout")
-    submit_strategy: Optional[SubmitStrategy] = Field(default=None, alias="submitStrategy")
-    processing_strategy: Optional[ProcessingStrategy] = Field(default=None, alias="processingStrategy")
+    consumer_per_partition: Optional[StrictBool] = Field(default=None, serialization_alias="consumerPerPartition")
+    pack_processing_timeout: Optional[StrictInt] = Field(default=None, serialization_alias="packProcessingTimeout")
+    submit_strategy: Optional[SubmitStrategy] = Field(default=None, serialization_alias="submitStrategy")
+    processing_strategy: Optional[ProcessingStrategy] = Field(default=None, serialization_alias="processingStrategy")
     __properties: ClassVar[List[str]] = ["id", "createdTime", "additionalInfo", "tenantId", "name", "topic", "pollInterval", "partitions", "consumerPerPartition", "packProcessingTimeout", "submitStrategy", "processingStrategy"]
 
     model_config = ConfigDict(
@@ -56,13 +56,18 @@ class Queue(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -119,17 +124,17 @@ class Queue(BaseModel):
 
         _obj = cls.model_validate({
             "id": QueueId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "additionalInfo": obj.get("additionalInfo"),
-            "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
+            "created_time": obj.get("createdTime"),
+            "additional_info": obj.get("additionalInfo"),
+            "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
             "name": obj.get("name"),
             "topic": obj.get("topic"),
-            "pollInterval": obj.get("pollInterval"),
+            "poll_interval": obj.get("pollInterval"),
             "partitions": obj.get("partitions"),
-            "consumerPerPartition": obj.get("consumerPerPartition"),
-            "packProcessingTimeout": obj.get("packProcessingTimeout"),
-            "submitStrategy": SubmitStrategy.from_dict(obj["submitStrategy"]) if obj.get("submitStrategy") is not None else None,
-            "processingStrategy": ProcessingStrategy.from_dict(obj["processingStrategy"]) if obj.get("processingStrategy") is not None else None
+            "consumer_per_partition": obj.get("consumerPerPartition"),
+            "pack_processing_timeout": obj.get("packProcessingTimeout"),
+            "submit_strategy": SubmitStrategy.from_dict(obj["submitStrategy"]) if obj.get("submitStrategy") is not None else None,
+            "processing_strategy": ProcessingStrategy.from_dict(obj["processingStrategy"]) if obj.get("processingStrategy") is not None else None
         })
         return _obj
 

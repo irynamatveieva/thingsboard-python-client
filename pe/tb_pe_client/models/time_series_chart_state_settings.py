@@ -33,10 +33,10 @@ class TimeSeriesChartStateSettings(BaseModel):
     """ # noqa: E501
     label: Optional[StrictStr] = None
     value: Optional[Union[StrictFloat, StrictInt]] = None
-    source_type: Optional[TimeSeriesChartStateSourceType] = Field(default=None, alias="sourceType")
-    source_value: Optional[Any] = Field(default=None, alias="sourceValue")
-    source_range_from: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, alias="sourceRangeFrom")
-    source_range_to: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, alias="sourceRangeTo")
+    source_type: Optional[TimeSeriesChartStateSourceType] = Field(default=None, serialization_alias="sourceType")
+    source_value: Optional[Any] = Field(default=None, serialization_alias="sourceValue")
+    source_range_from: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, serialization_alias="sourceRangeFrom")
+    source_range_to: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, serialization_alias="sourceRangeTo")
     __properties: ClassVar[List[str]] = ["label", "value", "sourceType", "sourceValue", "sourceRangeFrom", "sourceRangeTo"]
 
     model_config = ConfigDict(
@@ -47,13 +47,18 @@ class TimeSeriesChartStateSettings(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -97,10 +102,10 @@ class TimeSeriesChartStateSettings(BaseModel):
         _obj = cls.model_validate({
             "label": obj.get("label"),
             "value": obj.get("value"),
-            "sourceType": obj.get("sourceType"),
-            "sourceValue": obj.get("sourceValue"),
-            "sourceRangeFrom": obj.get("sourceRangeFrom"),
-            "sourceRangeTo": obj.get("sourceRangeTo")
+            "source_type": obj.get("sourceType"),
+            "source_value": obj.get("sourceValue"),
+            "source_range_from": obj.get("sourceRangeFrom"),
+            "source_range_to": obj.get("sourceRangeTo")
         })
         return _obj
 

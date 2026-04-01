@@ -40,7 +40,7 @@ class EntityAggregationCalculatedFieldConfiguration(CalculatedFieldConfiguration
     metrics: Dict[str, AggMetric]
     interval: AggInterval
     watermark: Optional[Watermark] = None
-    produce_intermediate_result: Optional[StrictBool] = Field(default=None, alias="produceIntermediateResult")
+    produce_intermediate_result: Optional[StrictBool] = Field(default=None, serialization_alias="produceIntermediateResult")
     __properties: ClassVar[List[str]] = ["output", "type", "arguments", "metrics", "interval", "watermark", "produceIntermediateResult"]
 
     model_config = ConfigDict(
@@ -51,13 +51,18 @@ class EntityAggregationCalculatedFieldConfiguration(CalculatedFieldConfiguration
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -133,7 +138,7 @@ class EntityAggregationCalculatedFieldConfiguration(CalculatedFieldConfiguration
             else None,
             "interval": AggInterval.from_dict(obj["interval"]) if obj.get("interval") is not None else None,
             "watermark": Watermark.from_dict(obj["watermark"]) if obj.get("watermark") is not None else None,
-            "produceIntermediateResult": obj.get("produceIntermediateResult")
+            "produce_intermediate_result": obj.get("produceIntermediateResult")
         })
         return _obj
 

@@ -34,11 +34,11 @@ class AlarmCommentNotificationRuleTriggerConfig(NotificationRuleTriggerConfig):
     """
     AlarmCommentNotificationRuleTriggerConfig
     """ # noqa: E501
-    alarm_types: Optional[List[StrictStr]] = Field(default=None, alias="alarmTypes")
-    alarm_severities: Optional[List[AlarmSeverity]] = Field(default=None, alias="alarmSeverities")
-    alarm_statuses: Optional[List[AlarmSearchStatus]] = Field(default=None, alias="alarmStatuses")
-    only_user_comments: Optional[StrictBool] = Field(default=None, alias="onlyUserComments")
-    notify_on_comment_update: Optional[StrictBool] = Field(default=None, alias="notifyOnCommentUpdate")
+    alarm_types: Optional[List[StrictStr]] = Field(default=None, serialization_alias="alarmTypes")
+    alarm_severities: Optional[List[AlarmSeverity]] = Field(default=None, serialization_alias="alarmSeverities")
+    alarm_statuses: Optional[List[AlarmSearchStatus]] = Field(default=None, serialization_alias="alarmStatuses")
+    only_user_comments: Optional[StrictBool] = Field(default=None, serialization_alias="onlyUserComments")
+    notify_on_comment_update: Optional[StrictBool] = Field(default=None, serialization_alias="notifyOnCommentUpdate")
     __properties: ClassVar[List[str]] = ["triggerType", "alarmTypes", "alarmSeverities", "alarmStatuses", "onlyUserComments", "notifyOnCommentUpdate"]
 
     model_config = ConfigDict(
@@ -49,13 +49,18 @@ class AlarmCommentNotificationRuleTriggerConfig(NotificationRuleTriggerConfig):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -92,12 +97,12 @@ class AlarmCommentNotificationRuleTriggerConfig(NotificationRuleTriggerConfig):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "triggerType": obj.get("triggerType"),
-            "alarmTypes": obj.get("alarmTypes"),
-            "alarmSeverities": obj.get("alarmSeverities"),
-            "alarmStatuses": obj.get("alarmStatuses"),
-            "onlyUserComments": obj.get("onlyUserComments"),
-            "notifyOnCommentUpdate": obj.get("notifyOnCommentUpdate")
+            "trigger_type": obj.get("triggerType"),
+            "alarm_types": obj.get("alarmTypes"),
+            "alarm_severities": obj.get("alarmSeverities"),
+            "alarm_statuses": obj.get("alarmStatuses"),
+            "only_user_comments": obj.get("onlyUserComments"),
+            "notify_on_comment_update": obj.get("notifyOnCommentUpdate")
         })
         return _obj
 

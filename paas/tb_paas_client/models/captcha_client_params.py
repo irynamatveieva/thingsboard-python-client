@@ -30,9 +30,9 @@ class CaptchaClientParams(BaseModel):
     """
     CaptchaClientParams
     """ # noqa: E501
-    captcha_site_key: Optional[StrictStr] = Field(default=None, alias="captchaSiteKey")
-    captcha_version: Optional[StrictStr] = Field(default=None, alias="captchaVersion")
-    captcha_action: Optional[StrictStr] = Field(default=None, alias="captchaAction")
+    captcha_site_key: Optional[StrictStr] = Field(default=None, serialization_alias="captchaSiteKey")
+    captcha_version: Optional[StrictStr] = Field(default=None, serialization_alias="captchaVersion")
+    captcha_action: Optional[StrictStr] = Field(default=None, serialization_alias="captchaAction")
     __properties: ClassVar[List[str]] = ["captchaSiteKey", "captchaVersion", "captchaAction"]
 
     model_config = ConfigDict(
@@ -43,13 +43,18 @@ class CaptchaClientParams(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -86,9 +91,9 @@ class CaptchaClientParams(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "captchaSiteKey": obj.get("captchaSiteKey"),
-            "captchaVersion": obj.get("captchaVersion"),
-            "captchaAction": obj.get("captchaAction")
+            "captcha_site_key": obj.get("captchaSiteKey"),
+            "captcha_version": obj.get("captchaVersion"),
+            "captcha_action": obj.get("captchaAction")
         })
         return _obj
 

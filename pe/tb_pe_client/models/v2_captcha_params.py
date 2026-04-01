@@ -31,9 +31,9 @@ class V2CaptchaParams(CaptchaParams):
     """
     V2CaptchaParams
     """ # noqa: E501
-    site_key: Optional[StrictStr] = Field(default=None, description="Captcha site key for 'I'm not a robot' validation", alias="siteKey")
-    log_action_name: Optional[StrictStr] = Field(default=None, description="Optional action name used for logging (for captcha version 'v3' and 'enterprise')", alias="logActionName")
-    secret_key: Optional[StrictStr] = Field(default=None, description="Secret key to validate the Captcha. Should match the Captcha Site Key.", alias="secretKey")
+    site_key: Optional[StrictStr] = Field(default=None, description="Captcha site key for 'I'm not a robot' validation", serialization_alias="siteKey")
+    log_action_name: Optional[StrictStr] = Field(default=None, description="Optional action name used for logging (for captcha version 'v3' and 'enterprise')", serialization_alias="logActionName")
+    secret_key: Optional[StrictStr] = Field(default=None, description="Secret key to validate the Captcha. Should match the Captcha Site Key.", serialization_alias="secretKey")
     __properties: ClassVar[List[str]] = ["version", "siteKey", "logActionName", "secretKey"]
 
     model_config = ConfigDict(
@@ -44,13 +44,18 @@ class V2CaptchaParams(CaptchaParams):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -88,9 +93,9 @@ class V2CaptchaParams(CaptchaParams):
 
         _obj = cls.model_validate({
             "version": obj.get("version"),
-            "siteKey": obj.get("siteKey"),
-            "logActionName": obj.get("logActionName"),
-            "secretKey": obj.get("secretKey")
+            "site_key": obj.get("siteKey"),
+            "log_action_name": obj.get("logActionName"),
+            "secret_key": obj.get("secretKey")
         })
         return _obj
 

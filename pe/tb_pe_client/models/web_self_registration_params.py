@@ -41,9 +41,9 @@ class WebSelfRegistrationParams(SelfRegistrationParams):
     """
     WebSelfRegistrationParams
     """ # noqa: E501
-    domain_id: DomainId = Field(description="Domain name for self registration URL. Typically this matches the domain name from the Login White Labeling page.", alias="domainId")
-    privacy_policy: Optional[StrictStr] = Field(default=None, description="Privacy policy text. Supports HTML.", alias="privacyPolicy")
-    terms_of_use: Optional[StrictStr] = Field(default=None, description="Terms of User text. Supports HTML.", alias="termsOfUse")
+    domain_id: DomainId = Field(description="Domain name for self registration URL. Typically this matches the domain name from the Login White Labeling page.", serialization_alias="domainId")
+    privacy_policy: Optional[StrictStr] = Field(default=None, description="Privacy policy text. Supports HTML.", serialization_alias="privacyPolicy")
+    terms_of_use: Optional[StrictStr] = Field(default=None, description="Terms of User text. Supports HTML.", serialization_alias="termsOfUse")
     __properties: ClassVar[List[str]] = ["type", "enabled", "title", "captcha", "permissions", "notificationRecipient", "signUpFields", "customerTitlePrefix", "showPrivacyPolicy", "showTermsOfUse", "defaultDashboard", "homeDashboard", "customerGroupId", "customMenuId", "domainId", "privacyPolicy", "termsOfUse"]
 
     model_config = ConfigDict(
@@ -54,13 +54,18 @@ class WebSelfRegistrationParams(SelfRegistrationParams):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -137,18 +142,18 @@ class WebSelfRegistrationParams(SelfRegistrationParams):
             "title": obj.get("title"),
             "captcha": CaptchaParams.from_dict(obj["captcha"]) if obj.get("captcha") is not None else None,
             "permissions": [GroupPermission.from_dict(_item) for _item in obj["permissions"]] if obj.get("permissions") is not None else None,
-            "notificationRecipient": NotificationTargetId.from_dict(obj["notificationRecipient"]) if obj.get("notificationRecipient") is not None else None,
-            "signUpFields": [SignUpField.from_dict(_item) for _item in obj["signUpFields"]] if obj.get("signUpFields") is not None else None,
-            "customerTitlePrefix": obj.get("customerTitlePrefix"),
-            "showPrivacyPolicy": obj.get("showPrivacyPolicy"),
-            "showTermsOfUse": obj.get("showTermsOfUse"),
-            "defaultDashboard": DefaultDashboardParams.from_dict(obj["defaultDashboard"]) if obj.get("defaultDashboard") is not None else None,
-            "homeDashboard": HomeDashboardParams.from_dict(obj["homeDashboard"]) if obj.get("homeDashboard") is not None else None,
-            "customerGroupId": EntityGroupId.from_dict(obj["customerGroupId"]) if obj.get("customerGroupId") is not None else None,
-            "customMenuId": CustomMenuId.from_dict(obj["customMenuId"]) if obj.get("customMenuId") is not None else None,
-            "domainId": DomainId.from_dict(obj["domainId"]) if obj.get("domainId") is not None else None,
-            "privacyPolicy": obj.get("privacyPolicy"),
-            "termsOfUse": obj.get("termsOfUse")
+            "notification_recipient": NotificationTargetId.from_dict(obj["notificationRecipient"]) if obj.get("notificationRecipient") is not None else None,
+            "sign_up_fields": [SignUpField.from_dict(_item) for _item in obj["signUpFields"]] if obj.get("signUpFields") is not None else None,
+            "customer_title_prefix": obj.get("customerTitlePrefix"),
+            "show_privacy_policy": obj.get("showPrivacyPolicy"),
+            "show_terms_of_use": obj.get("showTermsOfUse"),
+            "default_dashboard": DefaultDashboardParams.from_dict(obj["defaultDashboard"]) if obj.get("defaultDashboard") is not None else None,
+            "home_dashboard": HomeDashboardParams.from_dict(obj["homeDashboard"]) if obj.get("homeDashboard") is not None else None,
+            "customer_group_id": EntityGroupId.from_dict(obj["customerGroupId"]) if obj.get("customerGroupId") is not None else None,
+            "custom_menu_id": CustomMenuId.from_dict(obj["customMenuId"]) if obj.get("customMenuId") is not None else None,
+            "domain_id": DomainId.from_dict(obj["domainId"]) if obj.get("domainId") is not None else None,
+            "privacy_policy": obj.get("privacyPolicy"),
+            "terms_of_use": obj.get("termsOfUse")
         })
         return _obj
 

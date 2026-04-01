@@ -30,7 +30,7 @@ class ResetPasswordRequest(BaseModel):
     """
     Reset password request.
     """ # noqa: E501
-    reset_token: Optional[StrictStr] = Field(default=None, description="The reset token to verify", alias="resetToken")
+    reset_token: Optional[StrictStr] = Field(default=None, description="The reset token to verify", serialization_alias="resetToken")
     password: Optional[StrictStr] = Field(default=None, description="The new password to set")
     __properties: ClassVar[List[str]] = ["resetToken", "password"]
 
@@ -42,13 +42,18 @@ class ResetPasswordRequest(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -85,7 +90,7 @@ class ResetPasswordRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "resetToken": obj.get("resetToken"),
+            "reset_token": obj.get("resetToken"),
             "password": obj.get("password")
         })
         return _obj

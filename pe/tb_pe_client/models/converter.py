@@ -36,17 +36,17 @@ class Converter(BaseModel):
     Converter
     """ # noqa: E501
     id: Optional[ConverterId] = Field(default=None, description="JSON object with the Converter Id. Specify this field to update the Converter. Referencing non-existing Converter Id will cause error. Omit this field to create new Converter.")
-    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the converter creation, in milliseconds", alias="createdTime")
-    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id", alias="tenantId")
+    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the converter creation, in milliseconds", serialization_alias="createdTime")
+    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id", serialization_alias="tenantId")
     name: StrictStr = Field(description="Unique Converter Name in scope of Tenant")
     type: ConverterType = Field(description="The type of the converter to process incoming or outgoing messages")
-    integration_type: Optional[IntegrationType] = Field(default=None, description="The type of the integration to which the converter is dedicated", alias="integrationType")
-    debug_mode: Optional[StrictBool] = Field(default=None, description="Enable/disable debug. ", alias="debugMode")
-    debug_settings: Optional[DebugSettings] = Field(default=None, description="Debug settings object.", alias="debugSettings")
+    integration_type: Optional[IntegrationType] = Field(default=None, description="The type of the integration to which the converter is dedicated", serialization_alias="integrationType")
+    debug_mode: Optional[StrictBool] = Field(default=None, description="Enable/disable debug. ", serialization_alias="debugMode")
+    debug_settings: Optional[DebugSettings] = Field(default=None, description="Debug settings object.", serialization_alias="debugSettings")
     configuration: Optional[Any] = Field(default=None, description="JSON object representing converter configuration. It should contain one of two possible fields: 'decoder' or 'encoder'. The former is used when the converter has UPLINK type, the latter is used - when DOWNLINK type. It can contain both 'decoder' and 'encoder' fields, when the correct one is specified for the appropriate converter type, another one can be set to 'null'")
-    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the converter", alias="additionalInfo")
-    edge_template: Optional[StrictBool] = Field(default=None, description="Boolean flag that specifies that is regular or edge template converter", alias="edgeTemplate")
-    converter_version: Optional[StrictInt] = Field(default=None, alias="converterVersion")
+    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the converter", serialization_alias="additionalInfo")
+    edge_template: Optional[StrictBool] = Field(default=None, description="Boolean flag that specifies that is regular or edge template converter", serialization_alias="edgeTemplate")
+    converter_version: Optional[StrictInt] = Field(default=None, serialization_alias="converterVersion")
     version: Optional[StrictInt] = None
     __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "name", "type", "integrationType", "debugMode", "debugSettings", "configuration", "additionalInfo", "edgeTemplate", "converterVersion", "version"]
 
@@ -58,13 +58,18 @@ class Converter(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -125,17 +130,17 @@ class Converter(BaseModel):
 
         _obj = cls.model_validate({
             "id": ConverterId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
+            "created_time": obj.get("createdTime"),
+            "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
             "name": obj.get("name"),
             "type": obj.get("type"),
-            "integrationType": obj.get("integrationType"),
-            "debugMode": obj.get("debugMode"),
-            "debugSettings": DebugSettings.from_dict(obj["debugSettings"]) if obj.get("debugSettings") is not None else None,
+            "integration_type": obj.get("integrationType"),
+            "debug_mode": obj.get("debugMode"),
+            "debug_settings": DebugSettings.from_dict(obj["debugSettings"]) if obj.get("debugSettings") is not None else None,
             "configuration": obj.get("configuration"),
-            "additionalInfo": obj.get("additionalInfo"),
-            "edgeTemplate": obj.get("edgeTemplate"),
-            "converterVersion": obj.get("converterVersion"),
+            "additional_info": obj.get("additionalInfo"),
+            "edge_template": obj.get("edgeTemplate"),
+            "converter_version": obj.get("converterVersion"),
             "version": obj.get("version")
         })
         return _obj

@@ -35,17 +35,17 @@ class ComponentDescriptor(BaseModel):
     ComponentDescriptor
     """ # noqa: E501
     id: Optional[ComponentDescriptorId] = Field(default=None, description="JSON object with the descriptor Id. Specify existing descriptor id to update the descriptor. Referencing non-existing descriptor Id will cause error. Omit this field to create new descriptor.")
-    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the descriptor creation, in milliseconds", alias="createdTime")
+    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the descriptor creation, in milliseconds", serialization_alias="createdTime")
     type: Optional[ComponentType] = Field(default=None, description="Type of the Rule Node")
     scope: Optional[ComponentScope] = Field(default=None, description="Scope of the Rule Node. Always set to 'TENANT', since no rule chains on the 'SYSTEM' level yet.")
-    clustering_mode: Optional[ComponentClusteringMode] = Field(default=None, description="Clustering mode of the RuleNode. This mode represents the ability to start Rule Node in multiple microservices.", alias="clusteringMode")
+    clustering_mode: Optional[ComponentClusteringMode] = Field(default=None, description="Clustering mode of the RuleNode. This mode represents the ability to start Rule Node in multiple microservices.", serialization_alias="clusteringMode")
     name: Optional[StrictStr] = Field(default=None, description="Name of the Rule Node. Taken from the @RuleNode annotation.")
     clazz: Optional[StrictStr] = Field(default=None, description="Full name of the Java class that implements the Rule Engine Node interface.")
-    configuration_descriptor: Optional[Any] = Field(default=None, alias="configurationDescriptor")
-    configuration_version: Optional[StrictInt] = Field(default=None, description="Rule node configuration version. By default, this value is 0. If the rule node is a versioned node, this value might be greater than 0.", alias="configurationVersion")
+    configuration_descriptor: Optional[Any] = Field(default=None, serialization_alias="configurationDescriptor")
+    configuration_version: Optional[StrictInt] = Field(default=None, description="Rule node configuration version. By default, this value is 0. If the rule node is a versioned node, this value might be greater than 0.", serialization_alias="configurationVersion")
     actions: Optional[StrictStr] = Field(default=None, description="Rule Node Actions. Deprecated. Always null.")
-    has_queue_name: Optional[StrictBool] = Field(default=None, description="Indicates that the RuleNode supports queue name configuration.", alias="hasQueueName")
-    has_secrets: Optional[StrictBool] = Field(default=None, description="Indicates that the RuleNode configuration uses secrets placeholders.", alias="hasSecrets")
+    has_queue_name: Optional[StrictBool] = Field(default=None, description="Indicates that the RuleNode supports queue name configuration.", serialization_alias="hasQueueName")
+    has_secrets: Optional[StrictBool] = Field(default=None, description="Indicates that the RuleNode configuration uses secrets placeholders.", serialization_alias="hasSecrets")
     __properties: ClassVar[List[str]] = ["id", "createdTime", "type", "scope", "clusteringMode", "name", "clazz", "configurationDescriptor", "configurationVersion", "actions", "hasQueueName", "hasSecrets"]
 
     model_config = ConfigDict(
@@ -56,13 +56,18 @@ class ComponentDescriptor(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -128,17 +133,17 @@ class ComponentDescriptor(BaseModel):
 
         _obj = cls.model_validate({
             "id": ComponentDescriptorId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
+            "created_time": obj.get("createdTime"),
             "type": obj.get("type"),
             "scope": obj.get("scope"),
-            "clusteringMode": obj.get("clusteringMode"),
+            "clustering_mode": obj.get("clusteringMode"),
             "name": obj.get("name"),
             "clazz": obj.get("clazz"),
-            "configurationDescriptor": obj.get("configurationDescriptor"),
-            "configurationVersion": obj.get("configurationVersion"),
+            "configuration_descriptor": obj.get("configurationDescriptor"),
+            "configuration_version": obj.get("configurationVersion"),
             "actions": obj.get("actions"),
-            "hasQueueName": obj.get("hasQueueName"),
-            "hasSecrets": obj.get("hasSecrets")
+            "has_queue_name": obj.get("hasQueueName"),
+            "has_secrets": obj.get("hasSecrets")
         })
         return _obj
 

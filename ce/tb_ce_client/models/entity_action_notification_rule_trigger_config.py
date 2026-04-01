@@ -33,7 +33,7 @@ class EntityActionNotificationRuleTriggerConfig(NotificationRuleTriggerConfig):
     """
     EntityActionNotificationRuleTriggerConfig
     """ # noqa: E501
-    entity_types: Optional[List[EntityType]] = Field(default=None, alias="entityTypes")
+    entity_types: Optional[List[EntityType]] = Field(default=None, serialization_alias="entityTypes")
     created: Optional[StrictBool] = None
     updated: Optional[StrictBool] = None
     deleted: Optional[StrictBool] = None
@@ -47,13 +47,18 @@ class EntityActionNotificationRuleTriggerConfig(NotificationRuleTriggerConfig):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -90,8 +95,8 @@ class EntityActionNotificationRuleTriggerConfig(NotificationRuleTriggerConfig):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "triggerType": obj.get("triggerType"),
-            "entityTypes": obj.get("entityTypes"),
+            "trigger_type": obj.get("triggerType"),
+            "entity_types": obj.get("entityTypes"),
             "created": obj.get("created"),
             "updated": obj.get("updated"),
             "deleted": obj.get("deleted")

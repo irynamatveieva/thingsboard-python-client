@@ -35,14 +35,14 @@ class Rpc(BaseModel):
     Rpc
     """ # noqa: E501
     id: Optional[RpcId] = Field(default=None, description="JSON object with the rpc Id. Referencing non-existing rpc Id will cause error.")
-    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the rpc creation, in milliseconds", alias="createdTime")
-    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id.", alias="tenantId")
-    device_id: Optional[DeviceId] = Field(default=None, description="JSON object with Device Id.", alias="deviceId")
-    expiration_time: Optional[StrictInt] = Field(default=None, description="Expiration time of the request.", alias="expirationTime")
+    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the rpc creation, in milliseconds", serialization_alias="createdTime")
+    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id.", serialization_alias="tenantId")
+    device_id: Optional[DeviceId] = Field(default=None, description="JSON object with Device Id.", serialization_alias="deviceId")
+    expiration_time: Optional[StrictInt] = Field(default=None, description="Expiration time of the request.", serialization_alias="expirationTime")
     request: Optional[Any] = Field(default=None, description="The request body that will be used to send message to device.")
     response: Optional[Any] = Field(default=None, description="The response from the device.")
     status: Optional[RpcStatus] = Field(default=None, description="The current status of the RPC call.")
-    additional_info: Optional[Any] = Field(default=None, description="Additional info used in the rule engine to process the updates to the RPC state.", alias="additionalInfo")
+    additional_info: Optional[Any] = Field(default=None, description="Additional info used in the rule engine to process the updates to the RPC state.", serialization_alias="additionalInfo")
     __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "deviceId", "expirationTime", "request", "response", "status", "additionalInfo"]
 
     model_config = ConfigDict(
@@ -53,13 +53,18 @@ class Rpc(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -137,14 +142,14 @@ class Rpc(BaseModel):
 
         _obj = cls.model_validate({
             "id": RpcId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
-            "deviceId": DeviceId.from_dict(obj["deviceId"]) if obj.get("deviceId") is not None else None,
-            "expirationTime": obj.get("expirationTime"),
+            "created_time": obj.get("createdTime"),
+            "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
+            "device_id": DeviceId.from_dict(obj["deviceId"]) if obj.get("deviceId") is not None else None,
+            "expiration_time": obj.get("expirationTime"),
             "request": obj.get("request"),
             "response": obj.get("response"),
             "status": obj.get("status"),
-            "additionalInfo": obj.get("additionalInfo")
+            "additional_info": obj.get("additionalInfo")
         })
         return _obj
 

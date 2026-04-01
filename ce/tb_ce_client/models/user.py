@@ -35,16 +35,16 @@ class User(BaseModel):
     A JSON value representing the User.
     """ # noqa: E501
     id: Optional[UserId] = Field(default=None, description="JSON object with the User Id. Specify this field to update the device. Referencing non-existing User Id will cause error. Omit this field to create new customer.")
-    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the user creation, in milliseconds", alias="createdTime")
-    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with the Tenant Id.", alias="tenantId")
-    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with the Customer Id.", alias="customerId")
+    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the user creation, in milliseconds", serialization_alias="createdTime")
+    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with the Tenant Id.", serialization_alias="tenantId")
+    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with the Customer Id.", serialization_alias="customerId")
     email: StrictStr = Field(description="Email of the user")
     authority: Authority = Field(description="Authority")
-    first_name: Optional[StrictStr] = Field(default=None, description="First name of the user", alias="firstName")
-    last_name: Optional[StrictStr] = Field(default=None, description="Last name of the user", alias="lastName")
+    first_name: Optional[StrictStr] = Field(default=None, description="First name of the user", serialization_alias="firstName")
+    last_name: Optional[StrictStr] = Field(default=None, description="Last name of the user", serialization_alias="lastName")
     phone: Optional[StrictStr] = Field(default=None, description="Phone number of the user")
     version: Optional[StrictInt] = None
-    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the user. May include: 'defaultDashboardId' (string, UUID of the default dashboard), 'defaultDashboardFullscreen' (boolean), 'homeDashboardId' (string, UUID of the home dashboard), 'homeDashboardHideToolbar' (boolean), 'lang' (string, user locale, e.g. 'en_US'), 'authProviderName' (string, name of the authentication provider).", alias="additionalInfo")
+    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the user. May include: 'defaultDashboardId' (string, UUID of the default dashboard), 'defaultDashboardFullscreen' (boolean), 'homeDashboardId' (string, UUID of the home dashboard), 'homeDashboardHideToolbar' (boolean), 'lang' (string, user locale, e.g. 'en_US'), 'authProviderName' (string, name of the authentication provider).", serialization_alias="additionalInfo")
     name: Optional[StrictStr] = Field(default=None, description="Duplicates the email of the user, readonly")
     __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "customerId", "email", "authority", "firstName", "lastName", "phone", "version", "additionalInfo", "name"]
 
@@ -56,13 +56,18 @@ class User(BaseModel):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -118,16 +123,16 @@ class User(BaseModel):
 
         _obj = cls.model_validate({
             "id": UserId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "createdTime": obj.get("createdTime"),
-            "tenantId": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
-            "customerId": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
+            "created_time": obj.get("createdTime"),
+            "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
+            "customer_id": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
             "email": obj.get("email"),
             "authority": obj.get("authority"),
-            "firstName": obj.get("firstName"),
-            "lastName": obj.get("lastName"),
+            "first_name": obj.get("firstName"),
+            "last_name": obj.get("lastName"),
             "phone": obj.get("phone"),
             "version": obj.get("version"),
-            "additionalInfo": obj.get("additionalInfo"),
+            "additional_info": obj.get("additionalInfo"),
             "name": obj.get("name")
         })
         return _obj

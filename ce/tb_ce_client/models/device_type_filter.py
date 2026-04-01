@@ -31,9 +31,9 @@ class DeviceTypeFilter(EntityFilter):
     """
     DeviceTypeFilter
     """ # noqa: E501
-    device_types: Optional[List[StrictStr]] = Field(default=None, alias="deviceTypes")
-    device_name_filter: Optional[StrictStr] = Field(default=None, alias="deviceNameFilter")
-    device_type: Optional[StrictStr] = Field(default=None, alias="deviceType")
+    device_types: Optional[List[StrictStr]] = Field(default=None, serialization_alias="deviceTypes")
+    device_name_filter: Optional[StrictStr] = Field(default=None, serialization_alias="deviceNameFilter")
+    device_type: Optional[StrictStr] = Field(default=None, serialization_alias="deviceType")
     __properties: ClassVar[List[str]] = ["type", "deviceTypes", "deviceNameFilter", "deviceType"]
 
     model_config = ConfigDict(
@@ -44,13 +44,18 @@ class DeviceTypeFilter(EntityFilter):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -88,9 +93,9 @@ class DeviceTypeFilter(EntityFilter):
 
         _obj = cls.model_validate({
             "type": obj.get("type"),
-            "deviceTypes": obj.get("deviceTypes"),
-            "deviceNameFilter": obj.get("deviceNameFilter"),
-            "deviceType": obj.get("deviceType")
+            "device_types": obj.get("deviceTypes"),
+            "device_name_filter": obj.get("deviceNameFilter"),
+            "device_type": obj.get("deviceType")
         })
         return _obj
 

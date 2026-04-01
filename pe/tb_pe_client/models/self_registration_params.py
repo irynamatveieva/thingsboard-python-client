@@ -50,15 +50,15 @@ class SelfRegistrationParams(BaseModel):
     title: Optional[StrictStr] = None
     captcha: Optional[CaptchaParams] = None
     permissions: Optional[List[GroupPermission]] = None
-    notification_recipient: Optional[NotificationTargetId] = Field(default=None, alias="notificationRecipient")
-    sign_up_fields: Optional[List[SignUpField]] = Field(default=None, alias="signUpFields")
-    customer_title_prefix: Optional[StrictStr] = Field(default=None, alias="customerTitlePrefix")
-    show_privacy_policy: Optional[StrictBool] = Field(default=None, alias="showPrivacyPolicy")
-    show_terms_of_use: Optional[StrictBool] = Field(default=None, alias="showTermsOfUse")
-    default_dashboard: Optional[DefaultDashboardParams] = Field(default=None, alias="defaultDashboard")
-    home_dashboard: Optional[HomeDashboardParams] = Field(default=None, alias="homeDashboard")
-    customer_group_id: Optional[EntityGroupId] = Field(default=None, alias="customerGroupId")
-    custom_menu_id: Optional[CustomMenuId] = Field(default=None, alias="customMenuId")
+    notification_recipient: Optional[NotificationTargetId] = Field(default=None, serialization_alias="notificationRecipient")
+    sign_up_fields: Optional[List[SignUpField]] = Field(default=None, serialization_alias="signUpFields")
+    customer_title_prefix: Optional[StrictStr] = Field(default=None, serialization_alias="customerTitlePrefix")
+    show_privacy_policy: Optional[StrictBool] = Field(default=None, serialization_alias="showPrivacyPolicy")
+    show_terms_of_use: Optional[StrictBool] = Field(default=None, serialization_alias="showTermsOfUse")
+    default_dashboard: Optional[DefaultDashboardParams] = Field(default=None, serialization_alias="defaultDashboard")
+    home_dashboard: Optional[HomeDashboardParams] = Field(default=None, serialization_alias="homeDashboard")
+    customer_group_id: Optional[EntityGroupId] = Field(default=None, serialization_alias="customerGroupId")
+    custom_menu_id: Optional[CustomMenuId] = Field(default=None, serialization_alias="customMenuId")
     __properties: ClassVar[List[str]] = ["type", "enabled", "title", "captcha", "permissions", "notificationRecipient", "signUpFields", "customerTitlePrefix", "showPrivacyPolicy", "showTermsOfUse", "defaultDashboard", "homeDashboard", "customerGroupId", "customMenuId"]
 
     model_config = ConfigDict(
@@ -86,13 +86,18 @@ class SelfRegistrationParams(BaseModel):
             return None
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Union[MobileSelfRegistrationParams, WebSelfRegistrationParams]]:

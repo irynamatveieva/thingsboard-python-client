@@ -33,12 +33,12 @@ class CalculatedFieldDebugEventFilter(EventFilter):
     CalculatedFieldDebugEventFilter
     """ # noqa: E501
     server: Optional[StrictStr] = Field(default=None, description="String value representing the server name, identifier or ip address where the platform is running")
-    is_error: Optional[StrictBool] = Field(default=None, description="Boolean value to filter the errors", alias="isError")
-    error_str: Optional[StrictStr] = Field(default=None, description="The case insensitive 'contains' filter based on error message", alias="errorStr")
-    entity_id: Optional[StrictStr] = Field(default=None, description="String value representing the entity id in the event body", alias="entityId")
-    entity_type: Optional[StrictStr] = Field(default=None, description="String value representing the entity type", alias="entityType")
-    msg_id: Optional[StrictStr] = Field(default=None, description="String value representing the message id in the rule engine", alias="msgId")
-    msg_type: Optional[StrictStr] = Field(default=None, description="String value representing the message type", alias="msgType")
+    is_error: Optional[StrictBool] = Field(default=None, description="Boolean value to filter the errors", serialization_alias="isError")
+    error_str: Optional[StrictStr] = Field(default=None, description="The case insensitive 'contains' filter based on error message", serialization_alias="errorStr")
+    entity_id: Optional[StrictStr] = Field(default=None, description="String value representing the entity id in the event body", serialization_alias="entityId")
+    entity_type: Optional[StrictStr] = Field(default=None, description="String value representing the entity type", serialization_alias="entityType")
+    msg_id: Optional[StrictStr] = Field(default=None, description="String value representing the message id in the rule engine", serialization_alias="msgId")
+    msg_type: Optional[StrictStr] = Field(default=None, description="String value representing the message type", serialization_alias="msgType")
     arguments: Optional[StrictStr] = Field(default=None, description="String value representing the arguments that were used in the calculation performed")
     result: Optional[StrictStr] = Field(default=None, description="String value representing the result of a calculation")
     __properties: ClassVar[List[str]] = ["eventType", "notEmpty", "server", "isError", "errorStr", "entityId", "entityType", "msgId", "msgType", "arguments", "result"]
@@ -71,13 +71,18 @@ class CalculatedFieldDebugEventFilter(EventFilter):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -114,15 +119,15 @@ class CalculatedFieldDebugEventFilter(EventFilter):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "eventType": obj.get("eventType"),
-            "notEmpty": obj.get("notEmpty"),
+            "event_type": obj.get("eventType"),
+            "not_empty": obj.get("notEmpty"),
             "server": obj.get("server"),
-            "isError": obj.get("isError"),
-            "errorStr": obj.get("errorStr"),
-            "entityId": obj.get("entityId"),
-            "entityType": obj.get("entityType"),
-            "msgId": obj.get("msgId"),
-            "msgType": obj.get("msgType"),
+            "is_error": obj.get("isError"),
+            "error_str": obj.get("errorStr"),
+            "entity_id": obj.get("entityId"),
+            "entity_type": obj.get("entityType"),
+            "msg_id": obj.get("msgId"),
+            "msg_type": obj.get("msgType"),
             "arguments": obj.get("arguments"),
             "result": obj.get("result")
         })

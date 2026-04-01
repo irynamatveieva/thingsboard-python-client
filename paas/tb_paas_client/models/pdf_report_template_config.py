@@ -41,10 +41,10 @@ class PdfReportTemplateConfig(ReportTemplateConfig):
     """ # noqa: E501
     footer: Optional[HeaderFooter] = None
     header: Optional[HeaderFooter] = None
-    page_background: Optional[StrictStr] = Field(default=None, alias="pageBackground")
-    page_margins: Optional[Insets] = Field(default=None, alias="pageMargins")
-    page_orientation: Optional[PageOrientation] = Field(default=None, alias="pageOrientation")
-    page_size: Optional[PageSize] = Field(default=None, alias="pageSize")
+    page_background: Optional[StrictStr] = Field(default=None, serialization_alias="pageBackground")
+    page_margins: Optional[Insets] = Field(default=None, serialization_alias="pageMargins")
+    page_orientation: Optional[PageOrientation] = Field(default=None, serialization_alias="pageOrientation")
+    page_size: Optional[PageSize] = Field(default=None, serialization_alias="pageSize")
     __properties: ClassVar[List[str]] = ["namePattern", "timeDataPattern", "format", "entityAliases", "filters", "components", "footer", "header", "pageBackground", "pageMargins", "pageOrientation", "pageSize"]
 
     model_config = ConfigDict(
@@ -55,13 +55,18 @@ class PdfReportTemplateConfig(ReportTemplateConfig):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -128,18 +133,18 @@ class PdfReportTemplateConfig(ReportTemplateConfig):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "namePattern": obj.get("namePattern"),
-            "timeDataPattern": obj.get("timeDataPattern"),
+            "name_pattern": obj.get("namePattern"),
+            "time_data_pattern": obj.get("timeDataPattern"),
             "format": obj.get("format"),
-            "entityAliases": [EntityAlias.from_dict(_item) for _item in obj["entityAliases"]] if obj.get("entityAliases") is not None else None,
+            "entity_aliases": [EntityAlias.from_dict(_item) for _item in obj["entityAliases"]] if obj.get("entityAliases") is not None else None,
             "filters": [Filter.from_dict(_item) for _item in obj["filters"]] if obj.get("filters") is not None else None,
             "components": [ReportComponent.from_dict(_item) for _item in obj["components"]] if obj.get("components") is not None else None,
             "footer": HeaderFooter.from_dict(obj["footer"]) if obj.get("footer") is not None else None,
             "header": HeaderFooter.from_dict(obj["header"]) if obj.get("header") is not None else None,
-            "pageBackground": obj.get("pageBackground"),
-            "pageMargins": Insets.from_dict(obj["pageMargins"]) if obj.get("pageMargins") is not None else None,
-            "pageOrientation": obj.get("pageOrientation"),
-            "pageSize": obj.get("pageSize")
+            "page_background": obj.get("pageBackground"),
+            "page_margins": Insets.from_dict(obj["pageMargins"]) if obj.get("pageMargins") is not None else None,
+            "page_orientation": obj.get("pageOrientation"),
+            "page_size": obj.get("pageSize")
         })
         return _obj
 

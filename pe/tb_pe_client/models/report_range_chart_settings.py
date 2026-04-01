@@ -44,15 +44,15 @@ class ReportRangeChartSettings(ReportTimeSeriesChartSettings):
     """
     ReportRangeChartSettings
     """ # noqa: E501
-    range_colors: Optional[List[ColorRange]] = Field(default=None, alias="rangeColors")
-    out_of_range_color: Optional[StrictStr] = Field(default=None, alias="outOfRangeColor")
-    show_range_thresholds: Optional[StrictBool] = Field(default=None, alias="showRangeThresholds")
-    range_threshold: Optional[TimeSeriesChartThreshold] = Field(default=None, alias="rangeThreshold")
-    fill_area: Optional[StrictBool] = Field(default=None, alias="fillArea")
-    fill_area_opacity: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, alias="fillAreaOpacity")
-    line_settings: Optional[LineSeriesSettings] = Field(default=None, alias="lineSettings")
-    range_units: Optional[StrictStr] = Field(default=None, alias="rangeUnits")
-    range_decimals: Optional[StrictInt] = Field(default=None, alias="rangeDecimals")
+    range_colors: Optional[List[ColorRange]] = Field(default=None, serialization_alias="rangeColors")
+    out_of_range_color: Optional[StrictStr] = Field(default=None, serialization_alias="outOfRangeColor")
+    show_range_thresholds: Optional[StrictBool] = Field(default=None, serialization_alias="showRangeThresholds")
+    range_threshold: Optional[TimeSeriesChartThreshold] = Field(default=None, serialization_alias="rangeThreshold")
+    fill_area: Optional[StrictBool] = Field(default=None, serialization_alias="fillArea")
+    fill_area_opacity: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, serialization_alias="fillAreaOpacity")
+    line_settings: Optional[LineSeriesSettings] = Field(default=None, serialization_alias="lineSettings")
+    range_units: Optional[StrictStr] = Field(default=None, serialization_alias="rangeUnits")
+    range_decimals: Optional[StrictInt] = Field(default=None, serialization_alias="rangeDecimals")
     __properties: ClassVar[List[str]] = ["showTitle", "title", "titleFont", "titleColor", "titleAlignment", "thresholds", "stack", "grid", "yAxes", "xAxis", "barWidthSettings", "noAggregationBarWidthSettings", "states", "comparisonEnabled", "timeForComparison", "comparisonCustomIntervalValue", "comparisonXAxis", "showLegend", "legendColumnTitleFont", "legendColumnTitleColor", "legendLabelFont", "legendLabelColor", "legendValueFont", "legendValueColor", "legendConfig", "xaxis", "yaxes", "rangeColors", "outOfRangeColor", "showRangeThresholds", "rangeThreshold", "fillArea", "fillAreaOpacity", "lineSettings", "rangeUnits", "rangeDecimals"]
 
     model_config = ConfigDict(
@@ -63,13 +63,18 @@ class ReportRangeChartSettings(ReportTimeSeriesChartSettings):
 
 
     def to_str(self) -> str:
-        """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        """Returns the string representation of the model"""
+        return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
+
+    def __str__(self) -> str:
+        return self.to_str()
+
+    def __repr__(self) -> str:
+        return self.to_str()
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
-        return json.dumps(self.to_dict())
+        return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
@@ -180,36 +185,36 @@ class ReportRangeChartSettings(ReportTimeSeriesChartSettings):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "showTitle": obj.get("showTitle"),
+            "show_title": obj.get("showTitle"),
             "title": obj.get("title"),
-            "titleFont": Font.from_dict(obj["titleFont"]) if obj.get("titleFont") is not None else None,
-            "titleColor": obj.get("titleColor"),
-            "titleAlignment": obj.get("titleAlignment"),
+            "title_font": Font.from_dict(obj["titleFont"]) if obj.get("titleFont") is not None else None,
+            "title_color": obj.get("titleColor"),
+            "title_alignment": obj.get("titleAlignment"),
             "thresholds": [TimeSeriesChartThreshold.from_dict(_item) for _item in obj["thresholds"]] if obj.get("thresholds") is not None else None,
             "stack": obj.get("stack"),
             "grid": TimeSeriesChartGridSettings.from_dict(obj["grid"]) if obj.get("grid") is not None else None,
-            "yAxes": dict(
+            "y_axes": dict(
                 (_k, TimeSeriesChartYAxisSettings.from_dict(_v))
                 for _k, _v in obj["yAxes"].items()
             )
             if obj.get("yAxes") is not None
             else None,
-            "xAxis": TimeSeriesChartXAxisSettings.from_dict(obj["xAxis"]) if obj.get("xAxis") is not None else None,
-            "barWidthSettings": TimeSeriesChartBarWidthSettings.from_dict(obj["barWidthSettings"]) if obj.get("barWidthSettings") is not None else None,
-            "noAggregationBarWidthSettings": TimeSeriesChartNoAggregationBarWidthSettings.from_dict(obj["noAggregationBarWidthSettings"]) if obj.get("noAggregationBarWidthSettings") is not None else None,
+            "x_axis": TimeSeriesChartXAxisSettings.from_dict(obj["xAxis"]) if obj.get("xAxis") is not None else None,
+            "bar_width_settings": TimeSeriesChartBarWidthSettings.from_dict(obj["barWidthSettings"]) if obj.get("barWidthSettings") is not None else None,
+            "no_aggregation_bar_width_settings": TimeSeriesChartNoAggregationBarWidthSettings.from_dict(obj["noAggregationBarWidthSettings"]) if obj.get("noAggregationBarWidthSettings") is not None else None,
             "states": [TimeSeriesChartStateSettings.from_dict(_item) for _item in obj["states"]] if obj.get("states") is not None else None,
-            "comparisonEnabled": obj.get("comparisonEnabled"),
-            "timeForComparison": obj.get("timeForComparison"),
-            "comparisonCustomIntervalValue": obj.get("comparisonCustomIntervalValue"),
-            "comparisonXAxis": TimeSeriesChartXAxisSettings.from_dict(obj["comparisonXAxis"]) if obj.get("comparisonXAxis") is not None else None,
-            "showLegend": obj.get("showLegend"),
-            "legendColumnTitleFont": Font.from_dict(obj["legendColumnTitleFont"]) if obj.get("legendColumnTitleFont") is not None else None,
-            "legendColumnTitleColor": obj.get("legendColumnTitleColor"),
-            "legendLabelFont": Font.from_dict(obj["legendLabelFont"]) if obj.get("legendLabelFont") is not None else None,
-            "legendLabelColor": obj.get("legendLabelColor"),
-            "legendValueFont": Font.from_dict(obj["legendValueFont"]) if obj.get("legendValueFont") is not None else None,
-            "legendValueColor": obj.get("legendValueColor"),
-            "legendConfig": LegendConfig.from_dict(obj["legendConfig"]) if obj.get("legendConfig") is not None else None,
+            "comparison_enabled": obj.get("comparisonEnabled"),
+            "time_for_comparison": obj.get("timeForComparison"),
+            "comparison_custom_interval_value": obj.get("comparisonCustomIntervalValue"),
+            "comparison_x_axis": TimeSeriesChartXAxisSettings.from_dict(obj["comparisonXAxis"]) if obj.get("comparisonXAxis") is not None else None,
+            "show_legend": obj.get("showLegend"),
+            "legend_column_title_font": Font.from_dict(obj["legendColumnTitleFont"]) if obj.get("legendColumnTitleFont") is not None else None,
+            "legend_column_title_color": obj.get("legendColumnTitleColor"),
+            "legend_label_font": Font.from_dict(obj["legendLabelFont"]) if obj.get("legendLabelFont") is not None else None,
+            "legend_label_color": obj.get("legendLabelColor"),
+            "legend_value_font": Font.from_dict(obj["legendValueFont"]) if obj.get("legendValueFont") is not None else None,
+            "legend_value_color": obj.get("legendValueColor"),
+            "legend_config": LegendConfig.from_dict(obj["legendConfig"]) if obj.get("legendConfig") is not None else None,
             "xaxis": TimeSeriesChartXAxisSettings.from_dict(obj["xaxis"]) if obj.get("xaxis") is not None else None,
             "yaxes": dict(
                 (_k, TimeSeriesChartYAxisSettings.from_dict(_v))
@@ -217,15 +222,15 @@ class ReportRangeChartSettings(ReportTimeSeriesChartSettings):
             )
             if obj.get("yaxes") is not None
             else None,
-            "rangeColors": [ColorRange.from_dict(_item) for _item in obj["rangeColors"]] if obj.get("rangeColors") is not None else None,
-            "outOfRangeColor": obj.get("outOfRangeColor"),
-            "showRangeThresholds": obj.get("showRangeThresholds"),
-            "rangeThreshold": TimeSeriesChartThreshold.from_dict(obj["rangeThreshold"]) if obj.get("rangeThreshold") is not None else None,
-            "fillArea": obj.get("fillArea"),
-            "fillAreaOpacity": obj.get("fillAreaOpacity"),
-            "lineSettings": LineSeriesSettings.from_dict(obj["lineSettings"]) if obj.get("lineSettings") is not None else None,
-            "rangeUnits": obj.get("rangeUnits"),
-            "rangeDecimals": obj.get("rangeDecimals")
+            "range_colors": [ColorRange.from_dict(_item) for _item in obj["rangeColors"]] if obj.get("rangeColors") is not None else None,
+            "out_of_range_color": obj.get("outOfRangeColor"),
+            "show_range_thresholds": obj.get("showRangeThresholds"),
+            "range_threshold": TimeSeriesChartThreshold.from_dict(obj["rangeThreshold"]) if obj.get("rangeThreshold") is not None else None,
+            "fill_area": obj.get("fillArea"),
+            "fill_area_opacity": obj.get("fillAreaOpacity"),
+            "line_settings": LineSeriesSettings.from_dict(obj["lineSettings"]) if obj.get("lineSettings") is not None else None,
+            "range_units": obj.get("rangeUnits"),
+            "range_decimals": obj.get("rangeDecimals")
         })
         return _obj
 
