@@ -8,9 +8,9 @@
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
 | **data** | [**List[ContactBasedObject]**](ContactBasedObject.md) | Array of the entities | [optional] |
-| **total_pages** | **int** | Total number of available pages. Calculated based on the 'pageSize' request parameter and total number of entities that match search criteria | [optional] [readonly] |
-| **total_elements** | **int** | Total number of elements in all available pages | [optional] [readonly] |
 | **has_next** | **bool** | 'false' value indicates the end of the result set | [optional] [readonly] |
+| **total_elements** | **int** | Total number of elements in all available pages | [optional] [readonly] |
+| **total_pages** | **int** | Total number of available pages. Calculated based on the 'pageSize' request parameter and total number of entities that match search criteria | [optional] [readonly] |
 
 
 

@@ -113,7 +113,7 @@ class DebugConverterEventFilter(EventFilter):
             "is_error": obj.get("isError"),
             "error_str": obj.get("errorStr"),
             "type": obj.get("type"),
-            "in": obj.get("in"),
+            "var_in": obj.get("in"),
             "out": obj.get("out"),
             "metadata": obj.get("metadata")
         })

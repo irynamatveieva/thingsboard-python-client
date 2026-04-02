@@ -229,13 +229,34 @@ def _camel_to_snake(name: str) -> str:
     return re.sub(r'(?<!^)(?=[A-Z])', '_', name).lower()
 
 
+def _build_alias_map(content: str) -> Dict[str, str]:
+    """Build a mapping from serialization_alias value to Python field name.
+
+    Scans field declarations like:
+        var_from: ... = Field(..., serialization_alias="from")
+    and returns {"from": "var_from"}.
+    """
+    alias_map: Dict[str, str] = {}
+    for m in re.finditer(
+        r'^\s+(\w+)\s*:.*serialization_alias="([^"]+)"', content, re.MULTILINE
+    ):
+        field_name, alias = m.group(1), m.group(2)
+        if field_name != alias:
+            alias_map[alias] = field_name
+    return alias_map
+
+
 def _convert_model_validate_keys(content: str) -> Tuple[str, int]:
     """Convert camelCase dict keys to snake_case inside model_validate({...}) blocks.
+
+    Also handles reserved-word renames (e.g. "from" → "var_from") by reading
+    serialization_alias= declarations from the same file.
 
     Only converts the dict-key position (first quoted string before ':' on each line
     inside the block). Preserves camelCase in obj["key"] and obj.get("key") on the
     right-hand side.
     """
+    alias_map = _build_alias_map(content)
     count = 0
 
     def _process_block(block_match: re.Match) -> str:
@@ -247,10 +268,14 @@ def _convert_model_validate_keys(content: str) -> Tuple[str, int]:
             prefix = key_match.group(1)
             key = key_match.group(2)
             suffix = key_match.group(3)
-            snake = _camel_to_snake(key)
-            if snake != key:
+            # Reserved-word rename takes priority, then camelCase→snake_case
+            if key in alias_map:
+                new_key = alias_map[key]
+            else:
+                new_key = _camel_to_snake(key)
+            if new_key != key:
                 count += 1
-            return f'{prefix}"{snake}"{suffix}'
+            return f'{prefix}"{new_key}"{suffix}'
 
         # Match dict keys: leading whitespace + "key" + colon
         return re.sub(r'(\n\s+)"(\w+)"(\s*:)', _convert_key, block)

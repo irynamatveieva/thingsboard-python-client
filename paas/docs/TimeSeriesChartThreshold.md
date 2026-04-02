@@ -14,6 +14,7 @@
 | **entity_key_type** | **str** |  | [optional] |
 | **entity_alias** | **str** |  | [optional] |
 | **entity_key** | **str** |  | [optional] |
+| **y_axis_id** | **str** |  | [optional] |
 | **units** | **str** |  | [optional] |
 | **decimals** | **int** |  | [optional] |
 | **line_color** | **str** |  | [optional] |
@@ -30,7 +31,6 @@
 | **enable_label_background** | **bool** |  | [optional] |
 | **label_background** | **str** |  | [optional] |
 | **yaxis_id** | **str** |  | [optional] |
-| **y_axis_id** | **str** |  | [optional] |
 
 
 

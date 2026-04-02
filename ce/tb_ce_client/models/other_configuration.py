@@ -110,7 +110,7 @@ class OtherConfiguration(BaseModel):
             "client_only_observe_after_connect": obj.get("clientOnlyObserveAfterConnect"),
             "fw_update_resource": obj.get("fwUpdateResource"),
             "sw_update_resource": obj.get("swUpdateResource"),
-            "default_object_i_d_ver": obj.get("defaultObjectIDVer")
+            "default_object_id_ver": obj.get("defaultObjectIDVer")
         })
         return _obj
 

@@ -7,6 +7,8 @@
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
+| **id** | [**AlarmId**](AlarmId.md) | JSON object with the alarm Id. Specify this field to update the alarm. Referencing non-existing alarm Id will cause error. Omit this field to create new alarm. | [optional] |
+| **created_time** | **int** | Timestamp of the alarm creation, in milliseconds | [optional] [readonly] |
 | **tenant_id** | [**TenantId**](TenantId.md) | JSON object with Tenant Id | [optional] [readonly] |
 | **customer_id** | [**CustomerId**](CustomerId.md) | JSON object with Customer Id | [optional] [readonly] |
 | **type** | **str** | representing type of the Alarm | |
@@ -26,8 +28,6 @@
 | **propagate_to_owner_hierarchy** | **bool** | Propagation flag to specify if alarm should be propagated to the owner (tenant or customer) and all parent owners in the customer hierarchy | [optional] |
 | **propagate_to_tenant** | **bool** | Propagation flag to specify if alarm should be propagated to the tenant entity | [optional] |
 | **propagate_relation_types** | **List[str]** | JSON array of relation types that should be used for propagation. By default, 'propagateRelationTypes' array is empty which means that the alarm will be propagated based on any relation type to parent entities. This parameter should be used only in case when 'propagate' parameter is set to true, otherwise, 'propagateRelationTypes' array will be ignored. | [optional] |
-| **id** | [**AlarmId**](AlarmId.md) | JSON object with the alarm Id. Specify this field to update the alarm. Referencing non-existing alarm Id will cause error. Omit this field to create new alarm. | [optional] |
-| **created_time** | **int** | Timestamp of the alarm creation, in milliseconds | [optional] [readonly] |
 | **name** | **str** | representing type of the Alarm | [readonly] |
 | **status** | [**AlarmStatus**](AlarmStatus.md) | status of the Alarm | [readonly] |
 
@@ -38,7 +38,7 @@
 ### Conventions
 
 - **Package:** `tb_paas_client.models`
-- **Attribute access:** `obj.tenant_id`, `obj.name`, etc.
+- **Attribute access:** `obj.id`, `obj.name`, etc.
 - **Serialize:** `obj.model_dump()` or `obj.model_dump(by_alias=True)` for camelCase JSON
 - **Deserialize:** `Alarm.model_validate(data)` or `Alarm.model_validate_json(json_str)`
 - **None fields:** Optional attributes default to `None`; accessing them never raises exceptions

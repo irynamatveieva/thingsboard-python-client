@@ -16,8 +16,8 @@
 | **configuration** | **object** | JSON with the configuration for UI components: list of columns, settings, actions, etc  | [optional] |
 | **version** | **int** |  | [optional] |
 | **owner_ids** | [**List[EntityGroupInfoOwnerIdsInner]**](EntityGroupInfoOwnerIdsInner.md) | List of the entity group owners. | |
-| **group_all** | **bool** | Indicates special group 'All' that contains all entities and can't be deleted. | [optional] |
 | **edge_group_all** | **bool** | Indicates special edge group 'All' that contains all entities and can't be deleted. | [optional] [readonly] |
+| **group_all** | **bool** | Indicates special group 'All' that contains all entities and can't be deleted. | [optional] |
 | **tenant_id** | [**TenantId**](TenantId.md) |  | [optional] |
 
 

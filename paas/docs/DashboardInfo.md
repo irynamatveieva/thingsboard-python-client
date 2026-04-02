@@ -21,8 +21,8 @@
 | **configuration** | **object** |  | [optional] |
 | **resources** | [**List[ResourceExportData]**](ResourceExportData.md) |  | [optional] |
 | **version** | **int** |  | [optional] |
-| **owner_name** | **str** | Owner name | [optional] [readonly] |
 | **groups** | [**List[EntityInfo]**](EntityInfo.md) | Groups | [optional] |
+| **owner_name** | **str** | Owner name | [optional] [readonly] |
 
 
 

@@ -9,9 +9,9 @@
 |------------ | ------------- | ------------- | -------------|
 | **cause** | [**ErrorComponentAllOfExceptionCause**](ErrorComponentAllOfExceptionCause.md) |  | [optional] |
 | **stack_trace** | [**List[ErrorComponentAllOfExceptionCauseStackTrace]**](ErrorComponentAllOfExceptionCauseStackTrace.md) |  | [optional] |
-| **localized_message** | **str** |  | [optional] |
 | **message** | **str** |  | [optional] |
 | **suppressed** | [**List[ErrorComponentAllOfExceptionCause]**](ErrorComponentAllOfExceptionCause.md) |  | [optional] |
+| **localized_message** | **str** |  | [optional] |
 
 
 

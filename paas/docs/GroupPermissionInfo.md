@@ -21,9 +21,9 @@
 | **user_group_name** | **str** | User Group Name. | [optional] |
 | **user_group_owner_id** | [**EntityId**](EntityId.md) | User Group Owner Id (Tenant or Customer). | [optional] |
 | **user_group_owner_name** | **str** | Name of the user group owner (Tenant or Customer title). | [optional] |
-| **read_only** | **bool** |  | [optional] |
 | **name** | **str** | Name of the Group Permissions. Auto-generated | [optional] [readonly] |
 | **public** | **bool** |  | [optional] |
+| **read_only** | **bool** |  | [optional] |
 
 
 

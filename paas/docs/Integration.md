@@ -17,7 +17,9 @@ A JSON value representing the integration.
 | **debug_mode** | **bool** | Enable/disable debug.  | [optional] |
 | **debug_settings** | [**DebugSettings**](DebugSettings.md) | Debug settings object. | [optional] |
 | **enabled** | **bool** | Boolean flag to enable/disable the integration | [optional] |
+| **remote** | **bool** | Boolean flag to enable/disable the integration to be executed remotely. Remote integration is launched in a separate microservice. Local integration is executed by the platform core | [optional] |
 | **allow_create_devices_or_assets** | **bool** | Boolean flag to allow/disallow the integration to create devices or assets that send message and do not exist in the system yet | [optional] |
+| **edge_template** | **bool** | Boolean flag that specifies that is regular or edge template integration | [optional] |
 | **version** | **int** |  | [optional] |
 | **default_converter_id** | [**ConverterId**](ConverterId.md) | JSON object with the Uplink Converter Id | |
 | **downlink_converter_id** | [**ConverterId**](ConverterId.md) | JSON object with the Downlink Converter Id | [optional] |
@@ -25,8 +27,6 @@ A JSON value representing the integration.
 | **secret** | **str** | String value used by the remote integrations. Remote integration uses this value along with the 'routingKey' for kind of security and validation to be able to connect to the platform using Grpc | [optional] |
 | **configuration** | **object** | JSON object representing integration configuration. Each integration type has specific configuration with the connectivity parameters (like 'host' and 'port' for MQTT type or 'baseUrl' for HTTP based type, etc.) and other important parameters dependent on the integration type | |
 | **additional_info** | **object** | Additional parameters of the integration | [optional] |
-| **edge_template** | **bool** | Boolean flag that specifies that is regular or edge template integration | [optional] |
-| **remote** | **bool** | Boolean flag to enable/disable the integration to be executed remotely. Remote integration is launched in a separate microservice. Local integration is executed by the platform core | [optional] |
 
 
 

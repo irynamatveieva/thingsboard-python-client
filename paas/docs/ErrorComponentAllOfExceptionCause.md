@@ -8,8 +8,8 @@
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
 | **stack_trace** | [**List[ErrorComponentAllOfExceptionCauseStackTrace]**](ErrorComponentAllOfExceptionCauseStackTrace.md) |  | [optional] |
-| **localized_message** | **str** |  | [optional] |
 | **message** | **str** |  | [optional] |
+| **localized_message** | **str** |  | [optional] |
 
 
 

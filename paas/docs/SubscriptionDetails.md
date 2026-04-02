@@ -9,6 +9,7 @@
 |------------ | ------------- | ------------- | -------------|
 | **id** | [**SubscriptionId**](SubscriptionId.md) |  | [optional] |
 | **created_time** | **int** | Entity creation timestamp in milliseconds since Unix epoch | [optional] [readonly] |
+| **additional_info** | **object** |  | [optional] |
 | **external_id** | **str** |  | [optional] |
 | **tenant_id** | [**TenantId**](TenantId.md) |  | [optional] |
 | **billing_customer_id** | [**BillingCustomerId**](BillingCustomerId.md) |  | [optional] |
@@ -33,7 +34,6 @@
 | **items** | [**SubscriptionItems**](SubscriptionItems.md) |  | [optional] |
 | **discount** | [**Discount**](Discount.md) |  | [optional] |
 | **name** | **str** |  | [optional] [readonly] |
-| **additional_info** | **object** |  | [optional] |
 
 
 

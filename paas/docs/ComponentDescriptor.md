@@ -14,11 +14,11 @@
 | **clustering_mode** | [**ComponentClusteringMode**](ComponentClusteringMode.md) | Clustering mode of the RuleNode. This mode represents the ability to start Rule Node in multiple microservices. | [optional] [readonly] |
 | **name** | **str** | Name of the Rule Node. Taken from the @RuleNode annotation. | [optional] [readonly] |
 | **clazz** | **str** | Full name of the Java class that implements the Rule Engine Node interface. | [optional] [readonly] |
+| **configuration_descriptor** | **object** |  | [optional] |
 | **configuration_version** | **int** | Rule node configuration version. By default, this value is 0. If the rule node is a versioned node, this value might be greater than 0. | [optional] [readonly] |
 | **actions** | **str** | Rule Node Actions. Deprecated. Always null. | [optional] [readonly] |
 | **has_queue_name** | **bool** | Indicates that the RuleNode supports queue name configuration. | [optional] [readonly] |
 | **has_secrets** | **bool** | Indicates that the RuleNode configuration uses secrets placeholders. | [optional] [readonly] |
-| **configuration_descriptor** | **object** |  | [optional] |
 
 
 

@@ -16,8 +16,8 @@
 | **entity_id** | **UUID** |  | [optional] |
 | **uid** | **str** |  | [optional] |
 | **type** | [**EdgeEventType**](EdgeEventType.md) |  | [optional] |
-| **entity_group_id** | **UUID** |  | [optional] |
 | **body** | **object** |  | [optional] |
+| **entity_group_id** | **UUID** |  | [optional] |
 
 
 

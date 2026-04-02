@@ -54,7 +54,6 @@
 # Replaced on regeneration:
 #   - <edition>/tb_{edition}_client/  (fully replaced from generated output)
 #
-# Output log: generate-client.log (overwritten on each run)
 #
 # Prerequisites: Java (for openapi-generator-cli JAR), Python 3
 #
@@ -84,10 +83,6 @@ fi
 
 EDITION="$1"
 BASE_URL="${2:-}"
-LOG_FILE="$SCRIPT_DIR/generate-client.log"
-
-# Log everything to file and stdout
-exec > >(tee "$LOG_FILE") 2>&1
 
 # -------------------------------------------------------------------
 # JAR management (version-locked to match Java client)
@@ -150,19 +145,24 @@ generate() {
 
   # --- Python client generation (per-controller output (one file per OpenAPI tag)) ---
   echo "Generating Python client for edition: $edition from $spec_file"
-  java -jar "$GENERATOR_JAR" generate \
-    -i "$spec_file" \
-    -g python \
-    -o "$output_dir" \
-    --package-name "tb_${edition}_client" \
-    --additional-properties hideGenerationTimestamp=true,generateSourceCodeOnly=true \
-    --global-property apiTests=false,modelTests=false,modelDocs=false,apiDocs=false \
-    2>&1 | if [ "$VERBOSE" = true ]; then cat; else grep -v \
-      -e "^\[main\] INFO  o.o.codegen.*writing file" \
-      -e "^\[main\] INFO  o.o.c.languages.*Processing operation" \
-      -e "Unknown scheme.*loginPassword" \
-      -e "Skipped by.*options supplied by user" \
-      -e "^\[main\] INFO  o.o.c.DefaultGenerator"; fi
+  if [ "$VERBOSE" = true ]; then
+    java -jar "$GENERATOR_JAR" generate \
+      -i "$spec_file" \
+      -g python \
+      -o "$output_dir" \
+      --package-name "tb_${edition}_client" \
+      --additional-properties hideGenerationTimestamp=true,generateSourceCodeOnly=true \
+      --global-property apiTests=false,modelTests=false,modelDocs=false,apiDocs=false
+  else
+    java -jar "$GENERATOR_JAR" generate \
+      -i "$spec_file" \
+      -g python \
+      -o "$output_dir" \
+      --package-name "tb_${edition}_client" \
+      --additional-properties hideGenerationTimestamp=true,generateSourceCodeOnly=true \
+      --global-property apiTests=false,modelTests=false,modelDocs=false,apiDocs=false \
+      > /dev/null 2>&1
+  fi
 
   if [ "$DRY_RUN" = true ]; then
     echo "Dry run: generated client is in $output_dir"
@@ -237,14 +237,12 @@ generate() {
 
     # GEN-05: Verify Pydantic v2 patterns
     local sample_model
-    sample_model=$(grep -rl "model_config = ConfigDict" "$pkg_dir/models" 2>/dev/null || true)
-    sample_model=$(echo "$sample_model" | head -1)
+    sample_model=$(grep -rl -m1 "model_config = ConfigDict" "$pkg_dir/models" 2>/dev/null || true)
     if [ -n "$sample_model" ]; then
       echo "  Pydantic v2:  OK (model_config = ConfigDict confirmed in $(basename "$sample_model"))"
     else
       local pydantic_model
-      pydantic_model=$(grep -rl "from pydantic import" "$pkg_dir/models" 2>/dev/null || true)
-      pydantic_model=$(echo "$pydantic_model" | head -1)
+      pydantic_model=$(grep -rl -m1 "from pydantic import" "$pkg_dir/models" 2>/dev/null || true)
       if [ -n "$pydantic_model" ]; then
         echo "  Pydantic v2:  OK (pydantic imports found in $(basename "$pydantic_model"))"
       else
@@ -261,20 +259,26 @@ generate() {
   rm -rf "$docs_output_dir"
 
   echo "Generating per-controller and per-model docs for edition: $edition"
-  java -jar "$GENERATOR_JAR" generate \
-    -i "$spec_file" \
-    -g python \
-    -o "$docs_output_dir" \
-    --package-name "tb_${edition}_client" \
-    --additional-properties hideGenerationTimestamp=true,generateSourceCodeOnly=true \
-    --global-property apis,models,supportingFiles=false,apiTests=false,modelTests=false \
-    -t "$SCRIPT_DIR/openapi" \
-    2>&1 | if [ "$VERBOSE" = true ]; then cat; else grep -v \
-      -e "^\[main\] INFO  o.o.codegen.*writing file" \
-      -e "^\[main\] INFO  o.o.c.languages.*Processing operation" \
-      -e "Unknown scheme.*loginPassword" \
-      -e "Skipped by.*options supplied by user" \
-      -e "^\[main\] INFO  o.o.c.DefaultGenerator"; fi
+  if [ "$VERBOSE" = true ]; then
+    java -jar "$GENERATOR_JAR" generate \
+      -i "$spec_file" \
+      -g python \
+      -o "$docs_output_dir" \
+      --package-name "tb_${edition}_client" \
+      --additional-properties hideGenerationTimestamp=true,generateSourceCodeOnly=true \
+      --global-property apis,models,supportingFiles=false,apiTests=false,modelTests=false \
+      -t "$SCRIPT_DIR/openapi"
+  else
+    java -jar "$GENERATOR_JAR" generate \
+      -i "$spec_file" \
+      -g python \
+      -o "$docs_output_dir" \
+      --package-name "tb_${edition}_client" \
+      --additional-properties hideGenerationTimestamp=true,generateSourceCodeOnly=true \
+      --global-property apis,models,supportingFiles=false,apiTests=false,modelTests=false \
+      -t "$SCRIPT_DIR/openapi" \
+      > /dev/null 2>&1
+  fi
 
   if [ "$DRY_RUN" = false ]; then
     rm -rf "$module_dir/docs"
@@ -330,8 +334,11 @@ if [ "$EDITION" = "all" ]; then
     echo "Error: base-url is not supported with 'all'. Run per edition instead."
     exit 1
   fi
+  OPTS=""
+  [ "$VERBOSE" = true ] && OPTS="$OPTS --verbose"
+  [ "$DRY_RUN" = true ] && OPTS="$OPTS --dry-run"
   for e in "${EDITIONS[@]}"; do
-    generate "$e"
+    "$0" $OPTS "$e"
   done
 else
   if [[ ! " ${EDITIONS[*]} " =~ " ${EDITION} " ]]; then

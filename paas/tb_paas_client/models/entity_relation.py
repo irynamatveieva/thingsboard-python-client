@@ -108,7 +108,7 @@ class EntityRelation(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "from": EntityId.from_dict(obj["from"]) if obj.get("from") is not None else None,
+            "var_from": EntityId.from_dict(obj["from"]) if obj.get("from") is not None else None,
             "to": EntityId.from_dict(obj["to"]) if obj.get("to") is not None else None,
             "type": obj.get("type"),
             "type_group": obj.get("typeGroup"),

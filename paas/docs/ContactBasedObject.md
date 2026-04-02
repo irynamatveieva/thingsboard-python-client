@@ -9,6 +9,7 @@
 |------------ | ------------- | ------------- | -------------|
 | **id** | **object** |  | [optional] |
 | **created_time** | **int** | Entity creation timestamp in milliseconds since Unix epoch | [optional] [readonly] |
+| **additional_info** | **object** |  | [optional] |
 | **country** | **str** |  | [optional] |
 | **state** | **str** |  | [optional] |
 | **city** | **str** |  | [optional] |
@@ -18,7 +19,6 @@
 | **phone** | **str** |  | [optional] |
 | **email** | **str** |  | [optional] |
 | **name** | **str** |  | [optional] |
-| **additional_info** | **object** |  | [optional] |
 
 
 

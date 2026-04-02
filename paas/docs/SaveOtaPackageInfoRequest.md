@@ -11,6 +11,7 @@ A JSON value representing the OTA Package.
 |------------ | ------------- | ------------- | -------------|
 | **id** | [**OtaPackageId**](OtaPackageId.md) | JSON object with the ota package Id. Specify existing ota package Id to update the ota package. Referencing non-existing ota package id will cause error. Omit this field to create new ota package. | [optional] |
 | **created_time** | **int** | Timestamp of the ota package creation, in milliseconds | [optional] [readonly] |
+| **additional_info** | **object** | OTA Package description. | [optional] |
 | **tenant_id** | [**TenantId**](TenantId.md) | JSON object with Tenant Id. Tenant Id of the ota package can't be changed. | [optional] [readonly] |
 | **device_profile_id** | [**DeviceProfileId**](DeviceProfileId.md) | JSON object with Device Profile Id. Device Profile Id of the ota package can't be changed. | [optional] |
 | **type** | [**OtaPackageType**](OtaPackageType.md) | OTA Package type. | [optional] |
@@ -26,7 +27,6 @@ A JSON value representing the OTA Package.
 | **data_size** | **int** | OTA Package data size. | [optional] [readonly] |
 | **uses_url** | **bool** | Indicates OTA Package uses url. Should be 'true' if uses url or 'false' if will be used data. | [optional] [readonly] |
 | **name** | **str** |  | [optional] [readonly] |
-| **additional_info** | **object** | OTA Package description. | [optional] |
 
 
 

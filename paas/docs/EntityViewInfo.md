@@ -9,6 +9,7 @@
 |------------ | ------------- | ------------- | -------------|
 | **id** | [**EntityViewId**](EntityViewId.md) | JSON object with the Entity View Id. Specify this field to update the Entity View. Referencing non-existing Entity View Id will cause error. Omit this field to create new Entity View. | [optional] |
 | **created_time** | **int** | Timestamp of the Entity View creation, in milliseconds | [optional] [readonly] |
+| **additional_info** | **object** | Additional parameters of the entity view. May include: 'description' (string). | [optional] |
 | **entity_id** | [**EntityId**](EntityId.md) | JSON object with the referenced Entity Id (Device or Asset). | |
 | **tenant_id** | [**TenantId**](TenantId.md) | JSON object with Tenant Id. | [optional] [readonly] |
 | **customer_id** | [**CustomerId**](CustomerId.md) | JSON object with Customer Id. Use 'assignEntityViewToCustomer' to change the Customer Id. | [optional] [readonly] |
@@ -21,7 +22,6 @@
 | **owner_name** | **str** | Owner name | [optional] [readonly] |
 | **groups** | [**List[EntityInfo]**](EntityInfo.md) | Groups | [optional] |
 | **owner_id** | [**EntityId**](EntityId.md) | JSON object with Customer or Tenant Id | [optional] [readonly] |
-| **additional_info** | **object** | Additional parameters of the entity view. May include: 'description' (string). | [optional] |
 
 
 

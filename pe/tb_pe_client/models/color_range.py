@@ -91,7 +91,7 @@ class ColorRange(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "from": obj.get("from"),
+            "var_from": obj.get("from"),
             "to": obj.get("to"),
             "color": obj.get("color")
         })
