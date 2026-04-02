@@ -27,6 +27,85 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`AdminSettingsId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `CalculatedFieldId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityViewId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `QueueId`, `QueueStatsId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### DeviceData
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| configuration | DeviceConfiguration | Device configuration for device profile type. DEFAULT is only supported value for now | [optional] |
+| transport_configuration | DeviceTransportConfiguration | Device transport configuration used to connect the device | [optional] |
+
+#### DeviceConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | DeviceProfileType | Device profile type |  |
+
+#### DefaultDeviceConfiguration  *(extends DeviceConfiguration, type=`DEFAULT`)*
+*See DeviceConfiguration for properties.*
+
+#### DeviceTransportConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### CoapDeviceTransportConfiguration  *(extends DeviceTransportConfiguration, type=`COAP`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| power_mode | PowerMode |  | [optional] |
+| psm_activity_timer | int |  | [optional] |
+| edrx_cycle | int |  | [optional] |
+| paging_transmission_window | int |  | [optional] |
+
+#### DefaultDeviceTransportConfiguration  *(extends DeviceTransportConfiguration, type=`DEFAULT`)*
+*See DeviceTransportConfiguration for properties.*
+
+#### Lwm2mDeviceTransportConfiguration  *(extends DeviceTransportConfiguration, type=`LWM2M`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| power_mode | PowerMode |  | [optional] |
+| psm_activity_timer | int |  | [optional] |
+| edrx_cycle | int |  | [optional] |
+| paging_transmission_window | int |  | [optional] |
+
+#### MqttDeviceTransportConfiguration  *(extends DeviceTransportConfiguration, type=`MQTT`)*
+*See DeviceTransportConfiguration for properties.*
+
+#### SnmpDeviceTransportConfiguration  *(extends DeviceTransportConfiguration, type=`SNMP`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| host | str |  | [optional] |
+| port | int |  | [optional] |
+| protocol_version | SnmpProtocolVersion |  | [optional] |
+| community | str |  | [optional] |
+| username | str |  | [optional] |
+| security_name | str |  | [optional] |
+| context_name | str |  | [optional] |
+| authentication_protocol | AuthenticationProtocol |  | [optional] |
+| authentication_passphrase | str |  | [optional] |
+| privacy_protocol | PrivacyProtocol |  | [optional] |
+| privacy_passphrase | str |  | [optional] |
+| engine_id | str |  | [optional] |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `RULE_CHAIN` | `RULE_NODE` | `ENTITY_VIEW` | … (36 values total)
+
+#### DeviceProfileType (enum)
+`DEFAULT`
+
+#### PowerMode (enum)
+`PSM` | `DRX` | `E_DRX`
+
+#### SnmpProtocolVersion (enum)
+`V1` | `V2C` | `V3`
+
+#### AuthenticationProtocol (enum)
+`SHA_1` | `SHA_224` | `SHA_256` | `SHA_384` | `SHA_512` | `MD5`
+
+#### PrivacyProtocol (enum)
+`DES` | `AES_128` | `AES_192` | `AES_256`
+
 ---
 
 ### Conventions

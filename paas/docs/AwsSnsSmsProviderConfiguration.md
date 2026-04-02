@@ -15,6 +15,13 @@
 
 
 
+## Referenced Types
+
+#### SmsProviderConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
 ---
 
 ### Conventions

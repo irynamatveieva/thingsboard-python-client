@@ -17,6 +17,19 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`DashboardId`, `TenantId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### DeviceProfileType (enum)
+`DEFAULT`
+
+#### DeviceTransportType (enum)
+`DEFAULT` | `MQTT` | `COAP` | `LWM2M` | `SNMP`
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

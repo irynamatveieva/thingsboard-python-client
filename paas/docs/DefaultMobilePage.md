@@ -15,6 +15,20 @@
 
 
 
+## Referenced Types
+
+#### MobilePage
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | MobilePageType |  |  |
+| visible | bool |  | [optional] |
+
+#### DefaultPageId (enum)
+`HOME` | `ALARMS` | `DEVICES` | `CUSTOMERS` | `ASSETS` | `AUDIT_LOGS` | `NOTIFICATIONS` | `DEVICE_LIST` | `DASHBOARDS`
+
+#### MobilePageType (enum)
+`DEFAULT` | `DASHBOARD` | `WEB_VIEW` | `CUSTOM`
+
 ---
 
 ### Conventions

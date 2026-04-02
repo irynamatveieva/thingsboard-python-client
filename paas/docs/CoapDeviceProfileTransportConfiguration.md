@@ -14,6 +14,29 @@
 
 
 
+## Referenced Types
+
+#### DeviceProfileTransportConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### CoapDeviceTypeConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| coap_device_type | str |  |  |
+
+#### PowerSavingConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| power_mode | PowerMode |  | [optional] |
+| psm_activity_timer | int |  | [optional] |
+| edrx_cycle | int |  | [optional] |
+| paging_transmission_window | int |  | [optional] |
+
+#### PowerMode (enum)
+`PSM` | `DRX` | `E_DRX`
+
 ---
 
 ### Conventions

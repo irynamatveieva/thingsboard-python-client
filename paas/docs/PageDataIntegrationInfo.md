@@ -14,6 +14,41 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`IntegrationId`, `TenantId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### IntegrationInfo
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | IntegrationId | JSON object with the Integration Id. Specify this field to update the Integration. Referencing non-existing Integration Id will cause error. Omit this field to create new Integration. | [optional] |
+| created_time | int | Timestamp of the integration creation, in milliseconds | [optional] [readonly] |
+| tenant_id | TenantId | JSON object with Tenant Id | [optional] [readonly] |
+| name | str | Integration Name |  |
+| type | IntegrationType | The type of the integration |  |
+| debug_mode | bool | Enable/disable debug. | [optional] |
+| debug_settings | DebugSettings | Debug settings object. | [optional] |
+| enabled | bool | Boolean flag to enable/disable the integration | [optional] |
+| remote | bool | Boolean flag to enable/disable the integration to be executed remotely. Remote integration is launched in a separate microservice. Local integration is executed by the platform core | [optional] |
+| allow_create_devices_or_assets | bool | Boolean flag to allow/disallow the integration to create devices or assets that send message and do not exist in the system yet | [optional] |
+| edge_template | bool | Boolean flag that specifies that is regular or edge template integration | [optional] |
+| version | int |  | [optional] |
+| status | object |  | [optional] |
+| stats | object |  | [optional] |
+
+#### IntegrationType (enum)
+`OCEANCONNECT` | `SIGFOX` | `THINGPARK` | `TPE` | `CHIRPSTACK` | `PARTICLE` | `TMOBILE_IOT_CDP` | `HTTP` | `MQTT` | `PUB_SUB` | … (29 values total)
+
+#### DebugSettings
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| failures_enabled | bool | Debug failures. | [optional] |
+| all_enabled | bool | Debug All. Used as a trigger for updating debugAllUntil. | [optional] |
+| all_enabled_until | int | Timestamp of the end time for the processing debug events. | [optional] |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

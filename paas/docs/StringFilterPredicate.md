@@ -15,6 +15,34 @@
 
 
 
+## Referenced Types
+
+#### KeyFilterPredicate
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### StringOperation (enum)
+`EQUAL` | `NOT_EQUAL` | `STARTS_WITH` | `ENDS_WITH` | `CONTAINS` | `NOT_CONTAINS` | `IN` | `NOT_IN`
+
+#### FilterPredicateValueString
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| default_value | str |  | [optional] |
+| user_value | str |  | [optional] |
+| dynamic_value | DynamicValueString |  | [optional] |
+
+#### DynamicValueString
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| resolved_value | str |  | [optional] |
+| source_type | DynamicValueSourceType |  | [optional] |
+| source_attribute | str |  | [optional] |
+| inherit | bool |  | [optional] |
+
+#### DynamicValueSourceType (enum)
+`CURRENT_TENANT` | `CURRENT_CUSTOMER` | `CURRENT_USER` | `CURRENT_DEVICE`
+
 ---
 
 ### Conventions

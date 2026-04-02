@@ -20,6 +20,49 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`JobId`, `TenantId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### JobType (enum)
+`CF_REPROCESSING` | `REPORT` | `DUMMY`
+
+#### JobStatus (enum)
+`QUEUED` | `PENDING` | `RUNNING` | `COMPLETED` | `FAILED` | `CANCELLED`
+
+#### JobConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| tasks_key | str |  |  |
+| to_reprocess | List[TaskResult] |  | [optional] |
+| type | str |  |  |
+
+#### JobResult
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| successful_count | int | Count of successfully completed tasks | [optional] |
+| failed_count | int | Count of failed tasks | [optional] |
+| discarded_count | int | Count of discarded tasks | [optional] |
+| total_count | int | Total number of tasks, set when all tasks are submitted | [optional] |
+| results | List[TaskResult] |  | [optional] |
+| general_error | str | General error message if the job failed | [optional] |
+| start_ts | int | Timestamp of the job start, in milliseconds | [optional] |
+| finish_ts | int | Timestamp of the job finish, in milliseconds | [optional] |
+| cancellation_ts | int | Timestamp of the job cancellation, in milliseconds | [optional] |
+| job_type | str |  |  |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
+#### TaskResult
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| key | str |  | [optional] |
+| success | bool |  | [optional] |
+| discarded | bool |  | [optional] |
+| finish_ts | int |  | [optional] |
+| job_type | str |  |  |
+
 ---
 
 ### Conventions

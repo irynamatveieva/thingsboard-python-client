@@ -27,6 +27,28 @@
 
 
 
+## Referenced Types
+
+#### Font
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| size | float |  | [optional] |
+| weight | FontWeight |  | [optional] |
+| style | FontStyle |  | [optional] |
+| family | str |  | [optional] |
+
+#### TextAlignment (enum)
+`CENTER` | `RIGHT` | `LEFT` | `JUSTIFY`
+
+#### LegendPosition (enum)
+`TOP` | `BOTTOM` | `LEFT` | `RIGHT`
+
+#### FontWeight (enum)
+`NORMAL` | `BOLD` | `ENUM_500`
+
+#### FontStyle (enum)
+`NORMAL` | `ITALIC`
+
 ---
 
 ### Conventions

@@ -15,6 +15,21 @@
 
 
 
+## Referenced Types
+
+#### DeviceProfileTransportConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### SnmpCommunicationConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| spec | SnmpCommunicationSpec | Specification of the SNMP communication |  |
+
+#### SnmpCommunicationSpec (enum)
+`TELEMETRY_QUERYING` | `CLIENT_ATTRIBUTES_QUERYING` | `SHARED_ATTRIBUTES_SETTING` | `TO_DEVICE_RPC_REQUEST` | `TO_SERVER_RPC_REQUEST`
+
 ---
 
 ### Conventions

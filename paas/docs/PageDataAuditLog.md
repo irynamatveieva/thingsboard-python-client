@@ -14,6 +14,40 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`CustomerId`, `TenantId`, `UserId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### AuditLog
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | AuditLogId | JSON object with the auditLog Id | [optional] |
+| created_time | int | Timestamp of the auditLog creation, in milliseconds | [optional] [readonly] |
+| tenant_id | TenantId | JSON object with Tenant Id | [optional] [readonly] |
+| customer_id | CustomerId | JSON object with Customer Id | [optional] [readonly] |
+| entity_id | EntityId | JSON object with Entity id | [optional] [readonly] |
+| entity_name | str | Name of the logged entity | [optional] [readonly] |
+| user_id | UserId | JSON object with User id. | [optional] [readonly] |
+| user_name | str | Unique user name(email) of the user that performed some action on logged entity | [optional] [readonly] |
+| action_type | ActionType | String represented Action type | [optional] [readonly] |
+| action_data | object | JsonNode represented action data | [optional] [readonly] |
+| action_status | ActionStatus | String represented Action status | [optional] [readonly] |
+| action_failure_details | str | Failure action details info. An empty string in case of action status type 'SUCCESS', otherwise includes stack trace of the caused exception. | [optional] [readonly] |
+
+#### AuditLogId
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | UUID | string |  |
+
+#### ActionType (enum)
+`ADDED` | `DELETED` | `UPDATED` | `ATTRIBUTES_UPDATED` | `ATTRIBUTES_DELETED` | `TIMESERIES_UPDATED` | `TIMESERIES_DELETED` | `RPC_CALL` | `CREDENTIALS_UPDATED` | `ASSIGNED_TO_CUSTOMER` | … (47 values total)
+
+#### ActionStatus (enum)
+`SUCCESS` | `FAILURE`
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

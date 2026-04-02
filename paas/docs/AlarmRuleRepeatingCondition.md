@@ -13,6 +13,37 @@
 
 
 
+## Referenced Types
+
+#### AlarmRuleCondition
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| expression | AlarmConditionExpression |  |  |
+| schedule | AlarmConditionValueAlarmRuleSchedule |  | [optional] |
+| type | str |  |  |
+
+#### AlarmConditionValueInteger
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| static_value | int |  | [optional] |
+| dynamic_value_argument | str |  | [optional] |
+
+#### AlarmConditionExpression
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### AlarmConditionValueAlarmRuleSchedule
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| dynamic_value_argument | str |  | [optional] |
+| static_value | AlarmRuleSchedule |  | [optional] |
+
+#### AlarmRuleSchedule
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
 ---
 
 ### Conventions

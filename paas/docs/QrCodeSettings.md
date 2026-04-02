@@ -23,6 +23,30 @@ A JSON value representing the mobile apps configuration
 
 
 
+## Referenced Types
+
+> **EntityId types** (`MobileAppBundleId`, `TenantId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### QrCodeSettingsId
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | UUID | string |  |
+
+#### QRCodeConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| show_on_home_page | bool |  | [optional] |
+| badge_enabled | bool |  | [optional] |
+| qr_code_label_enabled | bool |  | [optional] |
+| badge_position | BadgePosition |  | [optional] |
+| qr_code_label | str |  | [optional] |
+
+#### BadgePosition (enum)
+`RIGHT` | `LEFT`
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

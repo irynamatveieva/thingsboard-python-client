@@ -17,6 +17,21 @@
 
 
 
+## Referenced Types
+
+#### Entity
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| used | bool |  | [optional] |
+| active_count | int |  | [optional] |
+| total_count | int |  | [optional] |
+
+#### SimpleEntity
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| used | bool |  | [optional] |
+| total_count | int |  | [optional] |
+
 ---
 
 ### Conventions

@@ -14,6 +14,38 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`AdminSettingsId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `BlobEntityId`, `CalculatedFieldId`, `ConverterId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityGroupId`, `EntityViewId`, `GroupPermissionId`, `IntegrationId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `QueueId`, `QueueStatsId`, `ReportId`, `ReportTemplateId`, `RoleId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `SchedulerEventId`, `SecretId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### ScheduledReportInfo
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | SchedulerEventId | JSON object with the scheduler event Id. Specify this field to update the scheduler event. Referencing non-existing scheduler event Id will cause error. Omit this field to create new scheduler event | [optional] |
+| created_time | int | Timestamp of the scheduler event creation, in milliseconds | [optional] [readonly] |
+| additional_info | object | Additional parameters of the scheduler event | [optional] |
+| tenant_id | TenantId | JSON object with Tenant Id | [optional] [readonly] |
+| customer_id | CustomerId | JSON object with Customer Id | [optional] [readonly] |
+| originator_id | EntityId | JSON object with Originator Id | [optional] [readonly] |
+| name | str | scheduler event name | [optional] |
+| type | str | scheduler event type | [optional] |
+| schedule | object | a JSON value with schedule time configuration | [optional] |
+| enabled | bool | Enable/disable scheduler | [optional] |
+| version | int |  | [optional] |
+| template_info | EntityInfo | Report template info | [optional] [readonly] |
+| customer_title | str | Customer title | [optional] [readonly] |
+| user_name | str | Report user name | [optional] [readonly] |
+| owner_id | EntityId | JSON object with Customer or Tenant Id | [optional] [readonly] |
+
+#### EntityInfo
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | EntityId | JSON object with the entity Id. | [optional] |
+| name | str | Entity Name | [optional] |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (46 values total)
+
 ---
 
 ### Conventions

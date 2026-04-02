@@ -13,6 +13,18 @@
 
 
 
+## Referenced Types
+
+#### TimeSeriesChartNoAggregationBarWidthStrategy (enum)
+`GROUP` | `SEPARATE`
+
+#### TimeSeriesChartBarWidth
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| relative | bool |  | [optional] |
+| relative_width | float |  | [optional] |
+| absolute_width | float |  | [optional] |
+
 ---
 
 ### Conventions

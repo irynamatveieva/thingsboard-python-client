@@ -11,6 +11,39 @@
 
 
 
+## Subtypes
+
+#### AffectedTenantAdministratorsFilter  *(type=`AFFECTED_TENANT_ADMINISTRATORS`)*
+*(no additional properties)*
+
+#### AffectedUserFilter  *(type=`AFFECTED_USER`)*
+*(no additional properties)*
+
+#### AllUsersFilter  *(type=`ALL_USERS`)*
+*(no additional properties)*
+
+#### CustomerUsersFilter  *(type=`CUSTOMER_USERS`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| customer_id | UUID |  |  |
+
+#### OriginatorEntityOwnerUsersFilter  *(type=`ORIGINATOR_ENTITY_OWNER_USERS`)*
+*(no additional properties)*
+
+#### SystemAdministratorsFilter  *(type=`SYSTEM_ADMINISTRATORS`)*
+*(no additional properties)*
+
+#### TenantAdministratorsFilter  *(type=`TENANT_ADMINISTRATORS`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| tenants_ids | List[UUID] |  | [optional] |
+| tenant_profiles_ids | List[UUID] |  | [optional] |
+
+#### UserListFilter  *(type=`USER_LIST`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| users_ids | List[UUID] |  |  |
+
 ---
 
 ### Conventions

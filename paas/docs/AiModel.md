@@ -16,6 +16,18 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`AiModelId`, `TenantId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### AiModelConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| provider | str |  |  |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

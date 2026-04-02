@@ -19,6 +19,29 @@
 
 
 
+## Referenced Types
+
+#### MenuItem
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | MenuItemType | Menu item type |  |
+| visible | bool |  | [optional] |
+
+#### DefaultMenuItem  *(extends MenuItem)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | str | Unique identifier for predefined menu items | [optional] [readonly] |
+| name | str | Name of the menu item | [optional] |
+| icon | str | URL of the menu item icon. Overrides 'materialIcon' | [optional] |
+| visible | bool | Mark if menu item is visible for user | [optional] |
+| pages | List[DefaultMenuItem] | List of child menu items | [optional] |
+
+#### HomeMenuItemType (enum)
+`DEFAULT` | `DASHBOARD`
+
+#### MenuItemType (enum)
+`HOME` | `DEFAULT` | `CUSTOM`
+
 ---
 
 ### Conventions

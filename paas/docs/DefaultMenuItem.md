@@ -17,6 +17,17 @@
 
 
 
+## Referenced Types
+
+#### MenuItem
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | MenuItemType | Menu item type |  |
+| visible | bool |  | [optional] |
+
+#### MenuItemType (enum)
+`HOME` | `DEFAULT` | `CUSTOM`
+
 ---
 
 ### Conventions

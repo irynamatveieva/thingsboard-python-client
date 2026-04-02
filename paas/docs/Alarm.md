@@ -33,6 +33,19 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`AlarmId`, `CustomerId`, `TenantId`, `UserId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### AlarmSeverity (enum)
+`CRITICAL` | `MAJOR` | `MINOR` | `WARNING` | `INDETERMINATE`
+
+#### AlarmStatus (enum)
+`ACTIVE_UNACK` | `ACTIVE_ACK` | `CLEARED_UNACK` | `CLEARED_ACK`
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

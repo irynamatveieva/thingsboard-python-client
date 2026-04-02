@@ -80,6 +80,19 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`EntityGroupId`, `TenantId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### EntityGroupInfoOwnerIdsInner
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| entity_type | EntityType |  |  |
+| id | UUID | ID of the entity, time-based UUID v1 |  |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

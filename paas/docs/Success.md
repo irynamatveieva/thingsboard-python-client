@@ -13,6 +13,13 @@
 
 
 
+## Referenced Types
+
+#### TbChatResponse
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| status | str | Indicates whether the request was successful or not |  |
+
 ---
 
 ### Conventions

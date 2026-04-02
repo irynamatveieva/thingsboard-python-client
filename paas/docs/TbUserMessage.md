@@ -11,6 +11,13 @@
 
 
 
+## Referenced Types
+
+#### TbContent
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| content_type | str |  |  |
+
 ---
 
 ### Conventions

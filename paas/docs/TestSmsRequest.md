@@ -15,6 +15,13 @@ A JSON value representing the Test SMS request.
 
 
 
+## Referenced Types
+
+#### SmsProviderConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
 ---
 
 ### Conventions

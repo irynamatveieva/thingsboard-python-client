@@ -12,6 +12,13 @@
 
 
 
+## Referenced Types
+
+#### AlarmConditionSpec
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
 ---
 
 ### Conventions

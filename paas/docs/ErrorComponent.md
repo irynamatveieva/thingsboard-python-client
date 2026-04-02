@@ -14,6 +14,48 @@
 
 
 
+## Referenced Types
+
+#### ReportComponent
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| sub_type | ReportComponentSubType |  |  |
+| type | ReportComponentType |  |  |
+
+#### ErrorComponentAllOfException
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| cause | ErrorComponentAllOfExceptionCause |  | [optional] |
+| stack_trace | List[ErrorComponentAllOfExceptionCauseStackTrace] |  | [optional] |
+| message | str |  | [optional] |
+| suppressed | List[ErrorComponentAllOfExceptionCause] |  | [optional] |
+| localized_message | str |  | [optional] |
+
+#### ReportComponentSubType (enum)
+`DOUGHNUTCHART` | `HORIZONTALDOUGHNUTCHART` | `POINTCHART` | `BARCHART` | `PIECHART` | `LINECHART` | `LATESTBARCHART` | `RANGECHART` | `BARCHARTWITHLABELS` | `STATECHART` | … (11 values total)
+
+#### ReportComponentType (enum)
+`HEADING` | `RICH_TEXT` | `ENTITY_TABLE` | `TIME_SERIES_TABLE` | `ALARM_TABLE` | `TIME_SERIES_CHART` | `LATEST_CHART` | `DASHBOARD` | `IMAGE` | `SUB_REPORT` | … (14 values total)
+
+#### ErrorComponentAllOfExceptionCause
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| stack_trace | List[ErrorComponentAllOfExceptionCauseStackTrace] |  | [optional] |
+| message | str |  | [optional] |
+| localized_message | str |  | [optional] |
+
+#### ErrorComponentAllOfExceptionCauseStackTrace
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| class_loader_name | str |  | [optional] |
+| module_name | str |  | [optional] |
+| module_version | str |  | [optional] |
+| method_name | str |  | [optional] |
+| file_name | str |  | [optional] |
+| line_number | int |  | [optional] |
+| class_name | str |  | [optional] |
+| native_method | bool |  | [optional] |
+
 ---
 
 ### Conventions

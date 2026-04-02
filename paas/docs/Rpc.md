@@ -19,6 +19,16 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`DeviceId`, `RpcId`, `TenantId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### RpcStatus (enum)
+`QUEUED` | `SENT` | `DELIVERED` | `SUCCESSFUL` | `TIMEOUT` | `EXPIRED` | `FAILED` | `DELETED`
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

@@ -14,6 +14,28 @@
 
 
 
+## Referenced Types
+
+#### TwoFaProviderConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| provider_type | str |  |  |
+
+#### BackupCodeTwoFaProviderConfig  *(extends TwoFaProviderConfig, provider_type=`BACKUP_CODE`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| codes_quantity | int |  | [optional] |
+
+#### EmailTwoFaProviderConfig  *(extends TwoFaProviderConfig, provider_type=`EMAIL`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| verification_code_lifetime | int |  | [optional] |
+
+#### TotpTwoFaProviderConfig  *(extends TwoFaProviderConfig, provider_type=`TOTP`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| issuer_name | str |  |  |
+
 ---
 
 ### Conventions

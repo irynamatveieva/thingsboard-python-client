@@ -14,6 +14,30 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`CustomerId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### Mapping
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| columns | List[ColumnMapping] |  | [optional] |
+| delimiter | str |  | [optional] |
+| update | bool |  | [optional] |
+| header | bool |  | [optional] |
+
+#### ColumnMapping
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | BulkImportColumnType |  | [optional] |
+| key | str |  | [optional] |
+
+#### BulkImportColumnType (enum)
+`NAME` | `TYPE` | `LABEL` | `SHARED_ATTRIBUTE` | `SERVER_ATTRIBUTE` | `TIMESERIES` | `ACCESS_TOKEN` | `X509` | `MQTT_CLIENT_ID` | `MQTT_USER_NAME` | … (32 values total)
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

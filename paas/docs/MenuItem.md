@@ -12,6 +12,11 @@
 
 
 
+## Referenced Types
+
+#### MenuItemType (enum)
+`HOME` | `DEFAULT` | `CUSTOM`
+
 ---
 
 ### Conventions

@@ -13,6 +13,32 @@
 
 
 
+## Referenced Types
+
+#### KeyFilter
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| key | EntityKey |  | [optional] |
+| value_type | EntityKeyValueType |  | [optional] |
+| predicate | KeyFilterPredicate |  | [optional] |
+
+#### EntityKey
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | EntityKeyType |  | [optional] |
+| key | str |  | [optional] |
+
+#### EntityKeyValueType (enum)
+`STRING` | `NUMERIC` | `BOOLEAN` | `DATE_TIME`
+
+#### KeyFilterPredicate
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### EntityKeyType (enum)
+`ATTRIBUTE` | `CLIENT_ATTRIBUTE` | `SHARED_ATTRIBUTE` | `SERVER_ATTRIBUTE` | `TIME_SERIES` | `ENTITY_FIELD` | `ALARM_FIELD`
+
 ---
 
 ### Conventions

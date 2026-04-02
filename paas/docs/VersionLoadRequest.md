@@ -14,6 +14,11 @@ Request for loading a version
 
 
 
+## Referenced Types
+
+#### VersionLoadRequestType (enum)
+`SINGLE_ENTITY` | `ENTITY_TYPE`
+
 ---
 
 ### Conventions

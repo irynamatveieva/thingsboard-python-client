@@ -11,6 +11,14 @@
 
 
 
+## Referenced Types
+
+#### NotificationPref
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| enabled | bool |  | [optional] |
+| enabled_delivery_methods | Dict[str, bool] |  |  |
+
 ---
 
 ### Conventions

@@ -23,6 +23,24 @@
 
 
 
+## Referenced Types
+
+#### AiModelConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| provider | str |  |  |
+
+#### AiModelType (enum)
+`CHAT`
+
+#### GoogleVertexAiGeminiProviderConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| file_name | str |  | [optional] |
+| project_id | str |  |  |
+| location | str |  |  |
+| service_account_key | str |  |  |
+
 ---
 
 ### Conventions

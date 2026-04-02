@@ -33,6 +33,38 @@ A JSON value representing the tenant.
 
 
 
+## Referenced Types
+
+> **EntityId types** (`TenantId`, `TenantProfileId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### TenantAddonData
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| max_devices | int |  | [optional] |
+| max_assets | int |  | [optional] |
+| max_customers | int |  | [optional] |
+| max_users | int |  | [optional] |
+| max_integrations | int |  | [optional] |
+| max_converters | int |  | [optional] |
+| max_calculated_fields_per_entity | int |  | [optional] |
+| max_transport_messages | int |  | [optional] |
+| max_transport_data_points | int |  | [optional] |
+| max_re_executions | int |  | [optional] |
+| max_js_executions | int |  | [optional] |
+| max_dp_storage_days | int |  | [optional] |
+| max_created_alarms | int |  | [optional] |
+| max_emails | int |  | [optional] |
+| max_sms | int |  | [optional] |
+| max_ai_credits | int |  | [optional] |
+| edge_enabled | bool |  | [optional] |
+| max_edges | int |  | [optional] |
+| trendz_enabled | bool |  | [optional] |
+| white_labeling_enabled | bool |  | [optional] |
+| default | bool |  | [optional] |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

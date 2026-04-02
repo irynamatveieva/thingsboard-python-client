@@ -16,6 +16,71 @@
 
 
 
+## Referenced Types
+
+#### DeviceProfileTransportConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### TelemetryMappingConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| key_name | Dict[str, str] | Map of LwM2M resource paths to telemetry key names | [optional] |
+| observe | List[str] | Set of resources to observe | [optional] |
+| attribute | List[str] | Set of attribute keys | [optional] |
+| telemetry | List[str] | Set of telemetry keys | [optional] |
+| attribute_lwm2m | Dict[str, ObjectAttributes] | Map of resource paths to specific LwM2M object attributes | [optional] |
+| init_attr_tel_as_obs_strategy | bool |  | [optional] |
+| observe_strategy | TelemetryObserveStrategy | Observation strategy for telemetry | [optional] |
+
+#### LwM2MBootstrapServerCredential
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| security_mode | str |  |  |
+
+#### OtherConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| power_mode | PowerMode |  | [optional] |
+| psm_activity_timer | int |  | [optional] |
+| edrx_cycle | int |  | [optional] |
+| paging_transmission_window | int |  | [optional] |
+| use_object19_for_ota_info | bool |  | [optional] |
+| fw_update_strategy | int |  | [optional] |
+| sw_update_strategy | int |  | [optional] |
+| client_only_observe_after_connect | int |  | [optional] |
+| fw_update_resource | str |  | [optional] |
+| sw_update_resource | str |  | [optional] |
+| default_object_id_ver | str |  | [optional] |
+
+#### ObjectAttributes
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| dim | int |  | [optional] |
+| ssid | int |  | [optional] |
+| uri | str |  | [optional] |
+| ver | object |  | [optional] |
+| lwm2m | LwM2mVersion |  | [optional] |
+| pmin | int |  | [optional] |
+| pmax | int |  | [optional] |
+| gt | float |  | [optional] |
+| lt | float |  | [optional] |
+| st | float |  | [optional] |
+| epmin | int |  | [optional] |
+| epmax | int |  | [optional] |
+
+#### TelemetryObserveStrategy (enum)
+`SINGLE_LEFT_PARENTHESIS_0_RIGHT_PARENTHESIS_COLON__ONE_RESOURCE_EQUALS_ONE_SINGLE_OBSERVE_REQUEST` | `COMPOSITE_ALL_LEFT_PARENTHESIS_1_RIGHT_PARENTHESIS_COLON__ALL_RESOURCES_IN_ONE_COMPOSITE_OBSERVE_REQUEST` | `COMPOSITE_BY_OBJECT_LEFT_PARENTHESIS_2_RIGHT_PARENTHESIS_COLON__GROUPED_COMPOSITE_OBSERVE_REQUESTS_BY_OBJECT`
+
+#### PowerMode (enum)
+`PSM` | `DRX` | `E_DRX`
+
+#### LwM2mVersion
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| supported | bool |  | [optional] |
+
 ---
 
 ### Conventions

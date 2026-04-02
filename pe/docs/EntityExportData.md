@@ -17,6 +17,666 @@ Base export container for ThingsBoard entities
 
 
 
+## Subtypes
+
+#### AiModelExportData  *(entity_type=`AI_MODEL`)*
+*(no additional properties)*
+
+#### AssetExportData  *(entity_type=`ASSET`)*
+*(no additional properties)*
+
+#### AssetProfileExportData  *(entity_type=`ASSET_PROFILE`)*
+*(no additional properties)*
+
+#### ConverterExportData  *(entity_type=`CONVERTER`)*
+*(no additional properties)*
+
+#### CustomerExportData  *(entity_type=`CUSTOMER`)*
+*(no additional properties)*
+
+#### DashboardExportData  *(entity_type=`DASHBOARD`)*
+*(no additional properties)*
+
+#### DeviceExportData  *(entity_type=`DEVICE`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| credentials | DeviceCredentials |  | [optional] |
+
+#### DeviceProfileExportData  *(entity_type=`DEVICE_PROFILE`)*
+*(no additional properties)*
+
+#### EntityGroupExportData  *(entity_type=`ENTITY_GROUP`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| permissions | List[GroupPermission] |  | [optional] |
+| group_ota_packages | List[DeviceGroupOtaPackage] |  | [optional] |
+| group_entities | bool |  | [optional] |
+
+#### EntityViewExportData  *(entity_type=`ENTITY_VIEW`)*
+*(no additional properties)*
+
+#### IntegrationExportData  *(entity_type=`INTEGRATION`)*
+*(no additional properties)*
+
+#### NotificationRuleExportData  *(entity_type=`NOTIFICATION_RULE`)*
+*(no additional properties)*
+
+#### NotificationTargetExportData  *(entity_type=`NOTIFICATION_TARGET`)*
+*(no additional properties)*
+
+#### NotificationTemplateExportData  *(entity_type=`NOTIFICATION_TEMPLATE`)*
+*(no additional properties)*
+
+#### OtaPackageExportData  *(entity_type=`OTA_PACKAGE`)*
+*(no additional properties)*
+
+#### ReportTemplateExportData  *(entity_type=`REPORT_TEMPLATE`)*
+*(no additional properties)*
+
+#### RoleExportData  *(entity_type=`ROLE`)*
+*(no additional properties)*
+
+#### RuleChainExportData  *(entity_type=`RULE_CHAIN`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| meta_data | RuleChainMetaData |  | [optional] |
+
+#### SchedulerEventExportData  *(entity_type=`SCHEDULER_EVENT`)*
+*(no additional properties)*
+
+#### TbResourceExportData  *(entity_type=`TB_RESOURCE`)*
+*(no additional properties)*
+
+#### WidgetsBundleExportData  *(entity_type=`WIDGETS_BUNDLE`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| widgets | List[object] |  | [optional] |
+| fqns | List[str] |  | [optional] |
+
+#### WidgetTypeExportData  *(entity_type=`WIDGET_TYPE`)*
+*(no additional properties)*
+
+## Referenced Types
+
+> **EntityId types** (`AdminSettingsId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `BlobEntityId`, `CalculatedFieldId`, `ConverterId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityGroupId`, `EntityViewId`, `GroupPermissionId`, `IntegrationId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `QueueId`, `QueueStatsId`, `ReportId`, `ReportTemplateId`, `RoleId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `SchedulerEventId`, `SecretId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### ExportableEntity
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | EntityId |  | [optional] |
+| name | str |  | [optional] |
+
+#### EntityRelation
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| var_from | EntityId | JSON object with [from] Entity Id. |  |
+| to | EntityId | JSON object with [to] Entity Id. |  |
+| type | str | String value of relation type. |  |
+| type_group | RelationTypeGroup | Represents the type group of the relation. |  |
+| version | int |  | [optional] |
+| additional_info | object | Additional parameters of the relation. | [optional] |
+
+#### CalculatedField
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | CalculatedFieldId | JSON object with the Calculated Field Id. Referencing non-existing Calculated Field Id will cause error. | [optional] |
+| created_time | int | Timestamp of the calculated field creation, in milliseconds | [optional] [readonly] |
+| tenant_id | TenantId |  | [optional] |
+| entity_id | EntityId |  | [optional] |
+| type | CalculatedFieldType |  | [optional] |
+| name | str | User defined name of the calculated field. | [optional] |
+| debug_settings | DebugSettings | Debug settings object. | [optional] |
+| configuration_version | int | Version of calculated field configuration. | [optional] |
+| configuration | CalculatedFieldConfiguration |  |  |
+| version | int |  | [optional] |
+| additional_info | object | Additional parameters of the calculated field | [optional] |
+| debug_mode | bool |  | [optional] |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (46 values total)
+
+#### DeviceCredentials
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | DeviceCredentialsId | The Id is automatically generated during device creation. Use 'getDeviceCredentialsByDeviceId' to obtain the id based on device id. Use 'updateDeviceCredentials' to update device credentials. | [readonly] |
+| created_time | int | Timestamp of the device credentials creation, in milliseconds | [optional] |
+| device_id | DeviceId | JSON object with the device Id. |  |
+| credentials_type | DeviceCredentialsType | Type of the credentials | [optional] |
+| credentials_id | str | Unique Credentials Id per platform instance. Used to lookup credentials from the database. By default, new access token for your device. Depends on the type of the credentials. |  |
+| credentials_value | str | Value of the credentials. Null in case of ACCESS_TOKEN credentials type. Base64 value in case of X509_CERTIFICATE. Complex object in case of MQTT_BASIC and LWM2M_CREDENTIALS | [optional] |
+| version | int |  | [optional] |
+
+#### GroupPermission
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | GroupPermissionId | JSON object with the Group Permission Id. Specify this field to update the Group Permission. Referencing non-existing Group Permission Id will cause error. Omit this field to create new Group Permission. | [optional] |
+| created_time | int | Timestamp of the group permission creation, in milliseconds | [optional] [readonly] |
+| tenant_id | TenantId | JSON object with the Tenant Id. | [optional] [readonly] |
+| user_group_id | EntityGroupId | JSON object with the User Group Id. Represents the user group that will have permissions to perform operations against the corresponding entity group. |  |
+| role_id | RoleId | JSON object with the Role Id. Represents the set of permissions. The role type (GENERIC or GROUP) determines whether 'entityGroupId' is required. |  |
+| entity_group_id | EntityGroupId | JSON object with the Entity Group Id. Required when using a GROUP role — specifies the entity group to which the permissions apply. Must be null or omitted when using a GENERIC role. | [optional] |
+| entity_group_type | EntityType | Type of the entities in the group: DEVICE, ASSET, CUSTOMER, etc. Auto-populated from the referenced entity group. Null for generic permissions. | [optional] [readonly] |
+| is_public | bool |  | [optional] |
+| name | str | Name of the Group Permissions. Auto-generated | [optional] [readonly] |
+| public | bool |  | [optional] |
+
+#### DeviceGroupOtaPackage
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | UUID |  | [optional] |
+| group_id | EntityGroupId |  | [optional] |
+| ota_package_type | OtaPackageType |  | [optional] |
+| ota_package_id | OtaPackageId |  | [optional] |
+| ota_package_update_time | int |  | [optional] |
+
+#### RuleChainMetaData
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| rule_chain_id | RuleChainId | JSON object with Rule Chain Id. | [readonly] |
+| version | int | Version of the Rule Chain | [optional] |
+| first_node_index | int | Index of the first rule node in the 'nodes' list |  |
+| nodes | List[RuleNode] | List of rule node JSON objects |  |
+| connections | List[NodeConnectionInfo] | List of JSON objects that represent connections between rule nodes |  |
+| rule_chain_connections | List[RuleChainConnectionInfo] | List of JSON objects that represent connections between rule nodes and other rule chains. |  |
+
+#### RelationTypeGroup (enum)
+`COMMON` | `DASHBOARD` | `FROM_ENTITY_GROUP` | `RULE_CHAIN` | `RULE_NODE` | `EDGE` | `EDGE_AUTO_ASSIGN_RULE_CHAIN`
+
+#### CalculatedFieldType (enum)
+`SIMPLE` | `SCRIPT` | `GEOFENCING` | `ALARM` | `PROPAGATION` | `RELATED_ENTITIES_AGGREGATION` | `ENTITY_AGGREGATION`
+
+#### DebugSettings
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| failures_enabled | bool | Debug failures. | [optional] |
+| all_enabled | bool | Debug All. Used as a trigger for updating debugAllUntil. | [optional] |
+| all_enabled_until | int | Timestamp of the end time for the processing debug events. | [optional] |
+
+#### CalculatedFieldConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| output | Output |  | [optional] |
+| type | str |  |  |
+
+#### AlarmCalculatedFieldConfiguration  *(extends CalculatedFieldConfiguration, type=`ALARM`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| arguments | Dict[str, Argument] |  |  |
+| create_rules | Dict[str, AlarmRuleDefinition] |  |  |
+| clear_rule | AlarmRuleDefinition |  | [optional] |
+| propagate | bool |  | [optional] |
+| propagate_to_owner | bool |  | [optional] |
+| propagate_to_owner_hierarchy | bool |  | [optional] |
+| propagate_to_tenant | bool |  | [optional] |
+| propagate_relation_types | List[str] |  | [optional] |
+
+#### EntityAggregationCalculatedFieldConfiguration  *(extends CalculatedFieldConfiguration, type=`ENTITY_AGGREGATION`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| arguments | Dict[str, Argument] |  |  |
+| metrics | Dict[str, AggMetric] |  |  |
+| interval | AggInterval |  |  |
+| watermark | Watermark |  | [optional] |
+| produce_intermediate_result | bool |  | [optional] |
+
+#### GeofencingCalculatedFieldConfiguration  *(extends CalculatedFieldConfiguration, type=`GEOFENCING`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| entity_coordinates | EntityCoordinates |  |  |
+| zone_groups | Dict[str, ZoneGroupConfiguration] |  |  |
+| scheduled_update_enabled | bool |  | [optional] |
+| scheduled_update_interval | int |  | [optional] |
+
+#### PropagationCalculatedFieldConfiguration  *(extends CalculatedFieldConfiguration, type=`PROPAGATION`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| arguments | Dict[str, Argument] |  |  |
+| expression | str |  | [optional] |
+| relation | RelationPathLevel |  |  |
+| apply_expression_to_resolved_arguments | bool |  | [optional] |
+
+#### RelatedEntitiesAggregationCalculatedFieldConfiguration  *(extends CalculatedFieldConfiguration, type=`RELATED_ENTITIES_AGGREGATION`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| relation | RelationPathLevel |  |  |
+| arguments | Dict[str, Argument] |  |  |
+| deduplication_interval_in_sec | int |  | [optional] |
+| metrics | Dict[str, AggMetric] |  |  |
+| use_latest_ts | bool |  | [optional] |
+| scheduled_update_interval | int |  | [optional] |
+| scheduled_update_enabled | bool |  | [optional] |
+
+#### ScriptCalculatedFieldConfiguration  *(extends CalculatedFieldConfiguration, type=`SCRIPT`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| arguments | Dict[str, Argument] |  |  |
+| expression | str |  | [optional] |
+
+#### SimpleCalculatedFieldConfiguration  *(extends CalculatedFieldConfiguration, type=`SIMPLE`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| arguments | Dict[str, Argument] |  |  |
+| expression | str |  | [optional] |
+| use_latest_ts | bool |  | [optional] |
+
+#### DeviceCredentialsId
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | UUID | string |  |
+
+#### DeviceCredentialsType (enum)
+`ACCESS_TOKEN` | `X509_CERTIFICATE` | `MQTT_BASIC` | `LWM2_M_CREDENTIALS`
+
+#### OtaPackageType (enum)
+`FIRMWARE` | `SOFTWARE`
+
+#### RuleNode
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | RuleNodeId | JSON object with the Rule Node Id. Specify this field to update the Rule Node. Referencing non-existing Rule Node Id will cause error. Omit this field to create new rule node. | [optional] |
+| created_time | int | Timestamp of the rule node creation, in milliseconds | [optional] [readonly] |
+| additional_info | object | Additional parameters of the rule node. May include: 'layoutX' (number, X coordinate for visualization), 'layoutY' (number, Y coordinate for visualization), 'description' (string). | [optional] |
+| rule_chain_id | RuleChainId | JSON object with the Rule Chain Id. | [optional] [readonly] |
+| type | str | Full Java Class Name of the rule node implementation. | [optional] |
+| name | str | User defined name of the rule node. Used on UI and for logging. | [optional] |
+| debug_settings | DebugSettings | Debug settings object. | [optional] |
+| singleton_mode | bool | Enable/disable singleton mode. | [optional] |
+| queue_name | str | Queue name. | [optional] |
+| configuration_version | int | Version of rule node configuration. | [optional] |
+| configuration | object | JSON with the rule node configuration. Structure depends on the rule node implementation. | [optional] |
+| external_id | RuleNodeId |  | [optional] |
+| debug_mode | bool |  | [optional] |
+
+#### NodeConnectionInfo
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| from_index | int | Index of rule node in the 'nodes' array of the RuleChainMetaData. Indicates the 'from' part of the connection. |  |
+| to_index | int | Index of rule node in the 'nodes' array of the RuleChainMetaData. Indicates the 'to' part of the connection. |  |
+| type | str | Type of the relation. Typically indicated the result of processing by the 'from' rule node. For example, 'Success' or 'Failure' |  |
+
+#### RuleChainConnectionInfo
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| from_index | int | Index of rule node in the 'nodes' array of the RuleChainMetaData. Indicates the 'from' part of the connection. |  |
+| target_rule_chain_id | RuleChainId | JSON object with the Rule Chain Id. |  |
+| additional_info | object | JSON object with the additional information about the connection. |  |
+| type | str | Type of the relation. Typically indicated the result of processing by the 'from' rule node. For example, 'Success' or 'Failure' |  |
+
+#### Output
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| name | str |  | [optional] |
+| scope | AttributeScope |  | [optional] |
+| decimals_by_default | int |  | [optional] |
+| strategy | object |  | [optional] |
+| type | str |  |  |
+
+#### AttributesOutput  *(extends Output, type=`ATTRIBUTES`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| strategy | AttributesOutputStrategy |  | [optional] |
+
+#### TimeSeriesOutput  *(extends Output, type=`TIME_SERIES`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| strategy | TimeSeriesOutputStrategy |  | [optional] |
+
+#### AttributeScope (enum)
+`CLIENT_SCOPE` | `SERVER_SCOPE` | `SHARED_SCOPE`
+
+#### Argument
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| ref_entity_id | EntityId |  | [optional] |
+| ref_dynamic_source_configuration | CfArgumentDynamicSourceConfiguration |  | [optional] |
+| ref_entity_key | ReferencedEntityKey |  | [optional] |
+| default_value | str |  | [optional] |
+| limit | int |  | [optional] |
+| time_window | int |  | [optional] |
+
+#### EntityCoordinates
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| latitude_key_name | str |  |  |
+| longitude_key_name | str |  |  |
+
+#### ZoneGroupConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| ref_entity_id | EntityId |  | [optional] |
+| ref_dynamic_source_configuration | CfArgumentDynamicSourceConfiguration |  | [optional] |
+| perimeter_key_name | str |  |  |
+| report_strategy | GeofencingReportStrategy |  |  |
+| create_relations_with_matched_zones | bool |  | [optional] |
+| relation_type | str |  | [optional] |
+| direction | EntitySearchDirection |  | [optional] |
+
+#### AlarmRuleDefinition
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| alarm_details | str |  | [optional] |
+| condition | AlarmRuleCondition |  |  |
+| dashboard_id | DashboardId |  | [optional] |
+
+#### RelationPathLevel
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| direction | EntitySearchDirection |  |  |
+| relation_type | str |  |  |
+
+#### AggMetric
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| function | AggFunction |  | [optional] |
+| filter | str |  | [optional] |
+| input | AggInput |  | [optional] |
+| default_value | float |  | [optional] |
+
+#### AggInterval
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### CustomInterval  *(extends AggInterval, type=`CUSTOM`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| tz | str |  |  |
+| offset_sec | int |  | [optional] |
+| duration_sec | int |  |  |
+
+#### DayInterval  *(extends AggInterval, type=`DAY`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| tz | str |  |  |
+| offset_sec | int |  | [optional] |
+
+#### HourInterval  *(extends AggInterval, type=`HOUR`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| tz | str |  |  |
+| offset_sec | int |  | [optional] |
+
+#### MonthInterval  *(extends AggInterval, type=`MONTH`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| tz | str |  |  |
+| offset_sec | int |  | [optional] |
+
+#### QuarterInterval  *(extends AggInterval, type=`QUARTER`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| tz | str |  |  |
+| offset_sec | int |  | [optional] |
+
+#### WeekInterval  *(extends AggInterval, type=`WEEK`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| tz | str |  |  |
+| offset_sec | int |  | [optional] |
+
+#### WeekSunSatInterval  *(extends AggInterval, type=`WEEK_SUN_SAT`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| tz | str |  |  |
+| offset_sec | int |  | [optional] |
+
+#### YearInterval  *(extends AggInterval, type=`YEAR`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| tz | str |  |  |
+| offset_sec | int |  | [optional] |
+
+#### Watermark
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| duration | int |  | [optional] |
+
+#### TimeSeriesOutputStrategy
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### TimeSeriesImmediateOutputStrategy  *(extends TimeSeriesOutputStrategy, type=`IMMEDIATE`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| ttl | int |  | [optional] |
+| save_time_series | bool |  | [optional] |
+| save_latest | bool |  | [optional] |
+| send_ws_update | bool |  | [optional] |
+| process_cfs | bool |  | [optional] |
+
+#### TimeSeriesRuleChainOutputStrategy  *(extends TimeSeriesOutputStrategy, type=`RULE_CHAIN`)*
+*See TimeSeriesOutputStrategy for properties.*
+
+#### AttributesOutputStrategy
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### AttributesImmediateOutputStrategy  *(extends AttributesOutputStrategy, type=`IMMEDIATE`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| send_attributes_updated_notification | bool |  | [optional] |
+| update_attributes_only_on_value_change | bool |  | [optional] |
+| save_attribute | bool |  | [optional] |
+| send_ws_update | bool |  | [optional] |
+| process_cfs | bool |  | [optional] |
+
+#### AttributesRuleChainOutputStrategy  *(extends AttributesOutputStrategy, type=`RULE_CHAIN`)*
+*See AttributesOutputStrategy for properties.*
+
+#### CfArgumentDynamicSourceConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### CurrentOwnerDynamicSourceConfiguration  *(extends CfArgumentDynamicSourceConfiguration, type=`CURRENT_OWNER`)*
+*See CfArgumentDynamicSourceConfiguration for properties.*
+
+#### RelationPathQueryDynamicSourceConfiguration  *(extends CfArgumentDynamicSourceConfiguration, type=`RELATION_PATH_QUERY`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| levels | List[RelationPathLevel] |  | [optional] |
+
+#### ReferencedEntityKey
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| key | str |  | [optional] |
+| type | ArgumentType |  | [optional] |
+| scope | AttributeScope |  | [optional] |
+
+#### GeofencingReportStrategy (enum)
+`REPORT_TRANSITION_EVENTS_ONLY` | `REPORT_PRESENCE_STATUS_ONLY` | `REPORT_TRANSITION_EVENTS_AND_PRESENCE_STATUS`
+
+#### EntitySearchDirection (enum)
+`FROM` | `TO`
+
+#### AlarmRuleCondition
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| expression | AlarmConditionExpression |  |  |
+| schedule | AlarmConditionValueAlarmRuleSchedule |  | [optional] |
+| type | str |  |  |
+
+#### AlarmRuleDurationCondition  *(extends AlarmRuleCondition, type=`DURATION`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| unit | TimeUnit |  |  |
+| value | AlarmConditionValueLong |  |  |
+
+#### AlarmRuleRepeatingCondition  *(extends AlarmRuleCondition, type=`REPEATING`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| count | AlarmConditionValueInteger |  |  |
+
+#### AlarmRuleSimpleCondition  *(extends AlarmRuleCondition, type=`SIMPLE`)*
+*See AlarmRuleCondition for properties.*
+
+#### AggFunction (enum)
+`MIN` | `MAX` | `SUM` | `AVG` | `COUNT` | `COUNT_UNIQUE`
+
+#### AggInput
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### AggFunctionInput  *(extends AggInput, type=`function`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| function | str |  | [optional] |
+
+#### AggKeyInput  *(extends AggInput, type=`key`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| key | str |  | [optional] |
+
+#### ArgumentType (enum)
+`TS_LATEST` | `ATTRIBUTE` | `TS_ROLLING`
+
+#### AlarmConditionExpression
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### SimpleAlarmConditionExpression  *(extends AlarmConditionExpression, type=`SIMPLE`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| filters | List[AlarmRuleConditionFilter] |  |  |
+| operation | ComplexOperation |  | [optional] |
+
+#### TbelAlarmConditionExpression  *(extends AlarmConditionExpression, type=`TBEL`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| expression | str |  |  |
+
+#### AlarmConditionValueAlarmRuleSchedule
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| dynamic_value_argument | str |  | [optional] |
+| static_value | AlarmRuleSchedule |  | [optional] |
+
+#### AlarmRuleSchedule
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### AlarmRuleAnyTimeSchedule  *(extends AlarmRuleSchedule, type=`ANY_TIME`)*
+*See AlarmRuleSchedule for properties.*
+
+#### AlarmRuleCustomTimeSchedule  *(extends AlarmRuleSchedule, type=`CUSTOM`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| items | List[AlarmRuleCustomTimeScheduleItem] |  | [optional] |
+| timezone | str |  | [optional] |
+
+#### AlarmRuleSpecificTimeSchedule  *(extends AlarmRuleSchedule, type=`SPECIFIC_TIME`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| days_of_week | List[int] |  | [optional] |
+| ends_on | int |  | [optional] |
+| starts_on | int |  | [optional] |
+| timezone | str |  | [optional] |
+
+#### TimeUnit (enum)
+`NANOSECONDS` | `MICROSECONDS` | `MILLISECONDS` | `SECONDS` | `MINUTES` | `HOURS` | `DAYS`
+
+#### AlarmConditionValueLong
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| static_value | int |  | [optional] |
+| dynamic_value_argument | str |  | [optional] |
+
+#### AlarmConditionValueInteger
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| static_value | int |  | [optional] |
+| dynamic_value_argument | str |  | [optional] |
+
+#### AlarmRuleConditionFilter
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| argument | str |  |  |
+| operation | ComplexOperation |  | [optional] |
+| predicates | List[AlarmRuleKeyFilterPredicate] |  |  |
+| value_type | EntityKeyValueType |  |  |
+
+#### ComplexOperation (enum)
+`AND` | `OR`
+
+#### AlarmRuleKeyFilterPredicate
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### AlarmRuleBooleanFilterPredicate  *(extends AlarmRuleKeyFilterPredicate, type=`BOOLEAN`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| operation | BooleanOperation |  |  |
+| value | AlarmConditionValueBoolean |  |  |
+
+#### AlarmRuleComplexFilterPredicate  *(extends AlarmRuleKeyFilterPredicate, type=`COMPLEX`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| operation | ComplexOperation |  | [optional] |
+| predicates | List[AlarmRuleKeyFilterPredicate] |  | [optional] |
+
+#### AlarmRuleNoDataFilterPredicate  *(extends AlarmRuleKeyFilterPredicate, type=`NO_DATA`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| duration | AlarmConditionValueLong |  |  |
+| unit | TimeUnit |  |  |
+
+#### AlarmRuleNumericFilterPredicate  *(extends AlarmRuleKeyFilterPredicate, type=`NUMERIC`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| operation | NumericOperation |  |  |
+| value | AlarmConditionValueDouble |  |  |
+
+#### AlarmRuleStringFilterPredicate  *(extends AlarmRuleKeyFilterPredicate, type=`STRING`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| ignore_case | bool |  | [optional] |
+| operation | StringOperation |  |  |
+| value | AlarmConditionValueString |  |  |
+
+#### EntityKeyValueType (enum)
+`STRING` | `NUMERIC` | `BOOLEAN` | `DATE_TIME`
+
+#### AlarmRuleCustomTimeScheduleItem
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| day_of_week | int |  | [optional] |
+| enabled | bool |  | [optional] |
+| ends_on | int |  | [optional] |
+| starts_on | int |  | [optional] |
+
+#### StringOperation (enum)
+`EQUAL` | `NOT_EQUAL` | `STARTS_WITH` | `ENDS_WITH` | `CONTAINS` | `NOT_CONTAINS` | `IN` | `NOT_IN`
+
+#### AlarmConditionValueString
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| static_value | str |  | [optional] |
+| dynamic_value_argument | str |  | [optional] |
+
+#### NumericOperation (enum)
+`EQUAL` | `NOT_EQUAL` | `GREATER` | `LESS` | `GREATER_OR_EQUAL` | `LESS_OR_EQUAL`
+
+#### AlarmConditionValueDouble
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| static_value | float |  | [optional] |
+| dynamic_value_argument | str |  | [optional] |
+
+#### BooleanOperation (enum)
+`EQUAL` | `NOT_EQUAL`
+
+#### AlarmConditionValueBoolean
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| static_value | bool |  | [optional] |
+| dynamic_value_argument | str |  | [optional] |
+
 ---
 
 ### Conventions

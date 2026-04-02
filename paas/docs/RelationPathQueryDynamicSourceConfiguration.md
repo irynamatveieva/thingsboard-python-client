@@ -13,6 +13,22 @@
 
 
 
+## Referenced Types
+
+#### CfArgumentDynamicSourceConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### RelationPathLevel
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| direction | EntitySearchDirection |  |  |
+| relation_type | str |  |  |
+
+#### EntitySearchDirection (enum)
+`FROM` | `TO`
+
 ---
 
 ### Conventions

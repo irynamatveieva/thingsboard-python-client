@@ -14,6 +14,16 @@
 
 
 
+## Referenced Types
+
+#### KeyFilterPredicate
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### ComplexOperation (enum)
+`AND` | `OR`
+
 ---
 
 ### Conventions

@@ -21,6 +21,41 @@
 
 
 
+## Referenced Types
+
+#### ChartLabelPosition (enum)
+`TOP` | `BOTTOM`
+
+#### Font
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| size | float |  | [optional] |
+| weight | FontWeight |  | [optional] |
+| style | FontStyle |  | [optional] |
+| family | str |  | [optional] |
+
+#### ChartFillSettings
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | ChartFillType |  | [optional] |
+| opacity | float |  | [optional] |
+| gradient | ChartFillSettingsGradient |  | [optional] |
+
+#### FontWeight (enum)
+`NORMAL` | `BOLD` | `ENUM_500`
+
+#### FontStyle (enum)
+`NORMAL` | `ITALIC`
+
+#### ChartFillType (enum)
+`NONE` | `OPACITY` | `GRADIENT`
+
+#### ChartFillSettingsGradient
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| start | float |  | [optional] |
+| end | float |  | [optional] |
+
 ---
 
 ### Conventions

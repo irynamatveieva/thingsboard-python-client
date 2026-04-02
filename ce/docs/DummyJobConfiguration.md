@@ -23,6 +23,24 @@ Dummy job configuration
 
 
 
+## Referenced Types
+
+#### JobConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| tasks_key | str |  |  |
+| to_reprocess | List[TaskResult] |  | [optional] |
+| type | str |  |  |
+
+#### TaskResult
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| key | str |  | [optional] |
+| success | bool |  | [optional] |
+| discarded | bool |  | [optional] |
+| finish_ts | int |  | [optional] |
+| job_type | str |  |  |
+
 ---
 
 ### Conventions

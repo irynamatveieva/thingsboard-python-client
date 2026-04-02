@@ -15,6 +15,33 @@
 
 
 
+## Referenced Types
+
+> **EntityId**: `{entity_type: EntityType, id: UUID}` — base type for all entity identifiers.
+
+#### VersionLoadRequest
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| version_id | str |  | [optional] |
+| type | VersionLoadRequestType | Type of the version to load |  |
+
+#### VersionLoadConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| load_relations | bool |  | [optional] |
+| load_attributes | bool |  | [optional] |
+| load_credentials | bool |  | [optional] |
+| load_calculated_fields | bool |  | [optional] |
+| load_permissions | bool |  | [optional] |
+| load_group_entities | bool |  | [optional] |
+| auto_generate_integration_key | bool |  | [optional] |
+
+#### VersionLoadRequestType (enum)
+`SINGLE_ENTITY` | `ENTITY_TYPE`
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

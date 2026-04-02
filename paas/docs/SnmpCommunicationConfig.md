@@ -13,6 +13,11 @@ SNMP communication configuration
 
 
 
+## Referenced Types
+
+#### SnmpCommunicationSpec (enum)
+`TELEMETRY_QUERYING` | `CLIENT_ATTRIBUTES_QUERYING` | `SHARED_ATTRIBUTES_SETTING` | `TO_DEVICE_RPC_REQUEST` | `TO_SERVER_RPC_REQUEST`
+
 ---
 
 ### Conventions

@@ -27,6 +27,19 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`DeviceProfileId`, `OtaPackageId`, `TenantId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### OtaPackageType (enum)
+`FIRMWARE` | `SOFTWARE`
+
+#### ChecksumAlgorithm (enum)
+`MD5` | `SHA256` | `SHA384` | `SHA512` | `CRC32` | `MURMUR3_32` | `MURMUR3_128`
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

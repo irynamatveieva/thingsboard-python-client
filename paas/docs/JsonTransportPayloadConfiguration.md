@@ -12,6 +12,13 @@
 
 
 
+## Referenced Types
+
+#### TransportPayloadTypeConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| transport_payload_type | str |  |  |
+
 ---
 
 ### Conventions

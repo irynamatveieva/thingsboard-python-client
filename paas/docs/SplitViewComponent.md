@@ -24,6 +24,31 @@
 
 
 
+## Referenced Types
+
+#### ReportComponent
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| sub_type | ReportComponentSubType |  |  |
+| type | ReportComponentType |  |  |
+
+#### Insets
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| left | int |  | [optional] |
+| right | int |  | [optional] |
+| top | int |  | [optional] |
+| bottom | int |  | [optional] |
+
+#### VerticalAlignment (enum)
+`BOTTOM` | `TOP` | `MIDDLE`
+
+#### ReportComponentSubType (enum)
+`DOUGHNUTCHART` | `HORIZONTALDOUGHNUTCHART` | `POINTCHART` | `BARCHART` | `PIECHART` | `LINECHART` | `LATESTBARCHART` | `RANGECHART` | `BARCHARTWITHLABELS` | `STATECHART` | … (11 values total)
+
+#### ReportComponentType (enum)
+`HEADING` | `RICH_TEXT` | `ENTITY_TABLE` | `TIME_SERIES_TABLE` | `ALARM_TABLE` | `TIME_SERIES_CHART` | `LATEST_CHART` | `DASHBOARD` | `IMAGE` | `SUB_REPORT` | … (14 values total)
+
 ---
 
 ### Conventions

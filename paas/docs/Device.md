@@ -24,6 +24,32 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`CustomerId`, `DeviceId`, `DeviceProfileId`, `OtaPackageId`, `TenantId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### DeviceData
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| configuration | DeviceConfiguration | Device configuration for device profile type. DEFAULT is only supported value for now | [optional] |
+| transport_configuration | DeviceTransportConfiguration | Device transport configuration used to connect the device | [optional] |
+
+#### DeviceConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | DeviceProfileType | Device profile type |  |
+
+#### DeviceTransportConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
+#### DeviceProfileType (enum)
+`DEFAULT`
+
 ---
 
 ### Conventions

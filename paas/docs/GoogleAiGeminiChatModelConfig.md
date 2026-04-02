@@ -23,6 +23,21 @@
 
 
 
+## Referenced Types
+
+#### AiModelConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| provider | str |  |  |
+
+#### AiModelType (enum)
+`CHAT`
+
+#### GoogleAiGeminiProviderConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| api_key | str |  |  |
+
 ---
 
 ### Conventions

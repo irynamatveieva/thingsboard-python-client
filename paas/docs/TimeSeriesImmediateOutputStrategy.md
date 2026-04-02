@@ -17,6 +17,13 @@
 
 
 
+## Referenced Types
+
+#### TimeSeriesOutputStrategy
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
 ---
 
 ### Conventions

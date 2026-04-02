@@ -22,6 +22,17 @@ Job execution result
 
 
 
+## Referenced Types
+
+#### TaskResult
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| key | str |  | [optional] |
+| success | bool |  | [optional] |
+| discarded | bool |  | [optional] |
+| finish_ts | int |  | [optional] |
+| job_type | str |  |  |
+
 ---
 
 ### Conventions

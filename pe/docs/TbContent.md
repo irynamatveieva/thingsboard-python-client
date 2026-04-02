@@ -11,6 +11,13 @@
 
 
 
+## Subtypes
+
+#### TbTextContent  *(content_type=`TEXT`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| text | str | The text content |  |
+
 ---
 
 ### Conventions

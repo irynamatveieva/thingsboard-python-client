@@ -12,6 +12,13 @@
 
 
 
+## Referenced Types
+
+#### CoapDeviceTypeConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| coap_device_type | str |  |  |
+
 ---
 
 ### Conventions

@@ -14,6 +14,40 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`DeviceProfileId`, `OtaPackageId`, `TenantId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### OtaPackageInfo
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | OtaPackageId | JSON object with the ota package Id. Specify existing ota package Id to update the ota package. Referencing non-existing ota package id will cause error. Omit this field to create new ota package. | [optional] |
+| created_time | int | Timestamp of the ota package creation, in milliseconds | [optional] [readonly] |
+| additional_info | object | OTA Package description. | [optional] |
+| tenant_id | TenantId | JSON object with Tenant Id. Tenant Id of the ota package can't be changed. | [optional] [readonly] |
+| device_profile_id | DeviceProfileId | JSON object with Device Profile Id. Device Profile Id of the ota package can't be changed. | [optional] |
+| type | OtaPackageType | OTA Package type. | [optional] |
+| title | str | OTA Package title. | [optional] |
+| version | str | OTA Package version. | [optional] |
+| tag | str | OTA Package tag. | [optional] [readonly] |
+| url | str | OTA Package url. | [optional] |
+| has_data | bool | Indicates OTA Package 'has data'. Field is returned from DB ('true' if data exists or url is set).  If OTA Package 'has data' is 'false' we can not assign the OTA Package to the Device or Device Profile. | [optional] [readonly] |
+| file_name | str | OTA Package file name. | [optional] [readonly] |
+| content_type | str | OTA Package content type. | [optional] [readonly] |
+| checksum_algorithm | ChecksumAlgorithm | OTA Package checksum algorithm. | [optional] [readonly] |
+| checksum | str | OTA Package checksum. | [optional] [readonly] |
+| data_size | int | OTA Package data size. | [optional] [readonly] |
+| name | str |  | [optional] [readonly] |
+
+#### OtaPackageType (enum)
+`FIRMWARE` | `SOFTWARE`
+
+#### ChecksumAlgorithm (enum)
+`MD5` | `SHA256` | `SHA384` | `SHA512` | `CRC32` | `MURMUR3_32` | `MURMUR3_128`
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

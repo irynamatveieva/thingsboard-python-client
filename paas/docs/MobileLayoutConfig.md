@@ -11,6 +11,17 @@
 
 
 
+## Referenced Types
+
+#### MobilePage
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | MobilePageType |  |  |
+| visible | bool |  | [optional] |
+
+#### MobilePageType (enum)
+`DEFAULT` | `DASHBOARD` | `WEB_VIEW` | `CUSTOM`
+
 ---
 
 ### Conventions

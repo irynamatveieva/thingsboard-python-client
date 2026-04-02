@@ -12,6 +12,15 @@
 
 
 
+## Referenced Types
+
+#### ConvertersInfo
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| library | bool |  | [optional] |
+| existing | bool |  | [optional] |
+| keys | List[str] |  | [optional] |
+
 ---
 
 ### Conventions

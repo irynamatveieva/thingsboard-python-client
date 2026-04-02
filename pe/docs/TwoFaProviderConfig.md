@@ -13,6 +13,29 @@ Two-factor authentication provider configuration
 
 
 
+## Subtypes
+
+#### BackupCodeTwoFaProviderConfig  *(provider_type=`BACKUP_CODE`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| codes_quantity | int |  | [optional] |
+
+#### EmailTwoFaProviderConfig  *(provider_type=`EMAIL`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| verification_code_lifetime | int |  | [optional] |
+
+#### SmsTwoFaProviderConfig  *(provider_type=`SMS`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| verification_code_lifetime | int |  | [optional] |
+| sms_verification_message_template | str |  |  |
+
+#### TotpTwoFaProviderConfig  *(provider_type=`TOTP`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| issuer_name | str |  |  |
+
 ---
 
 ### Conventions

@@ -13,6 +13,38 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`CustomerId`, `ReportId`, `ReportTemplateId`, `TenantId`, `UserId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### TaskResult
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| key | str |  | [optional] |
+| success | bool |  | [optional] |
+| discarded | bool |  | [optional] |
+| finish_ts | int |  | [optional] |
+| job_type | str |  |  |
+
+#### Report
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | ReportId |  | [optional] |
+| created_time | int | Entity creation timestamp in milliseconds since Unix epoch | [optional] [readonly] |
+| tenant_id | TenantId |  |  |
+| customer_id | CustomerId |  | [optional] |
+| template_id | ReportTemplateId |  |  |
+| format | TbReportFormat |  |  |
+| name | str |  |  |
+| user_id | UserId |  |  |
+| owner_id | EntityId | JSON object with Customer or Tenant Id | [optional] [readonly] |
+
+#### TbReportFormat (enum)
+`PDF` | `CSV`
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

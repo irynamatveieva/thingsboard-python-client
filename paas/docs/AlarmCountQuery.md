@@ -22,6 +22,48 @@ A JSON value representing the alarm count query.
 
 
 
+## Referenced Types
+
+> **EntityId types** (`UserId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### EntityFilter
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### KeyFilter
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| key | EntityKey |  | [optional] |
+| value_type | EntityKeyValueType |  | [optional] |
+| predicate | KeyFilterPredicate |  | [optional] |
+
+#### AlarmSearchStatus (enum)
+`ANY` | `ACTIVE` | `CLEARED` | `ACK` | `UNACK`
+
+#### AlarmSeverity (enum)
+`CRITICAL` | `MAJOR` | `MINOR` | `WARNING` | `INDETERMINATE`
+
+#### EntityKey
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | EntityKeyType |  | [optional] |
+| key | str |  | [optional] |
+
+#### EntityKeyValueType (enum)
+`STRING` | `NUMERIC` | `BOOLEAN` | `DATE_TIME`
+
+#### KeyFilterPredicate
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### EntityKeyType (enum)
+`ATTRIBUTE` | `CLIENT_ATTRIBUTE` | `SHARED_ATTRIBUTE` | `SERVER_ATTRIBUTE` | `TIME_SERIES` | `ENTITY_FIELD` | `ALARM_FIELD`
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

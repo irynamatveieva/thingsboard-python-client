@@ -16,6 +16,52 @@
 
 
 
+## Referenced Types
+
+#### ReportLatestChartSettings
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| show_title | bool |  | [optional] |
+| title | str |  | [optional] |
+| title_font | Font |  | [optional] |
+| title_color | str |  | [optional] |
+| title_alignment | TextAlignment |  | [optional] |
+| units | str |  | [optional] |
+| decimals | int |  | [optional] |
+| auto_scale | bool |  | [optional] |
+| sort_series | bool |  | [optional] |
+| show_total | bool |  | [optional] |
+| show_legend | bool |  | [optional] |
+| legend_position | LegendPosition |  | [optional] |
+| legend_label_font | Font |  | [optional] |
+| legend_label_color | str |  | [optional] |
+| legend_value_font | Font |  | [optional] |
+| legend_value_color | str |  | [optional] |
+| legend_show_total | bool |  | [optional] |
+
+#### DoughnutLayout (enum)
+`DEFAULT` | `WITH_TOTAL`
+
+#### Font
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| size | float |  | [optional] |
+| weight | FontWeight |  | [optional] |
+| style | FontStyle |  | [optional] |
+| family | str |  | [optional] |
+
+#### TextAlignment (enum)
+`CENTER` | `RIGHT` | `LEFT` | `JUSTIFY`
+
+#### LegendPosition (enum)
+`TOP` | `BOTTOM` | `LEFT` | `RIGHT`
+
+#### FontWeight (enum)
+`NORMAL` | `BOLD` | `ENUM_500`
+
+#### FontStyle (enum)
+`NORMAL` | `ITALIC`
+
 ---
 
 ### Conventions

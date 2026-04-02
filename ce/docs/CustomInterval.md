@@ -15,6 +15,55 @@
 
 
 
+## Referenced Types
+
+#### AggInterval
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### DayInterval  *(extends AggInterval, type=`DAY`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| tz | str |  |  |
+| offset_sec | int |  | [optional] |
+
+#### HourInterval  *(extends AggInterval, type=`HOUR`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| tz | str |  |  |
+| offset_sec | int |  | [optional] |
+
+#### MonthInterval  *(extends AggInterval, type=`MONTH`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| tz | str |  |  |
+| offset_sec | int |  | [optional] |
+
+#### QuarterInterval  *(extends AggInterval, type=`QUARTER`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| tz | str |  |  |
+| offset_sec | int |  | [optional] |
+
+#### WeekInterval  *(extends AggInterval, type=`WEEK`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| tz | str |  |  |
+| offset_sec | int |  | [optional] |
+
+#### WeekSunSatInterval  *(extends AggInterval, type=`WEEK_SUN_SAT`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| tz | str |  |  |
+| offset_sec | int |  | [optional] |
+
+#### YearInterval  *(extends AggInterval, type=`YEAR`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| tz | str |  |  |
+| offset_sec | int |  | [optional] |
+
 ---
 
 ### Conventions

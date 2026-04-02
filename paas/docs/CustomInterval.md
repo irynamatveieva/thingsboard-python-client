@@ -15,6 +15,13 @@
 
 
 
+## Referenced Types
+
+#### AggInterval
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
 ---
 
 ### Conventions

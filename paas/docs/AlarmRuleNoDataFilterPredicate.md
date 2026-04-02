@@ -14,6 +14,22 @@
 
 
 
+## Referenced Types
+
+#### AlarmRuleKeyFilterPredicate
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### AlarmConditionValueLong
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| static_value | int |  | [optional] |
+| dynamic_value_argument | str |  | [optional] |
+
+#### TimeUnit (enum)
+`NANOSECONDS` | `MICROSECONDS` | `MILLISECONDS` | `SECONDS` | `MINUTES` | `HOURS` | `DAYS`
+
 ---
 
 ### Conventions

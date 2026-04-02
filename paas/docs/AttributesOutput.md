@@ -13,6 +13,25 @@
 
 
 
+## Referenced Types
+
+#### Output
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| name | str |  | [optional] |
+| scope | AttributeScope |  | [optional] |
+| decimals_by_default | int |  | [optional] |
+| strategy | object |  | [optional] |
+| type | str |  |  |
+
+#### AttributesOutputStrategy
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### AttributeScope (enum)
+`CLIENT_SCOPE` | `SERVER_SCOPE` | `SHARED_SCOPE`
+
 ---
 
 ### Conventions

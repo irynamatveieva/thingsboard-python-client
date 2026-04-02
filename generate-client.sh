@@ -290,6 +290,10 @@ generate() {
       cp "$common_docs_dir/"* "$module_dir/docs/"
       echo "Copied common/docs overlay to $module_dir/docs"
     fi
+
+    # --- Flatten model docs: inline referenced types ---
+    echo "Flattening model docs for $edition..."
+    python3 "$SCRIPT_DIR/scripts/flatten_docs.py" "$module_dir/docs"
   fi
 
   local docs_dir

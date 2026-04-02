@@ -12,6 +12,20 @@
 
 
 
+## Referenced Types
+
+#### SystemInfoData
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| service_id | str | Service Id. | [optional] |
+| service_type | str | Service type. | [optional] |
+| cpu_usage | int | CPU usage, in percent. | [optional] |
+| cpu_count | int | Total CPU usage. | [optional] |
+| memory_usage | int | Memory usage, in percent. | [optional] |
+| total_memory | int | Total memory in bytes. | [optional] |
+| disc_usage | int | Disk usage, in percent. | [optional] |
+| total_disc_space | int | Total disc space in bytes. | [optional] |
+
 ---
 
 ### Conventions

@@ -13,6 +13,30 @@
 
 
 
+## Referenced Types
+
+#### OAuth2ClientLoginInfo
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| name | str | OAuth2 client name | [optional] |
+| icon | str | Name of the icon, displayed on OAuth2 log in button | [optional] |
+| url | str | URI for OAuth2 log in. On HTTP GET request to this URI, it redirects to the OAuth2 provider page | [optional] |
+
+#### StoreInfo
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| app_id | str |  | [optional] |
+| sha256_cert_fingerprints | str |  | [optional] |
+| store_link | str |  | [optional] |
+
+#### MobileAppVersionInfo
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| min_version | str | Minimum supported version | [optional] |
+| min_version_release_notes | str | Release notes of minimum supported version | [optional] |
+| latest_version | str | Latest supported version | [optional] |
+| latest_version_release_notes | str | Release notes of latest supported version | [optional] |
+
 ---
 
 ### Conventions

@@ -14,6 +14,34 @@
 
 
 
+## Referenced Types
+
+#### KeyFilterPredicate
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### NumericOperation (enum)
+`EQUAL` | `NOT_EQUAL` | `GREATER` | `LESS` | `GREATER_OR_EQUAL` | `LESS_OR_EQUAL`
+
+#### FilterPredicateValueDouble
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| default_value | float |  | [optional] |
+| user_value | float |  | [optional] |
+| dynamic_value | DynamicValueDouble |  | [optional] |
+
+#### DynamicValueDouble
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| resolved_value | float |  | [optional] |
+| source_type | DynamicValueSourceType |  | [optional] |
+| source_attribute | str |  | [optional] |
+| inherit | bool |  | [optional] |
+
+#### DynamicValueSourceType (enum)
+`CURRENT_TENANT` | `CURRENT_CUSTOMER` | `CURRENT_USER` | `CURRENT_DEVICE`
+
 ---
 
 ### Conventions

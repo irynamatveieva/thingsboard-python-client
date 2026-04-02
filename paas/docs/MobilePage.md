@@ -14,6 +14,11 @@ Configuration for a mobile page
 
 
 
+## Referenced Types
+
+#### MobilePageType (enum)
+`DEFAULT` | `DASHBOARD` | `WEB_VIEW` | `CUSTOM`
+
 ---
 
 ### Conventions

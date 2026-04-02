@@ -22,6 +22,23 @@
 
 
 
+## Referenced Types
+
+#### AiModelConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| provider | str |  |  |
+
+#### AiModelType (enum)
+`CHAT`
+
+#### AzureOpenAiProviderConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| endpoint | str |  |  |
+| service_version | str |  | [optional] |
+| api_key | str |  |  |
+
 ---
 
 ### Conventions

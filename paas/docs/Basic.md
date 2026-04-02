@@ -14,6 +14,13 @@
 
 
 
+## Referenced Types
+
+#### OllamaAuth
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
 ---
 
 ### Conventions

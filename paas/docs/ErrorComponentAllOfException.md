@@ -15,6 +15,27 @@
 
 
 
+## Referenced Types
+
+#### ErrorComponentAllOfExceptionCause
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| stack_trace | List[ErrorComponentAllOfExceptionCauseStackTrace] |  | [optional] |
+| message | str |  | [optional] |
+| localized_message | str |  | [optional] |
+
+#### ErrorComponentAllOfExceptionCauseStackTrace
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| class_loader_name | str |  | [optional] |
+| module_name | str |  | [optional] |
+| module_version | str |  | [optional] |
+| method_name | str |  | [optional] |
+| file_name | str |  | [optional] |
+| line_number | int |  | [optional] |
+| class_name | str |  | [optional] |
+| native_method | bool |  | [optional] |
+
 ---
 
 ### Conventions

@@ -12,6 +12,15 @@
 
 
 
+## Referenced Types
+
+#### Palette
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str | Name of the pre-defined palette, or 'custom' |  |
+| extends | str | Pre-defined palette name that the custom palette extends | [optional] |
+| colors | Dict[str, str] | Mapping of hue identifier number to the rgb(a) color code | [optional] |
+
 ---
 
 ### Conventions

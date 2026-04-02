@@ -29,6 +29,51 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`AdminSettingsId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `CalculatedFieldId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityViewId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `QueueId`, `QueueStatsId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### OAuth2MapperConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| allow_user_creation | bool | Whether user should be created if not yet present on the platform after successful authentication | [optional] |
+| activate_user | bool | Whether user credentials should be activated when user is created after successful authentication | [optional] |
+| type | MapperType | Type of OAuth2 mapper. Depending on this param, different mapper config fields must be specified |  |
+| basic | OAuth2BasicMapperConfig | Mapper config for BASIC and GITHUB mapper types | [optional] |
+| custom | OAuth2CustomMapperConfig | Mapper config for CUSTOM mapper type | [optional] |
+
+#### PlatformType (enum)
+`WEB` | `ANDROID` | `IOS`
+
+#### MapperType (enum)
+`BASIC` | `CUSTOM` | `GITHUB` | `APPLE`
+
+#### OAuth2BasicMapperConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| email_attribute_key | str | Email attribute key of OAuth2 principal attributes. Must be specified for BASIC mapper type and cannot be specified for GITHUB type | [optional] |
+| first_name_attribute_key | str | First name attribute key | [optional] |
+| last_name_attribute_key | str | Last name attribute key | [optional] |
+| tenant_name_strategy | TenantNameStrategyType | Tenant naming strategy. For DOMAIN type, domain for tenant name will be taken from the email (substring before '@') |  |
+| tenant_name_pattern | str | Tenant name pattern for CUSTOM naming strategy. OAuth2 attributes in the pattern can be used by enclosing attribute key in '%{' and '}' | [optional] |
+| customer_name_pattern | str | Customer name pattern. When creating a user on the first OAuth2 log in, if specified, customer name will be used to create or find existing customer in the platform and assign customerId to the user | [optional] |
+| default_dashboard_name | str | Name of the tenant's dashboard to set as default dashboard for newly created user | [optional] |
+| always_full_screen | bool | Whether default dashboard should be open in full screen | [optional] |
+
+#### OAuth2CustomMapperConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| url | str |  | [optional] |
+| username | str |  | [optional] |
+| password | str |  | [optional] |
+| send_token | bool |  | [optional] |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `RULE_CHAIN` | `RULE_NODE` | `ENTITY_VIEW` | … (36 values total)
+
+#### TenantNameStrategyType (enum)
+`DOMAIN` | `EMAIL` | `CUSTOM`
+
 ---
 
 ### Conventions

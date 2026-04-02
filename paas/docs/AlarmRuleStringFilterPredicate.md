@@ -15,6 +15,22 @@
 
 
 
+## Referenced Types
+
+#### AlarmRuleKeyFilterPredicate
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### StringOperation (enum)
+`EQUAL` | `NOT_EQUAL` | `STARTS_WITH` | `ENDS_WITH` | `CONTAINS` | `NOT_CONTAINS` | `IN` | `NOT_IN`
+
+#### AlarmConditionValueString
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| static_value | str |  | [optional] |
+| dynamic_value_argument | str |  | [optional] |
+
 ---
 
 ### Conventions

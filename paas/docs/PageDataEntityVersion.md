@@ -14,6 +14,16 @@
 
 
 
+## Referenced Types
+
+#### EntityVersion
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| timestamp | int |  | [optional] |
+| id | str |  | [optional] |
+| name | str |  | [optional] |
+| author | str |  | [optional] |
+
 ---
 
 ### Conventions

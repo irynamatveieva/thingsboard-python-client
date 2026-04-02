@@ -34,6 +34,16 @@
 
 
 
+## Referenced Types
+
+#### SmsProviderConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### SmppBindType (enum)
+`TX` | `RX` | `TRX`
+
 ---
 
 ### Conventions

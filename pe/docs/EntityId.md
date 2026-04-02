@@ -12,6 +12,151 @@
 
 
 
+## Subtypes
+
+#### AdminSettingsId  *(entity_type=`ADMIN_SETTINGS`)*
+*(no additional properties)*
+
+#### AiModelId  *(entity_type=`AI_MODEL`)*
+*(no additional properties)*
+
+#### AlarmId  *(entity_type=`ALARM`)*
+*(no additional properties)*
+
+#### ApiKeyId  *(entity_type=`API_KEY`)*
+*(no additional properties)*
+
+#### ApiUsageStateId  *(entity_type=`API_USAGE_STATE`)*
+*(no additional properties)*
+
+#### AssetId  *(entity_type=`ASSET`)*
+*(no additional properties)*
+
+#### AssetProfileId  *(entity_type=`ASSET_PROFILE`)*
+*(no additional properties)*
+
+#### BlobEntityId  *(entity_type=`BLOB_ENTITY`)*
+*(no additional properties)*
+
+#### CalculatedFieldId  *(entity_type=`CALCULATED_FIELD`)*
+*(no additional properties)*
+
+#### ConverterId  *(entity_type=`CONVERTER`)*
+*(no additional properties)*
+
+#### CustomerId  *(entity_type=`CUSTOMER`)*
+*(no additional properties)*
+
+#### DashboardId  *(entity_type=`DASHBOARD`)*
+*(no additional properties)*
+
+#### DeviceId  *(entity_type=`DEVICE`)*
+*(no additional properties)*
+
+#### DeviceProfileId  *(entity_type=`DEVICE_PROFILE`)*
+*(no additional properties)*
+
+#### DomainId  *(entity_type=`DOMAIN`)*
+*(no additional properties)*
+
+#### EdgeId  *(entity_type=`EDGE`)*
+*(no additional properties)*
+
+#### EntityGroupId  *(entity_type=`ENTITY_GROUP`)*
+*(no additional properties)*
+
+#### EntityViewId  *(entity_type=`ENTITY_VIEW`)*
+*(no additional properties)*
+
+#### GroupPermissionId  *(entity_type=`GROUP_PERMISSION`)*
+*(no additional properties)*
+
+#### IntegrationId  *(entity_type=`INTEGRATION`)*
+*(no additional properties)*
+
+#### JobId  *(entity_type=`JOB`)*
+*(no additional properties)*
+
+#### MobileAppId  *(entity_type=`MOBILE_APP`)*
+*(no additional properties)*
+
+#### MobileAppBundleId  *(entity_type=`MOBILE_APP_BUNDLE`)*
+*(no additional properties)*
+
+#### NotificationId  *(entity_type=`NOTIFICATION`)*
+*(no additional properties)*
+
+#### NotificationRequestId  *(entity_type=`NOTIFICATION_REQUEST`)*
+*(no additional properties)*
+
+#### NotificationRuleId  *(entity_type=`NOTIFICATION_RULE`)*
+*(no additional properties)*
+
+#### NotificationTargetId  *(entity_type=`NOTIFICATION_TARGET`)*
+*(no additional properties)*
+
+#### NotificationTemplateId  *(entity_type=`NOTIFICATION_TEMPLATE`)*
+*(no additional properties)*
+
+#### OAuth2ClientId  *(entity_type=`OAUTH2_CLIENT`)*
+*(no additional properties)*
+
+#### OtaPackageId  *(entity_type=`OTA_PACKAGE`)*
+*(no additional properties)*
+
+#### QueueId  *(entity_type=`QUEUE`)*
+*(no additional properties)*
+
+#### QueueStatsId  *(entity_type=`QUEUE_STATS`)*
+*(no additional properties)*
+
+#### ReportId  *(entity_type=`REPORT`)*
+*(no additional properties)*
+
+#### ReportTemplateId  *(entity_type=`REPORT_TEMPLATE`)*
+*(no additional properties)*
+
+#### RoleId  *(entity_type=`ROLE`)*
+*(no additional properties)*
+
+#### RpcId  *(entity_type=`RPC`)*
+*(no additional properties)*
+
+#### RuleChainId  *(entity_type=`RULE_CHAIN`)*
+*(no additional properties)*
+
+#### RuleNodeId  *(entity_type=`RULE_NODE`)*
+*(no additional properties)*
+
+#### SchedulerEventId  *(entity_type=`SCHEDULER_EVENT`)*
+*(no additional properties)*
+
+#### SecretId  *(entity_type=`SECRET`)*
+*(no additional properties)*
+
+#### TbResourceId  *(entity_type=`TB_RESOURCE`)*
+*(no additional properties)*
+
+#### TenantId  *(entity_type=`TENANT`)*
+*(no additional properties)*
+
+#### TenantProfileId  *(entity_type=`TENANT_PROFILE`)*
+*(no additional properties)*
+
+#### UserId  *(entity_type=`USER`)*
+*(no additional properties)*
+
+#### WidgetsBundleId  *(entity_type=`WIDGETS_BUNDLE`)*
+*(no additional properties)*
+
+#### WidgetTypeId  *(entity_type=`WIDGET_TYPE`)*
+*(no additional properties)*
+
+## Referenced Types
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (46 values total)
+
 ---
 
 ### Conventions

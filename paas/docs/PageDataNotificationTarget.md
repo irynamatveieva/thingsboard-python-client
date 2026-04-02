@@ -14,6 +14,28 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`NotificationTargetId`, `TenantId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### NotificationTarget
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | NotificationTargetId |  | [optional] |
+| created_time | int | Entity creation timestamp in milliseconds since Unix epoch | [optional] [readonly] |
+| tenant_id | TenantId |  | [optional] |
+| name | str |  |  |
+| configuration | NotificationTargetConfig |  |  |
+
+#### NotificationTargetConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| description | str |  | [optional] |
+| type | str |  |  |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

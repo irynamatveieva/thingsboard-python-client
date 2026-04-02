@@ -12,6 +12,21 @@
 
 
 
+## Referenced Types
+
+#### DeviceConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | DeviceProfileType | Device profile type |  |
+
+#### DeviceTransportConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### DeviceProfileType (enum)
+`DEFAULT`
+
 ---
 
 ### Conventions

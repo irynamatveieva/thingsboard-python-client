@@ -12,6 +12,50 @@
 
 
 
+## Referenced Types
+
+#### AlarmSchedule
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| dynamic_value | DynamicValueString |  | [optional] |
+| type | AlarmScheduleType |  | [optional] |
+
+#### CustomTimeSchedule  *(extends AlarmSchedule, type=`CUSTOM`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| timezone | str |  | [optional] |
+| items | List[CustomTimeScheduleItem] |  | [optional] |
+
+#### SpecificTimeSchedule  *(extends AlarmSchedule, type=`SPECIFIC_TIME`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| days_of_week | List[int] |  | [optional] |
+| ends_on | int |  | [optional] |
+| starts_on | int |  | [optional] |
+| timezone | str |  | [optional] |
+
+#### DynamicValueString
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| resolved_value | str |  | [optional] |
+| source_type | DynamicValueSourceType |  | [optional] |
+| source_attribute | str |  | [optional] |
+| inherit | bool |  | [optional] |
+
+#### AlarmScheduleType (enum)
+`ANY_TIME` | `SPECIFIC_TIME` | `CUSTOM`
+
+#### DynamicValueSourceType (enum)
+`CURRENT_TENANT` | `CURRENT_CUSTOMER` | `CURRENT_USER` | `CURRENT_DEVICE`
+
+#### CustomTimeScheduleItem
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| day_of_week | int |  | [optional] |
+| enabled | bool |  | [optional] |
+| ends_on | int |  | [optional] |
+| starts_on | int |  | [optional] |
+
 ---
 
 ### Conventions

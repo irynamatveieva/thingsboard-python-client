@@ -12,6 +12,16 @@
 
 
 
+## Referenced Types
+
+#### DataKeySettings
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | DataKeySettingsType | Data key settings type |  |
+
+#### DataKeySettingsType (enum)
+`COLUMN` | `TIME_SERIES_CHART` | `DEFAULT`
+
 ---
 
 ### Conventions

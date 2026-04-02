@@ -13,6 +13,13 @@
 
 
 
+## Referenced Types
+
+#### AggInput
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
 ---
 
 ### Conventions

@@ -15,6 +15,20 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`ReportTemplateId`, `UserId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### DeliveryMethodNotificationTemplate
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| enabled | bool |  | [optional] |
+| body | str |  |  |
+| method | str |  |  |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

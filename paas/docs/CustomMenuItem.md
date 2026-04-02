@@ -22,6 +22,23 @@
 
 
 
+## Referenced Types
+
+#### MenuItem
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | MenuItemType | Menu item type |  |
+| visible | bool |  | [optional] |
+
+#### CMItemType (enum)
+`LINK` | `SECTION`
+
+#### CMItemLinkType (enum)
+`URL` | `DASHBOARD`
+
+#### MenuItemType (enum)
+`HOME` | `DEFAULT` | `CUSTOM`
+
 ---
 
 ### Conventions

@@ -19,6 +19,38 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`CustomerId`, `TenantId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### CustomMenuId
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | UUID | string |  |
+
+#### CMScope (enum)
+`SYSTEM` | `TENANT` | `CUSTOMER`
+
+#### CMAssigneeType (enum)
+`NO_ASSIGN` | `ALL` | `CUSTOMERS` | `USERS` | `USER_GROUPS`
+
+#### CustomMenuConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| items | List[MenuItem] |  | [optional] |
+
+#### MenuItem
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | MenuItemType | Menu item type |  |
+| visible | bool |  | [optional] |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
+#### MenuItemType (enum)
+`HOME` | `DEFAULT` | `CUSTOM`
+
 ---
 
 ### Conventions

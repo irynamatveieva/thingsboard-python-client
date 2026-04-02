@@ -20,6 +20,227 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`AdminSettingsId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `CalculatedFieldId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityViewId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `QueueId`, `QueueStatsId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### NotificationRuleTriggerType (enum)
+`ENTITY_ACTION` | `ALARM` | `ALARM_COMMENT` | `ALARM_ASSIGNMENT` | `DEVICE_ACTIVITY` | `RULE_ENGINE_COMPONENT_LIFECYCLE_EVENT` | `EDGE_CONNECTION` | `EDGE_COMMUNICATION_FAILURE` | `NEW_PLATFORM_VERSION` | `ENTITIES_LIMIT` | … (14 values total)
+
+#### NotificationRuleTriggerConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| trigger_type | NotificationRuleTriggerType |  |  |
+
+#### AlarmNotificationRuleTriggerConfig  *(extends NotificationRuleTriggerConfig, trigger_type=`ALARM`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| alarm_types | List[str] |  | [optional] |
+| alarm_severities | List[AlarmSeverity] |  | [optional] |
+| notify_on | List[AlarmAction] |  |  |
+| clear_rule | ClearRule |  | [optional] |
+
+#### AlarmAssignmentNotificationRuleTriggerConfig  *(extends NotificationRuleTriggerConfig, trigger_type=`ALARM_ASSIGNMENT`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| alarm_types | List[str] |  | [optional] |
+| alarm_severities | List[AlarmSeverity] |  | [optional] |
+| alarm_statuses | List[AlarmSearchStatus] |  | [optional] |
+| notify_on | List[Action] |  |  |
+
+#### AlarmCommentNotificationRuleTriggerConfig  *(extends NotificationRuleTriggerConfig, trigger_type=`ALARM_COMMENT`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| alarm_types | List[str] |  | [optional] |
+| alarm_severities | List[AlarmSeverity] |  | [optional] |
+| alarm_statuses | List[AlarmSearchStatus] |  | [optional] |
+| only_user_comments | bool |  | [optional] |
+| notify_on_comment_update | bool |  | [optional] |
+
+#### ApiUsageLimitNotificationRuleTriggerConfig  *(extends NotificationRuleTriggerConfig, trigger_type=`API_USAGE_LIMIT`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| api_features | List[ApiFeature] |  | [optional] |
+| notify_on | List[ApiUsageStateValue] |  | [optional] |
+
+#### DeviceActivityNotificationRuleTriggerConfig  *(extends NotificationRuleTriggerConfig, trigger_type=`DEVICE_ACTIVITY`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| devices | List[UUID] |  | [optional] |
+| device_profiles | List[UUID] |  | [optional] |
+| notify_on | List[DeviceEvent] |  |  |
+
+#### EdgeCommunicationFailureNotificationRuleTriggerConfig  *(extends NotificationRuleTriggerConfig, trigger_type=`EDGE_COMMUNICATION_FAILURE`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| edges | List[UUID] |  | [optional] |
+
+#### EdgeConnectionNotificationRuleTriggerConfig  *(extends NotificationRuleTriggerConfig, trigger_type=`EDGE_CONNECTION`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| edges | List[UUID] |  | [optional] |
+| notify_on | List[EdgeConnectivityEvent] |  | [optional] |
+
+#### EntitiesLimitNotificationRuleTriggerConfig  *(extends NotificationRuleTriggerConfig, trigger_type=`ENTITIES_LIMIT`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| entity_types | List[EntityType] |  | [optional] |
+| threshold | float |  | [optional] |
+
+#### EntityActionNotificationRuleTriggerConfig  *(extends NotificationRuleTriggerConfig, trigger_type=`ENTITY_ACTION`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| entity_types | List[EntityType] |  | [optional] |
+| created | bool |  | [optional] |
+| updated | bool |  | [optional] |
+| deleted | bool |  | [optional] |
+
+#### NewPlatformVersionNotificationRuleTriggerConfig  *(extends NotificationRuleTriggerConfig, trigger_type=`NEW_PLATFORM_VERSION`)*
+*See NotificationRuleTriggerConfig for properties.*
+
+#### RateLimitsNotificationRuleTriggerConfig  *(extends NotificationRuleTriggerConfig, trigger_type=`RATE_LIMITS`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| apis | List[LimitedApi] |  | [optional] |
+
+#### ResourcesShortageNotificationRuleTriggerConfig  *(extends NotificationRuleTriggerConfig, trigger_type=`RESOURCES_SHORTAGE`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| cpu_threshold | float |  | [optional] |
+| ram_threshold | float |  | [optional] |
+| storage_threshold | float |  | [optional] |
+
+#### RuleEngineComponentLifecycleEventNotificationRuleTriggerConfig  *(extends NotificationRuleTriggerConfig, trigger_type=`RULE_ENGINE_COMPONENT_LIFECYCLE_EVENT`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| rule_chains | List[UUID] |  | [optional] |
+| rule_chain_events | List[ComponentLifecycleEvent] |  | [optional] |
+| only_rule_chain_lifecycle_failures | bool |  | [optional] |
+| track_rule_node_events | bool |  | [optional] |
+| rule_node_events | List[ComponentLifecycleEvent] |  | [optional] |
+| only_rule_node_lifecycle_failures | bool |  | [optional] |
+
+#### TaskProcessingFailureNotificationRuleTriggerConfig  *(extends NotificationRuleTriggerConfig, trigger_type=`TASK_PROCESSING_FAILURE`)*
+*See NotificationRuleTriggerConfig for properties.*
+
+#### NotificationRuleRecipientsConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| trigger_type | NotificationRuleTriggerType |  | [optional] |
+
+#### EscalatedNotificationRuleRecipientsConfig  *(extends NotificationRuleRecipientsConfig, trigger_type=`ALARM`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| escalation_table | Dict[str, List[UUID]] |  |  |
+
+#### AlarmAssignmentRecipientsConfig  *(extends NotificationRuleRecipientsConfig, trigger_type=`ALARM_ASSIGNMENT`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| targets | List[UUID] |  |  |
+
+#### AlarmCommentRecipientsConfig  *(extends NotificationRuleRecipientsConfig, trigger_type=`ALARM_COMMENT`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| targets | List[UUID] |  |  |
+
+#### ApiUsageLimitRecipientsConfig  *(extends NotificationRuleRecipientsConfig, trigger_type=`API_USAGE_LIMIT`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| targets | List[UUID] |  |  |
+
+#### DeviceActivityRecipientsConfig  *(extends NotificationRuleRecipientsConfig, trigger_type=`DEVICE_ACTIVITY`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| targets | List[UUID] |  |  |
+
+#### EdgeCommunicationFailureRecipientsConfig  *(extends NotificationRuleRecipientsConfig, trigger_type=`EDGE_COMMUNICATION_FAILURE`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| targets | List[UUID] |  |  |
+
+#### EdgeConnectionRecipientsConfig  *(extends NotificationRuleRecipientsConfig, trigger_type=`EDGE_CONNECTION`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| targets | List[UUID] |  |  |
+
+#### EntitiesLimitRecipientsConfig  *(extends NotificationRuleRecipientsConfig, trigger_type=`ENTITIES_LIMIT`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| targets | List[UUID] |  |  |
+
+#### EntityActionRecipientsConfig  *(extends NotificationRuleRecipientsConfig, trigger_type=`ENTITY_ACTION`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| targets | List[UUID] |  |  |
+
+#### NewPlatformVersionRecipientsConfig  *(extends NotificationRuleRecipientsConfig, trigger_type=`NEW_PLATFORM_VERSION`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| targets | List[UUID] |  |  |
+
+#### RateLimitsRecipientsConfig  *(extends NotificationRuleRecipientsConfig, trigger_type=`RATE_LIMITS`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| targets | List[UUID] |  |  |
+
+#### ResourceShortageRecipientsConfig  *(extends NotificationRuleRecipientsConfig, trigger_type=`RESOURCES_SHORTAGE`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| targets | List[UUID] |  |  |
+
+#### RuleEngineComponentLifecycleEventRecipientsConfig  *(extends NotificationRuleRecipientsConfig, trigger_type=`RULE_ENGINE_COMPONENT_LIFECYCLE_EVENT`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| targets | List[UUID] |  |  |
+
+#### TaskProcessingFailureRecipientsConfig  *(extends NotificationRuleRecipientsConfig, trigger_type=`TASK_PROCESSING_FAILURE`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| targets | List[UUID] |  |  |
+
+#### NotificationRuleConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| description | str |  | [optional] |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `RULE_CHAIN` | `RULE_NODE` | `ENTITY_VIEW` | … (36 values total)
+
+#### AlarmSeverity (enum)
+`CRITICAL` | `MAJOR` | `MINOR` | `WARNING` | `INDETERMINATE`
+
+#### AlarmAction (enum)
+`CREATED` | `SEVERITY_CHANGED` | `ACKNOWLEDGED` | `CLEARED`
+
+#### ClearRule
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| alarm_statuses | List[AlarmSearchStatus] |  | [optional] |
+
+#### DeviceEvent (enum)
+`ACTIVE` | `INACTIVE`
+
+#### AlarmSearchStatus (enum)
+`ANY` | `ACTIVE` | `CLEARED` | `ACK` | `UNACK`
+
+#### ComponentLifecycleEvent (enum)
+`CREATED` | `STARTED` | `ACTIVATED` | `SUSPENDED` | `UPDATED` | `STOPPED` | `DELETED` | `FAILED` | `DEACTIVATED` | `RELATION_UPDATED` | … (11 values total)
+
+#### Action (enum)
+`ASSIGNED` | `UNASSIGNED`
+
+#### ApiFeature (enum)
+`TRANSPORT` | `DB` | `RE` | `JS` | `TBEL` | `EMAIL` | `SMS` | `ALARM`
+
+#### ApiUsageStateValue (enum)
+`ENABLED` | `WARNING` | `DISABLED`
+
+#### LimitedApi (enum)
+`ENTITY_EXPORT` | `ENTITY_IMPORT` | `NOTIFICATION_REQUESTS` | `NOTIFICATION_REQUESTS_PER_RULE` | `REST_REQUESTS_PER_TENANT` | `REST_REQUESTS_PER_CUSTOMER` | `WS_UPDATES_PER_SESSION` | `CASSANDRA_WRITE_QUERIES_CORE` | `CASSANDRA_READ_QUERIES_CORE` | `CASSANDRA_WRITE_QUERIES_RULE_ENGINE` | … (28 values total)
+
+#### EdgeConnectivityEvent (enum)
+`CONNECTED` | `DISCONNECTED`
+
 ---
 
 ### Conventions

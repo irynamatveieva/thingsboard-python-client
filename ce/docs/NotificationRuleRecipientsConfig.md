@@ -11,6 +11,83 @@
 
 
 
+## Subtypes
+
+#### EscalatedNotificationRuleRecipientsConfig  *(trigger_type=`ALARM`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| escalation_table | Dict[str, List[UUID]] |  |  |
+
+#### AlarmAssignmentRecipientsConfig  *(trigger_type=`ALARM_ASSIGNMENT`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| targets | List[UUID] |  |  |
+
+#### AlarmCommentRecipientsConfig  *(trigger_type=`ALARM_COMMENT`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| targets | List[UUID] |  |  |
+
+#### ApiUsageLimitRecipientsConfig  *(trigger_type=`API_USAGE_LIMIT`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| targets | List[UUID] |  |  |
+
+#### DeviceActivityRecipientsConfig  *(trigger_type=`DEVICE_ACTIVITY`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| targets | List[UUID] |  |  |
+
+#### EdgeCommunicationFailureRecipientsConfig  *(trigger_type=`EDGE_COMMUNICATION_FAILURE`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| targets | List[UUID] |  |  |
+
+#### EdgeConnectionRecipientsConfig  *(trigger_type=`EDGE_CONNECTION`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| targets | List[UUID] |  |  |
+
+#### EntitiesLimitRecipientsConfig  *(trigger_type=`ENTITIES_LIMIT`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| targets | List[UUID] |  |  |
+
+#### EntityActionRecipientsConfig  *(trigger_type=`ENTITY_ACTION`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| targets | List[UUID] |  |  |
+
+#### NewPlatformVersionRecipientsConfig  *(trigger_type=`NEW_PLATFORM_VERSION`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| targets | List[UUID] |  |  |
+
+#### RateLimitsRecipientsConfig  *(trigger_type=`RATE_LIMITS`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| targets | List[UUID] |  |  |
+
+#### ResourceShortageRecipientsConfig  *(trigger_type=`RESOURCES_SHORTAGE`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| targets | List[UUID] |  |  |
+
+#### RuleEngineComponentLifecycleEventRecipientsConfig  *(trigger_type=`RULE_ENGINE_COMPONENT_LIFECYCLE_EVENT`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| targets | List[UUID] |  |  |
+
+#### TaskProcessingFailureRecipientsConfig  *(trigger_type=`TASK_PROCESSING_FAILURE`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| targets | List[UUID] |  |  |
+
+## Referenced Types
+
+#### NotificationRuleTriggerType (enum)
+`ENTITY_ACTION` | `ALARM` | `ALARM_COMMENT` | `ALARM_ASSIGNMENT` | `DEVICE_ACTIVITY` | `RULE_ENGINE_COMPONENT_LIFECYCLE_EVENT` | `EDGE_CONNECTION` | `EDGE_COMMUNICATION_FAILURE` | `NEW_PLATFORM_VERSION` | `ENTITIES_LIMIT` | … (14 values total)
+
 ---
 
 ### Conventions

@@ -14,6 +14,36 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`CustomerId`, `TenantId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### CustomMenuInfo
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | CustomMenuId |  | [optional] |
+| created_time | int | Entity creation timestamp in milliseconds since Unix epoch | [optional] [readonly] |
+| tenant_id | TenantId | JSON object with Tenant Id that owns the menu. | [optional] [readonly] |
+| customer_id | CustomerId | JSON object with Customer Id that owns the menu. | [optional] [readonly] |
+| name | str | Custom menu name |  |
+| scope | CMScope | Custom menu scope. Possible values: SYSTEM, TENANT, CUSTOMER |  |
+| assignee_type | CMAssigneeType | Custom menu assignee type. Possible values are: All (all users of specified scope), CUSTOMERS (specified customers), USERS (specified list of users), NO_ASSIGN (no assignees), USER_GROUPS (user groups) |  |
+| user_group_names | List[str] | User group names menu is applied to | [optional] |
+
+#### CustomMenuId
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | UUID | string |  |
+
+#### CMScope (enum)
+`SYSTEM` | `TENANT` | `CUSTOMER`
+
+#### CMAssigneeType (enum)
+`NO_ASSIGN` | `ALL` | `CUSTOMERS` | `USERS` | `USER_GROUPS`
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

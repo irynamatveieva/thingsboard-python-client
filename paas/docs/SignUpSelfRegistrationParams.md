@@ -15,6 +15,23 @@
 
 
 
+## Referenced Types
+
+#### CaptchaParams
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| version | str |  |  |
+
+#### SignUpField
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | SignUpFieldId | Signup field id |  |
+| label | str | Signup field label |  |
+| required | bool | Indicates if field is required | [optional] |
+
+#### SignUpFieldId (enum)
+`EMAIL` | `PASSWORD` | `REPEAT_PASSWORD` | `FIRST_NAME` | `LAST_NAME` | `PHONE` | `COUNTRY` | `CITY` | `STATE` | `ZIP` | … (12 values total)
+
 ---
 
 ### Conventions

@@ -13,6 +13,32 @@
 
 
 
+## Referenced Types
+
+> **EntityId**: `{entity_type: EntityType, id: UUID}` — base type for all entity identifiers.
+
+#### EntityTypeLoadResult
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| entity_type | EntityType |  | [optional] |
+| created | int |  | [optional] |
+| updated | int |  | [optional] |
+| deleted | int |  | [optional] |
+| groups_created | int |  | [optional] |
+| groups_updated | int |  | [optional] |
+| groups_deleted | int |  | [optional] |
+
+#### EntityLoadError
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  | [optional] |
+| source | EntityId |  | [optional] |
+| target | EntityId |  | [optional] |
+| message | str |  | [optional] |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

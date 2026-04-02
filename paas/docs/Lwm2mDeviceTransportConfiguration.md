@@ -16,6 +16,16 @@
 
 
 
+## Referenced Types
+
+#### DeviceTransportConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### PowerMode (enum)
+`PSM` | `DRX` | `E_DRX`
+
 ---
 
 ### Conventions

@@ -13,6 +13,22 @@
 
 
 
+## Referenced Types
+
+#### OllamaAuth
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### Basic  *(extends OllamaAuth, type=`BASIC`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| username | str |  |  |
+| password | str |  |  |
+
+#### ModelNone  *(extends OllamaAuth, type=`NONE`)*
+*See OllamaAuth for properties.*
+
 ---
 
 ### Conventions

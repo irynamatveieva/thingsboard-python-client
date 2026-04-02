@@ -16,6 +16,24 @@
 
 
 
+## Referenced Types
+
+#### LwM2mInstance
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | int | LwM2M Instance id. | [optional] |
+| resources | List[LwM2mResourceObserve] | LwM2M Resource observe. | [optional] |
+
+#### LwM2mResourceObserve
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | int | LwM2M Resource Observe id. | [optional] |
+| name | str | LwM2M Resource Observe name. | [optional] |
+| observe | bool | LwM2M Resource Observe observe. | [optional] |
+| attribute | bool | LwM2M Resource Observe attribute. | [optional] |
+| telemetry | bool | LwM2M Resource Observe telemetry. | [optional] |
+| key_name | str | LwM2M Resource Observe key name. | [optional] |
+
 ---
 
 ### Conventions

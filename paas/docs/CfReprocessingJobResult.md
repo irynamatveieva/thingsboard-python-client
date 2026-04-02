@@ -12,6 +12,31 @@
 
 
 
+## Referenced Types
+
+#### JobResult
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| successful_count | int | Count of successfully completed tasks | [optional] |
+| failed_count | int | Count of failed tasks | [optional] |
+| discarded_count | int | Count of discarded tasks | [optional] |
+| total_count | int | Total number of tasks, set when all tasks are submitted | [optional] |
+| results | List[TaskResult] |  | [optional] |
+| general_error | str | General error message if the job failed | [optional] |
+| start_ts | int | Timestamp of the job start, in milliseconds | [optional] |
+| finish_ts | int | Timestamp of the job finish, in milliseconds | [optional] |
+| cancellation_ts | int | Timestamp of the job cancellation, in milliseconds | [optional] |
+| job_type | str |  |  |
+
+#### TaskResult
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| key | str |  | [optional] |
+| success | bool |  | [optional] |
+| discarded | bool |  | [optional] |
+| finish_ts | int |  | [optional] |
+| job_type | str |  |  |
+
 ---
 
 ### Conventions

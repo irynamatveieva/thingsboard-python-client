@@ -17,6 +17,24 @@
 
 
 
+## Referenced Types
+
+> **EntityId**: `{entity_type: EntityType, id: UUID}` — base type for all entity identifiers.
+
+#### CfArgumentDynamicSourceConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### GeofencingReportStrategy (enum)
+`REPORT_TRANSITION_EVENTS_ONLY` | `REPORT_PRESENCE_STATUS_ONLY` | `REPORT_TRANSITION_EVENTS_AND_PRESENCE_STATUS`
+
+#### EntitySearchDirection (enum)
+`FROM` | `TO`
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

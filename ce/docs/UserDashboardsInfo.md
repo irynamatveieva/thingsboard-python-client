@@ -12,6 +12,23 @@
 
 
 
+## Referenced Types
+
+#### LastVisitedDashboardInfo
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | UUID | JSON object with Dashboard id. | [optional] [readonly] |
+| title | str | Title of the dashboard. | [optional] |
+| starred | bool | Starred flag | [optional] |
+| last_visited | int | Last visit timestamp | [optional] |
+
+#### StarredDashboardInfo
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | UUID | JSON object with Dashboard id. | [optional] [readonly] |
+| title | str | Title of the dashboard. | [optional] |
+| starred_at | int | Starred timestamp | [optional] |
+
 ---
 
 ### Conventions

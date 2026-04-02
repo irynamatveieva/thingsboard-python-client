@@ -17,6 +17,41 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`EntityGroupId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### Operation (enum)
+`ALL` | `CREATE` | `READ` | `WRITE` | `DELETE` | `RPC_CALL` | `READ_CREDENTIALS` | `WRITE_CREDENTIALS` | `READ_ATTRIBUTES` | `WRITE_ATTRIBUTES` | … (21 values total)
+
+#### Resource (enum)
+`ALL` | `PROFILE` | `ADMIN_SETTINGS` | `ALARM` | `DEVICE` | `ASSET` | `CUSTOMER` | `DASHBOARD` | `ENTITY_VIEW` | `EDGE` | … (55 values total)
+
+#### MergedUserPermissions
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| generic_permissions | Dict[str, List[Operation]] | Map of permissions defined using generic roles ('Customer Administrator', etc) | [optional] |
+| group_permissions | Dict[str, MergedGroupPermissionInfo] | Map of permissions defined using group roles ('Read' or 'Write' access to specific entity group, etc) | [optional] |
+| read_group_permissions | Dict[str, MergedGroupTypePermissionInfo] | Map of read permissions per entity type. Used on the UI to enable/disable certain components. | [optional] |
+| read_entity_permissions | Dict[str, MergedGroupTypePermissionInfo] | Map of read permissions per resource. Used on the UI to enable/disable certain components. | [optional] |
+| read_attr_permissions | Dict[str, MergedGroupTypePermissionInfo] | Map of read entity attributes permissions per resource. Used on the UI to enable/disable certain tabs. | [optional] |
+| read_ts_permissions | Dict[str, MergedGroupTypePermissionInfo] | Map of read entity time-series permissions per resource. Used on the UI to enable/disable certain tabs. | [optional] |
+
+#### MergedGroupPermissionInfo
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| entity_type | EntityType |  | [optional] |
+| operations | List[Operation] |  | [optional] |
+
+#### MergedGroupTypePermissionInfo
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| entity_group_ids | List[EntityGroupId] | List of Entity Groups in case of group roles are assigned to the user (user group) | [optional] |
+| has_generic_read | bool | Indicates if generic permission assigned to the user group. | [optional] |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

@@ -16,6 +16,28 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`EntityGroupId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### MergedGroupPermissionInfo
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| entity_type | EntityType |  | [optional] |
+| operations | List[Operation] |  | [optional] |
+
+#### MergedGroupTypePermissionInfo
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| entity_group_ids | List[EntityGroupId] | List of Entity Groups in case of group roles are assigned to the user (user group) | [optional] |
+| has_generic_read | bool | Indicates if generic permission assigned to the user group. | [optional] |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
+#### Operation (enum)
+`ALL` | `CREATE` | `READ` | `WRITE` | `DELETE` | `RPC_CALL` | `READ_CREDENTIALS` | `WRITE_CREDENTIALS` | `READ_ATTRIBUTES` | `WRITE_ATTRIBUTES` | … (21 values total)
+
 ---
 
 ### Conventions

@@ -37,6 +37,254 @@
 
 
 
+## Subtypes
+
+#### ReportBarChartWithLabelsSettings  *(sub_type=`barChartWithLabels`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| show_bar_label | bool |  | [optional] |
+| bar_label_font | Font |  | [optional] |
+| bar_label_color | str |  | [optional] |
+| show_bar_value | bool |  | [optional] |
+| bar_value_font | Font |  | [optional] |
+| bar_value_color | str |  | [optional] |
+| show_bar_border | bool |  | [optional] |
+| bar_border_width | float |  | [optional] |
+| bar_border_radius | float |  | [optional] |
+| bar_background_settings | ChartFillSettings |  | [optional] |
+| bar_units | str |  | [optional] |
+| bar_decimals | int |  | [optional] |
+
+#### ReportRangeChartSettings  *(sub_type=`rangeChart`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| range_colors | List[ColorRange] |  | [optional] |
+| out_of_range_color | str |  | [optional] |
+| show_range_thresholds | bool |  | [optional] |
+| range_threshold | TimeSeriesChartThreshold |  | [optional] |
+| fill_area | bool |  | [optional] |
+| fill_area_opacity | float |  | [optional] |
+| line_settings | LineSeriesSettings |  | [optional] |
+| range_units | str |  | [optional] |
+| range_decimals | int |  | [optional] |
+
+## Referenced Types
+
+#### Font
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| size | float |  | [optional] |
+| weight | FontWeight |  | [optional] |
+| style | FontStyle |  | [optional] |
+| family | str |  | [optional] |
+
+#### TextAlignment (enum)
+`CENTER` | `RIGHT` | `LEFT` | `JUSTIFY`
+
+#### TimeSeriesChartThreshold
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | ValueSourceType |  | [optional] |
+| value | float |  | [optional] |
+| latest_key_type | str |  | [optional] |
+| latest_key | str |  | [optional] |
+| entity_key_type | str |  | [optional] |
+| entity_alias | str |  | [optional] |
+| entity_key | str |  | [optional] |
+| y_axis_id | str |  | [optional] |
+| units | str |  | [optional] |
+| decimals | int |  | [optional] |
+| line_color | str |  | [optional] |
+| line_type | ChartLineType |  | [optional] |
+| line_width | float |  | [optional] |
+| start_symbol | ChartShape |  | [optional] |
+| start_symbol_size | float |  | [optional] |
+| end_symbol | ChartShape |  | [optional] |
+| end_symbol_size | float |  | [optional] |
+| show_label | bool |  | [optional] |
+| label_position | ThresholdLabelPosition |  | [optional] |
+| label_font | Font |  | [optional] |
+| label_color | str |  | [optional] |
+| enable_label_background | bool |  | [optional] |
+| label_background | str |  | [optional] |
+| yaxis_id | str |  | [optional] |
+
+#### TimeSeriesChartGridSettings
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| show | bool |  | [optional] |
+| background_color | str |  | [optional] |
+| border_width | float |  | [optional] |
+| border_color | str |  | [optional] |
+
+#### TimeSeriesChartYAxisSettings
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| show | bool |  | [optional] |
+| label | str |  | [optional] |
+| label_font | Font |  | [optional] |
+| label_color | str |  | [optional] |
+| position | AxisPosition |  | [optional] |
+| show_tick_labels | bool |  | [optional] |
+| tick_label_font | Font |  | [optional] |
+| tick_label_color | str |  | [optional] |
+| show_ticks | bool |  | [optional] |
+| ticks_color | str |  | [optional] |
+| show_line | bool |  | [optional] |
+| line_color | str |  | [optional] |
+| show_split_lines | bool |  | [optional] |
+| split_lines_color | str |  | [optional] |
+| id | str |  | [optional] |
+| order | int |  | [optional] |
+| units | str |  | [optional] |
+| decimals | int |  | [optional] |
+| interval | float |  | [optional] |
+| split_number | int |  | [optional] |
+| min | float |  | [optional] |
+| max | float |  | [optional] |
+
+#### TimeSeriesChartXAxisSettings
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| show | bool |  | [optional] |
+| label | str |  | [optional] |
+| label_font | Font |  | [optional] |
+| label_color | str |  | [optional] |
+| position | AxisPosition |  | [optional] |
+| show_tick_labels | bool |  | [optional] |
+| tick_label_font | Font |  | [optional] |
+| tick_label_color | str |  | [optional] |
+| show_ticks | bool |  | [optional] |
+| ticks_color | str |  | [optional] |
+| show_line | bool |  | [optional] |
+| line_color | str |  | [optional] |
+| show_split_lines | bool |  | [optional] |
+| split_lines_color | str |  | [optional] |
+| ticks_format | Dict[str, str] |  | [optional] |
+
+#### TimeSeriesChartBarWidthSettings
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| bar_gap | float |  | [optional] |
+| interval_gap | float |  | [optional] |
+
+#### TimeSeriesChartNoAggregationBarWidthSettings
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| strategy | TimeSeriesChartNoAggregationBarWidthStrategy |  | [optional] |
+| group_width | TimeSeriesChartBarWidth |  | [optional] |
+| bar_width | TimeSeriesChartBarWidth |  | [optional] |
+
+#### TimeSeriesChartStateSettings
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| label | str |  | [optional] |
+| value | float |  | [optional] |
+| source_type | TimeSeriesChartStateSourceType |  | [optional] |
+| source_value | object |  | [optional] |
+| source_range_from | float |  | [optional] |
+| source_range_to | float |  | [optional] |
+
+#### ComparisonDuration (enum)
+`PREVIOUSINTERVAL` | `DAYS` | `WEEKS` | `MONTHS` | `YEARS` | `CUSTOMINTERVAL`
+
+#### LegendConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| position | LegendPosition |  | [optional] |
+| sort_data_keys | bool |  | [optional] |
+| show_min | bool |  | [optional] |
+| show_max | bool |  | [optional] |
+| show_avg | bool |  | [optional] |
+| show_total | bool |  | [optional] |
+| show_latest | bool |  | [optional] |
+
+#### ChartFillSettings
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | ChartFillType |  | [optional] |
+| opacity | float |  | [optional] |
+| gradient | ChartFillSettingsGradient |  | [optional] |
+
+#### ColorRange
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| var_from | float |  | [optional] |
+| to | float |  | [optional] |
+| color | str |  | [optional] |
+
+#### LineSeriesSettings
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| show_line | bool |  | [optional] |
+| step | bool |  | [optional] |
+| step_type | LineSeriesStepType |  | [optional] |
+| smooth | bool |  | [optional] |
+| line_type | ChartLineType |  | [optional] |
+| line_width | float |  | [optional] |
+| show_points | bool |  | [optional] |
+| show_point_label | bool |  | [optional] |
+| point_label_position | ChartLabelPosition |  | [optional] |
+| point_label_font | Font |  | [optional] |
+| point_label_color | str |  | [optional] |
+| enable_point_label_background | bool |  | [optional] |
+| point_label_background | str |  | [optional] |
+| point_shape | ChartShape |  | [optional] |
+| point_size | float |  | [optional] |
+| fill_area_settings | ChartFillSettings |  | [optional] |
+
+#### FontWeight (enum)
+`NORMAL` | `BOLD` | `ENUM_500`
+
+#### FontStyle (enum)
+`NORMAL` | `ITALIC`
+
+#### ValueSourceType (enum)
+`CONSTANT` | `LATESTKEY` | `ENTITY`
+
+#### ChartLineType (enum)
+`SOLID` | `DASHED` | `DOTTED`
+
+#### ChartShape (enum)
+`EMPTYCIRCLE` | `CIRCLE` | `RECT` | `ROUNDRECT` | `TRIANGLE` | `DIAMOND` | `PIN` | `ARROW` | `NONE`
+
+#### ThresholdLabelPosition (enum)
+`START` | `MIDDLE` | `END` | `INSIDESTART` | `INSIDESTARTTOP` | `INSIDESTARTBOTTOM` | `INSIDEMIDDLE` | `INSIDEMIDDLETOP` | `INSIDEMIDDLEBOTTOM` | `INSIDEEND` | … (12 values total)
+
+#### AxisPosition (enum)
+`LEFT` | `RIGHT` | `TOP` | `BOTTOM`
+
+#### TimeSeriesChartNoAggregationBarWidthStrategy (enum)
+`GROUP` | `SEPARATE`
+
+#### TimeSeriesChartBarWidth
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| relative | bool |  | [optional] |
+| relative_width | float |  | [optional] |
+| absolute_width | float |  | [optional] |
+
+#### TimeSeriesChartStateSourceType (enum)
+`CONSTANT` | `RANGE`
+
+#### LegendPosition (enum)
+`TOP` | `BOTTOM` | `LEFT` | `RIGHT`
+
+#### ChartFillType (enum)
+`NONE` | `OPACITY` | `GRADIENT`
+
+#### ChartFillSettingsGradient
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| start | float |  | [optional] |
+| end | float |  | [optional] |
+
+#### LineSeriesStepType (enum)
+`START` | `MIDDLE` | `END`
+
+#### ChartLabelPosition (enum)
+`TOP` | `BOTTOM`
+
 ---
 
 ### Conventions

@@ -14,6 +14,39 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`AdminSettingsId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `BlobEntityId`, `CalculatedFieldId`, `ConverterId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityGroupId`, `EntityViewId`, `GroupPermissionId`, `IntegrationId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `QueueId`, `QueueStatsId`, `ReportId`, `ReportTemplateId`, `RoleId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `SchedulerEventId`, `SecretId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### TbResourceInfo
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | TbResourceId | JSON object with the Resource Id. Specify this field to update the Resource. Referencing non-existing Resource Id will cause error. Omit this field to create new Resource. | [optional] |
+| created_time | int | Timestamp of the resource creation, in milliseconds | [optional] [readonly] |
+| tenant_id | TenantId | JSON object with Tenant Id. Tenant Id of the resource can't be changed. | [optional] [readonly] |
+| customer_id | CustomerId | JSON object with Customer Id. Customer Id of the resource can't be changed. | [optional] [readonly] |
+| title | str | Resource title. | [optional] |
+| resource_type | ResourceType | Resource type. | [optional] |
+| resource_sub_type | ResourceSubType | Resource sub type. | [optional] |
+| resource_key | str | Resource key. | [optional] |
+| public_resource_key | str | Public resource key. | [optional] |
+| etag | str | Resource etag. | [optional] [readonly] |
+| file_name | str | Resource file name. | [optional] |
+| descriptor | object | Resource descriptor. | [optional] |
+| link | str |  | [optional] [readonly] |
+| name | str |  | [optional] [readonly] |
+| public | bool |  | [optional] |
+| public_link | str |  | [optional] [readonly] |
+
+#### ResourceType (enum)
+`LWM2_M_MODEL` | `JKS` | `PKCS_12` | `JS_MODULE` | `IMAGE` | `DASHBOARD` | `GENERAL`
+
+#### ResourceSubType (enum)
+`IMAGE` | `SCADA_SYMBOL` | `EXTENSION` | `MODULE`
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (46 values total)
+
 ---
 
 ### Conventions

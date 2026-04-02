@@ -14,6 +14,22 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`QueueStatsId`, `TenantId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### QueueStats
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | QueueStatsId |  | [optional] |
+| created_time | int | Entity creation timestamp in milliseconds since Unix epoch | [optional] [readonly] |
+| tenant_id | TenantId |  | [optional] |
+| queue_name | str |  | [optional] |
+| service_id | str |  | [optional] |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

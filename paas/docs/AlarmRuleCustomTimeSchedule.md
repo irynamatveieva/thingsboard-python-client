@@ -14,6 +14,21 @@
 
 
 
+## Referenced Types
+
+#### AlarmRuleSchedule
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### AlarmRuleCustomTimeScheduleItem
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| day_of_week | int |  | [optional] |
+| enabled | bool |  | [optional] |
+| ends_on | int |  | [optional] |
+| starts_on | int |  | [optional] |
+
 ---
 
 ### Conventions

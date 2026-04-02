@@ -13,6 +13,13 @@
 
 
 
+## Referenced Types
+
+#### EntityFilter
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
 ---
 
 ### Conventions

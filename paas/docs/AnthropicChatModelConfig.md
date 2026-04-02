@@ -21,6 +21,21 @@
 
 
 
+## Referenced Types
+
+#### AiModelConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| provider | str |  |  |
+
+#### AiModelType (enum)
+`CHAT`
+
+#### AnthropicProviderConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| api_key | str |  |  |
+
 ---
 
 ### Conventions

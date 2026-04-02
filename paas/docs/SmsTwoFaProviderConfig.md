@@ -14,6 +14,13 @@
 
 
 
+## Referenced Types
+
+#### TwoFaProviderConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| provider_type | str |  |  |
+
 ---
 
 ### Conventions

@@ -14,6 +14,30 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`CustomerId`, `RoleId`, `TenantId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### Role
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | RoleId | JSON object with the Role Id. Specify this field to update the Role. Referencing non-existing Role Id will cause error. Omit this field to create new Role. | [optional] |
+| created_time | int | Timestamp of the role creation, in milliseconds | [optional] [readonly] |
+| additional_info | object | Additional parameters of the role. May include: 'description' (string). | [optional] |
+| tenant_id | TenantId | JSON object with Tenant Id. | [readonly] |
+| customer_id | CustomerId | JSON object with Customer Id. | [optional] [readonly] |
+| name | str | Role Name |  |
+| type | RoleType | Type of the role: generic or group |  |
+| permissions | object |  | [optional] |
+| version | int |  | [optional] |
+| owner_id | EntityId | JSON object with Customer or Tenant Id | [optional] [readonly] |
+
+#### RoleType (enum)
+`GENERIC` | `GROUP`
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

@@ -14,6 +14,30 @@
 
 
 
+## Referenced Types
+
+#### VersionLoadRequest
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| version_id | str |  | [optional] |
+| type | VersionLoadRequestType | Type of the version to load |  |
+
+#### EntityTypeVersionLoadConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| load_relations | bool |  | [optional] |
+| load_attributes | bool |  | [optional] |
+| load_credentials | bool |  | [optional] |
+| load_calculated_fields | bool |  | [optional] |
+| load_permissions | bool |  | [optional] |
+| load_group_entities | bool |  | [optional] |
+| auto_generate_integration_key | bool |  | [optional] |
+| remove_other_entities | bool |  | [optional] |
+| find_existing_entity_by_name | bool |  | [optional] |
+
+#### VersionLoadRequestType (enum)
+`SINGLE_ENTITY` | `ENTITY_TYPE`
+
 ---
 
 ### Conventions

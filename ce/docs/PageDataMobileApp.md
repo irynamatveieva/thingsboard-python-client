@@ -14,6 +14,49 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`AdminSettingsId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `CalculatedFieldId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityViewId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `QueueId`, `QueueStatsId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### MobileApp
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | MobileAppId |  | [optional] |
+| created_time | int | Entity creation timestamp in milliseconds since Unix epoch | [optional] [readonly] |
+| tenant_id | TenantId | JSON object with Tenant Id | [optional] |
+| pkg_name | str | Application package name. Cannot be empty |  |
+| title | str | Application title | [optional] |
+| app_secret | str | Application secret. The length must be at least 16 characters |  |
+| platform_type | PlatformType | Application platform type: ANDROID or IOS |  |
+| status | MobileAppStatus | Application status: PUBLISHED, DEPRECATED, SUSPENDED, DRAFT |  |
+| version_info | MobileAppVersionInfo | Application version info | [optional] |
+| store_info | StoreInfo | Application store information | [optional] |
+| name | str | Mobile app package name | [optional] [readonly] |
+
+#### PlatformType (enum)
+`WEB` | `ANDROID` | `IOS`
+
+#### MobileAppStatus (enum)
+`DRAFT` | `PUBLISHED` | `DEPRECATED` | `SUSPENDED`
+
+#### MobileAppVersionInfo
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| min_version | str | Minimum supported version | [optional] |
+| min_version_release_notes | str | Release notes of minimum supported version | [optional] |
+| latest_version | str | Latest supported version | [optional] |
+| latest_version_release_notes | str | Release notes of latest supported version | [optional] |
+
+#### StoreInfo
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| app_id | str |  | [optional] |
+| sha256_cert_fingerprints | str |  | [optional] |
+| store_link | str |  | [optional] |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `RULE_CHAIN` | `RULE_NODE` | `ENTITY_VIEW` | … (36 values total)
+
 ---
 
 ### Conventions

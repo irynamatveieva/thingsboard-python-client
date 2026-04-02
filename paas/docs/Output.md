@@ -15,6 +15,11 @@
 
 
 
+## Referenced Types
+
+#### AttributeScope (enum)
+`CLIENT_SCOPE` | `SERVER_SCOPE` | `SHARED_SCOPE`
+
 ---
 
 ### Conventions

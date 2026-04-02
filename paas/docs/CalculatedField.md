@@ -22,6 +22,42 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`CalculatedFieldId`, `TenantId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### CalculatedFieldType (enum)
+`SIMPLE` | `SCRIPT` | `GEOFENCING` | `ALARM` | `PROPAGATION` | `RELATED_ENTITIES_AGGREGATION` | `ENTITY_AGGREGATION`
+
+#### DebugSettings
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| failures_enabled | bool | Debug failures. | [optional] |
+| all_enabled | bool | Debug All. Used as a trigger for updating debugAllUntil. | [optional] |
+| all_enabled_until | int | Timestamp of the end time for the processing debug events. | [optional] |
+
+#### CalculatedFieldConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+| output | Output |  | [optional] |
+| ai_generated | bool |  | [optional] |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
+#### Output
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| name | str |  | [optional] |
+| scope | AttributeScope |  | [optional] |
+| decimals_by_default | int |  | [optional] |
+| strategy | object |  | [optional] |
+| type | str |  |  |
+
+#### AttributeScope (enum)
+`CLIENT_SCOPE` | `SERVER_SCOPE` | `SHARED_SCOPE`
+
 ---
 
 ### Conventions

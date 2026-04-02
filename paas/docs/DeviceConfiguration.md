@@ -13,6 +13,11 @@ Device configuration
 
 
 
+## Referenced Types
+
+#### DeviceProfileType (enum)
+`DEFAULT`
+
 ---
 
 ### Conventions

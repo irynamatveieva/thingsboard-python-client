@@ -19,6 +19,16 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`CouponId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### CouponDuration (enum)
+`FOREVER` | `ONCE` | `REPEATING`
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

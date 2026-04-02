@@ -22,6 +22,21 @@
 
 
 
+## Referenced Types
+
+#### AiModelConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| provider | str |  |  |
+
+#### AiModelType (enum)
+`CHAT`
+
+#### GitHubModelsProviderConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| personal_access_token | str |  |  |
+
 ---
 
 ### Conventions

@@ -14,6 +14,46 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`AdminSettingsId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `CalculatedFieldId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityViewId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `QueueId`, `QueueStatsId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### VersionLoadRequest
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| version_id | str |  | [optional] |
+| type | VersionLoadRequestType | Type of the version to load |  |
+
+#### EntityTypeVersionLoadRequest  *(extends VersionLoadRequest, type=`ENTITY_TYPE`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| entity_types | Dict[str, EntityTypeVersionLoadConfig] |  | [optional] |
+| rollback_on_error | bool |  | [optional] |
+
+#### VersionLoadConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| load_relations | bool |  | [optional] |
+| load_attributes | bool |  | [optional] |
+| load_credentials | bool |  | [optional] |
+| load_calculated_fields | bool |  | [optional] |
+
+#### VersionLoadRequestType (enum)
+`SINGLE_ENTITY` | `ENTITY_TYPE`
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `RULE_CHAIN` | `RULE_NODE` | `ENTITY_VIEW` | … (36 values total)
+
+#### EntityTypeVersionLoadConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| load_relations | bool |  | [optional] |
+| load_attributes | bool |  | [optional] |
+| load_credentials | bool |  | [optional] |
+| load_calculated_fields | bool |  | [optional] |
+| remove_other_entities | bool |  | [optional] |
+| find_existing_entity_by_name | bool |  | [optional] |
+
 ---
 
 ### Conventions

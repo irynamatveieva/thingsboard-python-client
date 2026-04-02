@@ -20,6 +20,16 @@ A JSON value representing the Secret.
 
 
 
+## Referenced Types
+
+> **EntityId types** (`SecretId`, `TenantId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### SecretType (enum)
+`TEXT` | `TEXT_FILE`
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

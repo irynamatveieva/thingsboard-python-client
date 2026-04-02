@@ -14,6 +14,34 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`AdminSettingsId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `CalculatedFieldId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityViewId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `QueueId`, `QueueStatsId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### TenantInfo
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | TenantId | JSON object with the tenant Id. Specify this field to update the tenant. Referencing non-existing tenant Id will cause error. Omit this field to create new tenant. | [optional] |
+| created_time | int | Timestamp of the tenant creation, in milliseconds | [optional] [readonly] |
+| country | str | Country | [optional] |
+| state | str | State | [optional] |
+| city | str | City | [optional] |
+| address | str | Address Line 1 | [optional] |
+| address2 | str | Address Line 2 | [optional] |
+| zip | str | Zip code | [optional] |
+| phone | str | Phone number | [optional] |
+| email | str | Email | [optional] |
+| title | str | Title of the tenant |  |
+| region | str | Geo region of the tenant | [optional] |
+| tenant_profile_id | TenantProfileId | JSON object with Tenant Profile Id | [optional] |
+| version | int |  | [optional] |
+| tenant_profile_name | str | Tenant Profile name | [optional] |
+| additional_info | object | Additional parameters of the tenant. May include: 'description' (string), 'homeDashboardId' (string, UUID of the home dashboard), 'homeDashboardHideToolbar' (boolean, whether to hide the dashboard toolbar). | [optional] |
+| name | str | Name of the tenant. Read-only, duplicated from title for backward compatibility | [optional] [readonly] |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `RULE_CHAIN` | `RULE_NODE` | `ENTITY_VIEW` | … (36 values total)
+
 ---
 
 ### Conventions

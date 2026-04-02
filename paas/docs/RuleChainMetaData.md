@@ -18,6 +18,52 @@ A JSON value representing the rule chain metadata.
 
 
 
+## Referenced Types
+
+> **EntityId types** (`RuleChainId`, `RuleNodeId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### RuleNode
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | RuleNodeId | JSON object with the Rule Node Id. Specify this field to update the Rule Node. Referencing non-existing Rule Node Id will cause error. Omit this field to create new rule node. | [optional] |
+| created_time | int | Timestamp of the rule node creation, in milliseconds | [optional] [readonly] |
+| additional_info | object | Additional parameters of the rule node. May include: 'layoutX' (number, X coordinate for visualization), 'layoutY' (number, Y coordinate for visualization), 'description' (string). | [optional] |
+| rule_chain_id | RuleChainId | JSON object with the Rule Chain Id. | [optional] [readonly] |
+| type | str | Full Java Class Name of the rule node implementation. | [optional] |
+| name | str | User defined name of the rule node. Used on UI and for logging. | [optional] |
+| debug_settings | DebugSettings | Debug settings object. | [optional] |
+| singleton_mode | bool | Enable/disable singleton mode. | [optional] |
+| queue_name | str | Queue name. | [optional] |
+| configuration_version | int | Version of rule node configuration. | [optional] |
+| configuration | object | JSON with the rule node configuration. Structure depends on the rule node implementation. | [optional] |
+| external_id | RuleNodeId |  | [optional] |
+| debug_mode | bool |  | [optional] |
+
+#### NodeConnectionInfo
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| from_index | int | Index of rule node in the 'nodes' array of the RuleChainMetaData. Indicates the 'from' part of the connection. |  |
+| to_index | int | Index of rule node in the 'nodes' array of the RuleChainMetaData. Indicates the 'to' part of the connection. |  |
+| type | str | Type of the relation. Typically indicated the result of processing by the 'from' rule node. For example, 'Success' or 'Failure' |  |
+
+#### RuleChainConnectionInfo
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| from_index | int | Index of rule node in the 'nodes' array of the RuleChainMetaData. Indicates the 'from' part of the connection. |  |
+| target_rule_chain_id | RuleChainId | JSON object with the Rule Chain Id. |  |
+| additional_info | object | JSON object with the additional information about the connection. |  |
+| type | str | Type of the relation. Typically indicated the result of processing by the 'from' rule node. For example, 'Success' or 'Failure' |  |
+
+#### DebugSettings
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| failures_enabled | bool | Debug failures. | [optional] |
+| all_enabled | bool | Debug All. Used as a trigger for updating debugAllUntil. | [optional] |
+| all_enabled_until | int | Timestamp of the end time for the processing debug events. | [optional] |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

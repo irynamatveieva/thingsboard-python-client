@@ -12,6 +12,25 @@
 
 
 
+## Referenced Types
+
+#### Mapping
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| columns | List[ColumnMapping] |  | [optional] |
+| delimiter | str |  | [optional] |
+| update | bool |  | [optional] |
+| header | bool |  | [optional] |
+
+#### ColumnMapping
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | BulkImportColumnType |  | [optional] |
+| key | str |  | [optional] |
+
+#### BulkImportColumnType (enum)
+`NAME` | `TYPE` | `LABEL` | `SHARED_ATTRIBUTE` | `SERVER_ATTRIBUTE` | `TIMESERIES` | `ACCESS_TOKEN` | `X509` | `MQTT_CLIENT_ID` | `MQTT_USER_NAME` | … (30 values total)
+
 ---
 
 ### Conventions

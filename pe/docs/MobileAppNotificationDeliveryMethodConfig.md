@@ -15,6 +15,18 @@
 
 
 
+## Referenced Types
+
+#### NotificationDeliveryMethodConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| method | str |  |  |
+
+#### SlackNotificationDeliveryMethodConfig  *(extends NotificationDeliveryMethodConfig, method=`SLACK`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| bot_token | str |  |  |
+
 ---
 
 ### Conventions

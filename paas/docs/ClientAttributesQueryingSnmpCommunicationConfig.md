@@ -14,6 +14,26 @@
 
 
 
+## Referenced Types
+
+#### SnmpCommunicationConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| spec | SnmpCommunicationSpec | Specification of the SNMP communication |  |
+
+#### SnmpMapping
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| oid | str |  | [optional] |
+| key | str |  | [optional] |
+| data_type | DataType |  | [optional] |
+
+#### SnmpCommunicationSpec (enum)
+`TELEMETRY_QUERYING` | `CLIENT_ATTRIBUTES_QUERYING` | `SHARED_ATTRIBUTES_SETTING` | `TO_DEVICE_RPC_REQUEST` | `TO_SERVER_RPC_REQUEST`
+
+#### DataType (enum)
+`BOOLEAN` | `LONG` | `DOUBLE` | `STRING` | `JSON`
+
 ---
 
 ### Conventions

@@ -23,6 +23,36 @@
 
 
 
+## Referenced Types
+
+#### EntityFilter
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### AliasEntityId
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| alias_entity_type | AliasEntityType |  | [optional] |
+| entity_type | EntityType |  |  |
+| id | UUID | ID of the entity, time-based UUID v1 |  |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
+#### EntitySearchDirection (enum)
+`FROM` | `TO`
+
+#### RelationEntityTypeFilter
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| relation_type | str | Type of the relation between root entity and other entity (e.g. 'Contains' or 'Manages'). | [optional] |
+| entity_types | List[EntityType] | Array of entity types to filter the related entities (e.g. 'DEVICE', 'ASSET'). | [optional] |
+| negate | bool | Negate relation type between root entity and other entity. | [optional] |
+
+#### AliasEntityType (enum)
+`CURRENT_CUSTOMER` | `CURRENT_TENANT` | `CURRENT_USER` | `CURRENT_USER_OWNER`
+
 ---
 
 ### Conventions

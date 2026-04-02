@@ -11,6 +11,11 @@
 
 
 
+## Referenced Types
+
+#### DataKeySettingsType (enum)
+`COLUMN` | `TIME_SERIES_CHART` | `DEFAULT`
+
 ---
 
 ### Conventions

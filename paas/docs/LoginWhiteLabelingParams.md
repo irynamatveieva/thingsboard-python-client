@@ -35,6 +35,31 @@ A JSON value representing the login white labeling configuration
 
 
 
+## Referenced Types
+
+> **EntityId types** (`DomainId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### Favicon
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| url | str |  | [optional] |
+
+#### PaletteSettings
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| primary_palette | Palette | Primary palette JSON |  |
+| accent_palette | Palette | Accent palette JSON |  |
+
+#### Palette
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str | Name of the pre-defined palette, or 'custom' |  |
+| extends | str | Pre-defined palette name that the custom palette extends | [optional] |
+| colors | Dict[str, str] | Mapping of hue identifier number to the rgb(a) color code | [optional] |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

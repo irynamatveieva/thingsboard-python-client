@@ -13,6 +13,13 @@
 
 
 
+## Referenced Types
+
+#### AlarmConditionExpression
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
 ---
 
 ### Conventions

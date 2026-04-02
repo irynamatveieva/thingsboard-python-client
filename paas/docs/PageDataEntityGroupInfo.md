@@ -14,6 +14,35 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`EntityGroupId`, `TenantId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### EntityGroupInfo
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | EntityGroupId | JSON object with the EntityGroupId Id. Specify this field to update the Entity Group. Referencing non-existing Entity Group Id will cause error. Omit this field to create new Entity Group. | [optional] |
+| created_time | int | Timestamp of the entity group creation, in milliseconds | [optional] [readonly] |
+| type | TypeEnum |  |  |
+| name | str | Name of the entity group |  |
+| owner_id | EntityId | JSON object with the owner of the group - Tenant or Customer Id. | [optional] |
+| additional_info | object | Additional parameters of the entity group. May include: 'description' (string), 'isPublic' (boolean, whether this group is shared publicly), 'publicCustomerId' (string, UUID of the public customer associated with this group). | [optional] |
+| configuration | object | JSON with the configuration for UI components: list of columns, settings, actions, etc | [optional] |
+| version | int |  | [optional] |
+| owner_ids | List[EntityGroupInfoOwnerIdsInner] | List of the entity group owners. |  |
+| edge_group_all | bool | Indicates special edge group 'All' that contains all entities and can't be deleted. | [optional] [readonly] |
+| group_all | bool | Indicates special group 'All' that contains all entities and can't be deleted. | [optional] |
+| tenant_id | TenantId |  | [optional] |
+
+#### EntityGroupInfoOwnerIdsInner
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| entity_type | EntityType |  |  |
+| id | UUID | ID of the entity, time-based UUID v1 |  |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

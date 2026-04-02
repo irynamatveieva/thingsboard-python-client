@@ -17,6 +17,32 @@
 
 
 
+## Referenced Types
+
+#### ObjectAttributes
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| dim | int |  | [optional] |
+| ssid | int |  | [optional] |
+| uri | str |  | [optional] |
+| ver | object |  | [optional] |
+| lwm2m | LwM2mVersion |  | [optional] |
+| pmin | int |  | [optional] |
+| pmax | int |  | [optional] |
+| gt | float |  | [optional] |
+| lt | float |  | [optional] |
+| st | float |  | [optional] |
+| epmin | int |  | [optional] |
+| epmax | int |  | [optional] |
+
+#### TelemetryObserveStrategy (enum)
+`SINGLE_LEFT_PARENTHESIS_0_RIGHT_PARENTHESIS_COLON__ONE_RESOURCE_EQUALS_ONE_SINGLE_OBSERVE_REQUEST` | `COMPOSITE_ALL_LEFT_PARENTHESIS_1_RIGHT_PARENTHESIS_COLON__ALL_RESOURCES_IN_ONE_COMPOSITE_OBSERVE_REQUEST` | `COMPOSITE_BY_OBJECT_LEFT_PARENTHESIS_2_RIGHT_PARENTHESIS_COLON__GROUPED_COMPOSITE_OBSERVE_REQUESTS_BY_OBJECT`
+
+#### LwM2mVersion
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| supported | bool |  | [optional] |
+
 ---
 
 ### Conventions

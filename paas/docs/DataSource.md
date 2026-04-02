@@ -17,6 +17,97 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`UserId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### DataSourceType (enum)
+`DEVICE` | `ENTITY` | `ENTITYCOUNT` | `ALARMCOUNT`
+
+#### DataKey
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| name | str |  | [optional] |
+| type | str |  | [optional] |
+| label | str |  | [optional] |
+| color | str |  | [optional] |
+| decimals | int |  | [optional] |
+| units | str |  | [optional] |
+| aggregation_type | Aggregation |  | [optional] |
+| timewindow | TimeWindowConfiguration |  | [optional] |
+| use_post_processing | bool |  | [optional] |
+| post_func_body | str |  | [optional] |
+| settings | DataKeySettings |  | [optional] |
+
+#### AlarmFilterConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type_list | List[str] |  | [optional] |
+| status_list | List[AlarmSearchStatus] |  | [optional] |
+| severity_list | List[AlarmSeverity] |  | [optional] |
+| assignee_id | UserId |  | [optional] |
+| search_propagated_alarms | bool |  | [optional] |
+
+#### Aggregation (enum)
+`MIN` | `MAX` | `AVG` | `SUM` | `COUNT` | `NONE`
+
+#### TimeWindowConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| history | History |  | [optional] |
+| aggregation | AggregationConfiguration |  | [optional] |
+| timezone | str |  | [optional] |
+
+#### DataKeySettings
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | DataKeySettingsType | Data key settings type |  |
+
+#### AlarmSearchStatus (enum)
+`ANY` | `ACTIVE` | `CLEARED` | `ACK` | `UNACK`
+
+#### AlarmSeverity (enum)
+`CRITICAL` | `MAJOR` | `MINOR` | `WARNING` | `INDETERMINATE`
+
+#### History
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| history_type | int |  | [optional] |
+| interval | Interval |  | [optional] |
+| timewindow_ms | int |  | [optional] |
+| fixed_timewindow | FixedTimeWindow |  | [optional] |
+| quick_interval | QuickTimeInterval |  | [optional] |
+
+#### AggregationConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | Aggregation |  | [optional] |
+| limit | int |  | [optional] |
+
+#### DataKeySettingsType (enum)
+`COLUMN` | `TIME_SERIES_CHART` | `DEFAULT`
+
+#### Interval
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| interval | int |  | [optional] |
+| interval_type | IntervalType |  | [optional] |
+
+#### FixedTimeWindow
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| start_time_ms | int |  | [optional] |
+| end_time_ms | int |  | [optional] |
+
+#### QuickTimeInterval (enum)
+`YESTERDAY` | `DAY_BEFORE_YESTERDAY` | `THIS_DAY_LAST_WEEK` | `PREVIOUS_WEEK` | `PREVIOUS_WEEK_ISO` | `PREVIOUS_MONTH` | `PREVIOUS_QUARTER` | `PREVIOUS_HALF_YEAR` | `PREVIOUS_YEAR` | `CURRENT_HOUR` | … (24 values total)
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
+#### IntervalType (enum)
+`MILLISECONDS` | `WEEK` | `WEEK_ISO` | `MONTH` | `QUARTER`
+
 ---
 
 ### Conventions

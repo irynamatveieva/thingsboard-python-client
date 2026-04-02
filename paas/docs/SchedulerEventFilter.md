@@ -16,6 +16,26 @@
 
 
 
+## Referenced Types
+
+#### EntityFilter
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### AliasEntityId
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| alias_entity_type | AliasEntityType |  | [optional] |
+| entity_type | EntityType |  |  |
+| id | UUID | ID of the entity, time-based UUID v1 |  |
+
+#### AliasEntityType (enum)
+`CURRENT_CUSTOMER` | `CURRENT_TENANT` | `CURRENT_USER` | `CURRENT_USER_OWNER`
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

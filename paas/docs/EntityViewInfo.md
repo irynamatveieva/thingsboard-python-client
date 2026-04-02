@@ -25,6 +25,32 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`CustomerId`, `EntityViewId`, `TenantId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### TelemetryEntityView
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| timeseries | List[str] | List of time-series data keys to expose |  |
+| attributes | AttributesEntityView | JSON object with attributes to expose |  |
+
+#### EntityInfo
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | EntityId | JSON object with the entity Id. | [optional] |
+| name | str | Entity Name | [optional] |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
+#### AttributesEntityView
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| cs | List[str] | List of client-side attribute keys to expose |  |
+| ss | List[str] | List of server-side attribute keys to expose |  |
+| sh | List[str] | List of shared attribute keys to expose |  |
+
 ---
 
 ### Conventions

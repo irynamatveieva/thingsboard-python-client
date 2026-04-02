@@ -14,6 +14,11 @@ Filter for various event types
 
 
 
+## Referenced Types
+
+#### EventType (enum)
+`ERROR` | `LC_EVENT` | `STATS` | `RAW_DATA` | `DEBUG_RULE_NODE` | `DEBUG_RULE_CHAIN` | `DEBUG_CONVERTER` | `DEBUG_INTEGRATION` | `DEBUG_CALCULATED_FIELD`
+
 ---
 
 ### Conventions

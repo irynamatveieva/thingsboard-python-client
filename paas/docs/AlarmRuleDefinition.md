@@ -13,6 +13,36 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`DashboardId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### AlarmRuleCondition
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| expression | AlarmConditionExpression |  |  |
+| schedule | AlarmConditionValueAlarmRuleSchedule |  | [optional] |
+| type | str |  |  |
+
+#### AlarmConditionExpression
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### AlarmConditionValueAlarmRuleSchedule
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| dynamic_value_argument | str |  | [optional] |
+| static_value | AlarmRuleSchedule |  | [optional] |
+
+#### AlarmRuleSchedule
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

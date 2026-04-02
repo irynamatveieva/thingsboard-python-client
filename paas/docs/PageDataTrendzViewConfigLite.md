@@ -14,6 +14,14 @@
 
 
 
+## Referenced Types
+
+#### TrendzViewConfigLite
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | UUID |  | [optional] |
+| name | str |  | [optional] |
+
 ---
 
 ### Conventions

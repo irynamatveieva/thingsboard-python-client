@@ -13,6 +13,30 @@
 
 
 
+## Referenced Types
+
+#### TwoFaAccountConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| use_by_default | bool |  | [optional] |
+| provider_type | str |  |  |
+
+#### BackupCodeTwoFaAccountConfig  *(extends TwoFaAccountConfig, provider_type=`BACKUP_CODE`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| codes | List[str] |  |  |
+| codes_left | int |  | [optional] |
+
+#### EmailTwoFaAccountConfig  *(extends TwoFaAccountConfig, provider_type=`EMAIL`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| email | str |  |  |
+
+#### TotpTwoFaAccountConfig  *(extends TwoFaAccountConfig, provider_type=`TOTP`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| auth_url | str |  |  |
+
 ---
 
 ### Conventions

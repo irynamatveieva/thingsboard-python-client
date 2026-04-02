@@ -15,6 +15,30 @@
 
 
 
+## Referenced Types
+
+#### CaptchaParams
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| version | str |  |  |
+
+#### EnterpriseCaptchaParams  *(extends CaptchaParams, version=`enterprise`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| project_id | str | Your Google Cloud project ID | [optional] |
+| service_account_credentials | str | Service account credentials | [optional] |
+| service_account_credentials_file_name | str | Service account credentials file name | [optional] |
+| android_key | str | The reCAPTCHA key associated with android app. | [optional] |
+| ios_key | str | The reCAPTCHA key associated with iOS app. | [optional] |
+| log_action_name | str | Optional action name used for logging | [optional] |
+
+#### V3CaptchaParams  *(extends CaptchaParams, version=`v3`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| site_key | str | Captcha site key for 'I'm not a robot' validation | [optional] |
+| log_action_name | str | Optional action name used for logging (for captcha version 'v3' and 'enterprise') | [optional] |
+| secret_key | str | Secret key to validate the Captcha. Should match the Captcha Site Key. | [optional] |
+
 ---
 
 ### Conventions

@@ -15,6 +15,17 @@
 
 
 
+## Referenced Types
+
+#### EventFilter
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| event_type | EventType | String value representing the event type |  |
+| not_empty | bool |  | [optional] |
+
+#### EventType (enum)
+`ERROR` | `LC_EVENT` | `STATS` | `RAW_DATA` | `DEBUG_RULE_NODE` | `DEBUG_RULE_CHAIN` | `DEBUG_CONVERTER` | `DEBUG_INTEGRATION` | `DEBUG_CALCULATED_FIELD`
+
 ---
 
 ### Conventions

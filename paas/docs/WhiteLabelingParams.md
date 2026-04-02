@@ -28,6 +28,26 @@ A JSON value representing the white labeling configuration
 
 
 
+## Referenced Types
+
+#### Favicon
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| url | str |  | [optional] |
+
+#### PaletteSettings
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| primary_palette | Palette | Primary palette JSON |  |
+| accent_palette | Palette | Accent palette JSON |  |
+
+#### Palette
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str | Name of the pre-defined palette, or 'custom' |  |
+| extends | str | Pre-defined palette name that the custom palette extends | [optional] |
+| colors | Dict[str, str] | Mapping of hue identifier number to the rgb(a) color code | [optional] |
+
 ---
 
 ### Conventions

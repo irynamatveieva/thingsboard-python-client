@@ -12,6 +12,15 @@
 
 
 
+## Referenced Types
+
+#### DeliveryMethodNotificationTemplate
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| enabled | bool |  | [optional] |
+| body | str |  |  |
+| method | str |  |  |
+
 ---
 
 ### Conventions

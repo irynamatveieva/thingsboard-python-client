@@ -15,6 +15,27 @@ The device search query JSON
 
 
 
+## Referenced Types
+
+#### RelationsSearchParameters
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| root_id | UUID | Root entity id to start search from. | [optional] |
+| root_type | EntityType | Type of the root entity. | [optional] |
+| direction | EntitySearchDirection | Type of the root entity. | [optional] |
+| relation_type_group | RelationTypeGroup | Type of the relation. | [optional] |
+| max_level | int | Maximum level of the search depth. | [optional] |
+| fetch_last_level_only | bool | Fetch entities that match the last level of search. Useful to find Devices that are strictly 'maxLevel' relations away from the root entity. | [optional] |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `RULE_CHAIN` | `RULE_NODE` | `ENTITY_VIEW` | … (36 values total)
+
+#### EntitySearchDirection (enum)
+`FROM` | `TO`
+
+#### RelationTypeGroup (enum)
+`COMMON` | `DASHBOARD` | `RULE_CHAIN` | `RULE_NODE` | `EDGE` | `EDGE_AUTO_ASSIGN_RULE_CHAIN`
+
 ---
 
 ### Conventions

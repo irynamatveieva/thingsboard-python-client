@@ -13,6 +13,19 @@
 
 
 
+## Referenced Types
+
+#### DynamicValueDouble
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| resolved_value | float |  | [optional] |
+| source_type | DynamicValueSourceType |  | [optional] |
+| source_attribute | str |  | [optional] |
+| inherit | bool |  | [optional] |
+
+#### DynamicValueSourceType (enum)
+`CURRENT_TENANT` | `CURRENT_CUSTOMER` | `CURRENT_USER` | `CURRENT_DEVICE`
+
 ---
 
 ### Conventions

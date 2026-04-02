@@ -17,6 +17,16 @@
 
 
 
+## Referenced Types
+
+#### AttributesOutputStrategy
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### AttributesRuleChainOutputStrategy  *(extends AttributesOutputStrategy, type=`RULE_CHAIN`)*
+*See AttributesOutputStrategy for properties.*
+
 ---
 
 ### Conventions

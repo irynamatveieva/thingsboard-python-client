@@ -14,6 +14,14 @@
 
 
 
+## Referenced Types
+
+#### TwoFaAccountConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| use_by_default | bool |  | [optional] |
+| provider_type | str |  |  |
+
 ---
 
 ### Conventions

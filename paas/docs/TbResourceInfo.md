@@ -28,6 +28,19 @@ A JSON value representing the Resource Info.
 
 
 
+## Referenced Types
+
+> **EntityId types** (`CustomerId`, `TbResourceId`, `TenantId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### ResourceType (enum)
+`LWM2_M_MODEL` | `JKS` | `PKCS_12` | `JS_MODULE` | `IMAGE` | `DASHBOARD` | `GENERAL`
+
+#### ResourceSubType (enum)
+`IMAGE` | `SCADA_SYMBOL` | `EXTENSION` | `MODULE`
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

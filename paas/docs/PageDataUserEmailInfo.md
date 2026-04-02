@@ -14,6 +14,21 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`UserId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### UserEmailInfo
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | UserId | User id | [optional] |
+| email | str | User email | [optional] |
+| first_name | str | User first name | [optional] |
+| last_name | str | User last name | [optional] |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

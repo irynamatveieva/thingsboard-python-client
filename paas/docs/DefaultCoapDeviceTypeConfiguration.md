@@ -13,6 +13,18 @@
 
 
 
+## Referenced Types
+
+#### CoapDeviceTypeConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| coap_device_type | str |  |  |
+
+#### TransportPayloadTypeConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| transport_payload_type | str |  |  |
+
 ---
 
 ### Conventions

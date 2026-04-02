@@ -24,6 +24,41 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`AdminSettingsId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `BlobEntityId`, `CalculatedFieldId`, `ConverterId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityGroupId`, `EntityViewId`, `GroupPermissionId`, `IntegrationId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `QueueId`, `QueueStatsId`, `ReportId`, `ReportTemplateId`, `RoleId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `SchedulerEventId`, `SecretId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### ShortCustomerInfo
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| customer_id | CustomerId | JSON object with the customer Id. | [optional] |
+| title | str | Title of the customer. | [optional] |
+| is_public | bool | Indicates special 'Public' customer used to embed dashboards on public websites. | [optional] |
+
+#### ResourceExportData
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| link | str |  | [optional] |
+| title | str |  | [optional] |
+| type | ResourceType |  | [optional] |
+| sub_type | ResourceSubType |  | [optional] |
+| resource_key | str |  | [optional] |
+| file_name | str |  | [optional] |
+| public_resource_key | str |  | [optional] |
+| media_type | str |  | [optional] |
+| data | str |  | [optional] |
+| is_public | bool |  | [optional] |
+| public | bool |  | [optional] |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (46 values total)
+
+#### ResourceType (enum)
+`LWM2_M_MODEL` | `JKS` | `PKCS_12` | `JS_MODULE` | `IMAGE` | `DASHBOARD` | `GENERAL`
+
+#### ResourceSubType (enum)
+`IMAGE` | `SCADA_SYMBOL` | `EXTENSION` | `MODULE`
+
 ---
 
 ### Conventions

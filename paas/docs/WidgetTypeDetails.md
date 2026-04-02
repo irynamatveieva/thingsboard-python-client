@@ -25,6 +25,34 @@ A JSON value representing the Widget Type Details.
 
 
 
+## Referenced Types
+
+> **EntityId types** (`TenantId`, `WidgetTypeId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### ResourceExportData
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| link | str |  | [optional] |
+| title | str |  | [optional] |
+| type | ResourceType |  | [optional] |
+| sub_type | ResourceSubType |  | [optional] |
+| resource_key | str |  | [optional] |
+| file_name | str |  | [optional] |
+| public_resource_key | str |  | [optional] |
+| media_type | str |  | [optional] |
+| data | str |  | [optional] |
+| is_public | bool |  | [optional] |
+| public | bool |  | [optional] |
+
+#### ResourceType (enum)
+`LWM2_M_MODEL` | `JKS` | `PKCS_12` | `JS_MODULE` | `IMAGE` | `DASHBOARD` | `GENERAL`
+
+#### ResourceSubType (enum)
+`IMAGE` | `SCADA_SYMBOL` | `EXTENSION` | `MODULE`
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

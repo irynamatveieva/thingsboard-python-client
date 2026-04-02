@@ -16,6 +16,26 @@
 
 
 
+## Referenced Types
+
+> **EntityId**: `{entity_type: EntityType, id: UUID}` — base type for all entity identifiers.
+
+#### ComparisonTsValue
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| current | TsValue |  | [optional] |
+| previous | TsValue |  | [optional] |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
+#### TsValue
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| ts | int |  | [optional] |
+| value | str |  | [optional] |
+| count | int |  | [optional] |
+
 ---
 
 ### Conventions

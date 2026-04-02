@@ -16,6 +16,31 @@
 
 
 
+## Referenced Types
+
+> **EntityId**: `{entity_type: EntityType, id: UUID}` — base type for all entity identifiers.
+
+#### CfArgumentDynamicSourceConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### ReferencedEntityKey
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| key | str |  | [optional] |
+| type | ArgumentType |  | [optional] |
+| scope | AttributeScope |  | [optional] |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
+#### ArgumentType (enum)
+`TS_LATEST` | `ATTRIBUTE` | `TS_ROLLING`
+
+#### AttributeScope (enum)
+`CLIENT_SCOPE` | `SERVER_SCOPE` | `SHARED_SCOPE`
+
 ---
 
 ### Conventions

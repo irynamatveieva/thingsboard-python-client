@@ -14,6 +14,34 @@
 
 
 
+## Referenced Types
+
+#### KeyFilterPredicate
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### BooleanOperation (enum)
+`EQUAL` | `NOT_EQUAL`
+
+#### FilterPredicateValueBoolean
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| default_value | bool |  | [optional] |
+| user_value | bool |  | [optional] |
+| dynamic_value | DynamicValueBoolean |  | [optional] |
+
+#### DynamicValueBoolean
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| resolved_value | bool |  | [optional] |
+| source_type | DynamicValueSourceType |  | [optional] |
+| source_attribute | str |  | [optional] |
+| inherit | bool |  | [optional] |
+
+#### DynamicValueSourceType (enum)
+`CURRENT_TENANT` | `CURRENT_CUSTOMER` | `CURRENT_USER` | `CURRENT_DEVICE`
+
 ---
 
 ### Conventions

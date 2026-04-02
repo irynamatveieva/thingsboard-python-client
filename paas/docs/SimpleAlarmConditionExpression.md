@@ -14,6 +14,32 @@
 
 
 
+## Referenced Types
+
+#### AlarmConditionExpression
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### AlarmRuleConditionFilter
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| argument | str |  |  |
+| operation | ComplexOperation |  | [optional] |
+| predicates | List[AlarmRuleKeyFilterPredicate] |  |  |
+| value_type | EntityKeyValueType |  |  |
+
+#### ComplexOperation (enum)
+`AND` | `OR`
+
+#### AlarmRuleKeyFilterPredicate
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### EntityKeyValueType (enum)
+`STRING` | `NUMERIC` | `BOOLEAN` | `DATE_TIME`
+
 ---
 
 ### Conventions

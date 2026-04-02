@@ -19,6 +19,29 @@
 
 
 
+## Referenced Types
+
+#### SubmitStrategy
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | SubmitStrategyType |  | [optional] |
+| batch_size | int |  | [optional] |
+
+#### ProcessingStrategy
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | ProcessingStrategyType |  | [optional] |
+| retries | int |  | [optional] |
+| failure_percentage | float |  | [optional] |
+| pause_between_retries | int |  | [optional] |
+| max_pause_between_retries | int |  | [optional] |
+
+#### SubmitStrategyType (enum)
+`BURST` | `BATCH` | `SEQUENTIAL_BY_ORIGINATOR` | `SEQUENTIAL_BY_TENANT` | `SEQUENTIAL`
+
+#### ProcessingStrategyType (enum)
+`SKIP_ALL_FAILURES` | `SKIP_ALL_FAILURES_AND_TIMED_OUT` | `RETRY_ALL` | `RETRY_FAILED` | `RETRY_TIMED_OUT` | `RETRY_FAILED_AND_TIMED_OUT`
+
 ---
 
 ### Conventions

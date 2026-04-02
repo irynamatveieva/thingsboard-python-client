@@ -14,6 +14,30 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`DashboardId`, `TenantId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### DeviceProfileInfo
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | EntityId | JSON object with the entity Id. | [optional] |
+| name | str | Entity Name | [optional] |
+| image | str | Either URL or Base64 data of the icon. Used in the mobile application to visualize set of device profiles in the grid view. | [optional] |
+| default_dashboard_id | DashboardId | Reference to the dashboard. Used in the mobile application to open the default dashboard when user navigates to device details. | [optional] |
+| type | DeviceProfileType | Type of the profile. Always 'DEFAULT' for now. Reserved for future use. | [optional] |
+| transport_type | DeviceTransportType | Type of the transport used to connect the device. Default transport supports HTTP, CoAP and MQTT. | [optional] |
+| tenant_id | TenantId | Tenant id. | [optional] |
+
+#### DeviceProfileType (enum)
+`DEFAULT`
+
+#### DeviceTransportType (enum)
+`DEFAULT` | `MQTT` | `COAP` | `LWM2M` | `SNMP`
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

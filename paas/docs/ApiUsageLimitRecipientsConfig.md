@@ -13,6 +13,16 @@
 
 
 
+## Referenced Types
+
+#### NotificationRuleRecipientsConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| trigger_type | NotificationRuleTriggerType |  | [optional] |
+
+#### NotificationRuleTriggerType (enum)
+`ENTITY_ACTION` | `ALARM` | `ALARM_COMMENT` | `ALARM_ASSIGNMENT` | `DEVICE_ACTIVITY` | `RULE_ENGINE_COMPONENT_LIFECYCLE_EVENT` | `INTEGRATION_LIFECYCLE_EVENT` | `EDGE_CONNECTION` | `EDGE_COMMUNICATION_FAILURE` | `NEW_PLATFORM_VERSION` | … (15 values total)
+
 ---
 
 ### Conventions

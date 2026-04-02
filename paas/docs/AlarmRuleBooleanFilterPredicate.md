@@ -14,6 +14,22 @@
 
 
 
+## Referenced Types
+
+#### AlarmRuleKeyFilterPredicate
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### BooleanOperation (enum)
+`EQUAL` | `NOT_EQUAL`
+
+#### AlarmConditionValueBoolean
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| static_value | bool |  | [optional] |
+| dynamic_value_argument | str |  | [optional] |
+
 ---
 
 ### Conventions

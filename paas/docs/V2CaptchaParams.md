@@ -15,6 +15,13 @@
 
 
 
+## Referenced Types
+
+#### CaptchaParams
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| version | str |  |  |
+
 ---
 
 ### Conventions

@@ -14,6 +14,16 @@
 
 
 
+## Referenced Types
+
+#### AggFunction (enum)
+`MIN` | `MAX` | `SUM` | `AVG` | `COUNT` | `COUNT_UNIQUE`
+
+#### AggInput
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
 ---
 
 ### Conventions

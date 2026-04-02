@@ -13,6 +13,24 @@
 
 
 
+## Referenced Types
+
+#### TaskResult
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| key | str |  | [optional] |
+| success | bool |  | [optional] |
+| discarded | bool |  | [optional] |
+| finish_ts | int |  | [optional] |
+| job_type | str |  |  |
+
+#### DummyTaskFailure
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| error | str |  | [optional] |
+| number | int |  | [optional] |
+| fail_always | bool |  | [optional] |
+
 ---
 
 ### Conventions

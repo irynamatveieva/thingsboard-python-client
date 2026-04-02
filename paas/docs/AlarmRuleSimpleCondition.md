@@ -12,6 +12,31 @@
 
 
 
+## Referenced Types
+
+#### AlarmRuleCondition
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| expression | AlarmConditionExpression |  |  |
+| schedule | AlarmConditionValueAlarmRuleSchedule |  | [optional] |
+| type | str |  |  |
+
+#### AlarmConditionExpression
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### AlarmConditionValueAlarmRuleSchedule
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| dynamic_value_argument | str |  | [optional] |
+| static_value | AlarmRuleSchedule |  | [optional] |
+
+#### AlarmRuleSchedule
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
 ---
 
 ### Conventions

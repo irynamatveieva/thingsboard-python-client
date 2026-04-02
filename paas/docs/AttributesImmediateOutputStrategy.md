@@ -17,6 +17,13 @@
 
 
 
+## Referenced Types
+
+#### AttributesOutputStrategy
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
 ---
 
 ### Conventions

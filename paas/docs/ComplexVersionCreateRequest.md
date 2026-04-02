@@ -14,6 +14,34 @@
 
 
 
+## Referenced Types
+
+#### VersionCreateRequest
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| version_name | str |  | [optional] |
+| branch | str |  | [optional] |
+| type | VersionCreateRequestType | Type of the version to create |  |
+
+#### SyncStrategy (enum)
+`MERGE` | `OVERWRITE`
+
+#### EntityTypeVersionCreateConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| save_relations | bool |  | [optional] |
+| save_attributes | bool |  | [optional] |
+| save_credentials | bool |  | [optional] |
+| save_calculated_fields | bool |  | [optional] |
+| save_permissions | bool |  | [optional] |
+| save_group_entities | bool |  | [optional] |
+| sync_strategy | SyncStrategy |  | [optional] |
+| entity_ids | List[UUID] |  | [optional] |
+| all_entities | bool |  | [optional] |
+
+#### VersionCreateRequestType (enum)
+`SINGLE_ENTITY` | `COMPLEX`
+
 ---
 
 ### Conventions

@@ -13,6 +13,49 @@
 
 
 
+## Referenced Types
+
+#### UsersFilter
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### AffectedTenantAdministratorsFilter  *(extends UsersFilter, type=`AFFECTED_TENANT_ADMINISTRATORS`)*
+*See UsersFilter for properties.*
+
+#### AffectedUserFilter  *(extends UsersFilter, type=`AFFECTED_USER`)*
+*See UsersFilter for properties.*
+
+#### AllUsersFilter  *(extends UsersFilter, type=`ALL_USERS`)*
+*See UsersFilter for properties.*
+
+#### OriginatorEntityOwnerUsersFilter  *(extends UsersFilter, type=`ORIGINATOR_ENTITY_OWNER_USERS`)*
+*See UsersFilter for properties.*
+
+#### SystemAdministratorsFilter  *(extends UsersFilter, type=`SYSTEM_ADMINISTRATORS`)*
+*See UsersFilter for properties.*
+
+#### TenantAdministratorsFilter  *(extends UsersFilter, type=`TENANT_ADMINISTRATORS`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| tenants_ids | List[UUID] |  | [optional] |
+| tenant_profiles_ids | List[UUID] |  | [optional] |
+
+#### UserGroupListFilter  *(extends UsersFilter, type=`USER_GROUP_LIST`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| groups_ids | List[UUID] |  |  |
+
+#### UserListFilter  *(extends UsersFilter, type=`USER_LIST`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| users_ids | List[UUID] |  |  |
+
+#### UserRoleFilter  *(extends UsersFilter, type=`USER_ROLE`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| roles_ids | List[UUID] |  |  |
+
 ---
 
 ### Conventions

@@ -16,6 +16,29 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`CalculatedFieldId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### JobConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| tasks_key | str |  |  |
+| to_reprocess | List[TaskResult] |  | [optional] |
+| type | str |  |  |
+
+#### TaskResult
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| key | str |  | [optional] |
+| success | bool |  | [optional] |
+| discarded | bool |  | [optional] |
+| finish_ts | int |  | [optional] |
+| job_type | str |  |  |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

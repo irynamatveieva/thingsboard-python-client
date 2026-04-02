@@ -20,6 +20,23 @@
 
 
 
+## Referenced Types
+
+#### AiModelConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| provider | str |  |  |
+
+#### AiModelType (enum)
+`CHAT`
+
+#### AmazonBedrockProviderConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| region | str |  |  |
+| access_key_id | str |  |  |
+| secret_access_key | str |  |  |
+
 ---
 
 ### Conventions

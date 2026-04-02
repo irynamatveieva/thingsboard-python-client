@@ -17,6 +17,55 @@ Entity data query to find entities. Page size is capped at 100.
 
 
 
+## Referenced Types
+
+#### EntityFilter
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### KeyFilter
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| key | EntityKey |  | [optional] |
+| value_type | EntityKeyValueType |  | [optional] |
+| predicate | KeyFilterPredicate |  | [optional] |
+
+#### EntityDataPageLink
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| page_size | int |  | [optional] |
+| page | int |  | [optional] |
+| text_search | str |  | [optional] |
+| sort_order | EntityDataSortOrder |  | [optional] |
+| dynamic | bool |  | [optional] |
+
+#### EntityKey
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | EntityKeyType |  | [optional] |
+| key | str |  | [optional] |
+
+#### EntityKeyValueType (enum)
+`STRING` | `NUMERIC` | `BOOLEAN` | `DATE_TIME`
+
+#### KeyFilterPredicate
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### EntityDataSortOrder
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| key | EntityKey |  | [optional] |
+| direction | Direction |  | [optional] |
+
+#### EntityKeyType (enum)
+`ATTRIBUTE` | `CLIENT_ATTRIBUTE` | `SHARED_ATTRIBUTE` | `SERVER_ATTRIBUTE` | `TIME_SERIES` | `ENTITY_FIELD` | `ALARM_FIELD`
+
+#### Direction (enum)
+`ASC` | `DESC`
+
 ---
 
 ### Conventions

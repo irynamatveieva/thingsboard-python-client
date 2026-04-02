@@ -22,6 +22,41 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`AdminSettingsId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `CalculatedFieldId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityViewId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `QueueId`, `QueueStatsId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### ShortCustomerInfo
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| customer_id | CustomerId | JSON object with the customer Id. | [optional] |
+| title | str | Title of the customer. | [optional] |
+| is_public | bool | Indicates special 'Public' customer used to embed dashboards on public websites. | [optional] |
+
+#### ResourceExportData
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| link | str |  | [optional] |
+| title | str |  | [optional] |
+| type | ResourceType |  | [optional] |
+| sub_type | ResourceSubType |  | [optional] |
+| resource_key | str |  | [optional] |
+| file_name | str |  | [optional] |
+| public_resource_key | str |  | [optional] |
+| media_type | str |  | [optional] |
+| data | str |  | [optional] |
+| is_public | bool |  | [optional] |
+| public | bool |  | [optional] |
+
+#### ResourceType (enum)
+`LWM2_M_MODEL` | `JKS` | `PKCS_12` | `JS_MODULE` | `IMAGE` | `DASHBOARD` | `GENERAL`
+
+#### ResourceSubType (enum)
+`IMAGE` | `SCADA_SYMBOL` | `EXTENSION` | `MODULE`
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `RULE_CHAIN` | `RULE_NODE` | `ENTITY_VIEW` | … (36 values total)
+
 ---
 
 ### Conventions

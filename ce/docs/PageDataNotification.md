@@ -14,6 +14,44 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`AdminSettingsId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `CalculatedFieldId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityViewId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `QueueId`, `QueueStatsId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### Notification
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | NotificationId |  | [optional] |
+| created_time | int | Entity creation timestamp in milliseconds since Unix epoch | [optional] [readonly] |
+| request_id | NotificationRequestId |  | [optional] |
+| recipient_id | UserId |  | [optional] |
+| type | NotificationType |  | [optional] |
+| delivery_method | NotificationDeliveryMethod |  | [optional] |
+| subject | str |  | [optional] |
+| text | str |  | [optional] |
+| additional_config | object |  | [optional] |
+| info | NotificationInfo |  | [optional] |
+| status | NotificationStatus |  | [optional] |
+
+#### NotificationType (enum)
+`GENERAL` | `ALARM` | `DEVICE_ACTIVITY` | `ENTITY_ACTION` | `ALARM_COMMENT` | `RULE_ENGINE_COMPONENT_LIFECYCLE_EVENT` | `ALARM_ASSIGNMENT` | `NEW_PLATFORM_VERSION` | `ENTITIES_LIMIT` | `ENTITIES_LIMIT_INCREASE_REQUEST` | … (17 values total)
+
+#### NotificationDeliveryMethod (enum)
+`WEB` | `EMAIL` | `SMS` | `SLACK` | `MICROSOFT_TEAMS` | `MOBILE_APP`
+
+#### NotificationInfo
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| dashboard_id | DashboardId |  | [optional] |
+| state_entity_id | EntityId |  | [optional] |
+| type | str |  |  |
+
+#### NotificationStatus (enum)
+`SENT` | `READ`
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `RULE_CHAIN` | `RULE_NODE` | `ENTITY_VIEW` | … (36 values total)
+
 ---
 
 ### Conventions

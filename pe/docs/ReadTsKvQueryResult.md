@@ -13,6 +13,26 @@
 
 
 
+## Referenced Types
+
+#### TsKvEntry
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| ts | int |  | [optional] |
+| value | object |  | [optional] |
+| key | str |  | [optional] |
+| double_value | float |  | [optional] |
+| long_value | int |  | [optional] |
+| boolean_value | bool |  | [optional] |
+| value_as_string | str |  | [optional] |
+| data_type | DataType |  | [optional] |
+| json_value | str |  | [optional] |
+| str_value | str |  | [optional] |
+| version | int |  | [optional] |
+
+#### DataType (enum)
+`BOOLEAN` | `LONG` | `DOUBLE` | `STRING` | `JSON`
+
 ---
 
 ### Conventions

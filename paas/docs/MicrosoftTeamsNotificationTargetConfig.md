@@ -20,6 +20,14 @@
 
 
 
+## Referenced Types
+
+#### NotificationTargetConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| description | str |  | [optional] |
+| type | str |  |  |
+
 ---
 
 ### Conventions

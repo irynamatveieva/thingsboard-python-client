@@ -14,6 +14,26 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`OAuth2ClientId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### OAuth2ClientInfo
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | OAuth2ClientId |  | [optional] |
+| created_time | int | Entity creation timestamp in milliseconds since Unix epoch | [optional] [readonly] |
+| title | str | Oauth2 client registration title (e.g. My google) | [optional] |
+| provider_name | str | Oauth2 client provider name (e.g. Google) | [optional] |
+| platforms | List[PlatformType] | List of platforms for which usage of the OAuth2 client is allowed (empty for all allowed) | [optional] |
+| name | str |  | [optional] [readonly] |
+
+#### PlatformType (enum)
+`WEB` | `ANDROID` | `IOS`
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

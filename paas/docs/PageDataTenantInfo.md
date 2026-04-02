@@ -14,6 +14,64 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`TenantId`, `TenantProfileId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### TenantInfo
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | TenantId | JSON object with the tenant Id. Specify this field to update the tenant. Referencing non-existing tenant Id will cause error. Omit this field to create new tenant. | [optional] |
+| created_time | int | Timestamp of the tenant creation, in milliseconds | [optional] [readonly] |
+| additional_info | object | Additional parameters of the tenant. May include: 'description' (string), 'homeDashboardId' (string, UUID of the home dashboard), 'homeDashboardHideToolbar' (boolean, whether to hide the dashboard toolbar). | [optional] |
+| country | str | Country | [optional] |
+| state | str | State | [optional] |
+| city | str | City | [optional] |
+| address | str | Address Line 1 | [optional] |
+| address2 | str | Address Line 2 | [optional] |
+| zip | str | Zip code | [optional] |
+| phone | str | Phone number | [optional] |
+| email | str | Email | [optional] |
+| title | str | Title of the tenant |  |
+| region | str | Geo region of the tenant | [optional] |
+| tenant_profile_id | TenantProfileId | JSON object with Tenant Profile Id | [optional] |
+| version | int |  | [optional] |
+| active | bool |  | [optional] |
+| last_inactive_ts | int |  | [optional] |
+| current_period_start_ts | int |  | [optional] |
+| addon_data | TenantAddonData |  | [optional] |
+| edge_license_version | int |  | [optional] |
+| tenant_profile_name | str | Tenant Profile name | [optional] |
+| name | str | Name of the tenant. Read-only, duplicated from title for backward compatibility | [optional] [readonly] |
+
+#### TenantAddonData
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| max_devices | int |  | [optional] |
+| max_assets | int |  | [optional] |
+| max_customers | int |  | [optional] |
+| max_users | int |  | [optional] |
+| max_integrations | int |  | [optional] |
+| max_converters | int |  | [optional] |
+| max_calculated_fields_per_entity | int |  | [optional] |
+| max_transport_messages | int |  | [optional] |
+| max_transport_data_points | int |  | [optional] |
+| max_re_executions | int |  | [optional] |
+| max_js_executions | int |  | [optional] |
+| max_dp_storage_days | int |  | [optional] |
+| max_created_alarms | int |  | [optional] |
+| max_emails | int |  | [optional] |
+| max_sms | int |  | [optional] |
+| max_ai_credits | int |  | [optional] |
+| edge_enabled | bool |  | [optional] |
+| max_edges | int |  | [optional] |
+| trendz_enabled | bool |  | [optional] |
+| white_labeling_enabled | bool |  | [optional] |
+| default | bool |  | [optional] |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

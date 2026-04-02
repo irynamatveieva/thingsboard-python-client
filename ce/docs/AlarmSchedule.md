@@ -14,6 +14,49 @@ Configuration for alarm schedule
 
 
 
+## Subtypes
+
+#### AnyTimeSchedule  *(type=`ANY_TIME`)*
+*(no additional properties)*
+
+#### CustomTimeSchedule  *(type=`CUSTOM`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| timezone | str |  | [optional] |
+| items | List[CustomTimeScheduleItem] |  | [optional] |
+
+#### SpecificTimeSchedule  *(type=`SPECIFIC_TIME`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| days_of_week | List[int] |  | [optional] |
+| ends_on | int |  | [optional] |
+| starts_on | int |  | [optional] |
+| timezone | str |  | [optional] |
+
+## Referenced Types
+
+#### DynamicValueString
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| resolved_value | str |  | [optional] |
+| source_type | DynamicValueSourceType |  | [optional] |
+| source_attribute | str |  | [optional] |
+| inherit | bool |  | [optional] |
+
+#### AlarmScheduleType (enum)
+`ANY_TIME` | `SPECIFIC_TIME` | `CUSTOM`
+
+#### CustomTimeScheduleItem
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| day_of_week | int |  | [optional] |
+| enabled | bool |  | [optional] |
+| ends_on | int |  | [optional] |
+| starts_on | int |  | [optional] |
+
+#### DynamicValueSourceType (enum)
+`CURRENT_TENANT` | `CURRENT_CUSTOMER` | `CURRENT_USER` | `CURRENT_DEVICE`
+
 ---
 
 ### Conventions

@@ -22,6 +22,27 @@
 
 
 
+## Referenced Types
+
+#### AiModelConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| provider | str |  |  |
+
+#### AiModelType (enum)
+`CHAT`
+
+#### OllamaProviderConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| base_url | str |  |  |
+| auth | OllamaAuth |  |  |
+
+#### OllamaAuth
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
 ---
 
 ### Conventions

@@ -15,6 +15,54 @@ Base template for different delivery methods
 
 
 
+## Subtypes
+
+#### EmailDeliveryMethodNotificationTemplate  *(method=`EMAIL`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| subject | str |  |  |
+
+#### MicrosoftTeamsDeliveryMethodNotificationTemplate  *(method=`MICROSOFT_TEAMS`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| subject | str |  | [optional] |
+| theme_color | str |  | [optional] |
+| button | Button |  | [optional] |
+
+#### MobileAppDeliveryMethodNotificationTemplate  *(method=`MOBILE_APP`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| subject | str | Subject line for the mobile notification |  |
+| additional_config | object | Additional JSON configuration for web buttons/actions | [optional] |
+
+#### SlackDeliveryMethodNotificationTemplate  *(method=`SLACK`)*
+*(no additional properties)*
+
+#### SmsDeliveryMethodNotificationTemplate  *(method=`SMS`)*
+*(no additional properties)*
+
+#### WebDeliveryMethodNotificationTemplate  *(method=`WEB`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| subject | str | Subject line for the web notification |  |
+| additional_config | object | Additional JSON configuration for web buttons/actions | [optional] |
+
+## Referenced Types
+
+#### Button
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| enabled | bool |  | [optional] |
+| text | str |  | [optional] |
+| link_type | LinkType |  | [optional] |
+| link | str |  | [optional] |
+| dashboard_id | UUID |  | [optional] |
+| dashboard_state | str |  | [optional] |
+| set_entity_id_in_state | bool |  | [optional] |
+
+#### LinkType (enum)
+`LINK` | `DASHBOARD`
+
 ---
 
 ### Conventions

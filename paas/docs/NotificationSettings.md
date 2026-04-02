@@ -11,6 +11,13 @@
 
 
 
+## Referenced Types
+
+#### NotificationDeliveryMethodConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| method | str |  |  |
+
 ---
 
 ### Conventions

@@ -25,6 +25,331 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`UserId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### ReportComponent
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| sub_type | ReportComponentSubType |  |  |
+| type | ReportComponentType |  |  |
+
+#### DataSource
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | DataSourceType |  | [optional] |
+| device_id | str |  | [optional] |
+| entity_alias_id | str |  | [optional] |
+| filter_id | str |  | [optional] |
+| data_keys | List[DataKey] |  | [optional] |
+| latest_data_keys | List[DataKey] |  | [optional] |
+| alarm_filter_config | AlarmFilterConfig |  | [optional] |
+
+#### Insets
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| left | int |  | [optional] |
+| right | int |  | [optional] |
+| top | int |  | [optional] |
+| bottom | int |  | [optional] |
+
+#### ImageWidthType (enum)
+`FITWIDTH` | `ORIGINAL` | `CUSTOM`
+
+#### ImageAlignment (enum)
+`LEFT` | `CENTER` | `RIGHT`
+
+#### TimeWindowConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| history | History |  | [optional] |
+| aggregation | AggregationConfiguration |  | [optional] |
+| timezone | str |  | [optional] |
+
+#### ReportTimeSeriesChartSettings
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| show_title | bool |  | [optional] |
+| title | str |  | [optional] |
+| title_font | Font |  | [optional] |
+| title_color | str |  | [optional] |
+| title_alignment | TextAlignment |  | [optional] |
+| thresholds | List[TimeSeriesChartThreshold] |  | [optional] |
+| stack | bool |  | [optional] |
+| grid | TimeSeriesChartGridSettings |  | [optional] |
+| y_axes | Dict[str, TimeSeriesChartYAxisSettings] |  | [optional] |
+| x_axis | TimeSeriesChartXAxisSettings |  | [optional] |
+| bar_width_settings | TimeSeriesChartBarWidthSettings |  | [optional] |
+| no_aggregation_bar_width_settings | TimeSeriesChartNoAggregationBarWidthSettings |  | [optional] |
+| states | List[TimeSeriesChartStateSettings] |  | [optional] |
+| comparison_enabled | bool |  | [optional] |
+| time_for_comparison | ComparisonDuration |  | [optional] |
+| comparison_custom_interval_value | int |  | [optional] |
+| comparison_x_axis | TimeSeriesChartXAxisSettings |  | [optional] |
+| show_legend | bool |  | [optional] |
+| legend_column_title_font | Font |  | [optional] |
+| legend_column_title_color | str |  | [optional] |
+| legend_label_font | Font |  | [optional] |
+| legend_label_color | str |  | [optional] |
+| legend_value_font | Font |  | [optional] |
+| legend_value_color | str |  | [optional] |
+| legend_config | LegendConfig |  | [optional] |
+| xaxis | TimeSeriesChartXAxisSettings |  | [optional] |
+| yaxes | Dict[str, TimeSeriesChartYAxisSettings] |  | [optional] |
+
+#### ReportComponentSubType (enum)
+`DOUGHNUTCHART` | `HORIZONTALDOUGHNUTCHART` | `POINTCHART` | `BARCHART` | `PIECHART` | `LINECHART` | `LATESTBARCHART` | `RANGECHART` | `BARCHARTWITHLABELS` | `STATECHART` | … (11 values total)
+
+#### ReportComponentType (enum)
+`HEADING` | `RICH_TEXT` | `ENTITY_TABLE` | `TIME_SERIES_TABLE` | `ALARM_TABLE` | `TIME_SERIES_CHART` | `LATEST_CHART` | `DASHBOARD` | `IMAGE` | `SUB_REPORT` | … (14 values total)
+
+#### DataSourceType (enum)
+`DEVICE` | `ENTITY` | `ENTITYCOUNT` | `ALARMCOUNT`
+
+#### DataKey
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| name | str |  | [optional] |
+| type | str |  | [optional] |
+| label | str |  | [optional] |
+| color | str |  | [optional] |
+| decimals | int |  | [optional] |
+| units | str |  | [optional] |
+| aggregation_type | Aggregation |  | [optional] |
+| timewindow | TimeWindowConfiguration |  | [optional] |
+| use_post_processing | bool |  | [optional] |
+| post_func_body | str |  | [optional] |
+| settings | DataKeySettings |  | [optional] |
+
+#### AlarmFilterConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type_list | List[str] |  | [optional] |
+| status_list | List[AlarmSearchStatus] |  | [optional] |
+| severity_list | List[AlarmSeverity] |  | [optional] |
+| assignee_id | UserId |  | [optional] |
+| search_propagated_alarms | bool |  | [optional] |
+
+#### History
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| history_type | int |  | [optional] |
+| interval | Interval |  | [optional] |
+| timewindow_ms | int |  | [optional] |
+| fixed_timewindow | FixedTimeWindow |  | [optional] |
+| quick_interval | QuickTimeInterval |  | [optional] |
+
+#### AggregationConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | Aggregation |  | [optional] |
+| limit | int |  | [optional] |
+
+#### Font
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| size | float |  | [optional] |
+| weight | FontWeight |  | [optional] |
+| style | FontStyle |  | [optional] |
+| family | str |  | [optional] |
+
+#### TextAlignment (enum)
+`CENTER` | `RIGHT` | `LEFT` | `JUSTIFY`
+
+#### TimeSeriesChartThreshold
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | ValueSourceType |  | [optional] |
+| value | float |  | [optional] |
+| latest_key_type | str |  | [optional] |
+| latest_key | str |  | [optional] |
+| entity_key_type | str |  | [optional] |
+| entity_alias | str |  | [optional] |
+| entity_key | str |  | [optional] |
+| y_axis_id | str |  | [optional] |
+| units | str |  | [optional] |
+| decimals | int |  | [optional] |
+| line_color | str |  | [optional] |
+| line_type | ChartLineType |  | [optional] |
+| line_width | float |  | [optional] |
+| start_symbol | ChartShape |  | [optional] |
+| start_symbol_size | float |  | [optional] |
+| end_symbol | ChartShape |  | [optional] |
+| end_symbol_size | float |  | [optional] |
+| show_label | bool |  | [optional] |
+| label_position | ThresholdLabelPosition |  | [optional] |
+| label_font | Font |  | [optional] |
+| label_color | str |  | [optional] |
+| enable_label_background | bool |  | [optional] |
+| label_background | str |  | [optional] |
+| yaxis_id | str |  | [optional] |
+
+#### TimeSeriesChartGridSettings
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| show | bool |  | [optional] |
+| background_color | str |  | [optional] |
+| border_width | float |  | [optional] |
+| border_color | str |  | [optional] |
+
+#### TimeSeriesChartYAxisSettings
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| show | bool |  | [optional] |
+| label | str |  | [optional] |
+| label_font | Font |  | [optional] |
+| label_color | str |  | [optional] |
+| position | AxisPosition |  | [optional] |
+| show_tick_labels | bool |  | [optional] |
+| tick_label_font | Font |  | [optional] |
+| tick_label_color | str |  | [optional] |
+| show_ticks | bool |  | [optional] |
+| ticks_color | str |  | [optional] |
+| show_line | bool |  | [optional] |
+| line_color | str |  | [optional] |
+| show_split_lines | bool |  | [optional] |
+| split_lines_color | str |  | [optional] |
+| id | str |  | [optional] |
+| order | int |  | [optional] |
+| units | str |  | [optional] |
+| decimals | int |  | [optional] |
+| interval | float |  | [optional] |
+| split_number | int |  | [optional] |
+| min | float |  | [optional] |
+| max | float |  | [optional] |
+
+#### TimeSeriesChartXAxisSettings
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| show | bool |  | [optional] |
+| label | str |  | [optional] |
+| label_font | Font |  | [optional] |
+| label_color | str |  | [optional] |
+| position | AxisPosition |  | [optional] |
+| show_tick_labels | bool |  | [optional] |
+| tick_label_font | Font |  | [optional] |
+| tick_label_color | str |  | [optional] |
+| show_ticks | bool |  | [optional] |
+| ticks_color | str |  | [optional] |
+| show_line | bool |  | [optional] |
+| line_color | str |  | [optional] |
+| show_split_lines | bool |  | [optional] |
+| split_lines_color | str |  | [optional] |
+| ticks_format | Dict[str, str] |  | [optional] |
+
+#### TimeSeriesChartBarWidthSettings
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| bar_gap | float |  | [optional] |
+| interval_gap | float |  | [optional] |
+
+#### TimeSeriesChartNoAggregationBarWidthSettings
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| strategy | TimeSeriesChartNoAggregationBarWidthStrategy |  | [optional] |
+| group_width | TimeSeriesChartBarWidth |  | [optional] |
+| bar_width | TimeSeriesChartBarWidth |  | [optional] |
+
+#### TimeSeriesChartStateSettings
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| label | str |  | [optional] |
+| value | float |  | [optional] |
+| source_type | TimeSeriesChartStateSourceType |  | [optional] |
+| source_value | object |  | [optional] |
+| source_range_from | float |  | [optional] |
+| source_range_to | float |  | [optional] |
+
+#### ComparisonDuration (enum)
+`PREVIOUSINTERVAL` | `DAYS` | `WEEKS` | `MONTHS` | `YEARS` | `CUSTOMINTERVAL`
+
+#### LegendConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| position | LegendPosition |  | [optional] |
+| sort_data_keys | bool |  | [optional] |
+| show_min | bool |  | [optional] |
+| show_max | bool |  | [optional] |
+| show_avg | bool |  | [optional] |
+| show_total | bool |  | [optional] |
+| show_latest | bool |  | [optional] |
+
+#### Aggregation (enum)
+`MIN` | `MAX` | `AVG` | `SUM` | `COUNT` | `NONE`
+
+#### DataKeySettings
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | DataKeySettingsType | Data key settings type |  |
+
+#### AlarmSearchStatus (enum)
+`ANY` | `ACTIVE` | `CLEARED` | `ACK` | `UNACK`
+
+#### AlarmSeverity (enum)
+`CRITICAL` | `MAJOR` | `MINOR` | `WARNING` | `INDETERMINATE`
+
+#### Interval
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| interval | int |  | [optional] |
+| interval_type | IntervalType |  | [optional] |
+
+#### FixedTimeWindow
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| start_time_ms | int |  | [optional] |
+| end_time_ms | int |  | [optional] |
+
+#### QuickTimeInterval (enum)
+`YESTERDAY` | `DAY_BEFORE_YESTERDAY` | `THIS_DAY_LAST_WEEK` | `PREVIOUS_WEEK` | `PREVIOUS_WEEK_ISO` | `PREVIOUS_MONTH` | `PREVIOUS_QUARTER` | `PREVIOUS_HALF_YEAR` | `PREVIOUS_YEAR` | `CURRENT_HOUR` | … (24 values total)
+
+#### FontWeight (enum)
+`NORMAL` | `BOLD` | `ENUM_500`
+
+#### FontStyle (enum)
+`NORMAL` | `ITALIC`
+
+#### ValueSourceType (enum)
+`CONSTANT` | `LATESTKEY` | `ENTITY`
+
+#### ChartLineType (enum)
+`SOLID` | `DASHED` | `DOTTED`
+
+#### ChartShape (enum)
+`EMPTYCIRCLE` | `CIRCLE` | `RECT` | `ROUNDRECT` | `TRIANGLE` | `DIAMOND` | `PIN` | `ARROW` | `NONE`
+
+#### ThresholdLabelPosition (enum)
+`START` | `MIDDLE` | `END` | `INSIDESTART` | `INSIDESTARTTOP` | `INSIDESTARTBOTTOM` | `INSIDEMIDDLE` | `INSIDEMIDDLETOP` | `INSIDEMIDDLEBOTTOM` | `INSIDEEND` | … (12 values total)
+
+#### AxisPosition (enum)
+`LEFT` | `RIGHT` | `TOP` | `BOTTOM`
+
+#### TimeSeriesChartNoAggregationBarWidthStrategy (enum)
+`GROUP` | `SEPARATE`
+
+#### TimeSeriesChartBarWidth
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| relative | bool |  | [optional] |
+| relative_width | float |  | [optional] |
+| absolute_width | float |  | [optional] |
+
+#### TimeSeriesChartStateSourceType (enum)
+`CONSTANT` | `RANGE`
+
+#### LegendPosition (enum)
+`TOP` | `BOTTOM` | `LEFT` | `RIGHT`
+
+#### DataKeySettingsType (enum)
+`COLUMN` | `TIME_SERIES_CHART` | `DEFAULT`
+
+#### IntervalType (enum)
+`MILLISECONDS` | `WEEK` | `WEEK_ISO` | `MONTH` | `QUARTER`
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

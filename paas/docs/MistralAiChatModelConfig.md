@@ -22,6 +22,21 @@
 
 
 
+## Referenced Types
+
+#### AiModelConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| provider | str |  |  |
+
+#### AiModelType (enum)
+`CHAT`
+
+#### MistralAiProviderConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| api_key | str |  |  |
+
 ---
 
 ### Conventions

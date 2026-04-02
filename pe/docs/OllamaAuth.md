@@ -13,6 +13,22 @@ Ollama authentication schemes
 
 
 
+## Subtypes
+
+#### Basic  *(type=`BASIC`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| username | str |  |  |
+| password | str |  |  |
+
+#### ModelNone  *(type=`NONE`)*
+*(no additional properties)*
+
+#### Token  *(type=`TOKEN`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| token | str |  |  |
+
 ---
 
 ### Conventions

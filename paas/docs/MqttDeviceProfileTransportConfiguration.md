@@ -19,6 +19,18 @@
 
 
 
+## Referenced Types
+
+#### DeviceProfileTransportConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### TransportPayloadTypeConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| transport_payload_type | str |  |  |
+
 ---
 
 ### Conventions

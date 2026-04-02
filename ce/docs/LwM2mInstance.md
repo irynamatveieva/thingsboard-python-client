@@ -12,6 +12,18 @@
 
 
 
+## Referenced Types
+
+#### LwM2mResourceObserve
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | int | LwM2M Resource Observe id. | [optional] |
+| name | str | LwM2M Resource Observe name. | [optional] |
+| observe | bool | LwM2M Resource Observe observe. | [optional] |
+| attribute | bool | LwM2M Resource Observe attribute. | [optional] |
+| telemetry | bool | LwM2M Resource Observe telemetry. | [optional] |
+| key_name | str | LwM2M Resource Observe key name. | [optional] |
+
 ---
 
 ### Conventions

@@ -37,6 +37,48 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`BillingCustomerId`, `CouponId`, `SubscriptionId`, `SubscriptionPlanId`, `TenantId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### SubscriptionItems
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| extra_device_pack_count | int |  | [optional] |
+| extra_customer_pack_count | int |  | [optional] |
+| extra_integration_pack_count | int |  | [optional] |
+| extra_calculated_field_count | int |  | [optional] |
+| traffic_pack_count | int |  | [optional] |
+| compute_pack_count | int |  | [optional] |
+| storage_pack_count | int |  | [optional] |
+| alarm_pack_count | int |  | [optional] |
+| email_pack_count | int |  | [optional] |
+| sms_pack_count | int |  | [optional] |
+| ai_credits_pack_count | int |  | [optional] |
+| edge_enabled | bool |  | [optional] |
+| extra_edge_count | int |  | [optional] |
+| trendz_enabled | bool |  | [optional] |
+| white_labeling_addon_enabled | bool |  | [optional] |
+
+#### Discount
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| coupon_code | str |  | [optional] |
+| coupon_valid | bool |  | [optional] |
+| amount_off | int |  | [optional] |
+| percent_off | float |  | [optional] |
+| coupon_id | CouponId |  | [optional] |
+| duration | CouponDuration |  | [optional] |
+| duration_in_months | int |  | [optional] |
+| end_date | int |  | [optional] |
+| package | bool |  | [optional] |
+
+#### CouponDuration (enum)
+`FOREVER` | `ONCE` | `REPEATING`
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

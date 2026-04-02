@@ -13,6 +13,19 @@
 
 
 
+## Referenced Types
+
+#### DynamicValueLong
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| resolved_value | int |  | [optional] |
+| source_type | DynamicValueSourceType |  | [optional] |
+| source_attribute | str |  | [optional] |
+| inherit | bool |  | [optional] |
+
+#### DynamicValueSourceType (enum)
+`CURRENT_TENANT` | `CURRENT_CUSTOMER` | `CURRENT_USER` | `CURRENT_DEVICE`
+
 ---
 
 ### Conventions

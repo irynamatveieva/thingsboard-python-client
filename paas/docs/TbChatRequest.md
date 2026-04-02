@@ -13,6 +13,23 @@
 
 
 
+## Referenced Types
+
+#### TbUserMessage
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| contents | List[TbContent] |  |  |
+
+#### AiModelConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| provider | str |  |  |
+
+#### TbContent
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| content_type | str |  |  |
+
 ---
 
 ### Conventions

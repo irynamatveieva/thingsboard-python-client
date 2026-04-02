@@ -14,6 +14,19 @@
 
 
 
+## Referenced Types
+
+#### ComplexOperation (enum)
+`AND` | `OR`
+
+#### AlarmRuleKeyFilterPredicate
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### EntityKeyValueType (enum)
+`STRING` | `NUMERIC` | `BOOLEAN` | `DATE_TIME`
+
 ---
 
 ### Conventions

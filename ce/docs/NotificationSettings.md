@@ -11,6 +11,24 @@
 
 
 
+## Referenced Types
+
+#### NotificationDeliveryMethodConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| method | str |  |  |
+
+#### MobileAppNotificationDeliveryMethodConfig  *(extends NotificationDeliveryMethodConfig, method=`MOBILE_APP`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| firebase_service_account_credentials_file_name | str |  | [optional] |
+| firebase_service_account_credentials | str |  |  |
+
+#### SlackNotificationDeliveryMethodConfig  *(extends NotificationDeliveryMethodConfig, method=`SLACK`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| bot_token | str |  |  |
+
 ---
 
 ### Conventions

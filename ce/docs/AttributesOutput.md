@@ -13,6 +13,59 @@
 
 
 
+## Referenced Types
+
+#### Output
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| decimals_by_default | int |  | [optional] |
+| name | str |  | [optional] |
+| scope | AttributeScope |  | [optional] |
+| strategy | object |  | [optional] |
+| type | str |  |  |
+
+#### TimeSeriesOutput  *(extends Output, type=`TIME_SERIES`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| strategy | TimeSeriesOutputStrategy |  | [optional] |
+
+#### AttributesOutputStrategy
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### AttributesImmediateOutputStrategy  *(extends AttributesOutputStrategy, type=`IMMEDIATE`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| send_attributes_updated_notification | bool |  | [optional] |
+| update_attributes_only_on_value_change | bool |  | [optional] |
+| save_attribute | bool |  | [optional] |
+| send_ws_update | bool |  | [optional] |
+| process_cfs | bool |  | [optional] |
+
+#### AttributesRuleChainOutputStrategy  *(extends AttributesOutputStrategy, type=`RULE_CHAIN`)*
+*See AttributesOutputStrategy for properties.*
+
+#### AttributeScope (enum)
+`CLIENT_SCOPE` | `SERVER_SCOPE` | `SHARED_SCOPE`
+
+#### TimeSeriesOutputStrategy
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### TimeSeriesImmediateOutputStrategy  *(extends TimeSeriesOutputStrategy, type=`IMMEDIATE`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| ttl | int |  | [optional] |
+| save_time_series | bool |  | [optional] |
+| save_latest | bool |  | [optional] |
+| send_ws_update | bool |  | [optional] |
+| process_cfs | bool |  | [optional] |
+
+#### TimeSeriesRuleChainOutputStrategy  *(extends TimeSeriesOutputStrategy, type=`RULE_CHAIN`)*
+*See TimeSeriesOutputStrategy for properties.*
+
 ---
 
 ### Conventions

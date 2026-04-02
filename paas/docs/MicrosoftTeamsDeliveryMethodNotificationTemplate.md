@@ -15,6 +15,29 @@
 
 
 
+## Referenced Types
+
+#### DeliveryMethodNotificationTemplate
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| enabled | bool |  | [optional] |
+| body | str |  |  |
+| method | str |  |  |
+
+#### Button
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| enabled | bool |  | [optional] |
+| text | str |  | [optional] |
+| link_type | LinkType |  | [optional] |
+| link | str |  | [optional] |
+| dashboard_id | UUID |  | [optional] |
+| dashboard_state | str |  | [optional] |
+| set_entity_id_in_state | bool |  | [optional] |
+
+#### LinkType (enum)
+`LINK` | `DASHBOARD`
+
 ---
 
 ### Conventions

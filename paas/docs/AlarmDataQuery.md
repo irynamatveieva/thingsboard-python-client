@@ -18,6 +18,74 @@ A JSON value representing the alarm data query. See API call notes above for mor
 
 
 
+## Referenced Types
+
+> **EntityId types** (`UserId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### EntityFilter
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### KeyFilter
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| key | EntityKey |  | [optional] |
+| value_type | EntityKeyValueType |  | [optional] |
+| predicate | KeyFilterPredicate |  | [optional] |
+
+#### AlarmDataPageLink
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| page_size | int |  | [optional] |
+| page | int |  | [optional] |
+| text_search | str |  | [optional] |
+| sort_order | EntityDataSortOrder |  | [optional] |
+| dynamic | bool |  | [optional] |
+| start_ts | int |  | [optional] |
+| end_ts | int |  | [optional] |
+| time_window | int |  | [optional] |
+| type_list | List[str] |  | [optional] |
+| status_list | List[AlarmSearchStatus] |  | [optional] |
+| severity_list | List[AlarmSeverity] |  | [optional] |
+| search_propagated_alarms | bool |  | [optional] |
+| assignee_id | UserId |  | [optional] |
+
+#### EntityKey
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | EntityKeyType |  | [optional] |
+| key | str |  | [optional] |
+
+#### EntityKeyValueType (enum)
+`STRING` | `NUMERIC` | `BOOLEAN` | `DATE_TIME`
+
+#### KeyFilterPredicate
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### EntityDataSortOrder
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| key | EntityKey |  | [optional] |
+| direction | Direction |  | [optional] |
+
+#### AlarmSearchStatus (enum)
+`ANY` | `ACTIVE` | `CLEARED` | `ACK` | `UNACK`
+
+#### AlarmSeverity (enum)
+`CRITICAL` | `MAJOR` | `MINOR` | `WARNING` | `INDETERMINATE`
+
+#### EntityKeyType (enum)
+`ATTRIBUTE` | `CLIENT_ATTRIBUTE` | `SHARED_ATTRIBUTE` | `SERVER_ATTRIBUTE` | `TIME_SERIES` | `ENTITY_FIELD` | `ALARM_FIELD`
+
+#### Direction (enum)
+`ASC` | `DESC`
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

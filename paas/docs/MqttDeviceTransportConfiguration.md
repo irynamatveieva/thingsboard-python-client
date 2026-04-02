@@ -12,6 +12,13 @@
 
 
 
+## Referenced Types
+
+#### DeviceTransportConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
 ---
 
 ### Conventions

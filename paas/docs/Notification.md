@@ -21,6 +21,29 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`DashboardId`, `NotificationId`, `NotificationRequestId`, `UserId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### NotificationType (enum)
+`GENERAL` | `ALARM` | `DEVICE_ACTIVITY` | `ENTITY_ACTION` | `ALARM_COMMENT` | `RULE_ENGINE_COMPONENT_LIFECYCLE_EVENT` | `ALARM_ASSIGNMENT` | `NEW_PLATFORM_VERSION` | `ENTITIES_LIMIT` | `ENTITIES_LIMIT_INCREASE_REQUEST` | … (24 values total)
+
+#### NotificationDeliveryMethod (enum)
+`WEB` | `EMAIL` | `SMS` | `SLACK` | `MICROSOFT_TEAMS` | `MOBILE_APP`
+
+#### NotificationInfo
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| dashboard_id | DashboardId |  | [optional] |
+| state_entity_id | EntityId |  | [optional] |
+| type | str |  |  |
+
+#### NotificationStatus (enum)
+`SENT` | `READ`
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

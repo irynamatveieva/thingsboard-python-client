@@ -13,6 +13,17 @@ A JSON value representing the custom menu configuration
 
 
 
+## Referenced Types
+
+#### MenuItem
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | MenuItemType | Menu item type |  |
+| visible | bool |  | [optional] |
+
+#### MenuItemType (enum)
+`HOME` | `DEFAULT` | `CUSTOM`
+
 ---
 
 ### Conventions

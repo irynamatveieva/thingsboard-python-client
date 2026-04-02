@@ -14,6 +14,36 @@
 
 
 
+## Referenced Types
+
+> **EntityId**: `{entity_type: EntityType, id: UUID}` — base type for all entity identifiers.
+
+#### EntityData
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| entity_id | EntityId |  | [optional] |
+| read_attrs | bool |  | [optional] |
+| read_ts | bool |  | [optional] |
+| latest | Dict[str, Dict[str, TsValue]] |  | [optional] |
+| timeseries | Dict[str, List[TsValue]] |  | [optional] |
+| agg_latest | Dict[str, ComparisonTsValue] |  | [optional] |
+
+#### ComparisonTsValue
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| current | TsValue |  | [optional] |
+| previous | TsValue |  | [optional] |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
+#### TsValue
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| ts | int |  | [optional] |
+| value | str |  | [optional] |
+| count | int |  | [optional] |
+
 ---
 
 ### Conventions

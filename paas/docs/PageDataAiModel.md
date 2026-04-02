@@ -14,6 +14,28 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`AiModelId`, `TenantId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### AiModel
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | AiModelId |  | [optional] |
+| created_time | int | Entity creation timestamp in milliseconds since Unix epoch | [optional] [readonly] |
+| tenant_id | TenantId | JSON object representing the ID of the tenant associated with this AI model | [readonly] |
+| version | int | Version of the AI model record; increments automatically whenever the record is changed | [readonly] |
+| name | str | Display name for this AI model configuration; not the technical model identifier |  |
+| configuration | AiModelConfig | Configuration of the AI model | [optional] |
+
+#### AiModelConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| provider | str |  |  |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

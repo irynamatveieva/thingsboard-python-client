@@ -12,6 +12,24 @@
 
 
 
+## Referenced Types
+
+#### OllamaAuth
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### Basic  *(extends OllamaAuth, type=`BASIC`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| username | str |  |  |
+| password | str |  |  |
+
+#### Token  *(extends OllamaAuth, type=`TOKEN`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| token | str |  |  |
+
 ---
 
 ### Conventions

@@ -14,6 +14,22 @@
 
 
 
+## Referenced Types
+
+#### AlarmRuleKeyFilterPredicate
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### NumericOperation (enum)
+`EQUAL` | `NOT_EQUAL` | `GREATER` | `LESS` | `GREATER_OR_EQUAL` | `LESS_OR_EQUAL`
+
+#### AlarmConditionValueDouble
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| static_value | float |  | [optional] |
+| dynamic_value_argument | str |  | [optional] |
+
 ---
 
 ### Conventions

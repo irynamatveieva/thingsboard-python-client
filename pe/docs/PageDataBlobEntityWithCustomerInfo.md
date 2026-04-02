@@ -14,6 +14,28 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`AdminSettingsId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `BlobEntityId`, `CalculatedFieldId`, `ConverterId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityGroupId`, `EntityViewId`, `GroupPermissionId`, `IntegrationId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `QueueId`, `QueueStatsId`, `ReportId`, `ReportTemplateId`, `RoleId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `SchedulerEventId`, `SecretId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### BlobEntityWithCustomerInfo
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | BlobEntityId | JSON object with the blob entity Id. Referencing non-existing blob entity Id will cause error | [optional] |
+| created_time | int | Timestamp of the blob entity creation, in milliseconds | [optional] [readonly] |
+| additional_info | object | Additional parameters of the blob entity | [optional] |
+| tenant_id | TenantId | JSON object with Tenant Id | [optional] [readonly] |
+| customer_id | CustomerId | JSON object with Customer Id | [optional] [readonly] |
+| name | str | blob entity name | [optional] [readonly] |
+| type | str | blob entity type | [optional] [readonly] |
+| content_type | Content_typeEnum | blob content type | [optional] [readonly] |
+| customer_title | str | Title of the customer | [optional] |
+| customer_is_public | bool | Parameter that specifies if customer is public | [optional] [readonly] |
+| owner_id | EntityId | JSON object with Customer or Tenant Id | [optional] [readonly] |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (46 values total)
+
 ---
 
 ### Conventions

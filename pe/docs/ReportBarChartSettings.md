@@ -17,6 +17,109 @@
 
 
 
+## Referenced Types
+
+#### ReportLatestChartSettings
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| show_title | bool |  | [optional] |
+| title | str |  | [optional] |
+| title_font | Font |  | [optional] |
+| title_color | str |  | [optional] |
+| title_alignment | TextAlignment |  | [optional] |
+| units | str |  | [optional] |
+| decimals | int |  | [optional] |
+| auto_scale | bool |  | [optional] |
+| sort_series | bool |  | [optional] |
+| show_total | bool |  | [optional] |
+| show_legend | bool |  | [optional] |
+| legend_position | LegendPosition |  | [optional] |
+| legend_label_font | Font |  | [optional] |
+| legend_label_color | str |  | [optional] |
+| legend_value_font | Font |  | [optional] |
+| legend_value_color | str |  | [optional] |
+| legend_show_total | bool |  | [optional] |
+
+#### ReportDoughnutChartSettings  *(extends ReportLatestChartSettings, sub_type=`horizontalDoughnutChart`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| layout | DoughnutLayout |  | [optional] |
+| clockwise | bool |  | [optional] |
+| total_value_font | Font |  | [optional] |
+| total_value_color | str |  | [optional] |
+
+#### ReportPieChartSettings  *(extends ReportLatestChartSettings, sub_type=`pieChart`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| show_label | bool |  | [optional] |
+| label_position | PieChartLabelPosition |  | [optional] |
+| label_font | Font |  | [optional] |
+| label_color | str |  | [optional] |
+| border_width | float |  | [optional] |
+| border_color | str |  | [optional] |
+| radius | float |  | [optional] |
+| clockwise | bool |  | [optional] |
+
+#### Font
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| size | float |  | [optional] |
+| weight | FontWeight |  | [optional] |
+| style | FontStyle |  | [optional] |
+| family | str |  | [optional] |
+
+#### BarSeriesSettings
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| show_border | bool |  | [optional] |
+| border_width | float |  | [optional] |
+| border_radius | float |  | [optional] |
+| bar_width | float |  | [optional] |
+| show_label | bool |  | [optional] |
+| label_position | ChartLabelPosition |  | [optional] |
+| label_font | Font |  | [optional] |
+| label_color | str |  | [optional] |
+| enable_label_background | bool |  | [optional] |
+| label_background | str |  | [optional] |
+| background_settings | ChartFillSettings |  | [optional] |
+
+#### TextAlignment (enum)
+`CENTER` | `RIGHT` | `LEFT` | `JUSTIFY`
+
+#### LegendPosition (enum)
+`TOP` | `BOTTOM` | `LEFT` | `RIGHT`
+
+#### FontWeight (enum)
+`NORMAL` | `BOLD` | `ENUM_500`
+
+#### FontStyle (enum)
+`NORMAL` | `ITALIC`
+
+#### ChartLabelPosition (enum)
+`TOP` | `BOTTOM`
+
+#### ChartFillSettings
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | ChartFillType |  | [optional] |
+| opacity | float |  | [optional] |
+| gradient | ChartFillSettingsGradient |  | [optional] |
+
+#### PieChartLabelPosition (enum)
+`INSIDE` | `OUTSIDE`
+
+#### DoughnutLayout (enum)
+`DEFAULT` | `WITH_TOTAL`
+
+#### ChartFillType (enum)
+`NONE` | `OPACITY` | `GRADIENT`
+
+#### ChartFillSettingsGradient
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| start | float |  | [optional] |
+| end | float |  | [optional] |
+
 ---
 
 ### Conventions

@@ -22,6 +22,22 @@
 
 
 
+## Referenced Types
+
+#### AiModelConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| provider | str |  |  |
+
+#### AiModelType (enum)
+`CHAT`
+
+#### OpenAiProviderConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| base_url | str |  | [optional] |
+| api_key | str |  | [optional] |
+
 ---
 
 ### Conventions

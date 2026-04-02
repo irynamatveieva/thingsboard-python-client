@@ -14,6 +14,25 @@
 
 
 
+## Referenced Types
+
+#### EntityKeyValueType (enum)
+`STRING` | `NUMERIC` | `BOOLEAN` | `DATE_TIME`
+
+#### AlarmConditionFilterKey
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | AlarmConditionKeyType | The key type | [optional] |
+| key | str | String value representing the key | [optional] |
+
+#### KeyFilterPredicate
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### AlarmConditionKeyType (enum)
+`ATTRIBUTE` | `TIME_SERIES` | `ENTITY_FIELD` | `CONSTANT`
+
 ---
 
 ### Conventions

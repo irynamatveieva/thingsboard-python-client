@@ -14,6 +14,29 @@
 
 
 
+## Referenced Types
+
+> **EntityId types** (`CustomerId`, `SchedulerEventId`, `TenantId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+
+#### SchedulerEventInfo
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | SchedulerEventId | JSON object with the scheduler event Id. Specify this field to update the scheduler event. Referencing non-existing scheduler event Id will cause error. Omit this field to create new scheduler event | [optional] |
+| created_time | int | Timestamp of the scheduler event creation, in milliseconds | [optional] [readonly] |
+| additional_info | object | Additional parameters of the scheduler event | [optional] |
+| tenant_id | TenantId | JSON object with Tenant Id | [optional] [readonly] |
+| customer_id | CustomerId | JSON object with Customer Id | [optional] [readonly] |
+| originator_id | EntityId | JSON object with Originator Id | [optional] [readonly] |
+| name | str | scheduler event name | [optional] |
+| type | str | scheduler event type | [optional] |
+| schedule | object | a JSON value with schedule time configuration | [optional] |
+| enabled | bool | Enable/disable scheduler | [optional] |
+| version | int |  | [optional] |
+| owner_id | EntityId | JSON object with Customer or Tenant Id | [optional] [readonly] |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 ---
 
 ### Conventions

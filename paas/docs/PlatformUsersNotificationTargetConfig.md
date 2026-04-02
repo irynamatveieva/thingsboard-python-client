@@ -13,6 +13,19 @@
 
 
 
+## Referenced Types
+
+#### NotificationTargetConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| description | str |  | [optional] |
+| type | str |  |  |
+
+#### UsersFilter
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
 ---
 
 ### Conventions

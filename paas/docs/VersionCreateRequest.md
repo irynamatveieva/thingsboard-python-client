@@ -15,6 +15,11 @@ Request for creating a version
 
 
 
+## Referenced Types
+
+#### VersionCreateRequestType (enum)
+`SINGLE_ENTITY` | `COMPLEX`
+
 ---
 
 ### Conventions

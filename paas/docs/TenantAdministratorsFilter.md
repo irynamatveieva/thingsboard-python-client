@@ -14,6 +14,13 @@
 
 
 
+## Referenced Types
+
+#### UsersFilter
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
 ---
 
 ### Conventions

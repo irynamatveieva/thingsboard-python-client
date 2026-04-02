@@ -14,6 +14,27 @@
 
 
 
+## Referenced Types
+
+#### NotificationTargetConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| description | str |  | [optional] |
+| type | str |  |  |
+
+#### SlackConversationType (enum)
+`DIRECT` | `PUBLIC_CHANNEL` | `PRIVATE_CHANNEL`
+
+#### SlackConversation
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | SlackConversationType |  |  |
+| id | str |  |  |
+| name | str |  |  |
+| whole_name | str |  | [optional] |
+| email | str |  | [optional] |
+| title | str |  | [optional] |
+
 ---
 
 ### Conventions

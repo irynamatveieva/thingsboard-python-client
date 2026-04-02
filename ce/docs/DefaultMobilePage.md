@@ -15,6 +15,41 @@
 
 
 
+## Referenced Types
+
+#### MobilePage
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | MobilePageType |  |  |
+| visible | bool |  | [optional] |
+
+#### CustomMobilePage  *(extends MobilePage, type=`CUSTOM`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| label | str | Page label | [optional] |
+| icon | str | URL of the page icon | [optional] |
+| path | str | Path to custom page | [optional] |
+
+#### DashboardPage  *(extends MobilePage, type=`DASHBOARD`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| label | str | Page label | [optional] |
+| icon | str | URL of the page icon | [optional] |
+| dashboard_id | str | Dashboard id | [optional] |
+
+#### WebViewPage  *(extends MobilePage, type=`WEB_VIEW`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| label | str | Page label | [optional] |
+| icon | str | URL of the page icon | [optional] |
+| url | str | Url | [optional] |
+
+#### DefaultPageId (enum)
+`HOME` | `ALARMS` | `DEVICES` | `CUSTOMERS` | `ASSETS` | `AUDIT_LOGS` | `NOTIFICATIONS` | `DEVICE_LIST` | `DASHBOARDS`
+
+#### MobilePageType (enum)
+`DEFAULT` | `DASHBOARD` | `WEB_VIEW` | `CUSTOM`
+
 ---
 
 ### Conventions

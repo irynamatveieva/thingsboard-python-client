@@ -14,6 +14,14 @@ Key name with an optional sample value.
 
 
 
+## Referenced Types
+
+#### KeySample
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| ts | int | Timestamp in milliseconds since epoch. |  |
+| value | object |  |  |
+
 ---
 
 ### Conventions

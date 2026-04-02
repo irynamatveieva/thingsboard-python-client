@@ -12,6 +12,14 @@
 
 
 
+## Referenced Types
+
+#### DeviceProfileProvisionConfiguration
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| provision_device_secret | str | Provision device secret | [optional] |
+| type | str |  |  |
+
 ---
 
 ### Conventions
