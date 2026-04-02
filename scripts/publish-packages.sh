@@ -37,16 +37,20 @@
 # IMPORTANT: Use twine (not poetry publish) — Poetry does not read ~/.pypirc.
 #
 # Usage:
-#   ./scripts/publish-packages.sh [testpypi|pypi]
+#   ./scripts/publish-packages.sh [testpypi|pypi] [--build N]
 #
 # Arguments:
-#   testpypi   Upload to TestPyPI (default — safe to run anytime)
-#   pypi       Upload to PyPI (production — permanent)
+#   testpypi     Upload to TestPyPI (default — safe to run anytime)
+#   pypi         Upload to PyPI (production — permanent)
+#   --build N    Add build number N to wheel filenames (testpypi only).
+#                Lets you re-upload the same version: pip picks the highest
+#                build number.  e.g. tb_ce_client-4.4.0-2-py3-none-any.whl
 #
 # Examples:
-#   ./scripts/publish-packages.sh             # Upload to TestPyPI
-#   ./scripts/publish-packages.sh testpypi    # Upload to TestPyPI (explicit)
-#   ./scripts/publish-packages.sh pypi        # Upload to PyPI (production)
+#   ./scripts/publish-packages.sh                     # Upload to TestPyPI
+#   ./scripts/publish-packages.sh testpypi            # Upload to TestPyPI (explicit)
+#   ./scripts/publish-packages.sh testpypi --build 2  # Re-upload with build number
+#   ./scripts/publish-packages.sh pypi                # Upload to PyPI (production)
 #
 
 set -euo pipefail
@@ -55,15 +59,35 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$SCRIPT_DIR/.."
 DIST_DIR="$ROOT_DIR/dist"
 
-# Parse argument — default to testpypi for safety
+# Parse arguments
 REPO="${1:-testpypi}"
+BUILD_NUM=""
 
-# Validate argument
+shift || true
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --build)
+            BUILD_NUM="$2"
+            shift 2
+            ;;
+        *)
+            echo "Unknown option: $1"; exit 1
+            ;;
+    esac
+done
+
+# Validate repo argument
 if [ "$REPO" != "testpypi" ] && [ "$REPO" != "pypi" ]; then
-    echo "Usage: $0 [testpypi|pypi]"
+    echo "Usage: $0 [testpypi|pypi] [--build N]"
     echo ""
     echo "  testpypi  Upload to https://test.pypi.org/ (default)"
     echo "  pypi      Upload to https://pypi.org/ (production)"
+    exit 1
+fi
+
+# Build numbers are for testpypi iteration only
+if [ -n "$BUILD_NUM" ] && [ "$REPO" = "pypi" ]; then
+    echo "ERROR: --build is only allowed with testpypi"
     exit 1
 fi
 
@@ -79,15 +103,36 @@ if ! command -v twine > /dev/null 2>&1; then
     exit 1
 fi
 
+# If --build is set, retag wheels with the build number
+if [ -n "$BUILD_NUM" ]; then
+    if ! command -v wheel > /dev/null 2>&1; then
+        echo "ERROR: wheel not found. Install with: pip install wheel"
+        exit 1
+    fi
+    echo "=== Retagging wheels with build number ${BUILD_NUM} ==="
+    for whl in "${DIST_DIR}"/*.whl; do
+        wheel tags --remove --build "$BUILD_NUM" "$whl"
+    done
+    echo ""
+fi
+
+# When using --build, skip sdists — they don't support build numbers and would
+# conflict with previously uploaded tarballs for the same version.
+if [ -n "$BUILD_NUM" ]; then
+    UPLOAD_FILES=("${DIST_DIR}"/*.whl)
+else
+    UPLOAD_FILES=("${DIST_DIR}"/*.whl "${DIST_DIR}"/*.tar.gz)
+fi
+
 # List what will be uploaded
 echo "=== Publishing to ${REPO} ==="
 echo ""
 echo "Artifacts to upload:"
-ls -lh "${DIST_DIR}"/*.whl "${DIST_DIR}"/*.tar.gz 2>/dev/null
+ls -lh "${UPLOAD_FILES[@]}"
 echo ""
 
 # Upload via twine (reads credentials from ~/.pypirc)
-twine upload --repository "${REPO}" "${DIST_DIR}"/*.whl "${DIST_DIR}"/*.tar.gz
+twine upload --repository "${REPO}" "${UPLOAD_FILES[@]}"
 
 echo ""
 echo "=== Upload complete ==="
