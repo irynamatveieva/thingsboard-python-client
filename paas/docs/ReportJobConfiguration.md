@@ -25,7 +25,7 @@
 
 ## Referenced Types
 
-> **EntityId types** (`DashboardId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTemplateId`, `ReportId`, `ReportTemplateId`, `RuleChainId`, `RuleNodeId`, `TenantId`, `UserId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+> **EntityId types** (`AdminSettingsId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `BillingCustomerId`, `BlobEntityId`, `CalculatedFieldId`, `ConverterId`, `CouponId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityGroupId`, `EntityViewId`, `GroupPermissionId`, `IntegrationId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `ProductId`, `QueueId`, `QueueStatsId`, `ReportId`, `ReportTemplateId`, `RoleId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `SchedulerEventId`, `SecretId`, `SubscriptionAddonId`, `SubscriptionId`, `SubscriptionPlanId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
 
 #### JobConfiguration
 | Name | Type | Description | Notes |
@@ -33,6 +33,27 @@
 | tasks_key | str |  |  |
 | to_reprocess | List[TaskResult] |  | [optional] |
 | type | str |  |  |
+
+#### CfReprocessingJobConfiguration  *(extends JobConfiguration, type=`CF_REPROCESSING`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| calculated_field_id | CalculatedFieldId |  |  |
+| calculated_field_name | str |  | [optional] |
+| start_ts | int |  | [optional] |
+| end_ts | int |  | [optional] |
+
+#### DummyJobConfiguration  *(extends JobConfiguration, type=`DUMMY`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| task_processing_time_ms | int |  | [optional] |
+| successful_tasks_count | int |  | [optional] |
+| failed_tasks_count | int |  | [optional] |
+| permanently_failed_tasks_count | int |  | [optional] |
+| errors | List[str] |  | [optional] |
+| retries | int |  | [optional] |
+| task_processing_timeout_ms | int |  | [optional] |
+| general_error | str |  | [optional] |
+| submitted_tasks_before_general_error | int |  | [optional] |
 
 #### NotificationRequest
 | Name | Type | Description | Notes |
@@ -145,6 +166,50 @@
 | enabled | bool |  | [optional] |
 | body | str |  |  |
 | method | str |  |  |
+
+#### EmailDeliveryMethodNotificationTemplate  *(extends DeliveryMethodNotificationTemplate, method=`EMAIL`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| subject | str |  |  |
+
+#### MicrosoftTeamsDeliveryMethodNotificationTemplate  *(extends DeliveryMethodNotificationTemplate, method=`MICROSOFT_TEAMS`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| subject | str |  | [optional] |
+| theme_color | str |  | [optional] |
+| button | Button |  | [optional] |
+
+#### MobileAppDeliveryMethodNotificationTemplate  *(extends DeliveryMethodNotificationTemplate, method=`MOBILE_APP`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| subject | str | Subject line for the mobile notification |  |
+| additional_config | object | Additional JSON configuration for web buttons/actions | [optional] |
+
+#### SlackDeliveryMethodNotificationTemplate  *(extends DeliveryMethodNotificationTemplate, method=`SLACK`)*
+*See DeliveryMethodNotificationTemplate for properties.*
+
+#### SmsDeliveryMethodNotificationTemplate  *(extends DeliveryMethodNotificationTemplate, method=`SMS`)*
+*See DeliveryMethodNotificationTemplate for properties.*
+
+#### WebDeliveryMethodNotificationTemplate  *(extends DeliveryMethodNotificationTemplate, method=`WEB`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| subject | str | Subject line for the web notification |  |
+| additional_config | object | Additional JSON configuration for web buttons/actions | [optional] |
+
+#### Button
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| enabled | bool |  | [optional] |
+| text | str |  | [optional] |
+| link_type | LinkType |  | [optional] |
+| link | str |  | [optional] |
+| dashboard_id | UUID |  | [optional] |
+| dashboard_state | str |  | [optional] |
+| set_entity_id_in_state | bool |  | [optional] |
+
+#### LinkType (enum)
+`LINK` | `DASHBOARD`
 
 ---
 

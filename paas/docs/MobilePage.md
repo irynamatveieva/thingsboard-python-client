@@ -14,10 +14,43 @@ Configuration for a mobile page
 
 
 
+## Subtypes
+
+#### CustomMobilePage  *(type=`CUSTOM`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| label | str | Page label | [optional] |
+| icon | str | URL of the page icon | [optional] |
+| path | str | Path to custom page | [optional] |
+
+#### DashboardPage  *(type=`DASHBOARD`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| label | str | Page label | [optional] |
+| icon | str | URL of the page icon | [optional] |
+| dashboard_id | str | Dashboard id | [optional] |
+
+#### DefaultMobilePage  *(type=`DEFAULT`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| label | str | Page label | [optional] |
+| icon | str | URL of the page icon | [optional] |
+| id | DefaultPageId | Identifier for default page | [optional] |
+
+#### WebViewPage  *(type=`WEB_VIEW`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| label | str | Page label | [optional] |
+| icon | str | URL of the page icon | [optional] |
+| url | str | Url | [optional] |
+
 ## Referenced Types
 
 #### MobilePageType (enum)
 `DEFAULT` | `DASHBOARD` | `WEB_VIEW` | `CUSTOM`
+
+#### DefaultPageId (enum)
+`HOME` | `ALARMS` | `DEVICES` | `CUSTOMERS` | `ASSETS` | `AUDIT_LOGS` | `NOTIFICATIONS` | `DEVICE_LIST` | `DASHBOARDS`
 
 ---
 

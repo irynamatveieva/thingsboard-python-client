@@ -25,6 +25,20 @@
 |------|------|-------------|-------|
 | version | str |  |  |
 
+#### V2CaptchaParams  *(extends CaptchaParams, version=`v2`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| site_key | str | Captcha site key for 'I'm not a robot' validation | [optional] |
+| log_action_name | str | Optional action name used for logging (for captcha version 'v3' and 'enterprise') | [optional] |
+| secret_key | str | Secret key to validate the Captcha. Should match the Captcha Site Key. | [optional] |
+
+#### V3CaptchaParams  *(extends CaptchaParams, version=`v3`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| site_key | str | Captcha site key for 'I'm not a robot' validation | [optional] |
+| log_action_name | str | Optional action name used for logging (for captcha version 'v3' and 'enterprise') | [optional] |
+| secret_key | str | Secret key to validate the Captcha. Should match the Captcha Site Key. | [optional] |
+
 ---
 
 ### Conventions

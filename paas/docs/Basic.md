@@ -21,6 +21,14 @@
 |------|------|-------------|-------|
 | type | str |  |  |
 
+#### ModelNone  *(extends OllamaAuth, type=`NONE`)*
+*See OllamaAuth for properties.*
+
+#### Token  *(extends OllamaAuth, type=`TOKEN`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| token | str |  |  |
+
 ---
 
 ### Conventions

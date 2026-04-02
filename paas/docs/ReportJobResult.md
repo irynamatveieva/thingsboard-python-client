@@ -15,7 +15,7 @@
 
 ## Referenced Types
 
-> **EntityId types** (`CustomerId`, `ReportId`, `ReportTemplateId`, `TenantId`, `UserId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+> **EntityId types** (`AdminSettingsId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `BillingCustomerId`, `BlobEntityId`, `CalculatedFieldId`, `ConverterId`, `CouponId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityGroupId`, `EntityViewId`, `GroupPermissionId`, `IntegrationId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `ProductId`, `QueueId`, `QueueStatsId`, `ReportId`, `ReportTemplateId`, `RoleId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `SchedulerEventId`, `SecretId`, `SubscriptionAddonId`, `SubscriptionId`, `SubscriptionPlanId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
 
 #### JobResult
 | Name | Type | Description | Notes |
@@ -30,6 +30,12 @@
 | finish_ts | int | Timestamp of the job finish, in milliseconds | [optional] |
 | cancellation_ts | int | Timestamp of the job cancellation, in milliseconds | [optional] |
 | job_type | str |  |  |
+
+#### CfReprocessingJobResult  *(extends JobResult, job_type=`CF_REPROCESSING`)*
+*See JobResult for properties.*
+
+#### DummyJobResult  *(extends JobResult, job_type=`DUMMY`)*
+*See JobResult for properties.*
 
 #### Report
 | Name | Type | Description | Notes |

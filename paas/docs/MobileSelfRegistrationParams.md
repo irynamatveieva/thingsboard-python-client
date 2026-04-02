@@ -17,7 +17,7 @@
 
 ## Referenced Types
 
-> **EntityId types** (`EntityGroupId`, `GroupPermissionId`, `NotificationTargetId`, `RoleId`, `TenantId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+> **EntityId types** (`AdminSettingsId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `BillingCustomerId`, `BlobEntityId`, `CalculatedFieldId`, `ConverterId`, `CouponId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityGroupId`, `EntityViewId`, `GroupPermissionId`, `IntegrationId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `ProductId`, `QueueId`, `QueueStatsId`, `ReportId`, `ReportTemplateId`, `RoleId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `SchedulerEventId`, `SecretId`, `SubscriptionAddonId`, `SubscriptionId`, `SubscriptionPlanId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
 
 #### SelfRegistrationParams
 | Name | Type | Description | Notes |
@@ -37,6 +37,13 @@
 | customer_group_id | EntityGroupId |  | [optional] |
 | custom_menu_id | CustomMenuId |  | [optional] |
 
+#### WebSelfRegistrationParams  *(extends SelfRegistrationParams, type=`WEB`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| domain_id | DomainId | Domain name for self registration URL. Typically this matches the domain name from the Login White Labeling page. |  |
+| privacy_policy | str | Privacy policy text. Supports HTML. | [optional] |
+| terms_of_use | str | Terms of User text. Supports HTML. | [optional] |
+
 #### MobileRedirectParams
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
@@ -50,6 +57,30 @@
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | version | str |  |  |
+
+#### EnterpriseCaptchaParams  *(extends CaptchaParams, version=`enterprise`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| project_id | str | Your Google Cloud project ID | [optional] |
+| service_account_credentials | str | Service account credentials | [optional] |
+| service_account_credentials_file_name | str | Service account credentials file name | [optional] |
+| android_key | str | The reCAPTCHA key associated with android app. | [optional] |
+| ios_key | str | The reCAPTCHA key associated with iOS app. | [optional] |
+| log_action_name | str | Optional action name used for logging | [optional] |
+
+#### V2CaptchaParams  *(extends CaptchaParams, version=`v2`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| site_key | str | Captcha site key for 'I'm not a robot' validation | [optional] |
+| log_action_name | str | Optional action name used for logging (for captcha version 'v3' and 'enterprise') | [optional] |
+| secret_key | str | Secret key to validate the Captcha. Should match the Captcha Site Key. | [optional] |
+
+#### V3CaptchaParams  *(extends CaptchaParams, version=`v3`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| site_key | str | Captcha site key for 'I'm not a robot' validation | [optional] |
+| log_action_name | str | Optional action name used for logging (for captcha version 'v3' and 'enterprise') | [optional] |
+| secret_key | str | Secret key to validate the Captcha. Should match the Captcha Site Key. | [optional] |
 
 #### GroupPermission
 | Name | Type | Description | Notes |

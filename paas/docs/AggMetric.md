@@ -24,6 +24,16 @@
 |------|------|-------------|-------|
 | type | str |  |  |
 
+#### AggFunctionInput  *(extends AggInput, type=`function`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| function | str |  | [optional] |
+
+#### AggKeyInput  *(extends AggInput, type=`key`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| key | str |  | [optional] |
+
 ---
 
 ### Conventions

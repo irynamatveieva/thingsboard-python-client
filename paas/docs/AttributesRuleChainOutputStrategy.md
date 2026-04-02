@@ -19,6 +19,15 @@
 |------|------|-------------|-------|
 | type | str |  |  |
 
+#### AttributesImmediateOutputStrategy  *(extends AttributesOutputStrategy, type=`IMMEDIATE`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| send_attributes_updated_notification | bool |  | [optional] |
+| update_attributes_only_on_value_change | bool |  | [optional] |
+| save_attribute | bool |  | [optional] |
+| send_ws_update | bool |  | [optional] |
+| process_cfs | bool |  | [optional] |
+
 ---
 
 ### Conventions

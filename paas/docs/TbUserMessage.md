@@ -18,6 +18,11 @@
 |------|------|-------------|-------|
 | content_type | str |  |  |
 
+#### TbTextContent  *(extends TbContent, content_type=`TEXT`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| text | str | The text content |  |
+
 ---
 
 ### Conventions

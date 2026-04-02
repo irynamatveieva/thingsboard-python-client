@@ -54,6 +54,22 @@
 | xaxis | TimeSeriesChartXAxisSettings |  | [optional] |
 | yaxes | Dict[str, TimeSeriesChartYAxisSettings] |  | [optional] |
 
+#### ReportBarChartWithLabelsSettings  *(extends ReportTimeSeriesChartSettings, sub_type=`barChartWithLabels`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| show_bar_label | bool |  | [optional] |
+| bar_label_font | Font |  | [optional] |
+| bar_label_color | str |  | [optional] |
+| show_bar_value | bool |  | [optional] |
+| bar_value_font | Font |  | [optional] |
+| bar_value_color | str |  | [optional] |
+| show_bar_border | bool |  | [optional] |
+| bar_border_width | float |  | [optional] |
+| bar_border_radius | float |  | [optional] |
+| bar_background_settings | ChartFillSettings |  | [optional] |
+| bar_units | str |  | [optional] |
+| bar_decimals | int |  | [optional] |
+
 #### ColorRange
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|

@@ -22,6 +22,24 @@
 |------|------|-------------|-------|
 | type | str |  |  |
 
+#### BooleanFilterPredicate  *(extends KeyFilterPredicate, type=`BOOLEAN`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| operation | BooleanOperation |  | [optional] |
+| value | FilterPredicateValueBoolean | The value associated with the filter predicate | [optional] |
+
+#### ComplexFilterPredicate  *(extends KeyFilterPredicate, type=`COMPLEX`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| operation | ComplexOperation |  | [optional] |
+| predicates | List[KeyFilterPredicate] |  | [optional] |
+
+#### NumericFilterPredicate  *(extends KeyFilterPredicate, type=`NUMERIC`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| operation | NumericOperation |  | [optional] |
+| value | FilterPredicateValueDouble | The value associated with the filter predicate | [optional] |
+
 #### StringOperation (enum)
 `EQUAL` | `NOT_EQUAL` | `STARTS_WITH` | `ENDS_WITH` | `CONTAINS` | `NOT_CONTAINS` | `IN` | `NOT_IN`
 
@@ -40,8 +58,47 @@
 | source_attribute | str |  | [optional] |
 | inherit | bool |  | [optional] |
 
+#### NumericOperation (enum)
+`EQUAL` | `NOT_EQUAL` | `GREATER` | `LESS` | `GREATER_OR_EQUAL` | `LESS_OR_EQUAL`
+
+#### FilterPredicateValueDouble
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| default_value | float |  | [optional] |
+| user_value | float |  | [optional] |
+| dynamic_value | DynamicValueDouble |  | [optional] |
+
+#### BooleanOperation (enum)
+`EQUAL` | `NOT_EQUAL`
+
+#### FilterPredicateValueBoolean
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| default_value | bool |  | [optional] |
+| user_value | bool |  | [optional] |
+| dynamic_value | DynamicValueBoolean |  | [optional] |
+
+#### ComplexOperation (enum)
+`AND` | `OR`
+
 #### DynamicValueSourceType (enum)
 `CURRENT_TENANT` | `CURRENT_CUSTOMER` | `CURRENT_USER` | `CURRENT_DEVICE`
+
+#### DynamicValueDouble
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| resolved_value | float |  | [optional] |
+| source_type | DynamicValueSourceType |  | [optional] |
+| source_attribute | str |  | [optional] |
+| inherit | bool |  | [optional] |
+
+#### DynamicValueBoolean
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| resolved_value | bool |  | [optional] |
+| source_type | DynamicValueSourceType |  | [optional] |
+| source_attribute | str |  | [optional] |
+| inherit | bool |  | [optional] |
 
 ---
 

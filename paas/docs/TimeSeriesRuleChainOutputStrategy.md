@@ -19,6 +19,15 @@
 |------|------|-------------|-------|
 | type | str |  |  |
 
+#### TimeSeriesImmediateOutputStrategy  *(extends TimeSeriesOutputStrategy, type=`IMMEDIATE`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| ttl | int |  | [optional] |
+| save_time_series | bool |  | [optional] |
+| save_latest | bool |  | [optional] |
+| send_ws_update | bool |  | [optional] |
+| process_cfs | bool |  | [optional] |
+
 ---
 
 ### Conventions

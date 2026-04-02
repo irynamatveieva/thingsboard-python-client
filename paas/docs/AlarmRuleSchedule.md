@@ -11,6 +11,35 @@
 
 
 
+## Subtypes
+
+#### AlarmRuleAnyTimeSchedule  *(type=`ANY_TIME`)*
+*(no additional properties)*
+
+#### AlarmRuleCustomTimeSchedule  *(type=`CUSTOM`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| items | List[AlarmRuleCustomTimeScheduleItem] |  | [optional] |
+| timezone | str |  | [optional] |
+
+#### AlarmRuleSpecificTimeSchedule  *(type=`SPECIFIC_TIME`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| days_of_week | List[int] |  | [optional] |
+| ends_on | int |  | [optional] |
+| starts_on | int |  | [optional] |
+| timezone | str |  | [optional] |
+
+## Referenced Types
+
+#### AlarmRuleCustomTimeScheduleItem
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| day_of_week | int |  | [optional] |
+| enabled | bool |  | [optional] |
+| ends_on | int |  | [optional] |
+| starts_on | int |  | [optional] |
+
 ---
 
 ### Conventions

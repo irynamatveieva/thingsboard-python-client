@@ -25,25 +25,46 @@ A JSON value representing the Mobile Application Bundle.
 
 ## Referenced Types
 
-> **EntityId types** (`EntityGroupId`, `GroupPermissionId`, `MobileAppBundleId`, `MobileAppId`, `NotificationTargetId`, `RoleId`, `TenantId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+> **EntityId types** (`AdminSettingsId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `BillingCustomerId`, `BlobEntityId`, `CalculatedFieldId`, `ConverterId`, `CouponId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityGroupId`, `EntityViewId`, `GroupPermissionId`, `IntegrationId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `ProductId`, `QueueId`, `QueueStatsId`, `ReportId`, `ReportTemplateId`, `RoleId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `SchedulerEventId`, `SecretId`, `SubscriptionAddonId`, `SubscriptionId`, `SubscriptionPlanId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
 
 #### MobileLayoutConfig
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | pages | List[MobilePage] |  | [optional] |
 
-#### MobileSelfRegistrationParams  *(extends SelfRegistrationParams)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| privacy_policy | str | Privacy policy text. Supports HTML. | [optional] |
-| redirect | MobileRedirectParams | Mobile redirect params. |  |
-| terms_of_use | str | Terms of User text. Supports HTML. | [optional] |
-
 #### MobilePage
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | type | MobilePageType |  |  |
 | visible | bool |  | [optional] |
+
+#### CustomMobilePage  *(extends MobilePage, type=`CUSTOM`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| label | str | Page label | [optional] |
+| icon | str | URL of the page icon | [optional] |
+| path | str | Path to custom page | [optional] |
+
+#### DashboardPage  *(extends MobilePage, type=`DASHBOARD`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| label | str | Page label | [optional] |
+| icon | str | URL of the page icon | [optional] |
+| dashboard_id | str | Dashboard id | [optional] |
+
+#### DefaultMobilePage  *(extends MobilePage, type=`DEFAULT`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| label | str | Page label | [optional] |
+| icon | str | URL of the page icon | [optional] |
+| id | DefaultPageId | Identifier for default page | [optional] |
+
+#### WebViewPage  *(extends MobilePage, type=`WEB_VIEW`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| label | str | Page label | [optional] |
+| icon | str | URL of the page icon | [optional] |
+| url | str | Url | [optional] |
 
 #### SelfRegistrationParams
 | Name | Type | Description | Notes |
@@ -62,6 +83,20 @@ A JSON value representing the Mobile Application Bundle.
 | home_dashboard | HomeDashboardParams |  | [optional] |
 | customer_group_id | EntityGroupId |  | [optional] |
 | custom_menu_id | CustomMenuId |  | [optional] |
+
+#### MobileSelfRegistrationParams  *(extends SelfRegistrationParams, type=`MOBILE`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| privacy_policy | str | Privacy policy text. Supports HTML. | [optional] |
+| redirect | MobileRedirectParams | Mobile redirect params. |  |
+| terms_of_use | str | Terms of User text. Supports HTML. | [optional] |
+
+#### WebSelfRegistrationParams  *(extends SelfRegistrationParams, type=`WEB`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| domain_id | DomainId | Domain name for self registration URL. Typically this matches the domain name from the Login White Labeling page. |  |
+| privacy_policy | str | Privacy policy text. Supports HTML. | [optional] |
+| terms_of_use | str | Terms of User text. Supports HTML. | [optional] |
 
 #### MobileRedirectParams
 | Name | Type | Description | Notes |
@@ -82,6 +117,30 @@ A JSON value representing the Mobile Application Bundle.
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | version | str |  |  |
+
+#### EnterpriseCaptchaParams  *(extends CaptchaParams, version=`enterprise`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| project_id | str | Your Google Cloud project ID | [optional] |
+| service_account_credentials | str | Service account credentials | [optional] |
+| service_account_credentials_file_name | str | Service account credentials file name | [optional] |
+| android_key | str | The reCAPTCHA key associated with android app. | [optional] |
+| ios_key | str | The reCAPTCHA key associated with iOS app. | [optional] |
+| log_action_name | str | Optional action name used for logging | [optional] |
+
+#### V2CaptchaParams  *(extends CaptchaParams, version=`v2`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| site_key | str | Captcha site key for 'I'm not a robot' validation | [optional] |
+| log_action_name | str | Optional action name used for logging (for captcha version 'v3' and 'enterprise') | [optional] |
+| secret_key | str | Secret key to validate the Captcha. Should match the Captcha Site Key. | [optional] |
+
+#### V3CaptchaParams  *(extends CaptchaParams, version=`v3`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| site_key | str | Captcha site key for 'I'm not a robot' validation | [optional] |
+| log_action_name | str | Optional action name used for logging (for captcha version 'v3' and 'enterprise') | [optional] |
+| secret_key | str | Secret key to validate the Captcha. Should match the Captcha Site Key. | [optional] |
 
 #### GroupPermission
 | Name | Type | Description | Notes |
@@ -120,6 +179,9 @@ A JSON value representing the Mobile Application Bundle.
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | id | UUID | string |  |
+
+#### DefaultPageId (enum)
+`HOME` | `ALARMS` | `DEVICES` | `CUSTOMERS` | `ASSETS` | `AUDIT_LOGS` | `NOTIFICATIONS` | `DEVICE_LIST` | `DASHBOARDS`
 
 #### SignUpFieldId (enum)
 `EMAIL` | `PASSWORD` | `REPEAT_PASSWORD` | `FIRST_NAME` | `LAST_NAME` | `PHONE` | `COUNTRY` | `CITY` | `STATE` | `ZIP` | … (12 values total)

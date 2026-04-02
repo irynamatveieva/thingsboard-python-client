@@ -14,6 +14,23 @@ Device profile provision configuration
 
 
 
+## Subtypes
+
+#### AllowCreateNewDevicesDeviceProfileProvisionConfiguration  *(type=`ALLOW_CREATE_NEW_DEVICES`)*
+*(no additional properties)*
+
+#### CheckPreProvisionedDevicesDeviceProfileProvisionConfiguration  *(type=`CHECK_PRE_PROVISIONED_DEVICES`)*
+*(no additional properties)*
+
+#### DisabledDeviceProfileProvisionConfiguration  *(type=`DISABLED`)*
+*(no additional properties)*
+
+#### X509CertificateChainProvisionConfiguration  *(type=`X509_CERTIFICATE_CHAIN`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| certificate_reg_ex_pattern | str |  | [optional] |
+| allow_create_new_devices_by_x509_certificate | bool |  | [optional] |
+
 ---
 
 ### Conventions

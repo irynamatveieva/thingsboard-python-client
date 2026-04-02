@@ -21,7 +21,7 @@
 
 ## Referenced Types
 
-> **EntityId types** (`CustomerId`, `TenantId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+> **EntityId types** (`AdminSettingsId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `BillingCustomerId`, `BlobEntityId`, `CalculatedFieldId`, `ConverterId`, `CouponId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityGroupId`, `EntityViewId`, `GroupPermissionId`, `IntegrationId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `ProductId`, `QueueId`, `QueueStatsId`, `ReportId`, `ReportTemplateId`, `RoleId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `SchedulerEventId`, `SecretId`, `SubscriptionAddonId`, `SubscriptionId`, `SubscriptionPlanId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
 
 #### CustomMenuId
 | Name | Type | Description | Notes |
@@ -45,11 +45,54 @@
 | type | MenuItemType | Menu item type |  |
 | visible | bool |  | [optional] |
 
+#### CustomMenuItem  *(extends MenuItem, type=`CUSTOM`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| name | str | Name of the menu item |  |
+| icon | str | URL of the menu item icon. Overrides 'materialIcon' | [optional] |
+| menu_item_type | CMItemType | Type of menu item (LINK or SECTION). LINK type means item has no child items, SECTION type should have at least one child |  |
+| link_type | CMItemLinkType | Type of menu item (URL or DASHBOARD) | [optional] |
+| dashboard_id | str | Id of the Dashboard to open, when user clicks the menu item | [optional] |
+| hide_dashboard_toolbar | bool | Hide the dashboard toolbar | [optional] |
+| url | str | URL to open in the iframe, when user clicks the menu item | [optional] |
+| set_access_token | bool | Set the access token of the current user to a new dashboard | [optional] |
+| visible | bool | Mark if menu item is visible for user | [optional] |
+| pages | List[CustomMenuItem] | List of child menu items | [optional] |
+
+#### DefaultMenuItem  *(extends MenuItem, type=`DEFAULT`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | str | Unique identifier for predefined menu items | [optional] [readonly] |
+| name | str | Name of the menu item | [optional] |
+| icon | str | URL of the menu item icon. Overrides 'materialIcon' | [optional] |
+| visible | bool | Mark if menu item is visible for user | [optional] |
+| pages | List[DefaultMenuItem] | List of child menu items | [optional] |
+
+#### HomeMenuItem  *(extends MenuItem, type=`HOME`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | str | Unique identifier for predefined menu items | [optional] [readonly] |
+| name | str | Name of the menu item | [optional] |
+| icon | str | URL of the menu item icon. Overrides 'materialIcon' | [optional] |
+| pages | List[DefaultMenuItem] | List of child menu items | [optional] |
+| home_type | HomeMenuItemType | DEFAULT or DASHBOARD. DASHBOARD means default home page presentation changed to refer to dashboard | [optional] |
+| dashboard_id | str | Id of the Dashboard to open, when user clicks the menu item | [optional] |
+| hide_dashboard_toolbar | bool | Hide the dashboard toolbar | [optional] |
+
 #### EntityType (enum)
 `TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
 
 #### MenuItemType (enum)
 `HOME` | `DEFAULT` | `CUSTOM`
+
+#### HomeMenuItemType (enum)
+`DEFAULT` | `DASHBOARD`
+
+#### CMItemType (enum)
+`LINK` | `SECTION`
+
+#### CMItemLinkType (enum)
+`URL` | `DASHBOARD`
 
 ---
 

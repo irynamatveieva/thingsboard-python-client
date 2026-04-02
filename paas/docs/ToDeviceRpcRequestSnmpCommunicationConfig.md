@@ -20,6 +20,28 @@
 |------|------|-------------|-------|
 | spec | SnmpCommunicationSpec | Specification of the SNMP communication |  |
 
+#### ClientAttributesQueryingSnmpCommunicationConfig  *(extends SnmpCommunicationConfig, spec=`CLIENT_ATTRIBUTES_QUERYING`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| mappings | List[SnmpMapping] |  | [optional] |
+| querying_frequency_ms | int |  | [optional] |
+
+#### SharedAttributesSettingSnmpCommunicationConfig  *(extends SnmpCommunicationConfig, spec=`SHARED_ATTRIBUTES_SETTING`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| mappings | List[SnmpMapping] |  | [optional] |
+
+#### TelemetryQueryingSnmpCommunicationConfig  *(extends SnmpCommunicationConfig, spec=`TELEMETRY_QUERYING`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| mappings | List[SnmpMapping] |  | [optional] |
+| querying_frequency_ms | int |  | [optional] |
+
+#### ToServerRpcRequestSnmpCommunicationConfig  *(extends SnmpCommunicationConfig, spec=`TO_SERVER_RPC_REQUEST`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| mappings | List[SnmpMapping] |  | [optional] |
+
 #### SnmpMapping
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|

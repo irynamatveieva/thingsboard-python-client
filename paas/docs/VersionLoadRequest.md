@@ -14,10 +14,54 @@ Request for loading a version
 
 
 
+## Subtypes
+
+#### EntityTypeVersionLoadRequest  *(type=`ENTITY_TYPE`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| entity_types | Dict[str, EntityTypeVersionLoadConfig] |  | [optional] |
+| rollback_on_error | bool |  | [optional] |
+
+#### SingleEntityVersionLoadRequest  *(type=`SINGLE_ENTITY`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| internal_entity_id | EntityId |  | [optional] |
+| external_entity_id | EntityId |  | [optional] |
+| config | VersionLoadConfig |  | [optional] |
+
 ## Referenced Types
+
+> **EntityId types** (`AdminSettingsId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `BillingCustomerId`, `BlobEntityId`, `CalculatedFieldId`, `ConverterId`, `CouponId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityGroupId`, `EntityViewId`, `GroupPermissionId`, `IntegrationId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `ProductId`, `QueueId`, `QueueStatsId`, `ReportId`, `ReportTemplateId`, `RoleId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `SchedulerEventId`, `SecretId`, `SubscriptionAddonId`, `SubscriptionId`, `SubscriptionPlanId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
 
 #### VersionLoadRequestType (enum)
 `SINGLE_ENTITY` | `ENTITY_TYPE`
+
+#### EntityTypeVersionLoadConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| load_relations | bool |  | [optional] |
+| load_attributes | bool |  | [optional] |
+| load_credentials | bool |  | [optional] |
+| load_calculated_fields | bool |  | [optional] |
+| load_permissions | bool |  | [optional] |
+| load_group_entities | bool |  | [optional] |
+| auto_generate_integration_key | bool |  | [optional] |
+| remove_other_entities | bool |  | [optional] |
+| find_existing_entity_by_name | bool |  | [optional] |
+
+#### VersionLoadConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| load_relations | bool |  | [optional] |
+| load_attributes | bool |  | [optional] |
+| load_credentials | bool |  | [optional] |
+| load_calculated_fields | bool |  | [optional] |
+| load_permissions | bool |  | [optional] |
+| load_group_entities | bool |  | [optional] |
+| auto_generate_integration_key | bool |  | [optional] |
+
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
 
 ---
 

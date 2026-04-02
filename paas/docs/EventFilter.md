@@ -14,6 +14,97 @@ Filter for various event types
 
 
 
+## Subtypes
+
+#### CalculatedFieldDebugEventFilter  *(event_type=`DEBUG_CALCULATED_FIELD`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| server | str | String value representing the server name, identifier or ip address where the platform is running | [optional] |
+| is_error | Is_errorEnum | Boolean value to filter the errors | [optional] |
+| error_str | str | The case insensitive 'contains' filter based on error message | [optional] |
+| entity_id | str | String value representing the entity id in the event body | [optional] |
+| entity_type | Entity_typeEnum | String value representing the entity type | [optional] |
+| msg_id | str | String value representing the message id in the rule engine | [optional] |
+| msg_type | str | String value representing the message type | [optional] |
+| arguments | str | String value representing the arguments that were used in the calculation performed | [optional] |
+| result | str | String value representing the result of a calculation | [optional] |
+
+#### DebugConverterEventFilter  *(event_type=`DEBUG_CONVERTER`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| server | str | String value representing the server name, identifier or ip address where the platform is running | [optional] |
+| is_error | Is_errorEnum | Boolean value to filter the errors | [optional] |
+| error_str | str | The case insensitive 'contains' filter based on error message | [optional] |
+| type | str |  | [optional] |
+| var_in | str |  | [optional] |
+| out | str |  | [optional] |
+| metadata | str |  | [optional] |
+
+#### DebugIntegrationEventFilter  *(event_type=`DEBUG_INTEGRATION`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| server | str | String value representing the server name, identifier or ip address where the platform is running | [optional] |
+| is_error | Is_errorEnum | Boolean value to filter the errors | [optional] |
+| error_str | str | The case insensitive 'contains' filter based on error message | [optional] |
+| type | str |  | [optional] |
+| message | str |  | [optional] |
+| status_integration | str |  | [optional] |
+
+#### RuleChainDebugEventFilter  *(event_type=`DEBUG_RULE_CHAIN`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| server | str | String value representing the server name, identifier or ip address where the platform is running | [optional] |
+| is_error | Is_errorEnum | Boolean value to filter the errors | [optional] |
+| error_str | str | The case insensitive 'contains' filter based on error message | [optional] |
+| message | str | String value representing the message | [optional] |
+
+#### RuleNodeDebugEventFilter  *(event_type=`DEBUG_RULE_NODE`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| server | str | String value representing the server name, identifier or ip address where the platform is running | [optional] |
+| is_error | Is_errorEnum | Boolean value to filter the errors | [optional] |
+| error_str | str | The case insensitive 'contains' filter based on error message | [optional] |
+| msg_direction_type | Msg_direction_typeEnum | String value representing msg direction type (incoming to entity or outcoming from entity) | [optional] |
+| entity_id | str | String value representing the entity id in the event body (originator of the message) | [optional] |
+| entity_type | Entity_typeEnum | String value representing the entity type | [optional] |
+| msg_id | str | String value representing the message id in the rule engine | [optional] |
+| msg_type | str | String value representing the message type | [optional] |
+| relation_type | str | String value representing the type of message routing | [optional] |
+| data_search | str | The case insensitive 'contains' filter based on data (key and value) for the message. | [optional] |
+| metadata_search | str | The case insensitive 'contains' filter based on metadata (key and value) for the message. | [optional] |
+
+#### ErrorEventFilter  *(event_type=`ERROR`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| server | str | String value representing the server name, identifier or ip address where the platform is running | [optional] |
+| method | str | String value representing the method name when the error happened | [optional] |
+| error_str | str | The case insensitive 'contains' filter based on error message | [optional] |
+
+#### LifeCycleEventFilter  *(event_type=`LC_EVENT`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| server | str | String value representing the server name, identifier or ip address where the platform is running | [optional] |
+| event | str | String value representing the lifecycle event type | [optional] |
+| status | StatusEnum | String value representing status of the lifecycle event | [optional] |
+| error_str | str | The case insensitive 'contains' filter based on error message | [optional] |
+
+#### RawDataEventFilter  *(event_type=`RAW_DATA`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| server | str | String value representing the server name, identifier or ip address where the platform is running | [optional] |
+| uuid | str | String value representing the uuid | [optional] |
+| message_type | str | String value representing the message type | [optional] |
+| message | str | String value representing the message | [optional] |
+
+#### StatisticsEventFilter  *(event_type=`STATS`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| server | str | String value representing the server name, identifier or ip address where the platform is running | [optional] |
+| min_messages_processed | int | The minimum number of successfully processed messages | [optional] |
+| max_messages_processed | int | The maximum number of successfully processed messages | [optional] |
+| min_errors_occurred | int | The minimum number of errors occurred during messages processing | [optional] |
+| max_errors_occurred | int | The maximum number of errors occurred during messages processing | [optional] |
+
 ## Referenced Types
 
 #### EventType (enum)

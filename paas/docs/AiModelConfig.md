@@ -13,6 +13,211 @@ Root configuration for AI models
 
 
 
+## Subtypes
+
+#### AmazonBedrockChatModelConfig  *(provider=`AMAZON_BEDROCK`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| model_type | AiModelType |  | [optional] [readonly] |
+| provider_config | AmazonBedrockProviderConfig |  |  |
+| model_id | str |  |  |
+| temperature | float |  | [optional] |
+| top_p | float |  | [optional] |
+| max_output_tokens | int |  | [optional] |
+| timeout_seconds | int |  | [optional] |
+| max_retries | int |  | [optional] |
+
+#### AnthropicChatModelConfig  *(provider=`ANTHROPIC`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| model_type | AiModelType |  | [optional] [readonly] |
+| provider_config | AnthropicProviderConfig |  |  |
+| model_id | str |  |  |
+| temperature | float |  | [optional] |
+| top_p | float |  | [optional] |
+| top_k | int |  | [optional] |
+| max_output_tokens | int |  | [optional] |
+| timeout_seconds | int |  | [optional] |
+| max_retries | int |  | [optional] |
+
+#### AzureOpenAiChatModelConfig  *(provider=`AZURE_OPENAI`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| model_type | AiModelType |  | [optional] [readonly] |
+| provider_config | AzureOpenAiProviderConfig |  |  |
+| model_id | str |  |  |
+| temperature | float |  | [optional] |
+| top_p | float |  | [optional] |
+| frequency_penalty | float |  | [optional] |
+| presence_penalty | float |  | [optional] |
+| max_output_tokens | int |  | [optional] |
+| timeout_seconds | int |  | [optional] |
+| max_retries | int |  | [optional] |
+
+#### GitHubModelsChatModelConfig  *(provider=`GITHUB_MODELS`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| model_type | AiModelType |  | [optional] [readonly] |
+| provider_config | GitHubModelsProviderConfig |  |  |
+| model_id | str |  |  |
+| temperature | float |  | [optional] |
+| top_p | float |  | [optional] |
+| frequency_penalty | float |  | [optional] |
+| presence_penalty | float |  | [optional] |
+| max_output_tokens | int |  | [optional] |
+| timeout_seconds | int |  | [optional] |
+| max_retries | int |  | [optional] |
+
+#### GoogleAiGeminiChatModelConfig  *(provider=`GOOGLE_AI_GEMINI`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| model_type | AiModelType |  | [optional] [readonly] |
+| provider_config | GoogleAiGeminiProviderConfig |  |  |
+| model_id | str |  |  |
+| temperature | float |  | [optional] |
+| top_p | float |  | [optional] |
+| top_k | int |  | [optional] |
+| frequency_penalty | float |  | [optional] |
+| presence_penalty | float |  | [optional] |
+| max_output_tokens | int |  | [optional] |
+| timeout_seconds | int |  | [optional] |
+| max_retries | int |  | [optional] |
+
+#### GoogleVertexAiGeminiChatModelConfig  *(provider=`GOOGLE_VERTEX_AI_GEMINI`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| model_type | AiModelType |  | [optional] [readonly] |
+| provider_config | GoogleVertexAiGeminiProviderConfig |  |  |
+| model_id | str |  |  |
+| temperature | float |  | [optional] |
+| top_p | float |  | [optional] |
+| top_k | int |  | [optional] |
+| frequency_penalty | float |  | [optional] |
+| presence_penalty | float |  | [optional] |
+| max_output_tokens | int |  | [optional] |
+| timeout_seconds | int |  | [optional] |
+| max_retries | int |  | [optional] |
+
+#### MistralAiChatModelConfig  *(provider=`MISTRAL_AI`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| model_type | AiModelType |  | [optional] [readonly] |
+| provider_config | MistralAiProviderConfig |  |  |
+| model_id | str |  |  |
+| temperature | float |  | [optional] |
+| top_p | float |  | [optional] |
+| frequency_penalty | float |  | [optional] |
+| presence_penalty | float |  | [optional] |
+| max_output_tokens | int |  | [optional] |
+| timeout_seconds | int |  | [optional] |
+| max_retries | int |  | [optional] |
+
+#### OllamaChatModelConfig  *(provider=`OLLAMA`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| model_type | AiModelType |  | [optional] [readonly] |
+| provider_config | OllamaProviderConfig |  |  |
+| model_id | str |  |  |
+| temperature | float |  | [optional] |
+| top_p | float |  | [optional] |
+| top_k | int |  | [optional] |
+| context_length | int |  | [optional] |
+| max_output_tokens | int |  | [optional] |
+| timeout_seconds | int |  | [optional] |
+| max_retries | int |  | [optional] |
+
+#### OpenAiChatModelConfig  *(provider=`OPENAI`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| model_type | AiModelType |  | [optional] [readonly] |
+| provider_config | OpenAiProviderConfig |  |  |
+| model_id | str |  |  |
+| temperature | float |  | [optional] |
+| top_p | float |  | [optional] |
+| frequency_penalty | float |  | [optional] |
+| presence_penalty | float |  | [optional] |
+| max_output_tokens | int |  | [optional] |
+| timeout_seconds | int |  | [optional] |
+| max_retries | int |  | [optional] |
+
+## Referenced Types
+
+#### AiModelType (enum)
+`CHAT`
+
+#### AmazonBedrockProviderConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| region | str |  |  |
+| access_key_id | str |  |  |
+| secret_access_key | str |  |  |
+
+#### AnthropicProviderConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| api_key | str |  |  |
+
+#### AzureOpenAiProviderConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| endpoint | str |  |  |
+| service_version | str |  | [optional] |
+| api_key | str |  |  |
+
+#### GitHubModelsProviderConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| personal_access_token | str |  |  |
+
+#### GoogleAiGeminiProviderConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| api_key | str |  |  |
+
+#### GoogleVertexAiGeminiProviderConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| file_name | str |  | [optional] |
+| project_id | str |  |  |
+| location | str |  |  |
+| service_account_key | str |  |  |
+
+#### MistralAiProviderConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| api_key | str |  |  |
+
+#### OllamaProviderConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| base_url | str |  |  |
+| auth | OllamaAuth |  |  |
+
+#### OpenAiProviderConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| base_url | str |  | [optional] |
+| api_key | str |  | [optional] |
+
+#### OllamaAuth
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | str |  |  |
+
+#### Basic  *(extends OllamaAuth, type=`BASIC`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| username | str |  |  |
+| password | str |  |  |
+
+#### ModelNone  *(extends OllamaAuth, type=`NONE`)*
+*See OllamaAuth for properties.*
+
+#### Token  *(extends OllamaAuth, type=`TOKEN`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| token | str |  |  |
+
 ---
 
 ### Conventions

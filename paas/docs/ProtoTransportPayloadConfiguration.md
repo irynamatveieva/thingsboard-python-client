@@ -25,6 +25,9 @@
 |------|------|-------------|-------|
 | transport_payload_type | str |  |  |
 
+#### JsonTransportPayloadConfiguration  *(extends TransportPayloadTypeConfiguration, transport_payload_type=`JSON`)*
+*See TransportPayloadTypeConfiguration for properties.*
+
 ---
 
 ### Conventions

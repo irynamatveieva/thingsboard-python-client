@@ -20,6 +20,11 @@
 |------|------|-------------|-------|
 | status | str | Indicates whether the request was successful or not |  |
 
+#### Failure  *(extends TbChatResponse, status=`FAILURE`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| error_details | str | A string containing details about the failure | [optional] |
+
 ---
 
 ### Conventions

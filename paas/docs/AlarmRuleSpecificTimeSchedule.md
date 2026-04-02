@@ -23,6 +23,23 @@
 |------|------|-------------|-------|
 | type | str |  |  |
 
+#### AlarmRuleAnyTimeSchedule  *(extends AlarmRuleSchedule, type=`ANY_TIME`)*
+*See AlarmRuleSchedule for properties.*
+
+#### AlarmRuleCustomTimeSchedule  *(extends AlarmRuleSchedule, type=`CUSTOM`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| items | List[AlarmRuleCustomTimeScheduleItem] |  | [optional] |
+| timezone | str |  | [optional] |
+
+#### AlarmRuleCustomTimeScheduleItem
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| day_of_week | int |  | [optional] |
+| enabled | bool |  | [optional] |
+| ends_on | int |  | [optional] |
+| starts_on | int |  | [optional] |
+
 ---
 
 ### Conventions
