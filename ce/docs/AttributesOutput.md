@@ -24,11 +24,6 @@
 | strategy | object |  | [optional] |
 | type | str |  |  |
 
-#### TimeSeriesOutput  *(extends Output, type=`TIME_SERIES`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| strategy | TimeSeriesOutputStrategy |  | [optional] |
-
 #### AttributesOutputStrategy
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
@@ -48,23 +43,6 @@
 
 #### AttributeScope (enum)
 `CLIENT_SCOPE` | `SERVER_SCOPE` | `SHARED_SCOPE`
-
-#### TimeSeriesOutputStrategy
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| type | str |  |  |
-
-#### TimeSeriesImmediateOutputStrategy  *(extends TimeSeriesOutputStrategy, type=`IMMEDIATE`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| ttl | int |  | [optional] |
-| save_time_series | bool |  | [optional] |
-| save_latest | bool |  | [optional] |
-| send_ws_update | bool |  | [optional] |
-| process_cfs | bool |  | [optional] |
-
-#### TimeSeriesRuleChainOutputStrategy  *(extends TimeSeriesOutputStrategy, type=`RULE_CHAIN`)*
-*See TimeSeriesOutputStrategy for properties.*
 
 ---
 

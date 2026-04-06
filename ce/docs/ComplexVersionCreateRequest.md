@@ -16,20 +16,12 @@
 
 ## Referenced Types
 
-> **EntityId types** (`AdminSettingsId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `CalculatedFieldId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityViewId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `QueueId`, `QueueStatsId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
-
 #### VersionCreateRequest
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | version_name | str |  | [optional] |
 | branch | str |  | [optional] |
 | type | VersionCreateRequestType | Type of the version to create |  |
-
-#### SingleEntityVersionCreateRequest  *(extends VersionCreateRequest, type=`SINGLE_ENTITY`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| entity_id | EntityId |  | [optional] |
-| config | VersionCreateConfig |  | [optional] |
 
 #### SyncStrategy (enum)
 `MERGE` | `OVERWRITE`
@@ -47,17 +39,6 @@
 
 #### VersionCreateRequestType (enum)
 `SINGLE_ENTITY` | `COMPLEX`
-
-#### VersionCreateConfig
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| save_relations | bool |  | [optional] |
-| save_attributes | bool |  | [optional] |
-| save_credentials | bool |  | [optional] |
-| save_calculated_fields | bool |  | [optional] |
-
-#### EntityType (enum)
-`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `RULE_CHAIN` | `RULE_NODE` | `ENTITY_VIEW` | … (36 values total)
 
 ---
 

@@ -19,20 +19,6 @@
 |------|------|-------------|-------|
 | type | str |  |  |
 
-#### RelationPathQueryDynamicSourceConfiguration  *(extends CfArgumentDynamicSourceConfiguration, type=`RELATION_PATH_QUERY`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| levels | List[RelationPathLevel] |  | [optional] |
-
-#### RelationPathLevel
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| direction | EntitySearchDirection |  |  |
-| relation_type | str |  |  |
-
-#### EntitySearchDirection (enum)
-`FROM` | `TO`
-
 ---
 
 ### Conventions

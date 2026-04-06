@@ -20,11 +20,6 @@
 |------|------|-------------|-------|
 | type | str |  |  |
 
-#### AggKeyInput  *(extends AggInput, type=`key`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| key | str |  | [optional] |
-
 ---
 
 ### Conventions

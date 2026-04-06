@@ -25,12 +25,6 @@
 | branch | str |  | [optional] |
 | type | VersionCreateRequestType | Type of the version to create |  |
 
-#### ComplexVersionCreateRequest  *(extends VersionCreateRequest, type=`COMPLEX`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| sync_strategy | SyncStrategy |  | [optional] |
-| entity_types | Dict[str, EntityTypeVersionCreateConfig] |  | [optional] |
-
 #### VersionCreateConfig
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
@@ -44,20 +38,6 @@
 
 #### EntityType (enum)
 `TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `RULE_CHAIN` | `RULE_NODE` | `ENTITY_VIEW` | … (36 values total)
-
-#### SyncStrategy (enum)
-`MERGE` | `OVERWRITE`
-
-#### EntityTypeVersionCreateConfig
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| save_relations | bool |  | [optional] |
-| save_attributes | bool |  | [optional] |
-| save_credentials | bool |  | [optional] |
-| save_calculated_fields | bool |  | [optional] |
-| sync_strategy | SyncStrategy |  | [optional] |
-| entity_ids | List[UUID] |  | [optional] |
-| all_entities | bool |  | [optional] |
 
 ---
 

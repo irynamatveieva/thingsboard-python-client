@@ -21,24 +21,6 @@
 | description | str |  | [optional] |
 | type | str |  |  |
 
-#### MicrosoftTeamsNotificationTargetConfig  *(extends NotificationTargetConfig, type=`MICROSOFT_TEAMS`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| webhook_url | str |  |  |
-| channel_name | str |  |  |
-| use_old_api | bool |  | [optional] |
-| email | str |  | [optional] |
-| first_name | str |  | [optional] |
-| id | object |  | [optional] |
-| last_name | str |  | [optional] |
-| title | str |  | [optional] |
-
-#### SlackNotificationTargetConfig  *(extends NotificationTargetConfig, type=`SLACK`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| conversation_type | SlackConversationType |  | [optional] |
-| conversation | SlackConversation |  |  |
-
 #### UsersFilter
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
@@ -74,19 +56,6 @@
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | users_ids | List[UUID] |  |  |
-
-#### SlackConversationType (enum)
-`DIRECT` | `PUBLIC_CHANNEL` | `PRIVATE_CHANNEL`
-
-#### SlackConversation
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| type | SlackConversationType |  |  |
-| id | str |  |  |
-| name | str |  |  |
-| whole_name | str |  | [optional] |
-| email | str |  | [optional] |
-| title | str |  | [optional] |
 
 ---
 

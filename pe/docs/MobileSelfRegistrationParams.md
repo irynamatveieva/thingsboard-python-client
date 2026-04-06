@@ -37,13 +37,6 @@
 | customer_group_id | EntityGroupId |  | [optional] |
 | custom_menu_id | CustomMenuId |  | [optional] |
 
-#### WebSelfRegistrationParams  *(extends SelfRegistrationParams, type=`WEB`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| domain_id | DomainId | Domain name for self registration URL. Typically this matches the domain name from the Login White Labeling page. |  |
-| privacy_policy | str | Privacy policy text. Supports HTML. | [optional] |
-| terms_of_use | str | Terms of User text. Supports HTML. | [optional] |
-
 #### MobileRedirectParams
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|

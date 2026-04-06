@@ -14,8 +14,6 @@
 
 ## Referenced Types
 
-> **EntityId types** (`AdminSettingsId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `BlobEntityId`, `CalculatedFieldId`, `ConverterId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityGroupId`, `EntityViewId`, `GroupPermissionId`, `IntegrationId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `QueueId`, `QueueStatsId`, `ReportId`, `ReportTemplateId`, `RoleId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `SchedulerEventId`, `SecretId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
-
 #### JobResult
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
@@ -30,14 +28,6 @@
 | cancellation_ts | int | Timestamp of the job cancellation, in milliseconds | [optional] |
 | job_type | str |  |  |
 
-#### CfReprocessingJobResult  *(extends JobResult, job_type=`CF_REPROCESSING`)*
-*See JobResult for properties.*
-
-#### ReportJobResult  *(extends JobResult, job_type=`REPORT`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| report | Report |  | [optional] |
-
 #### TaskResult
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
@@ -46,25 +36,6 @@
 | discarded | bool |  | [optional] |
 | finish_ts | int |  | [optional] |
 | job_type | str |  |  |
-
-#### Report
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| id | ReportId |  | [optional] |
-| created_time | int | Entity creation timestamp in milliseconds since Unix epoch | [optional] [readonly] |
-| tenant_id | TenantId |  |  |
-| customer_id | CustomerId |  | [optional] |
-| template_id | ReportTemplateId |  |  |
-| format | TbReportFormat |  |  |
-| name | str |  |  |
-| user_id | UserId |  |  |
-| owner_id | EntityId | JSON object with Customer or Tenant Id | [optional] [readonly] |
-
-#### TbReportFormat (enum)
-`PDF` | `CSV`
-
-#### EntityType (enum)
-`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (46 values total)
 
 ---
 

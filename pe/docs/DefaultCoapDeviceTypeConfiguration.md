@@ -20,9 +20,6 @@
 |------|------|-------------|-------|
 | coap_device_type | str |  |  |
 
-#### EfentoCoapDeviceTypeConfiguration  *(extends CoapDeviceTypeConfiguration, coap_device_type=`EFENTO`)*
-*See CoapDeviceTypeConfiguration for properties.*
-
 #### TransportPayloadTypeConfiguration
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|

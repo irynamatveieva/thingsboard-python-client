@@ -20,11 +20,6 @@
 |------|------|-------------|-------|
 | type | str |  |  |
 
-#### AggFunctionInput  *(extends AggInput, type=`function`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| function | str |  | [optional] |
-
 ---
 
 ### Conventions

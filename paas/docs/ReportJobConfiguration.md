@@ -34,27 +34,6 @@
 | to_reprocess | List[TaskResult] |  | [optional] |
 | type | str |  |  |
 
-#### CfReprocessingJobConfiguration  *(extends JobConfiguration, type=`CF_REPROCESSING`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| calculated_field_id | CalculatedFieldId |  |  |
-| calculated_field_name | str |  | [optional] |
-| start_ts | int |  | [optional] |
-| end_ts | int |  | [optional] |
-
-#### DummyJobConfiguration  *(extends JobConfiguration, type=`DUMMY`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| task_processing_time_ms | int |  | [optional] |
-| successful_tasks_count | int |  | [optional] |
-| failed_tasks_count | int |  | [optional] |
-| permanently_failed_tasks_count | int |  | [optional] |
-| errors | List[str] |  | [optional] |
-| retries | int |  | [optional] |
-| task_processing_timeout_ms | int |  | [optional] |
-| general_error | str |  | [optional] |
-| submitted_tasks_before_general_error | int |  | [optional] |
-
 #### NotificationRequest
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|

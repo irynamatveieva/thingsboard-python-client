@@ -21,11 +21,6 @@
 |------|------|-------------|-------|
 | type | str |  |  |
 
-#### TbelAlarmConditionExpression  *(extends AlarmConditionExpression, type=`TBEL`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| expression | str |  |  |
-
 #### AlarmRuleConditionFilter
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|

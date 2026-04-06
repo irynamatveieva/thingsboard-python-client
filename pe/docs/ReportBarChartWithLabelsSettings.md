@@ -57,19 +57,6 @@
 | xaxis | TimeSeriesChartXAxisSettings |  | [optional] |
 | yaxes | Dict[str, TimeSeriesChartYAxisSettings] |  | [optional] |
 
-#### ReportRangeChartSettings  *(extends ReportTimeSeriesChartSettings, sub_type=`rangeChart`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| range_colors | List[ColorRange] |  | [optional] |
-| out_of_range_color | str |  | [optional] |
-| show_range_thresholds | bool |  | [optional] |
-| range_threshold | TimeSeriesChartThreshold |  | [optional] |
-| fill_area | bool |  | [optional] |
-| fill_area_opacity | float |  | [optional] |
-| line_settings | LineSeriesSettings |  | [optional] |
-| range_units | str |  | [optional] |
-| range_decimals | int |  | [optional] |
-
 #### Font
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
@@ -251,39 +238,6 @@
 
 #### LegendPosition (enum)
 `TOP` | `BOTTOM` | `LEFT` | `RIGHT`
-
-#### ColorRange
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| var_from | float |  | [optional] |
-| to | float |  | [optional] |
-| color | str |  | [optional] |
-
-#### LineSeriesSettings
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| show_line | bool |  | [optional] |
-| step | bool |  | [optional] |
-| step_type | LineSeriesStepType |  | [optional] |
-| smooth | bool |  | [optional] |
-| line_type | ChartLineType |  | [optional] |
-| line_width | float |  | [optional] |
-| show_points | bool |  | [optional] |
-| show_point_label | bool |  | [optional] |
-| point_label_position | ChartLabelPosition |  | [optional] |
-| point_label_font | Font |  | [optional] |
-| point_label_color | str |  | [optional] |
-| enable_point_label_background | bool |  | [optional] |
-| point_label_background | str |  | [optional] |
-| point_shape | ChartShape |  | [optional] |
-| point_size | float |  | [optional] |
-| fill_area_settings | ChartFillSettings |  | [optional] |
-
-#### LineSeriesStepType (enum)
-`START` | `MIDDLE` | `END`
-
-#### ChartLabelPosition (enum)
-`TOP` | `BOTTOM`
 
 ---
 

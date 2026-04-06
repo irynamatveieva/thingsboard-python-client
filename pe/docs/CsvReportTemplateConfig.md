@@ -26,16 +26,6 @@
 | filters | List[Filter] |  | [optional] |
 | components | List[ReportComponent] |  | [optional] |
 
-#### PdfReportTemplateConfig  *(extends ReportTemplateConfig, format=`PDF`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| footer | HeaderFooter |  | [optional] |
-| header | HeaderFooter |  | [optional] |
-| page_background | str |  | [optional] |
-| page_margins | Insets |  | [optional] |
-| page_orientation | PageOrientation |  | [optional] |
-| page_size | PageSize |  | [optional] |
-
 #### TbReportFormat (enum)
 `PDF` | `CSV`
 
@@ -431,27 +421,6 @@
 #### ReportComponentType (enum)
 `HEADING` | `RICH_TEXT` | `ENTITY_TABLE` | `TIME_SERIES_TABLE` | `ALARM_TABLE` | `TIME_SERIES_CHART` | `LATEST_CHART` | `DASHBOARD` | `IMAGE` | `SUB_REPORT` | … (14 values total)
 
-#### HeaderFooter
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| enabled | bool |  | [optional] |
-| components | List[ReportComponent] |  |  |
-| first_page | object |  | [optional] |
-
-#### Insets
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| left | int |  | [optional] |
-| right | int |  | [optional] |
-| top | int |  | [optional] |
-| bottom | int |  | [optional] |
-
-#### PageOrientation (enum)
-`PORTRAIT` | `LANDSCAPE`
-
-#### PageSize (enum)
-`A4` | `LETTER` | `LEGAL` | `A5` | `A3` | `TABLOID`
-
 #### EntityKey
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
@@ -501,6 +470,14 @@
 | data_keys | List[DataKey] |  | [optional] |
 | latest_data_keys | List[DataKey] |  | [optional] |
 | alarm_filter_config | AlarmFilterConfig |  | [optional] |
+
+#### Insets
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| left | int |  | [optional] |
+| right | int |  | [optional] |
+| top | int |  | [optional] |
+| bottom | int |  | [optional] |
 
 #### Font
 | Name | Type | Description | Notes |

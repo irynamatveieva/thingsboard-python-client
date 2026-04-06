@@ -24,9 +24,6 @@
 |------|------|-------------|-------|
 | type | str |  |  |
 
-#### TimeSeriesRuleChainOutputStrategy  *(extends TimeSeriesOutputStrategy, type=`RULE_CHAIN`)*
-*See TimeSeriesOutputStrategy for properties.*
-
 ---
 
 ### Conventions

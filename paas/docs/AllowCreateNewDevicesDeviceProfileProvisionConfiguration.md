@@ -20,18 +20,6 @@
 | provision_device_secret | str | Provision device secret | [optional] |
 | type | str |  |  |
 
-#### CheckPreProvisionedDevicesDeviceProfileProvisionConfiguration  *(extends DeviceProfileProvisionConfiguration, type=`CHECK_PRE_PROVISIONED_DEVICES`)*
-*See DeviceProfileProvisionConfiguration for properties.*
-
-#### DisabledDeviceProfileProvisionConfiguration  *(extends DeviceProfileProvisionConfiguration, type=`DISABLED`)*
-*See DeviceProfileProvisionConfiguration for properties.*
-
-#### X509CertificateChainProvisionConfiguration  *(extends DeviceProfileProvisionConfiguration, type=`X509_CERTIFICATE_CHAIN`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| certificate_reg_ex_pattern | str |  | [optional] |
-| allow_create_new_devices_by_x509_certificate | bool |  | [optional] |
-
 ---
 
 ### Conventions

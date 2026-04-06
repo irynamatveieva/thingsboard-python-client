@@ -23,32 +23,8 @@
 | type | MobilePageType |  |  |
 | visible | bool |  | [optional] |
 
-#### CustomMobilePage  *(extends MobilePage, type=`CUSTOM`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| label | str | Page label | [optional] |
-| icon | str | URL of the page icon | [optional] |
-| path | str | Path to custom page | [optional] |
-
-#### DefaultMobilePage  *(extends MobilePage, type=`DEFAULT`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| label | str | Page label | [optional] |
-| icon | str | URL of the page icon | [optional] |
-| id | DefaultPageId | Identifier for default page | [optional] |
-
-#### WebViewPage  *(extends MobilePage, type=`WEB_VIEW`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| label | str | Page label | [optional] |
-| icon | str | URL of the page icon | [optional] |
-| url | str | Url | [optional] |
-
 #### MobilePageType (enum)
 `DEFAULT` | `DASHBOARD` | `WEB_VIEW` | `CUSTOM`
-
-#### DefaultPageId (enum)
-`HOME` | `ALARMS` | `DEVICES` | `CUSTOMERS` | `ASSETS` | `AUDIT_LOGS` | `NOTIFICATIONS` | `DEVICE_LIST` | `DASHBOARDS`
 
 ---
 

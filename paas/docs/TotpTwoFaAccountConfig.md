@@ -21,22 +21,6 @@
 | use_by_default | bool |  | [optional] |
 | provider_type | str |  |  |
 
-#### BackupCodeTwoFaAccountConfig  *(extends TwoFaAccountConfig, provider_type=`BACKUP_CODE`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| codes | List[str] |  |  |
-| codes_left | int |  | [optional] |
-
-#### EmailTwoFaAccountConfig  *(extends TwoFaAccountConfig, provider_type=`EMAIL`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| email | str |  |  |
-
-#### SmsTwoFaAccountConfig  *(extends TwoFaAccountConfig, provider_type=`SMS`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| phone_number | str |  |  |
-
 ---
 
 ### Conventions

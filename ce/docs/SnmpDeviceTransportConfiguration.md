@@ -31,28 +31,6 @@
 |------|------|-------------|-------|
 | type | str |  |  |
 
-#### CoapDeviceTransportConfiguration  *(extends DeviceTransportConfiguration, type=`COAP`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| power_mode | PowerMode |  | [optional] |
-| psm_activity_timer | int |  | [optional] |
-| edrx_cycle | int |  | [optional] |
-| paging_transmission_window | int |  | [optional] |
-
-#### DefaultDeviceTransportConfiguration  *(extends DeviceTransportConfiguration, type=`DEFAULT`)*
-*See DeviceTransportConfiguration for properties.*
-
-#### Lwm2mDeviceTransportConfiguration  *(extends DeviceTransportConfiguration, type=`LWM2M`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| power_mode | PowerMode |  | [optional] |
-| psm_activity_timer | int |  | [optional] |
-| edrx_cycle | int |  | [optional] |
-| paging_transmission_window | int |  | [optional] |
-
-#### MqttDeviceTransportConfiguration  *(extends DeviceTransportConfiguration, type=`MQTT`)*
-*See DeviceTransportConfiguration for properties.*
-
 #### SnmpProtocolVersion (enum)
 `V1` | `V2C` | `V3`
 
@@ -61,9 +39,6 @@
 
 #### PrivacyProtocol (enum)
 `DES` | `AES_128` | `AES_192` | `AES_256`
-
-#### PowerMode (enum)
-`PSM` | `DRX` | `E_DRX`
 
 ---
 

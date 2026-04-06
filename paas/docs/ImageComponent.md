@@ -34,177 +34,6 @@
 | sub_type | ReportComponentSubType |  |  |
 | type | ReportComponentType |  |  |
 
-#### AlarmTableComponent  *(extends ReportComponent, type=`ALARM_TABLE`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| margins | Insets |  | [optional] |
-| paddings | Insets |  | [optional] |
-| background | str |  | [optional] |
-| border_width | int |  | [optional] |
-| border_radius | int |  | [optional] |
-| border_color | str |  | [optional] |
-| show_table_heading | bool |  | [optional] |
-| table_heading | Heading |  | [optional] |
-| table_sort_order | TableSortOrder |  | [optional] |
-| alarm_source | DataSource |  | [optional] |
-| timewindow | TimeWindowConfiguration |  | [optional] |
-
-#### DashboardComponent  *(extends ReportComponent, type=`DASHBOARD`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| data_sources | List[DataSource] |  | [optional] |
-| margins | Insets |  | [optional] |
-| paddings | Insets |  | [optional] |
-| background | str |  | [optional] |
-| border_width | int |  | [optional] |
-| border_radius | int |  | [optional] |
-| border_color | str |  | [optional] |
-| width_type | ImageWidthType |  | [optional] |
-| custom_width | int |  | [optional] |
-| alignment | ImageAlignment |  | [optional] |
-| config | DashboardReportConfig | Dashboard report configuration. |  |
-
-#### DividerComponent  *(extends ReportComponent, type=`DIVIDER`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| margins | Insets |  | [optional] |
-| paddings | Insets |  | [optional] |
-| background | str |  | [optional] |
-| border_width | int |  | [optional] |
-| border_radius | int |  | [optional] |
-| border_color | str |  | [optional] |
-| length | BorderLength |  | [optional] |
-| border_type | BorderType |  | [optional] |
-| width_px | int |  | [optional] |
-| color | str |  | [optional] |
-
-#### EntityTableComponent  *(extends ReportComponent, type=`ENTITY_TABLE`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| data_sources | List[DataSource] |  | [optional] |
-| margins | Insets |  | [optional] |
-| paddings | Insets |  | [optional] |
-| background | str |  | [optional] |
-| border_width | int |  | [optional] |
-| border_radius | int |  | [optional] |
-| border_color | str |  | [optional] |
-| show_table_heading | bool |  | [optional] |
-| table_heading | Heading |  | [optional] |
-| table_sort_order | TableSortOrder |  | [optional] |
-
-#### ErrorComponent  *(extends ReportComponent, type=`ERROR`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| error_message | str |  | [optional] |
-| exception | ErrorComponentAllOfException |  | [optional] |
-
-#### HeadingComponent  *(extends ReportComponent, type=`HEADING`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| data_sources | List[DataSource] |  | [optional] |
-| margins | Insets |  | [optional] |
-| paddings | Insets |  | [optional] |
-| background | str |  | [optional] |
-| border_width | int |  | [optional] |
-| border_radius | int |  | [optional] |
-| border_color | str |  | [optional] |
-| value | str |  | [optional] |
-| font | Font |  | [optional] |
-| color | str |  | [optional] |
-| text_alignment | TextAlignment |  | [optional] |
-| vertical_alignment | VerticalAlignment |  | [optional] |
-| height | int |  | [optional] |
-
-#### LatestChartComponent  *(extends ReportComponent, type=`LATEST_CHART`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| data_sources | List[DataSource] |  | [optional] |
-| margins | Insets |  | [optional] |
-| paddings | Insets |  | [optional] |
-| background | str |  | [optional] |
-| border_width | int |  | [optional] |
-| border_radius | int |  | [optional] |
-| border_color | str |  | [optional] |
-| width_type | ImageWidthType |  | [optional] |
-| custom_width | int |  | [optional] |
-| alignment | ImageAlignment |  | [optional] |
-| height | int |  | [optional] |
-| latest_chart_settings | ReportLatestChartSettings |  | [optional] |
-
-#### PageBreakComponent  *(extends ReportComponent, type=`PAGE_BREAK`)*
-*See ReportComponent for properties.*
-
-#### RichTextComponent  *(extends ReportComponent, type=`RICH_TEXT`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| data_sources | List[DataSource] |  | [optional] |
-| margins | Insets |  | [optional] |
-| paddings | Insets |  | [optional] |
-| background | str |  | [optional] |
-| border_width | int |  | [optional] |
-| border_radius | int |  | [optional] |
-| border_color | str |  | [optional] |
-| value | str |  | [optional] |
-
-#### SplitViewComponent  *(extends ReportComponent, type=`SPLIT_VIEW`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| margins | Insets |  | [optional] |
-| paddings | Insets |  | [optional] |
-| background | str |  | [optional] |
-| border_width | int |  | [optional] |
-| border_radius | int |  | [optional] |
-| border_color | str |  | [optional] |
-| left_view | ReportComponent |  | [optional] |
-| right_view | ReportComponent |  | [optional] |
-| split_position | float |  | [optional] |
-| split_gap | int |  | [optional] |
-| left_vertical_alignment | VerticalAlignment |  | [optional] |
-| right_vertical_alignment | VerticalAlignment |  | [optional] |
-
-#### SubReportComponent  *(extends ReportComponent, type=`SUB_REPORT`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| data_sources | List[DataSource] |  | [optional] |
-| template_id | ReportTemplateId |  | [optional] |
-| avoid_page_break_inside | bool |  | [optional] |
-
-#### TimeseriesChartComponent  *(extends ReportComponent, type=`TIME_SERIES_CHART`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| data_sources | List[DataSource] |  | [optional] |
-| margins | Insets |  | [optional] |
-| paddings | Insets |  | [optional] |
-| background | str |  | [optional] |
-| border_width | int |  | [optional] |
-| border_radius | int |  | [optional] |
-| border_color | str |  | [optional] |
-| width_type | ImageWidthType |  | [optional] |
-| custom_width | int |  | [optional] |
-| alignment | ImageAlignment |  | [optional] |
-| height | int |  | [optional] |
-| timewindow | TimeWindowConfiguration |  | [optional] |
-| time_series_chart_settings | ReportTimeSeriesChartSettings |  | [optional] |
-
-#### TimeseriesTableComponent  *(extends ReportComponent, type=`TIME_SERIES_TABLE`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| data_sources | List[DataSource] |  | [optional] |
-| margins | Insets |  | [optional] |
-| paddings | Insets |  | [optional] |
-| background | str |  | [optional] |
-| border_width | int |  | [optional] |
-| border_radius | int |  | [optional] |
-| border_color | str |  | [optional] |
-| show_table_heading | bool |  | [optional] |
-| table_heading | Heading |  | [optional] |
-| table_sort_order | TableSortOrder |  | [optional] |
-| timewindow | TimeWindowConfiguration |  | [optional] |
-| show_timestamp | bool |  | [optional] |
-| timestamp_label | str |  | [optional] |
-| timestamp_pattern | str |  | [optional] |
-| timestamp_column_settings | ColumnSettings |  | [optional] |
-
 #### DataSource
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
@@ -266,35 +95,8 @@
 | assignee_id | UserId |  | [optional] |
 | search_propagated_alarms | bool |  | [optional] |
 
-#### Font
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| size | float |  | [optional] |
-| weight | FontWeight |  | [optional] |
-| style | FontStyle |  | [optional] |
-| family | str |  | [optional] |
-
-#### TextAlignment (enum)
-`CENTER` | `RIGHT` | `LEFT` | `JUSTIFY`
-
-#### VerticalAlignment (enum)
-`BOTTOM` | `TOP` | `MIDDLE`
-
-#### Heading
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| text | str |  | [optional] |
-| font | Font |  | [optional] |
-| color | str |  | [optional] |
-| text_alignment | TextAlignment |  | [optional] |
-| vertical_alignment | VerticalAlignment |  | [optional] |
-| height | int |  | [optional] |
-
-#### TableSortOrder
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| column | str |  | [optional] |
-| direction | Direction |  | [optional] |
+#### Aggregation (enum)
+`MIN` | `MAX` | `AVG` | `SUM` | `COUNT` | `NONE`
 
 #### TimeWindowConfiguration
 | Name | Type | Description | Notes |
@@ -302,148 +104,6 @@
 | history | History |  | [optional] |
 | aggregation | AggregationConfiguration |  | [optional] |
 | timezone | str |  | [optional] |
-
-#### ReportTimeSeriesChartSettings
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| show_title | bool |  | [optional] |
-| title | str |  | [optional] |
-| title_font | Font |  | [optional] |
-| title_color | str |  | [optional] |
-| title_alignment | TextAlignment |  | [optional] |
-| thresholds | List[TimeSeriesChartThreshold] |  | [optional] |
-| stack | bool |  | [optional] |
-| grid | TimeSeriesChartGridSettings |  | [optional] |
-| y_axes | Dict[str, TimeSeriesChartYAxisSettings] |  | [optional] |
-| x_axis | TimeSeriesChartXAxisSettings |  | [optional] |
-| bar_width_settings | TimeSeriesChartBarWidthSettings |  | [optional] |
-| no_aggregation_bar_width_settings | TimeSeriesChartNoAggregationBarWidthSettings |  | [optional] |
-| states | List[TimeSeriesChartStateSettings] |  | [optional] |
-| comparison_enabled | bool |  | [optional] |
-| time_for_comparison | ComparisonDuration |  | [optional] |
-| comparison_custom_interval_value | int |  | [optional] |
-| comparison_x_axis | TimeSeriesChartXAxisSettings |  | [optional] |
-| show_legend | bool |  | [optional] |
-| legend_column_title_font | Font |  | [optional] |
-| legend_column_title_color | str |  | [optional] |
-| legend_label_font | Font |  | [optional] |
-| legend_label_color | str |  | [optional] |
-| legend_value_font | Font |  | [optional] |
-| legend_value_color | str |  | [optional] |
-| legend_config | LegendConfig |  | [optional] |
-| xaxis | TimeSeriesChartXAxisSettings |  | [optional] |
-| yaxes | Dict[str, TimeSeriesChartYAxisSettings] |  | [optional] |
-
-#### ReportBarChartWithLabelsSettings  *(extends ReportTimeSeriesChartSettings, sub_type=`barChartWithLabels`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| show_bar_label | bool |  | [optional] |
-| bar_label_font | Font |  | [optional] |
-| bar_label_color | str |  | [optional] |
-| show_bar_value | bool |  | [optional] |
-| bar_value_font | Font |  | [optional] |
-| bar_value_color | str |  | [optional] |
-| show_bar_border | bool |  | [optional] |
-| bar_border_width | float |  | [optional] |
-| bar_border_radius | float |  | [optional] |
-| bar_background_settings | ChartFillSettings |  | [optional] |
-| bar_units | str |  | [optional] |
-| bar_decimals | int |  | [optional] |
-
-#### ReportRangeChartSettings  *(extends ReportTimeSeriesChartSettings, sub_type=`rangeChart`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| range_colors | List[ColorRange] |  | [optional] |
-| out_of_range_color | str |  | [optional] |
-| show_range_thresholds | bool |  | [optional] |
-| range_threshold | TimeSeriesChartThreshold |  | [optional] |
-| fill_area | bool |  | [optional] |
-| fill_area_opacity | float |  | [optional] |
-| line_settings | LineSeriesSettings |  | [optional] |
-| range_units | str |  | [optional] |
-| range_decimals | int |  | [optional] |
-
-#### ReportLatestChartSettings
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| show_title | bool |  | [optional] |
-| title | str |  | [optional] |
-| title_font | Font |  | [optional] |
-| title_color | str |  | [optional] |
-| title_alignment | TextAlignment |  | [optional] |
-| units | str |  | [optional] |
-| decimals | int |  | [optional] |
-| auto_scale | bool |  | [optional] |
-| sort_series | bool |  | [optional] |
-| show_total | bool |  | [optional] |
-| show_legend | bool |  | [optional] |
-| legend_position | LegendPosition |  | [optional] |
-| legend_label_font | Font |  | [optional] |
-| legend_label_color | str |  | [optional] |
-| legend_value_font | Font |  | [optional] |
-| legend_value_color | str |  | [optional] |
-| legend_show_total | bool |  | [optional] |
-
-#### ReportDoughnutChartSettings  *(extends ReportLatestChartSettings, sub_type=`horizontalDoughnutChart`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| layout | DoughnutLayout |  | [optional] |
-| clockwise | bool |  | [optional] |
-| total_value_font | Font |  | [optional] |
-| total_value_color | str |  | [optional] |
-
-#### ReportBarChartSettings  *(extends ReportLatestChartSettings, sub_type=`latestBarChart`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| axis_min | float |  | [optional] |
-| axis_max | float |  | [optional] |
-| axis_tick_label_font | Font |  | [optional] |
-| axis_tick_label_color | str |  | [optional] |
-| bar_settings | BarSeriesSettings |  | [optional] |
-
-#### ReportPieChartSettings  *(extends ReportLatestChartSettings, sub_type=`pieChart`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| show_label | bool |  | [optional] |
-| label_position | PieChartLabelPosition |  | [optional] |
-| label_font | Font |  | [optional] |
-| label_color | str |  | [optional] |
-| border_width | float |  | [optional] |
-| border_color | str |  | [optional] |
-| radius | float |  | [optional] |
-| clockwise | bool |  | [optional] |
-
-#### DashboardReportConfig
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| base_url | str | Base URL of ThingsBoard UI that should be accessible by Web Report Server. |  |
-| dashboard_id | str | A string value representing the dashboard id. |  |
-| state | str | Target dashboard state for dashboard report generation. | [optional] |
-| timezone | str | Timezone in which target dashboard will be presented in dashboard report. |  |
-| use_dashboard_timewindow | bool | If set, timewindow configured in the target dashboard will be used during dashboard report generation. | [optional] |
-| timewindow | object | Specific dashboard timewindow that will be used during dashboard report generation. | [optional] |
-| name_pattern | str | If set, timewindow configured in the target dashboard will be used during dashboard report generation. |  |
-| type | str | Dashboard report file type, can be PDF | PNG |
-| use_current_user_credentials | bool | If set, credentials of user created this dashboard report configuration will be used to open dashboard UI during dashboard report generation. | [optional] |
-| user_id | str | A string value representing the user id. |  |
-
-#### ErrorComponentAllOfException
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| cause | ErrorComponentAllOfExceptionCause |  | [optional] |
-| stack_trace | List[ErrorComponentAllOfExceptionCauseStackTrace] |  | [optional] |
-| message | str |  | [optional] |
-| suppressed | List[ErrorComponentAllOfExceptionCause] |  | [optional] |
-| localized_message | str |  | [optional] |
-
-#### BorderLength (enum)
-`LONG` | `SHORT`
-
-#### BorderType (enum)
-`SOLID` | `DASHED` | `DOTTED`
-
-#### Aggregation (enum)
-`MIN` | `MAX` | `AVG` | `SUM` | `COUNT` | `NONE`
 
 #### DataKeySettings
 | Name | Type | Description | Notes |
@@ -478,15 +138,6 @@
 #### AlarmSeverity (enum)
 `CRITICAL` | `MAJOR` | `MINOR` | `WARNING` | `INDETERMINATE`
 
-#### FontWeight (enum)
-`NORMAL` | `BOLD` | `ENUM_500`
-
-#### FontStyle (enum)
-`NORMAL` | `ITALIC`
-
-#### Direction (enum)
-`ASC` | `DESC`
-
 #### History
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
@@ -502,157 +153,8 @@
 | type | Aggregation |  | [optional] |
 | limit | int |  | [optional] |
 
-#### CellSettings
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| font | Font |  | [optional] |
-| color | str |  | [optional] |
-| background_color | str |  | [optional] |
-| text_alignment | TextAlignment |  | [optional] |
-| vertical_alignment | VerticalAlignment |  | [optional] |
-
 #### DataKeySettingsType (enum)
 `COLUMN` | `TIME_SERIES_CHART` | `DEFAULT`
-
-#### TimeSeriesChartThreshold
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| type | ValueSourceType |  | [optional] |
-| value | float |  | [optional] |
-| latest_key_type | str |  | [optional] |
-| latest_key | str |  | [optional] |
-| entity_key_type | str |  | [optional] |
-| entity_alias | str |  | [optional] |
-| entity_key | str |  | [optional] |
-| y_axis_id | str |  | [optional] |
-| units | str |  | [optional] |
-| decimals | int |  | [optional] |
-| line_color | str |  | [optional] |
-| line_type | ChartLineType |  | [optional] |
-| line_width | float |  | [optional] |
-| start_symbol | ChartShape |  | [optional] |
-| start_symbol_size | float |  | [optional] |
-| end_symbol | ChartShape |  | [optional] |
-| end_symbol_size | float |  | [optional] |
-| show_label | bool |  | [optional] |
-| label_position | ThresholdLabelPosition |  | [optional] |
-| label_font | Font |  | [optional] |
-| label_color | str |  | [optional] |
-| enable_label_background | bool |  | [optional] |
-| label_background | str |  | [optional] |
-| yaxis_id | str |  | [optional] |
-
-#### TimeSeriesChartGridSettings
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| show | bool |  | [optional] |
-| background_color | str |  | [optional] |
-| border_width | float |  | [optional] |
-| border_color | str |  | [optional] |
-
-#### TimeSeriesChartYAxisSettings
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| show | bool |  | [optional] |
-| label | str |  | [optional] |
-| label_font | Font |  | [optional] |
-| label_color | str |  | [optional] |
-| position | AxisPosition |  | [optional] |
-| show_tick_labels | bool |  | [optional] |
-| tick_label_font | Font |  | [optional] |
-| tick_label_color | str |  | [optional] |
-| show_ticks | bool |  | [optional] |
-| ticks_color | str |  | [optional] |
-| show_line | bool |  | [optional] |
-| line_color | str |  | [optional] |
-| show_split_lines | bool |  | [optional] |
-| split_lines_color | str |  | [optional] |
-| id | str |  | [optional] |
-| order | int |  | [optional] |
-| units | str |  | [optional] |
-| decimals | int |  | [optional] |
-| interval | float |  | [optional] |
-| split_number | int |  | [optional] |
-| min | float |  | [optional] |
-| max | float |  | [optional] |
-
-#### TimeSeriesChartXAxisSettings
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| show | bool |  | [optional] |
-| label | str |  | [optional] |
-| label_font | Font |  | [optional] |
-| label_color | str |  | [optional] |
-| position | AxisPosition |  | [optional] |
-| show_tick_labels | bool |  | [optional] |
-| tick_label_font | Font |  | [optional] |
-| tick_label_color | str |  | [optional] |
-| show_ticks | bool |  | [optional] |
-| ticks_color | str |  | [optional] |
-| show_line | bool |  | [optional] |
-| line_color | str |  | [optional] |
-| show_split_lines | bool |  | [optional] |
-| split_lines_color | str |  | [optional] |
-| ticks_format | Dict[str, str] |  | [optional] |
-
-#### TimeSeriesChartBarWidthSettings
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| bar_gap | float |  | [optional] |
-| interval_gap | float |  | [optional] |
-
-#### TimeSeriesChartNoAggregationBarWidthSettings
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| strategy | TimeSeriesChartNoAggregationBarWidthStrategy |  | [optional] |
-| group_width | TimeSeriesChartBarWidth |  | [optional] |
-| bar_width | TimeSeriesChartBarWidth |  | [optional] |
-
-#### TimeSeriesChartStateSettings
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| label | str |  | [optional] |
-| value | float |  | [optional] |
-| source_type | TimeSeriesChartStateSourceType |  | [optional] |
-| source_value | object |  | [optional] |
-| source_range_from | float |  | [optional] |
-| source_range_to | float |  | [optional] |
-
-#### ComparisonDuration (enum)
-`PREVIOUSINTERVAL` | `DAYS` | `WEEKS` | `MONTHS` | `YEARS` | `CUSTOMINTERVAL`
-
-#### LegendConfig
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| position | LegendPosition |  | [optional] |
-| sort_data_keys | bool |  | [optional] |
-| show_min | bool |  | [optional] |
-| show_max | bool |  | [optional] |
-| show_avg | bool |  | [optional] |
-| show_total | bool |  | [optional] |
-| show_latest | bool |  | [optional] |
-
-#### LegendPosition (enum)
-`TOP` | `BOTTOM` | `LEFT` | `RIGHT`
-
-#### ErrorComponentAllOfExceptionCause
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| stack_trace | List[ErrorComponentAllOfExceptionCauseStackTrace] |  | [optional] |
-| message | str |  | [optional] |
-| localized_message | str |  | [optional] |
-
-#### ErrorComponentAllOfExceptionCauseStackTrace
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| class_loader_name | str |  | [optional] |
-| module_name | str |  | [optional] |
-| module_version | str |  | [optional] |
-| method_name | str |  | [optional] |
-| file_name | str |  | [optional] |
-| line_number | int |  | [optional] |
-| class_name | str |  | [optional] |
-| native_method | bool |  | [optional] |
 
 #### Interval
 | Name | Type | Description | Notes |
@@ -669,47 +171,17 @@
 #### QuickTimeInterval (enum)
 `YESTERDAY` | `DAY_BEFORE_YESTERDAY` | `THIS_DAY_LAST_WEEK` | `PREVIOUS_WEEK` | `PREVIOUS_WEEK_ISO` | `PREVIOUS_MONTH` | `PREVIOUS_QUARTER` | `PREVIOUS_HALF_YEAR` | `PREVIOUS_YEAR` | `CURRENT_HOUR` | … (24 values total)
 
-#### ValueSourceType (enum)
-`CONSTANT` | `LATESTKEY` | `ENTITY`
-
-#### ChartLineType (enum)
-`SOLID` | `DASHED` | `DOTTED`
-
-#### ChartShape (enum)
-`EMPTYCIRCLE` | `CIRCLE` | `RECT` | `ROUNDRECT` | `TRIANGLE` | `DIAMOND` | `PIN` | `ARROW` | `NONE`
-
-#### ThresholdLabelPosition (enum)
-`START` | `MIDDLE` | `END` | `INSIDESTART` | `INSIDESTARTTOP` | `INSIDESTARTBOTTOM` | `INSIDEMIDDLE` | `INSIDEMIDDLETOP` | `INSIDEMIDDLEBOTTOM` | `INSIDEEND` | … (12 values total)
-
-#### AxisPosition (enum)
-`LEFT` | `RIGHT` | `TOP` | `BOTTOM`
-
-#### TimeSeriesChartNoAggregationBarWidthStrategy (enum)
-`GROUP` | `SEPARATE`
-
-#### TimeSeriesChartBarWidth
+#### CellSettings
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| relative | bool |  | [optional] |
-| relative_width | float |  | [optional] |
-| absolute_width | float |  | [optional] |
-
-#### TimeSeriesChartStateSourceType (enum)
-`CONSTANT` | `RANGE`
-
-#### ChartFillSettings
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| type | ChartFillType |  | [optional] |
-| opacity | float |  | [optional] |
-| gradient | ChartFillSettingsGradient |  | [optional] |
-
-#### ColorRange
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| var_from | float |  | [optional] |
-| to | float |  | [optional] |
+| font | Font |  | [optional] |
 | color | str |  | [optional] |
+| background_color | str |  | [optional] |
+| text_alignment | TextAlignment |  | [optional] |
+| vertical_alignment | VerticalAlignment |  | [optional] |
+
+#### TimeSeriesChartSeriesType (enum)
+`LINE` | `BAR`
 
 #### LineSeriesSettings
 | Name | Type | Description | Notes |
@@ -746,18 +218,6 @@
 | label_background | str |  | [optional] |
 | background_settings | ChartFillSettings |  | [optional] |
 
-#### PieChartLabelPosition (enum)
-`INSIDE` | `OUTSIDE`
-
-#### DoughnutLayout (enum)
-`DEFAULT` | `WITH_TOTAL`
-
-#### EntityType (enum)
-`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
-
-#### TimeSeriesChartSeriesType (enum)
-`LINE` | `BAR`
-
 #### DataKeyComparisonSettings
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
@@ -765,8 +225,50 @@
 | comparison_values_label | str |  | [optional] |
 | color | str |  | [optional] |
 
+#### EntityType (enum)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+
 #### IntervalType (enum)
 `MILLISECONDS` | `WEEK` | `WEEK_ISO` | `MONTH` | `QUARTER`
+
+#### Font
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| size | float |  | [optional] |
+| weight | FontWeight |  | [optional] |
+| style | FontStyle |  | [optional] |
+| family | str |  | [optional] |
+
+#### TextAlignment (enum)
+`CENTER` | `RIGHT` | `LEFT` | `JUSTIFY`
+
+#### VerticalAlignment (enum)
+`BOTTOM` | `TOP` | `MIDDLE`
+
+#### LineSeriesStepType (enum)
+`START` | `MIDDLE` | `END`
+
+#### ChartLineType (enum)
+`SOLID` | `DASHED` | `DOTTED`
+
+#### ChartLabelPosition (enum)
+`TOP` | `BOTTOM`
+
+#### ChartShape (enum)
+`EMPTYCIRCLE` | `CIRCLE` | `RECT` | `ROUNDRECT` | `TRIANGLE` | `DIAMOND` | `PIN` | `ARROW` | `NONE`
+
+#### ChartFillSettings
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | ChartFillType |  | [optional] |
+| opacity | float |  | [optional] |
+| gradient | ChartFillSettingsGradient |  | [optional] |
+
+#### FontWeight (enum)
+`NORMAL` | `BOLD` | `ENUM_500`
+
+#### FontStyle (enum)
+`NORMAL` | `ITALIC`
 
 #### ChartFillType (enum)
 `NONE` | `OPACITY` | `GRADIENT`
@@ -776,12 +278,6 @@
 |------|------|-------------|-------|
 | start | float |  | [optional] |
 | end | float |  | [optional] |
-
-#### LineSeriesStepType (enum)
-`START` | `MIDDLE` | `END`
-
-#### ChartLabelPosition (enum)
-`TOP` | `BOTTOM`
 
 ---
 

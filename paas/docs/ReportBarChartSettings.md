@@ -40,26 +40,6 @@
 | legend_value_color | str |  | [optional] |
 | legend_show_total | bool |  | [optional] |
 
-#### ReportDoughnutChartSettings  *(extends ReportLatestChartSettings, sub_type=`horizontalDoughnutChart`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| layout | DoughnutLayout |  | [optional] |
-| clockwise | bool |  | [optional] |
-| total_value_font | Font |  | [optional] |
-| total_value_color | str |  | [optional] |
-
-#### ReportPieChartSettings  *(extends ReportLatestChartSettings, sub_type=`pieChart`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| show_label | bool |  | [optional] |
-| label_position | PieChartLabelPosition |  | [optional] |
-| label_font | Font |  | [optional] |
-| label_color | str |  | [optional] |
-| border_width | float |  | [optional] |
-| border_color | str |  | [optional] |
-| radius | float |  | [optional] |
-| clockwise | bool |  | [optional] |
-
 #### Font
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
@@ -104,12 +84,6 @@
 | type | ChartFillType |  | [optional] |
 | opacity | float |  | [optional] |
 | gradient | ChartFillSettingsGradient |  | [optional] |
-
-#### PieChartLabelPosition (enum)
-`INSIDE` | `OUTSIDE`
-
-#### DoughnutLayout (enum)
-`DEFAULT` | `WITH_TOTAL`
 
 #### ChartFillType (enum)
 `NONE` | `OPACITY` | `GRADIENT`

@@ -24,29 +24,6 @@
 | body | str |  |  |
 | method | str |  |  |
 
-#### EmailDeliveryMethodNotificationTemplate  *(extends DeliveryMethodNotificationTemplate, method=`EMAIL`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| subject | str |  |  |
-
-#### MobileAppDeliveryMethodNotificationTemplate  *(extends DeliveryMethodNotificationTemplate, method=`MOBILE_APP`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| subject | str | Subject line for the mobile notification |  |
-| additional_config | object | Additional JSON configuration for web buttons/actions | [optional] |
-
-#### SlackDeliveryMethodNotificationTemplate  *(extends DeliveryMethodNotificationTemplate, method=`SLACK`)*
-*See DeliveryMethodNotificationTemplate for properties.*
-
-#### SmsDeliveryMethodNotificationTemplate  *(extends DeliveryMethodNotificationTemplate, method=`SMS`)*
-*See DeliveryMethodNotificationTemplate for properties.*
-
-#### WebDeliveryMethodNotificationTemplate  *(extends DeliveryMethodNotificationTemplate, method=`WEB`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| subject | str | Subject line for the web notification |  |
-| additional_config | object | Additional JSON configuration for web buttons/actions | [optional] |
-
 #### Button
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|

@@ -22,15 +22,6 @@
 | schedule | AlarmConditionValueAlarmRuleSchedule |  | [optional] |
 | type | str |  |  |
 
-#### AlarmRuleDurationCondition  *(extends AlarmRuleCondition, type=`DURATION`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| unit | TimeUnit |  |  |
-| value | AlarmConditionValueLong |  |  |
-
-#### AlarmRuleSimpleCondition  *(extends AlarmRuleCondition, type=`SIMPLE`)*
-*See AlarmRuleCondition for properties.*
-
 #### AlarmConditionValueInteger
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
@@ -80,15 +71,6 @@
 | ends_on | int |  | [optional] |
 | starts_on | int |  | [optional] |
 | timezone | str |  | [optional] |
-
-#### TimeUnit (enum)
-`NANOSECONDS` | `MICROSECONDS` | `MILLISECONDS` | `SECONDS` | `MINUTES` | `HOURS` | `DAYS`
-
-#### AlarmConditionValueLong
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| static_value | int |  | [optional] |
-| dynamic_value_argument | str |  | [optional] |
 
 #### AlarmRuleConditionFilter
 | Name | Type | Description | Notes |
@@ -174,6 +156,15 @@
 |------|------|-------------|-------|
 | static_value | bool |  | [optional] |
 | dynamic_value_argument | str |  | [optional] |
+
+#### AlarmConditionValueLong
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| static_value | int |  | [optional] |
+| dynamic_value_argument | str |  | [optional] |
+
+#### TimeUnit (enum)
+`NANOSECONDS` | `MICROSECONDS` | `MILLISECONDS` | `SECONDS` | `MINUTES` | `HOURS` | `DAYS`
 
 ---
 
