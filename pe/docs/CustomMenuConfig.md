@@ -3,8 +3,6 @@
 
 `tb_pe_client.models.CustomMenuConfig`
 
-A JSON value representing the custom menu configuration
-
 ## Properties
 
 | Name | Type | Description | Notes |

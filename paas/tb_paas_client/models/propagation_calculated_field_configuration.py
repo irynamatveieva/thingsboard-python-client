@@ -38,7 +38,7 @@ class PropagationCalculatedFieldConfiguration(CalculatedFieldConfiguration):
     arguments: Dict[str, Argument]
     expression: Optional[StrictStr] = None
     relation: RelationPathLevel
-    __properties: ClassVar[List[str]] = ["type", "output", "aiGenerated", "applyExpressionToResolvedArguments", "arguments", "expression", "relation"]
+    __properties: ClassVar[List[str]] = ["type", "output", "applyExpressionToResolvedArguments", "arguments", "expression", "relation"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -111,7 +111,6 @@ class PropagationCalculatedFieldConfiguration(CalculatedFieldConfiguration):
         _obj = cls.model_validate({
             "type": obj.get("type"),
             "output": Output.from_dict(obj["output"]) if obj.get("output") is not None else None,
-            "ai_generated": obj.get("aiGenerated"),
             "apply_expression_to_resolved_arguments": obj.get("applyExpressionToResolvedArguments"),
             "arguments": dict(
                 (_k, Argument.from_dict(_v))

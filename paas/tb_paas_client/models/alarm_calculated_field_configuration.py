@@ -42,7 +42,7 @@ class AlarmCalculatedFieldConfiguration(CalculatedFieldConfiguration):
     propagate_to_owner: Optional[StrictBool] = Field(default=None, serialization_alias="propagateToOwner")
     propagate_to_owner_hierarchy: Optional[StrictBool] = Field(default=None, serialization_alias="propagateToOwnerHierarchy")
     propagate_to_tenant: Optional[StrictBool] = Field(default=None, serialization_alias="propagateToTenant")
-    __properties: ClassVar[List[str]] = ["type", "output", "aiGenerated", "arguments", "clearRule", "createRules", "propagate", "propagateRelationTypes", "propagateToOwner", "propagateToOwnerHierarchy", "propagateToTenant"]
+    __properties: ClassVar[List[str]] = ["type", "output", "arguments", "clearRule", "createRules", "propagate", "propagateRelationTypes", "propagateToOwner", "propagateToOwnerHierarchy", "propagateToTenant"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -122,7 +122,6 @@ class AlarmCalculatedFieldConfiguration(CalculatedFieldConfiguration):
         _obj = cls.model_validate({
             "type": obj.get("type"),
             "output": Output.from_dict(obj["output"]) if obj.get("output") is not None else None,
-            "ai_generated": obj.get("aiGenerated"),
             "arguments": dict(
                 (_k, Argument.from_dict(_v))
                 for _k, _v in obj["arguments"].items()

@@ -21,6 +21,7 @@ __all__ = [
     "AiModelControllerApi",
     "AlarmCommentControllerApi",
     "AlarmControllerApi",
+    "AlarmRuleControllerApi",
     "ApiKeyControllerApi",
     "AssetControllerApi",
     "AssetProfileControllerApi",
@@ -81,6 +82,7 @@ if TYPE_CHECKING:
     from tb_ce_client.api.ai_model_controller_api import AiModelControllerApi
     from tb_ce_client.api.alarm_comment_controller_api import AlarmCommentControllerApi
     from tb_ce_client.api.alarm_controller_api import AlarmControllerApi
+    from tb_ce_client.api.alarm_rule_controller_api import AlarmRuleControllerApi
     from tb_ce_client.api.api_key_controller_api import ApiKeyControllerApi
     from tb_ce_client.api.asset_controller_api import AssetControllerApi
     from tb_ce_client.api.asset_profile_controller_api import AssetProfileControllerApi
@@ -140,6 +142,7 @@ _API_CLASSES = {
     "AiModelControllerApi": "tb_ce_client.api.ai_model_controller_api",
     "AlarmCommentControllerApi": "tb_ce_client.api.alarm_comment_controller_api",
     "AlarmControllerApi": "tb_ce_client.api.alarm_controller_api",
+    "AlarmRuleControllerApi": "tb_ce_client.api.alarm_rule_controller_api",
     "ApiKeyControllerApi": "tb_ce_client.api.api_key_controller_api",
     "AssetControllerApi": "tb_ce_client.api.asset_controller_api",
     "AssetProfileControllerApi": "tb_ce_client.api.asset_profile_controller_api",

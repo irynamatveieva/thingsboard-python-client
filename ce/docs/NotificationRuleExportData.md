@@ -28,8 +28,10 @@
 #### ExportableEntity
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
+| created_time | int |  | [optional] |
 | id | EntityId |  | [optional] |
 | name | str |  | [optional] |
+| tenant_id | TenantId |  | [optional] |
 
 #### EntityRelation
 | Name | Type | Description | Notes |

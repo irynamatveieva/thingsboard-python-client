@@ -22,7 +22,7 @@ import re  # noqa: F401
 import json
 
 from importlib import import_module
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from tb_paas_client.models.output import Output
 from typing import Optional, Set
@@ -44,8 +44,7 @@ class CalculatedFieldConfiguration(BaseModel):
     """ # noqa: E501
     type: StrictStr
     output: Optional[Output] = None
-    ai_generated: Optional[StrictBool] = Field(default=None, serialization_alias="aiGenerated")
-    __properties: ClassVar[List[str]] = ["type", "output", "aiGenerated"]
+    __properties: ClassVar[List[str]] = ["type", "output"]
 
     model_config = ConfigDict(
         populate_by_name=True,

@@ -39,6 +39,7 @@ if TYPE_CHECKING:
     from tb_paas_client.api.admin_controller_api import AdminControllerApi
     from tb_paas_client.api.ai_chat_controller_api import AiChatControllerApi
     from tb_paas_client.api.ai_model_controller_api import AiModelControllerApi
+    from tb_paas_client.api.ai_solution_controller_api import AiSolutionControllerApi
     from tb_paas_client.api.ai_tool_controller_api import AiToolControllerApi
     from tb_paas_client.api.alarm_comment_controller_api import AlarmCommentControllerApi
     from tb_paas_client.api.alarm_controller_api import AlarmControllerApi
@@ -302,6 +303,7 @@ if TYPE_CHECKING:
     from tb_paas_client.models.chart_label_position import ChartLabelPosition
     from tb_paas_client.models.chart_line_type import ChartLineType
     from tb_paas_client.models.chart_shape import ChartShape
+    from tb_paas_client.models.chat_type import ChatType
     from tb_paas_client.models.check_pre_provisioned_devices_device_profile_provision_configuration import CheckPreProvisionedDevicesDeviceProfileProvisionConfiguration
     from tb_paas_client.models.checksum_algorithm import ChecksumAlgorithm
     from tb_paas_client.models.claim_request import ClaimRequest
@@ -863,6 +865,7 @@ if TYPE_CHECKING:
     from tb_paas_client.models.rule_chain_id import RuleChainId
     from tb_paas_client.models.rule_chain_import_result import RuleChainImportResult
     from tb_paas_client.models.rule_chain_meta_data import RuleChainMetaData
+    from tb_paas_client.models.rule_chain_note import RuleChainNote
     from tb_paas_client.models.rule_chain_output_labels_usage import RuleChainOutputLabelsUsage
     from tb_paas_client.models.rule_chain_type import RuleChainType
     from tb_paas_client.models.rule_engine_component_lifecycle_event_notification_rule_trigger_config import RuleEngineComponentLifecycleEventNotificationRuleTriggerConfig
@@ -922,6 +925,7 @@ if TYPE_CHECKING:
     from tb_paas_client.models.snmp_mapping import SnmpMapping
     from tb_paas_client.models.snmp_protocol_version import SnmpProtocolVersion
     from tb_paas_client.models.solution_install_response import SolutionInstallResponse
+    from tb_paas_client.models.solution_step import SolutionStep
     from tb_paas_client.models.solution_template_level import SolutionTemplateLevel
     from tb_paas_client.models.specific_time_schedule import SpecificTimeSchedule
     from tb_paas_client.models.split_view_component import SplitViewComponent
@@ -1093,6 +1097,7 @@ _LAZY_CLASSES = {
     "AdminControllerApi": "tb_paas_client.api.admin_controller_api",
     "AiChatControllerApi": "tb_paas_client.api.ai_chat_controller_api",
     "AiModelControllerApi": "tb_paas_client.api.ai_model_controller_api",
+    "AiSolutionControllerApi": "tb_paas_client.api.ai_solution_controller_api",
     "AiToolControllerApi": "tb_paas_client.api.ai_tool_controller_api",
     "AlarmCommentControllerApi": "tb_paas_client.api.alarm_comment_controller_api",
     "AlarmControllerApi": "tb_paas_client.api.alarm_controller_api",
@@ -1356,6 +1361,7 @@ _LAZY_CLASSES = {
     "ChartLabelPosition": "tb_paas_client.models.chart_label_position",
     "ChartLineType": "tb_paas_client.models.chart_line_type",
     "ChartShape": "tb_paas_client.models.chart_shape",
+    "ChatType": "tb_paas_client.models.chat_type",
     "CheckPreProvisionedDevicesDeviceProfileProvisionConfiguration": "tb_paas_client.models.check_pre_provisioned_devices_device_profile_provision_configuration",
     "ChecksumAlgorithm": "tb_paas_client.models.checksum_algorithm",
     "ClaimRequest": "tb_paas_client.models.claim_request",
@@ -1917,6 +1923,7 @@ _LAZY_CLASSES = {
     "RuleChainId": "tb_paas_client.models.rule_chain_id",
     "RuleChainImportResult": "tb_paas_client.models.rule_chain_import_result",
     "RuleChainMetaData": "tb_paas_client.models.rule_chain_meta_data",
+    "RuleChainNote": "tb_paas_client.models.rule_chain_note",
     "RuleChainOutputLabelsUsage": "tb_paas_client.models.rule_chain_output_labels_usage",
     "RuleChainType": "tb_paas_client.models.rule_chain_type",
     "RuleEngineComponentLifecycleEventNotificationRuleTriggerConfig": "tb_paas_client.models.rule_engine_component_lifecycle_event_notification_rule_trigger_config",
@@ -1976,6 +1983,7 @@ _LAZY_CLASSES = {
     "SnmpMapping": "tb_paas_client.models.snmp_mapping",
     "SnmpProtocolVersion": "tb_paas_client.models.snmp_protocol_version",
     "SolutionInstallResponse": "tb_paas_client.models.solution_install_response",
+    "SolutionStep": "tb_paas_client.models.solution_step",
     "SolutionTemplateLevel": "tb_paas_client.models.solution_template_level",
     "SpecificTimeSchedule": "tb_paas_client.models.specific_time_schedule",
     "SplitViewComponent": "tb_paas_client.models.split_view_component",

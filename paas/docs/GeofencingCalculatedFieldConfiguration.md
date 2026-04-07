@@ -25,7 +25,6 @@
 |------|------|-------------|-------|
 | type | str |  |  |
 | output | Output |  | [optional] |
-| ai_generated | bool |  | [optional] |
 
 #### EntityCoordinates
 | Name | Type | Description | Notes |

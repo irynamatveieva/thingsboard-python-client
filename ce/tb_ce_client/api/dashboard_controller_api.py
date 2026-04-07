@@ -36,6 +36,7 @@ from typing import List, Optional
 from typing_extensions import Annotated
 from tb_ce_client.models.dashboard import Dashboard
 from tb_ce_client.models.dashboard_info import DashboardInfo
+from tb_ce_client.models.home_dashboard import HomeDashboard
 from tb_ce_client.models.home_dashboard_info import HomeDashboardInfo
 from tb_ce_client.models.page_data_dashboard_info import PageDataDashboardInfo
 
@@ -1898,7 +1899,7 @@ class DashboardControllerApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> None:
+    ) -> Dashboard:
         """Get Dashboard (getDashboardById)
 
         Get the dashboard based on 'dashboardId' parameter. The Dashboard object is a heavyweight object that contains information about the dashboard (e.g. title, image, assigned customers) and also configuration JSON (e.g. layouts, widgets, entity aliases).  Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
@@ -1942,7 +1943,7 @@ class DashboardControllerApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': None,
+            '200': "Dashboard",
             '400': "ThingsboardErrorResponse",
             '401': "ThingsboardErrorResponse",
             '403': "ThingsboardErrorResponse",
@@ -1978,7 +1979,7 @@ class DashboardControllerApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[None]:
+    ) -> ApiResponse[Dashboard]:
         """Get Dashboard (getDashboardById)
 
         Get the dashboard based on 'dashboardId' parameter. The Dashboard object is a heavyweight object that contains information about the dashboard (e.g. title, image, assigned customers) and also configuration JSON (e.g. layouts, widgets, entity aliases).  Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
@@ -2022,7 +2023,7 @@ class DashboardControllerApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': None,
+            '200': "Dashboard",
             '400': "ThingsboardErrorResponse",
             '401': "ThingsboardErrorResponse",
             '403': "ThingsboardErrorResponse",
@@ -2102,7 +2103,7 @@ class DashboardControllerApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': None,
+            '200': "Dashboard",
             '400': "ThingsboardErrorResponse",
             '401': "ThingsboardErrorResponse",
             '403': "ThingsboardErrorResponse",
@@ -3124,7 +3125,7 @@ class DashboardControllerApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> None:
+    ) -> HomeDashboard:
         """Get Home Dashboard (getHomeDashboard)
 
         Returns the home dashboard object that is configured as 'homeDashboardId' parameter in the 'additionalInfo' of the User. If 'homeDashboardId' parameter is not set on the User level and the User has authority 'CUSTOMER_USER', check the same parameter for the corresponding Customer. If 'homeDashboardId' parameter is not set on the User and Customer levels then checks the same parameter for the Tenant that owns the user. The Dashboard object is a heavyweight object that contains information about the dashboard (e.g. title, image, assigned customers) and also configuration JSON (e.g. layouts, widgets, entity aliases).  Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
@@ -3162,7 +3163,7 @@ class DashboardControllerApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': None,
+            '200': "HomeDashboard",
             '400': "ThingsboardErrorResponse",
             '401': "ThingsboardErrorResponse",
             '403': "ThingsboardErrorResponse",
@@ -3196,7 +3197,7 @@ class DashboardControllerApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[None]:
+    ) -> ApiResponse[HomeDashboard]:
         """Get Home Dashboard (getHomeDashboard)
 
         Returns the home dashboard object that is configured as 'homeDashboardId' parameter in the 'additionalInfo' of the User. If 'homeDashboardId' parameter is not set on the User level and the User has authority 'CUSTOMER_USER', check the same parameter for the corresponding Customer. If 'homeDashboardId' parameter is not set on the User and Customer levels then checks the same parameter for the Tenant that owns the user. The Dashboard object is a heavyweight object that contains information about the dashboard (e.g. title, image, assigned customers) and also configuration JSON (e.g. layouts, widgets, entity aliases).  Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
@@ -3234,7 +3235,7 @@ class DashboardControllerApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': None,
+            '200': "HomeDashboard",
             '400': "ThingsboardErrorResponse",
             '401': "ThingsboardErrorResponse",
             '403': "ThingsboardErrorResponse",
@@ -3306,7 +3307,7 @@ class DashboardControllerApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': None,
+            '200': "HomeDashboard",
             '400': "ThingsboardErrorResponse",
             '401': "ThingsboardErrorResponse",
             '403': "ThingsboardErrorResponse",

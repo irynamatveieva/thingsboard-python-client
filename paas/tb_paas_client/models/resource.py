@@ -83,7 +83,7 @@ class Resource(str, Enum):
     REPORT_TEMPLATE = 'REPORT_TEMPLATE'
     REPORT = 'REPORT'
     AI_MODEL = 'AI_MODEL'
-    AI_SOLUTION_CREATOR = 'AI_SOLUTION_CREATOR'
+    AI = 'AI'
     API_KEY = 'API_KEY'
 
     @classmethod

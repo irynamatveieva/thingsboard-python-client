@@ -41,7 +41,7 @@ class EntityAggregationCalculatedFieldConfiguration(CalculatedFieldConfiguration
     metrics: Dict[str, AggMetric]
     produce_intermediate_result: Optional[StrictBool] = Field(default=None, serialization_alias="produceIntermediateResult")
     watermark: Optional[Watermark] = None
-    __properties: ClassVar[List[str]] = ["type", "output", "aiGenerated", "arguments", "interval", "metrics", "produceIntermediateResult", "watermark"]
+    __properties: ClassVar[List[str]] = ["type", "output", "arguments", "interval", "metrics", "produceIntermediateResult", "watermark"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -124,7 +124,6 @@ class EntityAggregationCalculatedFieldConfiguration(CalculatedFieldConfiguration
         _obj = cls.model_validate({
             "type": obj.get("type"),
             "output": Output.from_dict(obj["output"]) if obj.get("output") is not None else None,
-            "ai_generated": obj.get("aiGenerated"),
             "arguments": dict(
                 (_k, Argument.from_dict(_v))
                 for _k, _v in obj["arguments"].items()
