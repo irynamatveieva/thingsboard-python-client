@@ -21,6 +21,7 @@ __all__ = [
     "AiModelControllerApi",
     "AlarmCommentControllerApi",
     "AlarmControllerApi",
+    "AlarmRuleControllerApi",
     "ApiKeyControllerApi",
     "AssetControllerApi",
     "AssetProfileControllerApi",
@@ -81,6 +82,7 @@ __all__ = [
     "SelfRegistrationControllerApi",
     "SignUpControllerApi",
     "SolutionControllerApi",
+    "SolutionExportImportControllerApi",
     "TbResourceControllerApi",
     "TelemetryControllerApi",
     "TenantControllerApi",
@@ -104,6 +106,7 @@ if TYPE_CHECKING:
     from tb_pe_client.api.ai_model_controller_api import AiModelControllerApi
     from tb_pe_client.api.alarm_comment_controller_api import AlarmCommentControllerApi
     from tb_pe_client.api.alarm_controller_api import AlarmControllerApi
+    from tb_pe_client.api.alarm_rule_controller_api import AlarmRuleControllerApi
     from tb_pe_client.api.api_key_controller_api import ApiKeyControllerApi
     from tb_pe_client.api.asset_controller_api import AssetControllerApi
     from tb_pe_client.api.asset_profile_controller_api import AssetProfileControllerApi
@@ -164,6 +167,7 @@ if TYPE_CHECKING:
     from tb_pe_client.api.self_registration_controller_api import SelfRegistrationControllerApi
     from tb_pe_client.api.sign_up_controller_api import SignUpControllerApi
     from tb_pe_client.api.solution_controller_api import SolutionControllerApi
+    from tb_pe_client.api.solution_export_import_controller_api import SolutionExportImportControllerApi
     from tb_pe_client.api.tb_resource_controller_api import TbResourceControllerApi
     from tb_pe_client.api.telemetry_controller_api import TelemetryControllerApi
     from tb_pe_client.api.tenant_controller_api import TenantControllerApi
@@ -186,6 +190,7 @@ _API_CLASSES = {
     "AiModelControllerApi": "tb_pe_client.api.ai_model_controller_api",
     "AlarmCommentControllerApi": "tb_pe_client.api.alarm_comment_controller_api",
     "AlarmControllerApi": "tb_pe_client.api.alarm_controller_api",
+    "AlarmRuleControllerApi": "tb_pe_client.api.alarm_rule_controller_api",
     "ApiKeyControllerApi": "tb_pe_client.api.api_key_controller_api",
     "AssetControllerApi": "tb_pe_client.api.asset_controller_api",
     "AssetProfileControllerApi": "tb_pe_client.api.asset_profile_controller_api",
@@ -246,6 +251,7 @@ _API_CLASSES = {
     "SelfRegistrationControllerApi": "tb_pe_client.api.self_registration_controller_api",
     "SignUpControllerApi": "tb_pe_client.api.sign_up_controller_api",
     "SolutionControllerApi": "tb_pe_client.api.solution_controller_api",
+    "SolutionExportImportControllerApi": "tb_pe_client.api.solution_export_import_controller_api",
     "TbResourceControllerApi": "tb_pe_client.api.tb_resource_controller_api",
     "TelemetryControllerApi": "tb_pe_client.api.telemetry_controller_api",
     "TenantControllerApi": "tb_pe_client.api.tenant_controller_api",

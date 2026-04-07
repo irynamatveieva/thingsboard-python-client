@@ -31,7 +31,7 @@
 |------|------|-------------|-------|
 | customer_id | CustomerId | JSON object with the customer Id. | [optional] |
 | title | str | Title of the customer. | [optional] |
-| is_public | bool | Indicates special 'Public' customer used to embed dashboards on public websites. | [optional] |
+| public | bool | Indicates special 'Public' customer used to embed dashboards on public websites. | [optional] |
 
 #### ResourceExportData
 | Name | Type | Description | Notes |

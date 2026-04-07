@@ -9,7 +9,6 @@
 |------------ | ------------- | ------------- | -------------|
 | **type** | **str** |  | |
 | **output** | [**Output**](Output.md) |  | [optional] |
-| **ai_generated** | **bool** |  | [optional] |
 
 
 

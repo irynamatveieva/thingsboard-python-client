@@ -28,7 +28,6 @@
 |------|------|-------------|-------|
 | type | str |  |  |
 | output | Output |  | [optional] |
-| ai_generated | bool |  | [optional] |
 
 #### Argument
 | Name | Type | Description | Notes |

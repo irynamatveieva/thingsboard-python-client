@@ -9,11 +9,11 @@ Dashboard client.assign_dashboard_to_edge(edge_id: str, dashboard_id: str)  # As
 Dashboard client.assign_dashboard_to_public_customer(dashboard_id: str)  # Assign the Dashboard to Public Customer (assignDashboardToPublicCustomer)
 None client.delete_dashboard(dashboard_id: str)  # Delete the Dashboard (deleteDashboard)
 PageDataDashboardInfo client.get_customer_dashboards(customer_id: str, page_size: int, page: int, mobile: Optional[bool] = None, text_search: Optional[str] = None, sort_property: Optional[str] = None, sort_order: Optional[str] = None)  # Get Customer Dashboards (getCustomerDashboards)
-None client.get_dashboard_by_id(dashboard_id: str, include_resources: Optional[bool] = None, accept_encoding: Optional[str] = None)  # Get Dashboard (getDashboardById)
+Dashboard client.get_dashboard_by_id(dashboard_id: str, include_resources: Optional[bool] = None, accept_encoding: Optional[str] = None)  # Get Dashboard (getDashboardById)
 DashboardInfo client.get_dashboard_info_by_id(dashboard_id: str)  # Get Dashboard Info (getDashboardInfoById)
 List[DashboardInfo] client.get_dashboards_by_ids(dashboard_ids: List[str])  # Get dashboards by Dashboard Ids (getDashboardsByIds)
 PageDataDashboardInfo client.get_edge_dashboards(edge_id: str, page_size: int, page: int, text_search: Optional[str] = None, sort_property: Optional[str] = None, sort_order: Optional[str] = None)  # Get Edge Dashboards (getEdgeDashboards)
-None client.get_home_dashboard(accept_encoding: Optional[str] = None)  # Get Home Dashboard (getHomeDashboard)
+HomeDashboard client.get_home_dashboard(accept_encoding: Optional[str] = None)  # Get Home Dashboard (getHomeDashboard)
 HomeDashboardInfo client.get_home_dashboard_info()  # Get Home Dashboard Info (getHomeDashboardInfo)
 int client.get_max_datapoints_limit()  # Get max data points limit (getMaxDatapointsLimit)
 int client.get_server_time()  # Get server time (getServerTime)
@@ -186,7 +186,7 @@ Returns a page of dashboard info objects owned by the specified customer. The Da
 ## get_dashboard_by_id
 
 ```python
-None client.get_dashboard_by_id(dashboard_id: str, include_resources: Optional[bool] = None, accept_encoding: Optional[str] = None)
+Dashboard client.get_dashboard_by_id(dashboard_id: str, include_resources: Optional[bool] = None, accept_encoding: Optional[str] = None)
 ```
 
 **GET** `/api/dashboard/{dashboardId}`
@@ -206,7 +206,7 @@ Get the dashboard based on 'dashboardId' parameter. The Dashboard object is a he
 
 ### Return type
 
-None (empty response body)
+**Dashboard**
 
 
 ## get_dashboard_info_by_id
@@ -289,7 +289,7 @@ Returns a page of dashboard info objects assigned to the specified edge. The Das
 ## get_home_dashboard
 
 ```python
-None client.get_home_dashboard(accept_encoding: Optional[str] = None)
+HomeDashboard client.get_home_dashboard(accept_encoding: Optional[str] = None)
 ```
 
 **GET** `/api/dashboard/home`
@@ -307,7 +307,7 @@ Returns the home dashboard object that is configured as 'homeDashboardId' parame
 
 ### Return type
 
-None (empty response body)
+**HomeDashboard**
 
 
 ## get_home_dashboard_info

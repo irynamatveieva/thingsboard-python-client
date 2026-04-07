@@ -42,7 +42,7 @@ class RelatedEntitiesAggregationCalculatedFieldConfiguration(CalculatedFieldConf
     scheduled_update_enabled: Optional[StrictBool] = Field(default=None, serialization_alias="scheduledUpdateEnabled")
     scheduled_update_interval: Optional[StrictInt] = Field(default=None, serialization_alias="scheduledUpdateInterval")
     use_latest_ts: Optional[StrictBool] = Field(default=None, serialization_alias="useLatestTs")
-    __properties: ClassVar[List[str]] = ["type", "output", "aiGenerated", "arguments", "deduplicationIntervalInSec", "metrics", "relation", "scheduledUpdateEnabled", "scheduledUpdateInterval", "useLatestTs"]
+    __properties: ClassVar[List[str]] = ["type", "output", "arguments", "deduplicationIntervalInSec", "metrics", "relation", "scheduledUpdateEnabled", "scheduledUpdateInterval", "useLatestTs"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -122,7 +122,6 @@ class RelatedEntitiesAggregationCalculatedFieldConfiguration(CalculatedFieldConf
         _obj = cls.model_validate({
             "type": obj.get("type"),
             "output": Output.from_dict(obj["output"]) if obj.get("output") is not None else None,
-            "ai_generated": obj.get("aiGenerated"),
             "arguments": dict(
                 (_k, Argument.from_dict(_v))
                 for _k, _v in obj["arguments"].items()

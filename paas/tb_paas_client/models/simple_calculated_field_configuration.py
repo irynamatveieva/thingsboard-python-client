@@ -36,7 +36,7 @@ class SimpleCalculatedFieldConfiguration(CalculatedFieldConfiguration):
     arguments: Dict[str, Argument]
     expression: Optional[StrictStr] = None
     use_latest_ts: Optional[StrictBool] = Field(default=None, serialization_alias="useLatestTs")
-    __properties: ClassVar[List[str]] = ["type", "output", "aiGenerated", "arguments", "expression", "useLatestTs"]
+    __properties: ClassVar[List[str]] = ["type", "output", "arguments", "expression", "useLatestTs"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -106,7 +106,6 @@ class SimpleCalculatedFieldConfiguration(CalculatedFieldConfiguration):
         _obj = cls.model_validate({
             "type": obj.get("type"),
             "output": Output.from_dict(obj["output"]) if obj.get("output") is not None else None,
-            "ai_generated": obj.get("aiGenerated"),
             "arguments": dict(
                 (_k, Argument.from_dict(_v))
                 for _k, _v in obj["arguments"].items()

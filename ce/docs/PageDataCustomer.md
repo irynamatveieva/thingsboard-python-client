@@ -30,7 +30,7 @@
 | address2 | str | Address Line 2 | [optional] |
 | zip | str | Zip code | [optional] |
 | phone | str | Phone number | [optional] |
-| email | str | Email |  |
+| email | str | Email | [optional] |
 | title | str | Title of the customer |  |
 | tenant_id | TenantId | JSON object with Tenant Id | [optional] |
 | version | int |  | [optional] |
