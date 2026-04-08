@@ -137256,6 +137256,14 @@
               "DEVICE_PROFILE": 1,
               "DEVICE": 3
             }
+          },
+          "idMapping": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Mapping from external entity IDs (as they appear in the solution file) to the internal entity IDs assigned during import."
           }
         }
       },

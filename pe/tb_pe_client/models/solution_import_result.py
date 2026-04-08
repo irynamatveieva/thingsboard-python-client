@@ -23,6 +23,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt
 from typing import Any, ClassVar, Dict, List, Optional
+from uuid import UUID
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -32,7 +33,8 @@ class SolutionImportResult(BaseModel):
     """ # noqa: E501
     success: Optional[StrictBool] = Field(default=None, description="'true' if all entities were imported successfully.")
     created: Optional[Dict[str, StrictInt]] = Field(default=None, description="Number of newly created entities per entity type. Entity types with zero created entities are omitted.")
-    __properties: ClassVar[List[str]] = ["success", "created"]
+    id_mapping: Optional[Dict[str, UUID]] = Field(default=None, description="Mapping from external entity IDs (as they appear in the solution file) to the internal entity IDs assigned during import.", serialization_alias="idMapping")
+    __properties: ClassVar[List[str]] = ["success", "created", "idMapping"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -91,7 +93,8 @@ class SolutionImportResult(BaseModel):
 
         _obj = cls.model_validate({
             "success": obj.get("success"),
-            "created": obj.get("created")
+            "created": obj.get("created"),
+            "id_mapping": obj.get("idMapping")
         })
         return _obj
 
