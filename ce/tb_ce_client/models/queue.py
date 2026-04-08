@@ -36,6 +36,7 @@ class Queue(BaseModel):
     """ # noqa: E501
     id: Optional[QueueId] = None
     created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", serialization_alias="createdTime")
+    additional_info: Optional[Any] = Field(default=None, serialization_alias="additionalInfo")
     tenant_id: Optional[TenantId] = Field(default=None, serialization_alias="tenantId")
     name: Optional[StrictStr] = None
     topic: Optional[StrictStr] = None
@@ -45,8 +46,7 @@ class Queue(BaseModel):
     pack_processing_timeout: Optional[StrictInt] = Field(default=None, serialization_alias="packProcessingTimeout")
     submit_strategy: Optional[SubmitStrategy] = Field(default=None, serialization_alias="submitStrategy")
     processing_strategy: Optional[ProcessingStrategy] = Field(default=None, serialization_alias="processingStrategy")
-    additional_info: Optional[Any] = Field(default=None, serialization_alias="additionalInfo")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "name", "topic", "pollInterval", "partitions", "consumerPerPartition", "packProcessingTimeout", "submitStrategy", "processingStrategy", "additionalInfo"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "additionalInfo", "tenantId", "name", "topic", "pollInterval", "partitions", "consumerPerPartition", "packProcessingTimeout", "submitStrategy", "processingStrategy"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -125,6 +125,7 @@ class Queue(BaseModel):
         _obj = cls.model_validate({
             "id": QueueId.from_dict(obj["id"]) if obj.get("id") is not None else None,
             "created_time": obj.get("createdTime"),
+            "additional_info": obj.get("additionalInfo"),
             "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
             "name": obj.get("name"),
             "topic": obj.get("topic"),
@@ -133,8 +134,7 @@ class Queue(BaseModel):
             "consumer_per_partition": obj.get("consumerPerPartition"),
             "pack_processing_timeout": obj.get("packProcessingTimeout"),
             "submit_strategy": SubmitStrategy.from_dict(obj["submitStrategy"]) if obj.get("submitStrategy") is not None else None,
-            "processing_strategy": ProcessingStrategy.from_dict(obj["processingStrategy"]) if obj.get("processingStrategy") is not None else None,
-            "additional_info": obj.get("additionalInfo")
+            "processing_strategy": ProcessingStrategy.from_dict(obj["processingStrategy"]) if obj.get("processingStrategy") is not None else None
         })
         return _obj
 

@@ -154,8 +154,10 @@ if TYPE_CHECKING:
     from tb_pe_client.models.alarm_comment_notification_rule_trigger_config import AlarmCommentNotificationRuleTriggerConfig
     from tb_pe_client.models.alarm_comment_recipients_config import AlarmCommentRecipientsConfig
     from tb_pe_client.models.alarm_comment_type import AlarmCommentType
+    from tb_pe_client.models.alarm_condition import AlarmCondition
     from tb_pe_client.models.alarm_condition_expression import AlarmConditionExpression
-    from tb_pe_client.models.alarm_condition_value_alarm_rule_schedule import AlarmConditionValueAlarmRuleSchedule
+    from tb_pe_client.models.alarm_condition_filter import AlarmConditionFilter
+    from tb_pe_client.models.alarm_condition_value_alarm_schedule import AlarmConditionValueAlarmSchedule
     from tb_pe_client.models.alarm_condition_value_boolean import AlarmConditionValueBoolean
     from tb_pe_client.models.alarm_condition_value_double import AlarmConditionValueDouble
     from tb_pe_client.models.alarm_condition_value_integer import AlarmConditionValueInteger
@@ -169,24 +171,19 @@ if TYPE_CHECKING:
     from tb_pe_client.models.alarm_id import AlarmId
     from tb_pe_client.models.alarm_info import AlarmInfo
     from tb_pe_client.models.alarm_notification_rule_trigger_config import AlarmNotificationRuleTriggerConfig
-    from tb_pe_client.models.alarm_rule_any_time_schedule import AlarmRuleAnyTimeSchedule
+    from tb_pe_client.models.alarm_rule import AlarmRule
     from tb_pe_client.models.alarm_rule_boolean_filter_predicate import AlarmRuleBooleanFilterPredicate
+    from tb_pe_client.models.alarm_rule_boolean_operation import AlarmRuleBooleanOperation
     from tb_pe_client.models.alarm_rule_complex_filter_predicate import AlarmRuleComplexFilterPredicate
-    from tb_pe_client.models.alarm_rule_condition import AlarmRuleCondition
-    from tb_pe_client.models.alarm_rule_condition_filter import AlarmRuleConditionFilter
-    from tb_pe_client.models.alarm_rule_custom_time_schedule import AlarmRuleCustomTimeSchedule
-    from tb_pe_client.models.alarm_rule_custom_time_schedule_item import AlarmRuleCustomTimeScheduleItem
+    from tb_pe_client.models.alarm_rule_complex_operation import AlarmRuleComplexOperation
     from tb_pe_client.models.alarm_rule_definition import AlarmRuleDefinition
     from tb_pe_client.models.alarm_rule_definition_info import AlarmRuleDefinitionInfo
-    from tb_pe_client.models.alarm_rule_duration_condition import AlarmRuleDurationCondition
     from tb_pe_client.models.alarm_rule_key_filter_predicate import AlarmRuleKeyFilterPredicate
-    from tb_pe_client.models.alarm_rule_no_data_filter_predicate import AlarmRuleNoDataFilterPredicate
     from tb_pe_client.models.alarm_rule_numeric_filter_predicate import AlarmRuleNumericFilterPredicate
-    from tb_pe_client.models.alarm_rule_repeating_condition import AlarmRuleRepeatingCondition
-    from tb_pe_client.models.alarm_rule_schedule import AlarmRuleSchedule
-    from tb_pe_client.models.alarm_rule_simple_condition import AlarmRuleSimpleCondition
-    from tb_pe_client.models.alarm_rule_specific_time_schedule import AlarmRuleSpecificTimeSchedule
+    from tb_pe_client.models.alarm_rule_numeric_operation import AlarmRuleNumericOperation
     from tb_pe_client.models.alarm_rule_string_filter_predicate import AlarmRuleStringFilterPredicate
+    from tb_pe_client.models.alarm_rule_string_operation import AlarmRuleStringOperation
+    from tb_pe_client.models.alarm_schedule import AlarmSchedule
     from tb_pe_client.models.alarm_search_status import AlarmSearchStatus
     from tb_pe_client.models.alarm_severity import AlarmSeverity
     from tb_pe_client.models.alarm_status import AlarmStatus
@@ -200,6 +197,7 @@ if TYPE_CHECKING:
     from tb_pe_client.models.amazon_bedrock_provider_config import AmazonBedrockProviderConfig
     from tb_pe_client.models.anthropic_chat_model_config import AnthropicChatModelConfig
     from tb_pe_client.models.anthropic_provider_config import AnthropicProviderConfig
+    from tb_pe_client.models.any_time_schedule import AnyTimeSchedule
     from tb_pe_client.models.api_feature import ApiFeature
     from tb_pe_client.models.api_key import ApiKey
     from tb_pe_client.models.api_key_id import ApiKeyId
@@ -325,6 +323,8 @@ if TYPE_CHECKING:
     from tb_pe_client.models.custom_menu_info import CustomMenuInfo
     from tb_pe_client.models.custom_menu_item import CustomMenuItem
     from tb_pe_client.models.custom_mobile_page import CustomMobilePage
+    from tb_pe_client.models.custom_time_schedule import CustomTimeSchedule
+    from tb_pe_client.models.custom_time_schedule_item import CustomTimeScheduleItem
     from tb_pe_client.models.customer import Customer
     from tb_pe_client.models.customer_export_data import CustomerExportData
     from tb_pe_client.models.customer_id import CustomerId
@@ -400,6 +400,7 @@ if TYPE_CHECKING:
     from tb_pe_client.models.dummy_job_result import DummyJobResult
     from tb_pe_client.models.dummy_task_failure import DummyTaskFailure
     from tb_pe_client.models.dummy_task_result import DummyTaskResult
+    from tb_pe_client.models.duration_alarm_condition import DurationAlarmCondition
     from tb_pe_client.models.dynamic_value_boolean import DynamicValueBoolean
     from tb_pe_client.models.dynamic_value_double import DynamicValueDouble
     from tb_pe_client.models.dynamic_value_source_type import DynamicValueSourceType
@@ -612,6 +613,7 @@ if TYPE_CHECKING:
     from tb_pe_client.models.name_conflict_policy import NameConflictPolicy
     from tb_pe_client.models.new_platform_version_notification_rule_trigger_config import NewPlatformVersionNotificationRuleTriggerConfig
     from tb_pe_client.models.new_platform_version_recipients_config import NewPlatformVersionRecipientsConfig
+    from tb_pe_client.models.no_data_filter_predicate import NoDataFilterPredicate
     from tb_pe_client.models.no_sec_lw_m2_m_bootstrap_server_credential import NoSecLwM2MBootstrapServerCredential
     from tb_pe_client.models.node_connection_info import NodeConnectionInfo
     from tb_pe_client.models.notification import Notification
@@ -786,6 +788,7 @@ if TYPE_CHECKING:
     from tb_pe_client.models.relation_type_group import RelationTypeGroup
     from tb_pe_client.models.relations_query_filter import RelationsQueryFilter
     from tb_pe_client.models.relations_search_parameters import RelationsSearchParameters
+    from tb_pe_client.models.repeating_alarm_condition import RepeatingAlarmCondition
     from tb_pe_client.models.report import Report
     from tb_pe_client.models.report_bar_chart_settings import ReportBarChartSettings
     from tb_pe_client.models.report_bar_chart_with_labels_settings import ReportBarChartWithLabelsSettings
@@ -871,6 +874,7 @@ if TYPE_CHECKING:
     from tb_pe_client.models.sign_up_request import SignUpRequest
     from tb_pe_client.models.sign_up_result import SignUpResult
     from tb_pe_client.models.sign_up_self_registration_params import SignUpSelfRegistrationParams
+    from tb_pe_client.models.simple_alarm_condition import SimpleAlarmCondition
     from tb_pe_client.models.simple_alarm_condition_expression import SimpleAlarmConditionExpression
     from tb_pe_client.models.simple_calculated_field_configuration import SimpleCalculatedFieldConfiguration
     from tb_pe_client.models.simple_entity import SimpleEntity
@@ -901,6 +905,7 @@ if TYPE_CHECKING:
     from tb_pe_client.models.solution_install_response import SolutionInstallResponse
     from tb_pe_client.models.solution_template_level import SolutionTemplateLevel
     from tb_pe_client.models.solution_validation_result import SolutionValidationResult
+    from tb_pe_client.models.specific_time_schedule import SpecificTimeSchedule
     from tb_pe_client.models.split_view_component import SplitViewComponent
     from tb_pe_client.models.starred_dashboard_info import StarredDashboardInfo
     from tb_pe_client.models.state_entity_filter import StateEntityFilter
@@ -917,6 +922,7 @@ if TYPE_CHECKING:
     from tb_pe_client.models.system_administrators_filter import SystemAdministratorsFilter
     from tb_pe_client.models.system_info import SystemInfo
     from tb_pe_client.models.system_info_data import SystemInfoData
+    from tb_pe_client.models.table_sort_direction import TableSortDirection
     from tb_pe_client.models.table_sort_order import TableSortOrder
     from tb_pe_client.models.task_processing_failure_notification_rule_trigger_config import TaskProcessingFailureNotificationRuleTriggerConfig
     from tb_pe_client.models.task_processing_failure_recipients_config import TaskProcessingFailureRecipientsConfig
@@ -1176,8 +1182,10 @@ _LAZY_CLASSES = {
     "AlarmCommentNotificationRuleTriggerConfig": "tb_pe_client.models.alarm_comment_notification_rule_trigger_config",
     "AlarmCommentRecipientsConfig": "tb_pe_client.models.alarm_comment_recipients_config",
     "AlarmCommentType": "tb_pe_client.models.alarm_comment_type",
+    "AlarmCondition": "tb_pe_client.models.alarm_condition",
     "AlarmConditionExpression": "tb_pe_client.models.alarm_condition_expression",
-    "AlarmConditionValueAlarmRuleSchedule": "tb_pe_client.models.alarm_condition_value_alarm_rule_schedule",
+    "AlarmConditionFilter": "tb_pe_client.models.alarm_condition_filter",
+    "AlarmConditionValueAlarmSchedule": "tb_pe_client.models.alarm_condition_value_alarm_schedule",
     "AlarmConditionValueBoolean": "tb_pe_client.models.alarm_condition_value_boolean",
     "AlarmConditionValueDouble": "tb_pe_client.models.alarm_condition_value_double",
     "AlarmConditionValueInteger": "tb_pe_client.models.alarm_condition_value_integer",
@@ -1191,24 +1199,19 @@ _LAZY_CLASSES = {
     "AlarmId": "tb_pe_client.models.alarm_id",
     "AlarmInfo": "tb_pe_client.models.alarm_info",
     "AlarmNotificationRuleTriggerConfig": "tb_pe_client.models.alarm_notification_rule_trigger_config",
-    "AlarmRuleAnyTimeSchedule": "tb_pe_client.models.alarm_rule_any_time_schedule",
+    "AlarmRule": "tb_pe_client.models.alarm_rule",
     "AlarmRuleBooleanFilterPredicate": "tb_pe_client.models.alarm_rule_boolean_filter_predicate",
+    "AlarmRuleBooleanOperation": "tb_pe_client.models.alarm_rule_boolean_operation",
     "AlarmRuleComplexFilterPredicate": "tb_pe_client.models.alarm_rule_complex_filter_predicate",
-    "AlarmRuleCondition": "tb_pe_client.models.alarm_rule_condition",
-    "AlarmRuleConditionFilter": "tb_pe_client.models.alarm_rule_condition_filter",
-    "AlarmRuleCustomTimeSchedule": "tb_pe_client.models.alarm_rule_custom_time_schedule",
-    "AlarmRuleCustomTimeScheduleItem": "tb_pe_client.models.alarm_rule_custom_time_schedule_item",
+    "AlarmRuleComplexOperation": "tb_pe_client.models.alarm_rule_complex_operation",
     "AlarmRuleDefinition": "tb_pe_client.models.alarm_rule_definition",
     "AlarmRuleDefinitionInfo": "tb_pe_client.models.alarm_rule_definition_info",
-    "AlarmRuleDurationCondition": "tb_pe_client.models.alarm_rule_duration_condition",
     "AlarmRuleKeyFilterPredicate": "tb_pe_client.models.alarm_rule_key_filter_predicate",
-    "AlarmRuleNoDataFilterPredicate": "tb_pe_client.models.alarm_rule_no_data_filter_predicate",
     "AlarmRuleNumericFilterPredicate": "tb_pe_client.models.alarm_rule_numeric_filter_predicate",
-    "AlarmRuleRepeatingCondition": "tb_pe_client.models.alarm_rule_repeating_condition",
-    "AlarmRuleSchedule": "tb_pe_client.models.alarm_rule_schedule",
-    "AlarmRuleSimpleCondition": "tb_pe_client.models.alarm_rule_simple_condition",
-    "AlarmRuleSpecificTimeSchedule": "tb_pe_client.models.alarm_rule_specific_time_schedule",
+    "AlarmRuleNumericOperation": "tb_pe_client.models.alarm_rule_numeric_operation",
     "AlarmRuleStringFilterPredicate": "tb_pe_client.models.alarm_rule_string_filter_predicate",
+    "AlarmRuleStringOperation": "tb_pe_client.models.alarm_rule_string_operation",
+    "AlarmSchedule": "tb_pe_client.models.alarm_schedule",
     "AlarmSearchStatus": "tb_pe_client.models.alarm_search_status",
     "AlarmSeverity": "tb_pe_client.models.alarm_severity",
     "AlarmStatus": "tb_pe_client.models.alarm_status",
@@ -1222,6 +1225,7 @@ _LAZY_CLASSES = {
     "AmazonBedrockProviderConfig": "tb_pe_client.models.amazon_bedrock_provider_config",
     "AnthropicChatModelConfig": "tb_pe_client.models.anthropic_chat_model_config",
     "AnthropicProviderConfig": "tb_pe_client.models.anthropic_provider_config",
+    "AnyTimeSchedule": "tb_pe_client.models.any_time_schedule",
     "ApiFeature": "tb_pe_client.models.api_feature",
     "ApiKey": "tb_pe_client.models.api_key",
     "ApiKeyId": "tb_pe_client.models.api_key_id",
@@ -1347,6 +1351,8 @@ _LAZY_CLASSES = {
     "CustomMenuInfo": "tb_pe_client.models.custom_menu_info",
     "CustomMenuItem": "tb_pe_client.models.custom_menu_item",
     "CustomMobilePage": "tb_pe_client.models.custom_mobile_page",
+    "CustomTimeSchedule": "tb_pe_client.models.custom_time_schedule",
+    "CustomTimeScheduleItem": "tb_pe_client.models.custom_time_schedule_item",
     "Customer": "tb_pe_client.models.customer",
     "CustomerExportData": "tb_pe_client.models.customer_export_data",
     "CustomerId": "tb_pe_client.models.customer_id",
@@ -1422,6 +1428,7 @@ _LAZY_CLASSES = {
     "DummyJobResult": "tb_pe_client.models.dummy_job_result",
     "DummyTaskFailure": "tb_pe_client.models.dummy_task_failure",
     "DummyTaskResult": "tb_pe_client.models.dummy_task_result",
+    "DurationAlarmCondition": "tb_pe_client.models.duration_alarm_condition",
     "DynamicValueBoolean": "tb_pe_client.models.dynamic_value_boolean",
     "DynamicValueDouble": "tb_pe_client.models.dynamic_value_double",
     "DynamicValueSourceType": "tb_pe_client.models.dynamic_value_source_type",
@@ -1634,6 +1641,7 @@ _LAZY_CLASSES = {
     "NameConflictPolicy": "tb_pe_client.models.name_conflict_policy",
     "NewPlatformVersionNotificationRuleTriggerConfig": "tb_pe_client.models.new_platform_version_notification_rule_trigger_config",
     "NewPlatformVersionRecipientsConfig": "tb_pe_client.models.new_platform_version_recipients_config",
+    "NoDataFilterPredicate": "tb_pe_client.models.no_data_filter_predicate",
     "NoSecLwM2MBootstrapServerCredential": "tb_pe_client.models.no_sec_lw_m2_m_bootstrap_server_credential",
     "NodeConnectionInfo": "tb_pe_client.models.node_connection_info",
     "Notification": "tb_pe_client.models.notification",
@@ -1808,6 +1816,7 @@ _LAZY_CLASSES = {
     "RelationTypeGroup": "tb_pe_client.models.relation_type_group",
     "RelationsQueryFilter": "tb_pe_client.models.relations_query_filter",
     "RelationsSearchParameters": "tb_pe_client.models.relations_search_parameters",
+    "RepeatingAlarmCondition": "tb_pe_client.models.repeating_alarm_condition",
     "Report": "tb_pe_client.models.report",
     "ReportBarChartSettings": "tb_pe_client.models.report_bar_chart_settings",
     "ReportBarChartWithLabelsSettings": "tb_pe_client.models.report_bar_chart_with_labels_settings",
@@ -1893,6 +1902,7 @@ _LAZY_CLASSES = {
     "SignUpRequest": "tb_pe_client.models.sign_up_request",
     "SignUpResult": "tb_pe_client.models.sign_up_result",
     "SignUpSelfRegistrationParams": "tb_pe_client.models.sign_up_self_registration_params",
+    "SimpleAlarmCondition": "tb_pe_client.models.simple_alarm_condition",
     "SimpleAlarmConditionExpression": "tb_pe_client.models.simple_alarm_condition_expression",
     "SimpleCalculatedFieldConfiguration": "tb_pe_client.models.simple_calculated_field_configuration",
     "SimpleEntity": "tb_pe_client.models.simple_entity",
@@ -1923,6 +1933,7 @@ _LAZY_CLASSES = {
     "SolutionInstallResponse": "tb_pe_client.models.solution_install_response",
     "SolutionTemplateLevel": "tb_pe_client.models.solution_template_level",
     "SolutionValidationResult": "tb_pe_client.models.solution_validation_result",
+    "SpecificTimeSchedule": "tb_pe_client.models.specific_time_schedule",
     "SplitViewComponent": "tb_pe_client.models.split_view_component",
     "StarredDashboardInfo": "tb_pe_client.models.starred_dashboard_info",
     "StateEntityFilter": "tb_pe_client.models.state_entity_filter",
@@ -1939,6 +1950,7 @@ _LAZY_CLASSES = {
     "SystemAdministratorsFilter": "tb_pe_client.models.system_administrators_filter",
     "SystemInfo": "tb_pe_client.models.system_info",
     "SystemInfoData": "tb_pe_client.models.system_info_data",
+    "TableSortDirection": "tb_pe_client.models.table_sort_direction",
     "TableSortOrder": "tb_pe_client.models.table_sort_order",
     "TaskProcessingFailureNotificationRuleTriggerConfig": "tb_pe_client.models.task_processing_failure_notification_rule_trigger_config",
     "TaskProcessingFailureRecipientsConfig": "tb_pe_client.models.task_processing_failure_recipients_config",

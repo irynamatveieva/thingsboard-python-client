@@ -23,15 +23,15 @@ A JSON value representing the rule chains.
 |------|------|-------------|-------|
 | id | RuleChainId | JSON object with the Rule Chain Id. Specify this field to update the Rule Chain. Referencing non-existing Rule Chain Id will cause error. Omit this field to create new rule chain. | [optional] |
 | created_time | int | Timestamp of the rule chain creation, in milliseconds | [optional] [readonly] |
+| additional_info | object |  | [optional] |
 | tenant_id | TenantId | JSON object with Tenant Id. | [readonly] |
 | name | str | Rule Chain name |  |
 | type | RuleChainType | Rule Chain type. 'EDGE' rule chains are processing messages on the edge devices only. | [optional] |
 | first_rule_node_id | RuleNodeId | JSON object with Rule Chain Id. Pointer to the first rule node that should receive all messages pushed to this rule chain. | [optional] |
 | root | bool | Indicates root rule chain. The root rule chain process messages from all devices and entities by default. User may configure default rule chain per device profile. | [optional] |
 | debug_mode | bool | Reserved for future usage. | [optional] |
-| version | int |  | [optional] |
-| additional_info | object |  | [optional] |
 | configuration | object |  | [optional] |
+| version | int |  | [optional] |
 
 #### RuleChainMetaData
 | Name | Type | Description | Notes |
@@ -52,6 +52,7 @@ A JSON value representing the rule chains.
 |------|------|-------------|-------|
 | id | RuleNodeId | JSON object with the Rule Node Id. Specify this field to update the Rule Node. Referencing non-existing Rule Node Id will cause error. Omit this field to create new rule node. | [optional] |
 | created_time | int | Timestamp of the rule node creation, in milliseconds | [optional] [readonly] |
+| additional_info | object | Additional parameters of the rule node. May include: 'layoutX' (number, X coordinate for visualization), 'layoutY' (number, Y coordinate for visualization), 'description' (string). | [optional] |
 | rule_chain_id | RuleChainId | JSON object with the Rule Chain Id. | [optional] [readonly] |
 | type | str | Full Java Class Name of the rule node implementation. | [optional] |
 | name | str | User defined name of the rule node. Used on UI and for logging. | [optional] |
@@ -61,7 +62,6 @@ A JSON value representing the rule chains.
 | configuration_version | int | Version of rule node configuration. | [optional] |
 | configuration | object | JSON with the rule node configuration. Structure depends on the rule node implementation. | [optional] |
 | external_id | RuleNodeId |  | [optional] |
-| additional_info | object | Additional parameters of the rule node. May include: 'layoutX' (number, X coordinate for visualization), 'layoutY' (number, Y coordinate for visualization), 'description' (string). | [optional] |
 | debug_mode | bool |  | [optional] |
 
 #### NodeConnectionInfo

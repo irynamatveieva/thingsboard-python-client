@@ -23,15 +23,15 @@
 |------|------|-------------|-------|
 | id | RuleChainId | JSON object with the Rule Chain Id. Specify this field to update the Rule Chain. Referencing non-existing Rule Chain Id will cause error. Omit this field to create new rule chain. | [optional] |
 | created_time | int | Timestamp of the rule chain creation, in milliseconds | [optional] [readonly] |
+| additional_info | object |  | [optional] |
 | tenant_id | TenantId | JSON object with Tenant Id. | [readonly] |
 | name | str | Rule Chain name |  |
 | type | RuleChainType | Rule Chain type. 'EDGE' rule chains are processing messages on the edge devices only. | [optional] |
 | first_rule_node_id | RuleNodeId | JSON object with Rule Chain Id. Pointer to the first rule node that should receive all messages pushed to this rule chain. | [optional] |
 | root | bool | Indicates root rule chain. The root rule chain process messages from all devices and entities by default. User may configure default rule chain per device profile. | [optional] |
 | debug_mode | bool | Reserved for future usage. | [optional] |
-| version | int |  | [optional] |
-| additional_info | object |  | [optional] |
 | configuration | object |  | [optional] |
+| version | int |  | [optional] |
 
 #### RuleChainType (enum)
 `CORE` | `EDGE`

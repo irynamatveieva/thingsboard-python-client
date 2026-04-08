@@ -34,6 +34,7 @@ class OAuth2ClientRegistrationTemplate(BaseModel):
     """ # noqa: E501
     id: Optional[OAuth2ClientRegistrationTemplateId] = None
     created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", serialization_alias="createdTime")
+    additional_info: Optional[Any] = Field(default=None, serialization_alias="additionalInfo")
     provider_id: StrictStr = Field(description="OAuth2 provider identifier (e.g. its name)", serialization_alias="providerId")
     mapper_config: Optional[OAuth2MapperConfig] = Field(default=None, description="Default config for mapping OAuth2 log in response to platform entities", serialization_alias="mapperConfig")
     authorization_uri: Optional[StrictStr] = Field(default=None, description="Default authorization URI of the OAuth2 provider", serialization_alias="authorizationUri")
@@ -47,9 +48,8 @@ class OAuth2ClientRegistrationTemplate(BaseModel):
     login_button_icon: Optional[StrictStr] = Field(default=None, description="Default log in button icon for OAuth2 provider", serialization_alias="loginButtonIcon")
     login_button_label: Optional[StrictStr] = Field(default=None, description="Default OAuth2 provider label", serialization_alias="loginButtonLabel")
     help_link: Optional[StrictStr] = Field(default=None, description="Help link for OAuth2 provider", serialization_alias="helpLink")
-    additional_info: Optional[Any] = Field(default=None, serialization_alias="additionalInfo")
     name: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "providerId", "mapperConfig", "authorizationUri", "accessTokenUri", "scope", "userInfoUri", "userNameAttributeName", "jwkSetUri", "clientAuthenticationMethod", "comment", "loginButtonIcon", "loginButtonLabel", "helpLink", "additionalInfo", "name"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "additionalInfo", "providerId", "mapperConfig", "authorizationUri", "accessTokenUri", "scope", "userInfoUri", "userNameAttributeName", "jwkSetUri", "clientAuthenticationMethod", "comment", "loginButtonIcon", "loginButtonLabel", "helpLink", "name"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -122,6 +122,7 @@ class OAuth2ClientRegistrationTemplate(BaseModel):
         _obj = cls.model_validate({
             "id": OAuth2ClientRegistrationTemplateId.from_dict(obj["id"]) if obj.get("id") is not None else None,
             "created_time": obj.get("createdTime"),
+            "additional_info": obj.get("additionalInfo"),
             "provider_id": obj.get("providerId"),
             "mapper_config": OAuth2MapperConfig.from_dict(obj["mapperConfig"]) if obj.get("mapperConfig") is not None else None,
             "authorization_uri": obj.get("authorizationUri"),
@@ -135,7 +136,6 @@ class OAuth2ClientRegistrationTemplate(BaseModel):
             "login_button_icon": obj.get("loginButtonIcon"),
             "login_button_label": obj.get("loginButtonLabel"),
             "help_link": obj.get("helpLink"),
-            "additional_info": obj.get("additionalInfo"),
             "name": obj.get("name")
         })
         return _obj

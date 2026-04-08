@@ -41,11 +41,11 @@ class ComponentDescriptor(BaseModel):
     clustering_mode: Optional[ComponentClusteringMode] = Field(default=None, description="Clustering mode of the RuleNode. This mode represents the ability to start Rule Node in multiple microservices.", serialization_alias="clusteringMode")
     name: Optional[StrictStr] = Field(default=None, description="Name of the Rule Node. Taken from the @RuleNode annotation.")
     clazz: Optional[StrictStr] = Field(default=None, description="Full name of the Java class that implements the Rule Engine Node interface.")
+    configuration_descriptor: Optional[Any] = Field(default=None, serialization_alias="configurationDescriptor")
     configuration_version: Optional[StrictInt] = Field(default=None, description="Rule node configuration version. By default, this value is 0. If the rule node is a versioned node, this value might be greater than 0.", serialization_alias="configurationVersion")
     actions: Optional[StrictStr] = Field(default=None, description="Rule Node Actions. Deprecated. Always null.")
     has_queue_name: Optional[StrictBool] = Field(default=None, description="Indicates that the RuleNode supports queue name configuration.", serialization_alias="hasQueueName")
-    configuration_descriptor: Optional[Any] = Field(default=None, serialization_alias="configurationDescriptor")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "type", "scope", "clusteringMode", "name", "clazz", "configurationVersion", "actions", "hasQueueName", "configurationDescriptor"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "type", "scope", "clusteringMode", "name", "clazz", "configurationDescriptor", "configurationVersion", "actions", "hasQueueName"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -136,10 +136,10 @@ class ComponentDescriptor(BaseModel):
             "clustering_mode": obj.get("clusteringMode"),
             "name": obj.get("name"),
             "clazz": obj.get("clazz"),
+            "configuration_descriptor": obj.get("configurationDescriptor"),
             "configuration_version": obj.get("configurationVersion"),
             "actions": obj.get("actions"),
-            "has_queue_name": obj.get("hasQueueName"),
-            "configuration_descriptor": obj.get("configurationDescriptor")
+            "has_queue_name": obj.get("hasQueueName")
         })
         return _obj
 

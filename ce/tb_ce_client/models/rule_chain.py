@@ -36,16 +36,16 @@ class RuleChain(BaseModel):
     """ # noqa: E501
     id: Optional[RuleChainId] = Field(default=None, description="JSON object with the Rule Chain Id. Specify this field to update the Rule Chain. Referencing non-existing Rule Chain Id will cause error. Omit this field to create new rule chain.")
     created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the rule chain creation, in milliseconds", serialization_alias="createdTime")
+    additional_info: Optional[Any] = Field(default=None, serialization_alias="additionalInfo")
     tenant_id: TenantId = Field(description="JSON object with Tenant Id.", serialization_alias="tenantId")
     name: StrictStr = Field(description="Rule Chain name")
     type: Optional[RuleChainType] = Field(default=None, description="Rule Chain type. 'EDGE' rule chains are processing messages on the edge devices only.")
     first_rule_node_id: Optional[RuleNodeId] = Field(default=None, description="JSON object with Rule Chain Id. Pointer to the first rule node that should receive all messages pushed to this rule chain.", serialization_alias="firstRuleNodeId")
     root: Optional[StrictBool] = Field(default=None, description="Indicates root rule chain. The root rule chain process messages from all devices and entities by default. User may configure default rule chain per device profile.")
     debug_mode: Optional[StrictBool] = Field(default=None, description="Reserved for future usage.", serialization_alias="debugMode")
-    version: Optional[StrictInt] = None
-    additional_info: Optional[Any] = Field(default=None, serialization_alias="additionalInfo")
     configuration: Optional[Any] = None
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "name", "type", "firstRuleNodeId", "root", "debugMode", "version", "additionalInfo", "configuration"]
+    version: Optional[StrictInt] = None
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "additionalInfo", "tenantId", "name", "type", "firstRuleNodeId", "root", "debugMode", "configuration", "version"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -128,15 +128,15 @@ class RuleChain(BaseModel):
         _obj = cls.model_validate({
             "id": RuleChainId.from_dict(obj["id"]) if obj.get("id") is not None else None,
             "created_time": obj.get("createdTime"),
+            "additional_info": obj.get("additionalInfo"),
             "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
             "name": obj.get("name"),
             "type": obj.get("type"),
             "first_rule_node_id": RuleNodeId.from_dict(obj["firstRuleNodeId"]) if obj.get("firstRuleNodeId") is not None else None,
             "root": obj.get("root"),
             "debug_mode": obj.get("debugMode"),
-            "version": obj.get("version"),
-            "additional_info": obj.get("additionalInfo"),
-            "configuration": obj.get("configuration")
+            "configuration": obj.get("configuration"),
+            "version": obj.get("version")
         })
         return _obj
 

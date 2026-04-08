@@ -233,7 +233,7 @@
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | column | str |  | [optional] |
-| direction | Direction |  | [optional] |
+| direction | TableSortDirection |  | [optional] |
 
 #### DataSource
 | Name | Type | Description | Notes |
@@ -415,7 +415,7 @@
 | range_units | str |  | [optional] |
 | range_decimals | int |  | [optional] |
 
-#### Direction (enum)
+#### TableSortDirection (enum)
 `ASC` | `DESC`
 
 #### DataSourceType (enum)

@@ -23,6 +23,7 @@
 |------|------|-------------|-------|
 | id | EntityViewId | JSON object with the Entity View Id. Specify this field to update the Entity View. Referencing non-existing Entity View Id will cause error. Omit this field to create new Entity View. | [optional] |
 | created_time | int | Timestamp of the Entity View creation, in milliseconds | [optional] [readonly] |
+| additional_info | object | Additional parameters of the entity view. May include: 'description' (string). | [optional] |
 | entity_id | EntityId | JSON object with the referenced Entity Id (Device or Asset). |  |
 | tenant_id | TenantId | JSON object with Tenant Id. | [optional] [readonly] |
 | customer_id | CustomerId | JSON object with Customer Id. Use 'assignEntityViewToCustomer' to change the Customer Id. | [optional] [readonly] |
@@ -34,7 +35,6 @@
 | version | int |  | [optional] |
 | customer_title | str | Title of the Customer that owns the entity view. | [optional] [readonly] |
 | customer_is_public | bool | Indicates special 'Public' Customer that is auto-generated to use the entity view on public dashboards. | [optional] [readonly] |
-| additional_info | object | Additional parameters of the entity view. May include: 'description' (string). | [optional] |
 
 #### TelemetryEntityView
 | Name | Type | Description | Notes |

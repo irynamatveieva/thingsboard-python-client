@@ -116222,12 +116222,12 @@
               "createRules": {
                 "type": "object",
                 "additionalProperties": {
-                  "$ref": "#/components/schemas/AlarmRuleDefinition"
+                  "$ref": "#/components/schemas/AlarmRule"
                 },
                 "minProperties": 1
               },
               "clearRule": {
-                "$ref": "#/components/schemas/AlarmRuleDefinition"
+                "$ref": "#/components/schemas/AlarmRule"
               },
               "propagate": {
                 "type": "boolean"
@@ -116435,6 +116435,32 @@
           "OTHER"
         ]
       },
+      "AlarmCondition": {
+        "type": "object",
+        "discriminator": {
+          "propertyName": "type",
+          "mapping": {
+            "SIMPLE": "#/components/schemas/SimpleAlarmCondition",
+            "DURATION": "#/components/schemas/DurationAlarmCondition",
+            "REPEATING": "#/components/schemas/RepeatingAlarmCondition"
+          }
+        },
+        "properties": {
+          "expression": {
+            "$ref": "#/components/schemas/AlarmConditionExpression"
+          },
+          "schedule": {
+            "$ref": "#/components/schemas/AlarmConditionValueAlarmSchedule"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "expression",
+          "type"
+        ]
+      },
       "AlarmConditionExpression": {
         "discriminator": {
           "propertyName": "type",
@@ -116452,14 +116478,41 @@
           "type"
         ]
       },
-      "AlarmConditionValueAlarmRuleSchedule": {
+      "AlarmConditionFilter": {
         "type": "object",
         "properties": {
+          "argument": {
+            "type": "string",
+            "minLength": 1
+          },
+          "valueType": {
+            "$ref": "#/components/schemas/EntityKeyValueType"
+          },
+          "operation": {
+            "$ref": "#/components/schemas/AlarmRuleComplexOperation"
+          },
+          "predicates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AlarmRuleKeyFilterPredicate"
+            },
+            "minItems": 1
+          }
+        },
+        "required": [
+          "argument",
+          "predicates",
+          "valueType"
+        ]
+      },
+      "AlarmConditionValueAlarmSchedule": {
+        "type": "object",
+        "properties": {
+          "staticValue": {
+            "$ref": "#/components/schemas/AlarmSchedule"
+          },
           "dynamicValueArgument": {
             "type": "string"
-          },
-          "staticValue": {
-            "$ref": "#/components/schemas/AlarmRuleSchedule"
           }
         }
       },
@@ -117068,11 +117121,21 @@
           "notifyOn"
         ]
       },
-      "AlarmRuleAnyTimeSchedule": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/AlarmRuleSchedule"
+      "AlarmRule": {
+        "type": "object",
+        "properties": {
+          "condition": {
+            "$ref": "#/components/schemas/AlarmCondition"
+          },
+          "alarmDetails": {
+            "type": "string"
+          },
+          "dashboardId": {
+            "$ref": "#/components/schemas/DashboardId"
           }
+        },
+        "required": [
+          "condition"
         ]
       },
       "AlarmRuleBooleanFilterPredicate": {
@@ -117084,7 +117147,7 @@
             "type": "object",
             "properties": {
               "operation": {
-                "$ref": "#/components/schemas/BooleanOperation"
+                "$ref": "#/components/schemas/AlarmRuleBooleanOperation"
               },
               "value": {
                 "$ref": "#/components/schemas/AlarmConditionValueBoolean"
@@ -117097,6 +117160,13 @@
           "value"
         ]
       },
+      "AlarmRuleBooleanOperation": {
+        "type": "string",
+        "enum": [
+          "EQUAL",
+          "NOT_EQUAL"
+        ]
+      },
       "AlarmRuleComplexFilterPredicate": {
         "allOf": [
           {
@@ -117106,7 +117176,7 @@
             "type": "object",
             "properties": {
               "operation": {
-                "$ref": "#/components/schemas/ComplexOperation"
+                "$ref": "#/components/schemas/AlarmRuleComplexOperation"
               },
               "predicates": {
                 "type": "array",
@@ -117118,115 +117188,69 @@
           }
         ]
       },
-      "AlarmRuleCondition": {
-        "type": "object",
-        "discriminator": {
-          "propertyName": "type",
-          "mapping": {
-            "SIMPLE": "#/components/schemas/AlarmRuleSimpleCondition",
-            "DURATION": "#/components/schemas/AlarmRuleDurationCondition",
-            "REPEATING": "#/components/schemas/AlarmRuleRepeatingCondition"
-          }
-        },
-        "properties": {
-          "expression": {
-            "$ref": "#/components/schemas/AlarmConditionExpression"
-          },
-          "schedule": {
-            "$ref": "#/components/schemas/AlarmConditionValueAlarmRuleSchedule"
-          },
-          "type": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "expression",
-          "type"
+      "AlarmRuleComplexOperation": {
+        "type": "string",
+        "enum": [
+          "AND",
+          "OR"
         ]
-      },
-      "AlarmRuleConditionFilter": {
-        "type": "object",
-        "properties": {
-          "argument": {
-            "type": "string",
-            "minLength": 1
-          },
-          "operation": {
-            "$ref": "#/components/schemas/ComplexOperation"
-          },
-          "predicates": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AlarmRuleKeyFilterPredicate"
-            },
-            "minItems": 1
-          },
-          "valueType": {
-            "$ref": "#/components/schemas/EntityKeyValueType"
-          }
-        },
-        "required": [
-          "argument",
-          "predicates",
-          "valueType"
-        ]
-      },
-      "AlarmRuleCustomTimeSchedule": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/AlarmRuleSchedule"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "items": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/AlarmRuleCustomTimeScheduleItem"
-                }
-              },
-              "timezone": {
-                "type": "string"
-              }
-            }
-          }
-        ]
-      },
-      "AlarmRuleCustomTimeScheduleItem": {
-        "type": "object",
-        "properties": {
-          "dayOfWeek": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "enabled": {
-            "type": "boolean"
-          },
-          "endsOn": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "startsOn": {
-            "type": "integer",
-            "format": "int64"
-          }
-        }
       },
       "AlarmRuleDefinition": {
         "type": "object",
         "properties": {
-          "alarmDetails": {
-            "type": "string"
+          "id": {
+            "$ref": "#/components/schemas/CalculatedFieldId",
+            "description": "JSON object with the Alarm Rule Id. Referencing non-existing Alarm Rule Id will cause error."
           },
-          "condition": {
-            "$ref": "#/components/schemas/AlarmRuleCondition"
+          "createdTime": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Timestamp of the alarm rule creation, in milliseconds",
+            "example": 1609459200000,
+            "readOnly": true
           },
-          "dashboardId": {
-            "$ref": "#/components/schemas/DashboardId"
+          "tenantId": {
+            "$ref": "#/components/schemas/TenantId"
+          },
+          "entityId": {
+            "$ref": "#/components/schemas/EntityId"
+          },
+          "name": {
+            "type": "string",
+            "description": "User defined name of the alarm rule."
+          },
+          "debugSettings": {
+            "$ref": "#/components/schemas/DebugSettings",
+            "description": "Debug settings object."
+          },
+          "configurationVersion": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Version of alarm rule configuration.",
+            "example": 0
+          },
+          "configuration": {
+            "$ref": "#/components/schemas/AlarmCalculatedFieldConfiguration"
+          },
+          "version": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "additionalInfo": {
+            "$ref": "#/components/schemas/JsonNode",
+            "description": "Additional parameters of the alarm rule. May include: 'description' (string).",
+            "example": {
+              "description": "High temperature alarm rule"
+            }
+          },
+          "debugMode": {
+            "type": "boolean",
+            "deprecated": true,
+            "writeOnly": true
           }
         },
         "required": [
-          "condition"
+          "configuration"
         ]
       },
       "AlarmRuleDefinitionInfo": {
@@ -117290,28 +117314,6 @@
           "configuration"
         ]
       },
-      "AlarmRuleDurationCondition": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/AlarmRuleCondition"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "unit": {
-                "$ref": "#/components/schemas/TimeUnit"
-              },
-              "value": {
-                "$ref": "#/components/schemas/AlarmConditionValueLong"
-              }
-            }
-          }
-        ],
-        "required": [
-          "unit",
-          "value"
-        ]
-      },
       "AlarmRuleKeyFilterPredicate": {
         "description": "Filter predicate for alarm rule key-based filtering",
         "discriminator": {
@@ -117320,7 +117322,7 @@
             "STRING": "#/components/schemas/AlarmRuleStringFilterPredicate",
             "NUMERIC": "#/components/schemas/AlarmRuleNumericFilterPredicate",
             "BOOLEAN": "#/components/schemas/AlarmRuleBooleanFilterPredicate",
-            "NO_DATA": "#/components/schemas/AlarmRuleNoDataFilterPredicate",
+            "NO_DATA": "#/components/schemas/NoDataFilterPredicate",
             "COMPLEX": "#/components/schemas/AlarmRuleComplexFilterPredicate"
           }
         },
@@ -117333,28 +117335,6 @@
           "type"
         ]
       },
-      "AlarmRuleNoDataFilterPredicate": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/AlarmRuleKeyFilterPredicate"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "duration": {
-                "$ref": "#/components/schemas/AlarmConditionValueLong"
-              },
-              "unit": {
-                "$ref": "#/components/schemas/TimeUnit"
-              }
-            }
-          }
-        ],
-        "required": [
-          "duration",
-          "unit"
-        ]
-      },
       "AlarmRuleNumericFilterPredicate": {
         "allOf": [
           {
@@ -117364,7 +117344,7 @@
             "type": "object",
             "properties": {
               "operation": {
-                "$ref": "#/components/schemas/NumericOperation"
+                "$ref": "#/components/schemas/AlarmRuleNumericOperation"
               },
               "value": {
                 "$ref": "#/components/schemas/AlarmConditionValueDouble"
@@ -117377,78 +117357,15 @@
           "value"
         ]
       },
-      "AlarmRuleRepeatingCondition": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/AlarmRuleCondition"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "count": {
-                "$ref": "#/components/schemas/AlarmConditionValueInteger"
-              }
-            }
-          }
-        ],
-        "required": [
-          "count"
-        ]
-      },
-      "AlarmRuleSchedule": {
-        "discriminator": {
-          "propertyName": "type",
-          "mapping": {
-            "ANY_TIME": "#/components/schemas/AlarmRuleAnyTimeSchedule",
-            "SPECIFIC_TIME": "#/components/schemas/AlarmRuleSpecificTimeSchedule",
-            "CUSTOM": "#/components/schemas/AlarmRuleCustomTimeSchedule"
-          }
-        },
-        "properties": {
-          "type": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "type"
-        ]
-      },
-      "AlarmRuleSimpleCondition": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/AlarmRuleCondition"
-          }
-        ]
-      },
-      "AlarmRuleSpecificTimeSchedule": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/AlarmRuleSchedule"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "daysOfWeek": {
-                "type": "array",
-                "items": {
-                  "type": "integer",
-                  "format": "int32"
-                },
-                "uniqueItems": true
-              },
-              "endsOn": {
-                "type": "integer",
-                "format": "int64"
-              },
-              "startsOn": {
-                "type": "integer",
-                "format": "int64"
-              },
-              "timezone": {
-                "type": "string"
-              }
-            }
-          }
+      "AlarmRuleNumericOperation": {
+        "type": "string",
+        "enum": [
+          "EQUAL",
+          "NOT_EQUAL",
+          "GREATER",
+          "LESS",
+          "GREATER_OR_EQUAL",
+          "LESS_OR_EQUAL"
         ]
       },
       "AlarmRuleStringFilterPredicate": {
@@ -117459,14 +117376,14 @@
           {
             "type": "object",
             "properties": {
-              "ignoreCase": {
-                "type": "boolean"
-              },
               "operation": {
-                "$ref": "#/components/schemas/StringOperation"
+                "$ref": "#/components/schemas/AlarmRuleStringOperation"
               },
               "value": {
                 "$ref": "#/components/schemas/AlarmConditionValueString"
+              },
+              "ignoreCase": {
+                "type": "boolean"
               }
             }
           }
@@ -117474,6 +117391,37 @@
         "required": [
           "operation",
           "value"
+        ]
+      },
+      "AlarmRuleStringOperation": {
+        "type": "string",
+        "enum": [
+          "EQUAL",
+          "NOT_EQUAL",
+          "STARTS_WITH",
+          "ENDS_WITH",
+          "CONTAINS",
+          "NOT_CONTAINS",
+          "IN",
+          "NOT_IN"
+        ]
+      },
+      "AlarmSchedule": {
+        "discriminator": {
+          "propertyName": "type",
+          "mapping": {
+            "ANY_TIME": "#/components/schemas/AnyTimeSchedule",
+            "SPECIFIC_TIME": "#/components/schemas/SpecificTimeSchedule",
+            "CUSTOM": "#/components/schemas/CustomTimeSchedule"
+          }
+        },
+        "properties": {
+          "type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type"
         ]
       },
       "AlarmSearchStatus": {
@@ -117781,6 +117729,13 @@
         },
         "required": [
           "apiKey"
+        ]
+      },
+      "AnyTimeSchedule": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AlarmSchedule"
+          }
         ]
       },
       "ApiFeature": {
@@ -120669,6 +120624,47 @@
           }
         ]
       },
+      "CustomTimeSchedule": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AlarmSchedule"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "timezone": {
+                "type": "string"
+              },
+              "items": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CustomTimeScheduleItem"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "CustomTimeScheduleItem": {
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "type": "boolean"
+          },
+          "dayOfWeek": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "startsOn": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "endsOn": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
       "Customer": {
         "type": "object",
         "properties": {
@@ -123075,6 +123071,28 @@
               }
             }
           }
+        ]
+      },
+      "DurationAlarmCondition": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AlarmCondition"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "unit": {
+                "$ref": "#/components/schemas/TimeUnit"
+              },
+              "value": {
+                "$ref": "#/components/schemas/AlarmConditionValueLong"
+              }
+            }
+          }
+        ],
+        "required": [
+          "unit",
+          "value"
         ]
       },
       "DynamicValueBoolean": {
@@ -128783,6 +128801,28 @@
           "targets"
         ]
       },
+      "NoDataFilterPredicate": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AlarmRuleKeyFilterPredicate"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "unit": {
+                "$ref": "#/components/schemas/TimeUnit"
+              },
+              "duration": {
+                "$ref": "#/components/schemas/AlarmConditionValueLong"
+              }
+            }
+          }
+        ],
+        "required": [
+          "duration",
+          "unit"
+        ]
+      },
       "NoSecLwM2MBootstrapServerCredential": {
         "allOf": [
           {
@@ -133831,6 +133871,24 @@
           }
         }
       },
+      "RepeatingAlarmCondition": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AlarmCondition"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "count": {
+                "$ref": "#/components/schemas/AlarmConditionValueInteger"
+              }
+            }
+          }
+        ],
+        "required": [
+          "count"
+        ]
+      },
       "Report": {
         "type": "object",
         "properties": {
@@ -135031,13 +135089,11 @@
           },
           "permissions": {
             "$ref": "#/components/schemas/JsonNode",
-            "description": "JSON object with the set of permissions. Structure is specific for role type",
-            "readOnly": true
+            "description": "JSON object with the set of permissions. Structure is specific for role type"
           },
           "excludedPermissions": {
             "$ref": "#/components/schemas/JsonNode",
-            "description": "JSON object with the set of excluded permissions. Only applicable for generic roles. Structure is the same as permissions",
-            "readOnly": true
+            "description": "JSON object with the set of excluded permissions. Only applicable for generic roles. Structure is the same as permissions"
           },
           "version": {
             "type": "integer",
@@ -135051,6 +135107,7 @@
         },
         "required": [
           "name",
+          "permissions",
           "type"
         ]
       },
@@ -136612,6 +136669,13 @@
           }
         }
       },
+      "SimpleAlarmCondition": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AlarmCondition"
+          }
+        ]
+      },
       "SimpleAlarmConditionExpression": {
         "allOf": [
           {
@@ -136623,12 +136687,12 @@
               "filters": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/AlarmRuleConditionFilter"
+                  "$ref": "#/components/schemas/AlarmConditionFilter"
                 },
                 "minItems": 1
               },
               "operation": {
-                "$ref": "#/components/schemas/ComplexOperation"
+                "$ref": "#/components/schemas/AlarmRuleComplexOperation"
               }
             }
           }
@@ -137275,6 +137339,37 @@
           }
         }
       },
+      "SpecificTimeSchedule": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AlarmSchedule"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "timezone": {
+                "type": "string"
+              },
+              "daysOfWeek": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "uniqueItems": true
+              },
+              "startsOn": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "endsOn": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          }
+        ]
+      },
       "SplitViewComponent": {
         "allOf": [
           {
@@ -137606,6 +137701,13 @@
         }
       },
       "SystemLevelUsersFilter": {},
+      "TableSortDirection": {
+        "type": "string",
+        "enum": [
+          "ASC",
+          "DESC"
+        ]
+      },
       "TableSortOrder": {
         "type": "object",
         "properties": {
@@ -137613,7 +137715,7 @@
             "type": "string"
           },
           "direction": {
-            "$ref": "#/components/schemas/Direction"
+            "$ref": "#/components/schemas/TableSortDirection"
           }
         }
       },

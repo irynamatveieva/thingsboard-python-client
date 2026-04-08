@@ -160,8 +160,8 @@ Base export container for ThingsBoard entities
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | arguments | Dict[str, Argument] |  |  |
-| create_rules | Dict[str, AlarmRuleDefinition] |  |  |
-| clear_rule | AlarmRuleDefinition |  | [optional] |
+| create_rules | Dict[str, AlarmRule] |  |  |
+| clear_rule | AlarmRule |  | [optional] |
 | propagate | bool |  | [optional] |
 | propagate_to_owner | bool |  | [optional] |
 | propagate_to_tenant | bool |  | [optional] |
@@ -229,6 +229,7 @@ Base export container for ThingsBoard entities
 |------|------|-------------|-------|
 | id | RuleNodeId | JSON object with the Rule Node Id. Specify this field to update the Rule Node. Referencing non-existing Rule Node Id will cause error. Omit this field to create new rule node. | [optional] |
 | created_time | int | Timestamp of the rule node creation, in milliseconds | [optional] [readonly] |
+| additional_info | object | Additional parameters of the rule node. May include: 'layoutX' (number, X coordinate for visualization), 'layoutY' (number, Y coordinate for visualization), 'description' (string). | [optional] |
 | rule_chain_id | RuleChainId | JSON object with the Rule Chain Id. | [optional] [readonly] |
 | type | str | Full Java Class Name of the rule node implementation. | [optional] |
 | name | str | User defined name of the rule node. Used on UI and for logging. | [optional] |
@@ -238,7 +239,6 @@ Base export container for ThingsBoard entities
 | configuration_version | int | Version of rule node configuration. | [optional] |
 | configuration | object | JSON with the rule node configuration. Structure depends on the rule node implementation. | [optional] |
 | external_id | RuleNodeId |  | [optional] |
-| additional_info | object | Additional parameters of the rule node. May include: 'layoutX' (number, X coordinate for visualization), 'layoutY' (number, Y coordinate for visualization), 'description' (string). | [optional] |
 | debug_mode | bool |  | [optional] |
 
 #### NodeConnectionInfo
@@ -320,11 +320,11 @@ Base export container for ThingsBoard entities
 | relation_type | str |  | [optional] |
 | direction | EntitySearchDirection |  | [optional] |
 
-#### AlarmRuleDefinition
+#### AlarmRule
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
+| condition | AlarmCondition |  |  |
 | alarm_details | str |  | [optional] |
-| condition | AlarmRuleCondition |  |  |
 | dashboard_id | DashboardId |  | [optional] |
 
 #### RelationPathLevel
@@ -460,26 +460,26 @@ Base export container for ThingsBoard entities
 #### EntitySearchDirection (enum)
 `FROM` | `TO`
 
-#### AlarmRuleCondition
+#### AlarmCondition
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | expression | AlarmConditionExpression |  |  |
-| schedule | AlarmConditionValueAlarmRuleSchedule |  | [optional] |
+| schedule | AlarmConditionValueAlarmSchedule |  | [optional] |
 | type | str |  |  |
 
-#### AlarmRuleDurationCondition  *(extends AlarmRuleCondition, type=`DURATION`)*
+#### DurationAlarmCondition  *(extends AlarmCondition, type=`DURATION`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | unit | TimeUnit |  |  |
 | value | AlarmConditionValueLong |  |  |
 
-#### AlarmRuleRepeatingCondition  *(extends AlarmRuleCondition, type=`REPEATING`)*
+#### RepeatingAlarmCondition  *(extends AlarmCondition, type=`REPEATING`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | count | AlarmConditionValueInteger |  |  |
 
-#### AlarmRuleSimpleCondition  *(extends AlarmRuleCondition, type=`SIMPLE`)*
-*See AlarmRuleCondition for properties.*
+#### SimpleAlarmCondition  *(extends AlarmCondition, type=`SIMPLE`)*
+*See AlarmCondition for properties.*
 
 #### AggFunction (enum)
 `MIN` | `MAX` | `SUM` | `AVG` | `COUNT` | `COUNT_UNIQUE`
@@ -510,41 +510,41 @@ Base export container for ThingsBoard entities
 #### SimpleAlarmConditionExpression  *(extends AlarmConditionExpression, type=`SIMPLE`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| filters | List[AlarmRuleConditionFilter] |  |  |
-| operation | ComplexOperation |  | [optional] |
+| filters | List[AlarmConditionFilter] |  |  |
+| operation | AlarmRuleComplexOperation |  | [optional] |
 
 #### TbelAlarmConditionExpression  *(extends AlarmConditionExpression, type=`TBEL`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | expression | str |  |  |
 
-#### AlarmConditionValueAlarmRuleSchedule
+#### AlarmConditionValueAlarmSchedule
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
+| static_value | AlarmSchedule |  | [optional] |
 | dynamic_value_argument | str |  | [optional] |
-| static_value | AlarmRuleSchedule |  | [optional] |
 
-#### AlarmRuleSchedule
+#### AlarmSchedule
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | type | str |  |  |
 
-#### AlarmRuleAnyTimeSchedule  *(extends AlarmRuleSchedule, type=`ANY_TIME`)*
-*See AlarmRuleSchedule for properties.*
+#### AnyTimeSchedule  *(extends AlarmSchedule, type=`ANY_TIME`)*
+*See AlarmSchedule for properties.*
 
-#### AlarmRuleCustomTimeSchedule  *(extends AlarmRuleSchedule, type=`CUSTOM`)*
+#### CustomTimeSchedule  *(extends AlarmSchedule, type=`CUSTOM`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| items | List[AlarmRuleCustomTimeScheduleItem] |  | [optional] |
 | timezone | str |  | [optional] |
+| items | List[CustomTimeScheduleItem] |  | [optional] |
 
-#### AlarmRuleSpecificTimeSchedule  *(extends AlarmRuleSchedule, type=`SPECIFIC_TIME`)*
+#### SpecificTimeSchedule  *(extends AlarmSchedule, type=`SPECIFIC_TIME`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
+| timezone | str |  | [optional] |
 | days_of_week | List[int] |  | [optional] |
-| ends_on | int |  | [optional] |
 | starts_on | int |  | [optional] |
-| timezone | str |  | [optional] |
+| ends_on | int |  | [optional] |
 
 #### TimeUnit (enum)
 `NANOSECONDS` | `MICROSECONDS` | `MILLISECONDS` | `SECONDS` | `MINUTES` | `HOURS` | `DAYS`
@@ -561,16 +561,19 @@ Base export container for ThingsBoard entities
 | static_value | int |  | [optional] |
 | dynamic_value_argument | str |  | [optional] |
 
-#### AlarmRuleConditionFilter
+#### AlarmConditionFilter
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | argument | str |  |  |
-| operation | ComplexOperation |  | [optional] |
-| predicates | List[AlarmRuleKeyFilterPredicate] |  |  |
 | value_type | EntityKeyValueType |  |  |
+| operation | AlarmRuleComplexOperation |  | [optional] |
+| predicates | List[AlarmRuleKeyFilterPredicate] |  |  |
 
-#### ComplexOperation (enum)
+#### AlarmRuleComplexOperation (enum)
 `AND` | `OR`
+
+#### EntityKeyValueType (enum)
+`STRING` | `NUMERIC` | `BOOLEAN` | `DATE_TIME`
 
 #### AlarmRuleKeyFilterPredicate
 | Name | Type | Description | Notes |
@@ -580,46 +583,43 @@ Base export container for ThingsBoard entities
 #### AlarmRuleBooleanFilterPredicate  *(extends AlarmRuleKeyFilterPredicate, type=`BOOLEAN`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| operation | BooleanOperation |  |  |
+| operation | AlarmRuleBooleanOperation |  |  |
 | value | AlarmConditionValueBoolean |  |  |
 
 #### AlarmRuleComplexFilterPredicate  *(extends AlarmRuleKeyFilterPredicate, type=`COMPLEX`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| operation | ComplexOperation |  | [optional] |
+| operation | AlarmRuleComplexOperation |  | [optional] |
 | predicates | List[AlarmRuleKeyFilterPredicate] |  | [optional] |
 
-#### AlarmRuleNoDataFilterPredicate  *(extends AlarmRuleKeyFilterPredicate, type=`NO_DATA`)*
+#### NoDataFilterPredicate  *(extends AlarmRuleKeyFilterPredicate, type=`NO_DATA`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| duration | AlarmConditionValueLong |  |  |
 | unit | TimeUnit |  |  |
+| duration | AlarmConditionValueLong |  |  |
 
 #### AlarmRuleNumericFilterPredicate  *(extends AlarmRuleKeyFilterPredicate, type=`NUMERIC`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| operation | NumericOperation |  |  |
+| operation | AlarmRuleNumericOperation |  |  |
 | value | AlarmConditionValueDouble |  |  |
 
 #### AlarmRuleStringFilterPredicate  *(extends AlarmRuleKeyFilterPredicate, type=`STRING`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| ignore_case | bool |  | [optional] |
-| operation | StringOperation |  |  |
+| operation | AlarmRuleStringOperation |  |  |
 | value | AlarmConditionValueString |  |  |
+| ignore_case | bool |  | [optional] |
 
-#### EntityKeyValueType (enum)
-`STRING` | `NUMERIC` | `BOOLEAN` | `DATE_TIME`
-
-#### AlarmRuleCustomTimeScheduleItem
+#### CustomTimeScheduleItem
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| day_of_week | int |  | [optional] |
 | enabled | bool |  | [optional] |
-| ends_on | int |  | [optional] |
+| day_of_week | int |  | [optional] |
 | starts_on | int |  | [optional] |
+| ends_on | int |  | [optional] |
 
-#### StringOperation (enum)
+#### AlarmRuleStringOperation (enum)
 `EQUAL` | `NOT_EQUAL` | `STARTS_WITH` | `ENDS_WITH` | `CONTAINS` | `NOT_CONTAINS` | `IN` | `NOT_IN`
 
 #### AlarmConditionValueString
@@ -628,7 +628,7 @@ Base export container for ThingsBoard entities
 | static_value | str |  | [optional] |
 | dynamic_value_argument | str |  | [optional] |
 
-#### NumericOperation (enum)
+#### AlarmRuleNumericOperation (enum)
 `EQUAL` | `NOT_EQUAL` | `GREATER` | `LESS` | `GREATER_OR_EQUAL` | `LESS_OR_EQUAL`
 
 #### AlarmConditionValueDouble
@@ -637,7 +637,7 @@ Base export container for ThingsBoard entities
 | static_value | float |  | [optional] |
 | dynamic_value_argument | str |  | [optional] |
 
-#### BooleanOperation (enum)
+#### AlarmRuleBooleanOperation (enum)
 `EQUAL` | `NOT_EQUAL`
 
 #### AlarmConditionValueBoolean

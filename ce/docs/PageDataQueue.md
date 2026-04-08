@@ -23,6 +23,7 @@
 |------|------|-------------|-------|
 | id | QueueId |  | [optional] |
 | created_time | int | Entity creation timestamp in milliseconds since Unix epoch | [optional] [readonly] |
+| additional_info | object |  | [optional] |
 | tenant_id | TenantId |  | [optional] |
 | name | str |  | [optional] |
 | topic | str |  | [optional] |
@@ -32,7 +33,6 @@
 | pack_processing_timeout | int |  | [optional] |
 | submit_strategy | SubmitStrategy |  | [optional] |
 | processing_strategy | ProcessingStrategy |  | [optional] |
-| additional_info | object |  | [optional] |
 
 #### SubmitStrategy
 | Name | Type | Description | Notes |

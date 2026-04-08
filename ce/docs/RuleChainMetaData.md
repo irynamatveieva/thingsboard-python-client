@@ -28,6 +28,7 @@ A JSON value representing the rule chain metadata.
 |------|------|-------------|-------|
 | id | RuleNodeId | JSON object with the Rule Node Id. Specify this field to update the Rule Node. Referencing non-existing Rule Node Id will cause error. Omit this field to create new rule node. | [optional] |
 | created_time | int | Timestamp of the rule node creation, in milliseconds | [optional] [readonly] |
+| additional_info | object | Additional parameters of the rule node. May include: 'layoutX' (number, X coordinate for visualization), 'layoutY' (number, Y coordinate for visualization), 'description' (string). | [optional] |
 | rule_chain_id | RuleChainId | JSON object with the Rule Chain Id. | [optional] [readonly] |
 | type | str | Full Java Class Name of the rule node implementation. | [optional] |
 | name | str | User defined name of the rule node. Used on UI and for logging. | [optional] |
@@ -37,7 +38,6 @@ A JSON value representing the rule chain metadata.
 | configuration_version | int | Version of rule node configuration. | [optional] |
 | configuration | object | JSON with the rule node configuration. Structure depends on the rule node implementation. | [optional] |
 | external_id | RuleNodeId |  | [optional] |
-| additional_info | object | Additional parameters of the rule node. May include: 'layoutX' (number, X coordinate for visualization), 'layoutY' (number, Y coordinate for visualization), 'description' (string). | [optional] |
 | debug_mode | bool |  | [optional] |
 
 #### NodeConnectionInfo

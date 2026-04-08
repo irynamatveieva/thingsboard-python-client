@@ -38,18 +38,18 @@ class Device(BaseModel):
     """ # noqa: E501
     id: Optional[DeviceId] = Field(default=None, description="JSON object with the Device Id. Specify this field to update the Device. Referencing non-existing Device Id will cause error. Omit this field to create new Device.")
     created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the device creation, in milliseconds", serialization_alias="createdTime")
+    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the device. May include: 'gateway' (boolean, whether the device is a gateway), 'description' (string), 'lastConnectedGateway' (string, UUID of the last gateway that connected this device).", serialization_alias="additionalInfo")
     tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id. Use 'assignDeviceToTenant' to change the Tenant Id.", serialization_alias="tenantId")
     customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id. Use 'assignDeviceToCustomer' to change the Customer Id.", serialization_alias="customerId")
     name: StrictStr = Field(description="Unique Device Name in scope of Tenant")
     type: Optional[StrictStr] = Field(default=None, description="Device Profile Name")
     label: Optional[StrictStr] = Field(default=None, description="Label that may be used in widgets")
     device_profile_id: Optional[DeviceProfileId] = Field(default=None, description="JSON object with Device Profile Id. If not provided, the type will be used to determine the profile. If neither deviceProfileId nor type is specified, the default device profile will be used.", serialization_alias="deviceProfileId")
+    device_data: Optional[DeviceData] = Field(default=None, description="JSON object with content specific to type of transport in the device profile.", serialization_alias="deviceData")
     firmware_id: Optional[OtaPackageId] = Field(default=None, description="JSON object with Ota Package Id.", serialization_alias="firmwareId")
     software_id: Optional[OtaPackageId] = Field(default=None, description="JSON object with Ota Package Id.", serialization_alias="softwareId")
     version: Optional[StrictInt] = None
-    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the device. May include: 'gateway' (boolean, whether the device is a gateway), 'description' (string), 'lastConnectedGateway' (string, UUID of the last gateway that connected this device).", serialization_alias="additionalInfo")
-    device_data: Optional[DeviceData] = Field(default=None, description="JSON object with content specific to type of transport in the device profile.", serialization_alias="deviceData")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "customerId", "name", "type", "label", "deviceProfileId", "firmwareId", "softwareId", "version", "additionalInfo", "deviceData"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "additionalInfo", "tenantId", "customerId", "name", "type", "label", "deviceProfileId", "deviceData", "firmwareId", "softwareId", "version"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -113,15 +113,15 @@ class Device(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of device_profile_id
         if self.device_profile_id:
             _dict['deviceProfileId'] = self.device_profile_id.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of device_data
+        if self.device_data:
+            _dict['deviceData'] = self.device_data.to_dict()
         # override the default output from pydantic by calling `to_dict()` of firmware_id
         if self.firmware_id:
             _dict['firmwareId'] = self.firmware_id.to_dict()
         # override the default output from pydantic by calling `to_dict()` of software_id
         if self.software_id:
             _dict['softwareId'] = self.software_id.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of device_data
-        if self.device_data:
-            _dict['deviceData'] = self.device_data.to_dict()
         # set to None if additional_info (nullable) is None
         # and model_fields_set contains the field
         if self.additional_info is None and "additional_info" in self.model_fields_set:
@@ -141,17 +141,17 @@ class Device(BaseModel):
         _obj = cls.model_validate({
             "id": DeviceId.from_dict(obj["id"]) if obj.get("id") is not None else None,
             "created_time": obj.get("createdTime"),
+            "additional_info": obj.get("additionalInfo"),
             "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
             "customer_id": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
             "name": obj.get("name"),
             "type": obj.get("type"),
             "label": obj.get("label"),
             "device_profile_id": DeviceProfileId.from_dict(obj["deviceProfileId"]) if obj.get("deviceProfileId") is not None else None,
+            "device_data": DeviceData.from_dict(obj["deviceData"]) if obj.get("deviceData") is not None else None,
             "firmware_id": OtaPackageId.from_dict(obj["firmwareId"]) if obj.get("firmwareId") is not None else None,
             "software_id": OtaPackageId.from_dict(obj["softwareId"]) if obj.get("softwareId") is not None else None,
-            "version": obj.get("version"),
-            "additional_info": obj.get("additionalInfo"),
-            "device_data": DeviceData.from_dict(obj["deviceData"]) if obj.get("deviceData") is not None else None
+            "version": obj.get("version")
         })
         return _obj
 

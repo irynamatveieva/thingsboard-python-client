@@ -36,6 +36,7 @@ class User(BaseModel):
     """ # noqa: E501
     id: Optional[UserId] = Field(default=None, description="JSON object with the User Id. Specify this field to update the device. Referencing non-existing User Id will cause error. Omit this field to create new customer.")
     created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the user creation, in milliseconds", serialization_alias="createdTime")
+    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the user. May include: 'defaultDashboardId' (string, UUID of the default dashboard), 'defaultDashboardFullscreen' (boolean), 'homeDashboardId' (string, UUID of the home dashboard), 'homeDashboardHideToolbar' (boolean), 'lang' (string, user locale, e.g. 'en_US'), 'authProviderName' (string, name of the authentication provider).", serialization_alias="additionalInfo")
     tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with the Tenant Id.", serialization_alias="tenantId")
     customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with the Customer Id.", serialization_alias="customerId")
     email: StrictStr = Field(description="Email of the user")
@@ -44,9 +45,8 @@ class User(BaseModel):
     last_name: Optional[StrictStr] = Field(default=None, description="Last name of the user", serialization_alias="lastName")
     phone: Optional[StrictStr] = Field(default=None, description="Phone number of the user")
     version: Optional[StrictInt] = None
-    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the user. May include: 'defaultDashboardId' (string, UUID of the default dashboard), 'defaultDashboardFullscreen' (boolean), 'homeDashboardId' (string, UUID of the home dashboard), 'homeDashboardHideToolbar' (boolean), 'lang' (string, user locale, e.g. 'en_US'), 'authProviderName' (string, name of the authentication provider).", serialization_alias="additionalInfo")
     name: Optional[StrictStr] = Field(default=None, description="Duplicates the email of the user, readonly")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "customerId", "email", "authority", "firstName", "lastName", "phone", "version", "additionalInfo", "name"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "additionalInfo", "tenantId", "customerId", "email", "authority", "firstName", "lastName", "phone", "version", "name"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -124,6 +124,7 @@ class User(BaseModel):
         _obj = cls.model_validate({
             "id": UserId.from_dict(obj["id"]) if obj.get("id") is not None else None,
             "created_time": obj.get("createdTime"),
+            "additional_info": obj.get("additionalInfo"),
             "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
             "customer_id": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
             "email": obj.get("email"),
@@ -132,7 +133,6 @@ class User(BaseModel):
             "last_name": obj.get("lastName"),
             "phone": obj.get("phone"),
             "version": obj.get("version"),
-            "additional_info": obj.get("additionalInfo"),
             "name": obj.get("name")
         })
         return _obj
