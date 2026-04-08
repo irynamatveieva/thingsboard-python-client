@@ -11,6 +11,7 @@ Result of a solution import operation.
 |------------ | ------------- | ------------- | -------------|
 | **success** | **bool** | 'true' if all entities were imported successfully. | [optional] |
 | **created** | **Dict[str, int]** | Number of newly created entities per entity type. Entity types with zero created entities are omitted. | [optional] |
+| **id_mapping** | **Dict[str, UUID]** | Mapping from external entity IDs (as they appear in the solution file) to the internal entity IDs assigned during import. | [optional] |
 
 
 
