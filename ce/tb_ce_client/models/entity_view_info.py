@@ -37,6 +37,7 @@ class EntityViewInfo(BaseModel):
     """ # noqa: E501
     id: Optional[EntityViewId] = Field(default=None, description="JSON object with the Entity View Id. Specify this field to update the Entity View. Referencing non-existing Entity View Id will cause error. Omit this field to create new Entity View.")
     created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the Entity View creation, in milliseconds", serialization_alias="createdTime")
+    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the entity view. May include: 'description' (string).", serialization_alias="additionalInfo")
     entity_id: EntityId = Field(description="JSON object with the referenced Entity Id (Device or Asset).", serialization_alias="entityId")
     tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id.", serialization_alias="tenantId")
     customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id. Use 'assignEntityViewToCustomer' to change the Customer Id.", serialization_alias="customerId")
@@ -48,8 +49,7 @@ class EntityViewInfo(BaseModel):
     version: Optional[StrictInt] = None
     customer_title: Optional[StrictStr] = Field(default=None, description="Title of the Customer that owns the entity view.", serialization_alias="customerTitle")
     customer_is_public: Optional[StrictBool] = Field(default=None, description="Indicates special 'Public' Customer that is auto-generated to use the entity view on public dashboards.", serialization_alias="customerIsPublic")
-    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the entity view. May include: 'description' (string).", serialization_alias="additionalInfo")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "entityId", "tenantId", "customerId", "name", "type", "keys", "startTimeMs", "endTimeMs", "version", "customerTitle", "customerIsPublic", "additionalInfo"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "additionalInfo", "entityId", "tenantId", "customerId", "name", "type", "keys", "startTimeMs", "endTimeMs", "version", "customerTitle", "customerIsPublic"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -139,6 +139,7 @@ class EntityViewInfo(BaseModel):
         _obj = cls.model_validate({
             "id": EntityViewId.from_dict(obj["id"]) if obj.get("id") is not None else None,
             "created_time": obj.get("createdTime"),
+            "additional_info": obj.get("additionalInfo"),
             "entity_id": EntityId.from_dict(obj["entityId"]) if obj.get("entityId") is not None else None,
             "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
             "customer_id": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
@@ -149,8 +150,7 @@ class EntityViewInfo(BaseModel):
             "end_time_ms": obj.get("endTimeMs"),
             "version": obj.get("version"),
             "customer_title": obj.get("customerTitle"),
-            "customer_is_public": obj.get("customerIsPublic"),
-            "additional_info": obj.get("additionalInfo")
+            "customer_is_public": obj.get("customerIsPublic")
         })
         return _obj
 

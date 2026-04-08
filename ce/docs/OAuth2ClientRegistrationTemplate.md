@@ -9,6 +9,7 @@
 |------------ | ------------- | ------------- | -------------|
 | **id** | [**OAuth2ClientRegistrationTemplateId**](OAuth2ClientRegistrationTemplateId.md) |  | [optional] |
 | **created_time** | **int** | Entity creation timestamp in milliseconds since Unix epoch | [optional] [readonly] |
+| **additional_info** | **object** |  | [optional] |
 | **provider_id** | **str** | OAuth2 provider identifier (e.g. its name) | |
 | **mapper_config** | [**OAuth2MapperConfig**](OAuth2MapperConfig.md) | Default config for mapping OAuth2 log in response to platform entities | [optional] |
 | **authorization_uri** | **str** | Default authorization URI of the OAuth2 provider | [optional] |
@@ -22,7 +23,6 @@
 | **login_button_icon** | **str** | Default log in button icon for OAuth2 provider | [optional] |
 | **login_button_label** | **str** | Default OAuth2 provider label | [optional] |
 | **help_link** | **str** | Help link for OAuth2 provider | [optional] |
-| **additional_info** | **object** |  | [optional] |
 | **name** | **str** |  | [optional] |
 
 

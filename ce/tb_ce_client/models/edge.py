@@ -36,6 +36,7 @@ class Edge(BaseModel):
     """ # noqa: E501
     id: Optional[EdgeId] = Field(default=None, description="JSON object with the Edge Id. Specify this field to update the Edge. Referencing non-existing Edge Id will cause error. Omit this field to create new Edge.")
     created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the edge creation, in milliseconds", serialization_alias="createdTime")
+    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the edge. May include: 'description' (string).", serialization_alias="additionalInfo")
     tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id. Use 'assignDeviceToTenant' to change the Tenant Id.", serialization_alias="tenantId")
     customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id. Use 'assignEdgeToCustomer' to change the Customer Id.", serialization_alias="customerId")
     root_rule_chain_id: Optional[RuleChainId] = Field(default=None, description="JSON object with Root Rule Chain Id. Use 'setEdgeRootRuleChain' to change the Root Rule Chain Id.", serialization_alias="rootRuleChainId")
@@ -45,8 +46,7 @@ class Edge(BaseModel):
     routing_key: StrictStr = Field(description="Edge routing key ('username') to authorize on cloud", serialization_alias="routingKey")
     secret: StrictStr = Field(description="Edge secret ('password') to authorize on cloud")
     version: Optional[StrictInt] = None
-    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the edge. May include: 'description' (string).", serialization_alias="additionalInfo")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "customerId", "rootRuleChainId", "name", "type", "label", "routingKey", "secret", "version", "additionalInfo"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "additionalInfo", "tenantId", "customerId", "rootRuleChainId", "name", "type", "label", "routingKey", "secret", "version"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -131,6 +131,7 @@ class Edge(BaseModel):
         _obj = cls.model_validate({
             "id": EdgeId.from_dict(obj["id"]) if obj.get("id") is not None else None,
             "created_time": obj.get("createdTime"),
+            "additional_info": obj.get("additionalInfo"),
             "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
             "customer_id": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
             "root_rule_chain_id": RuleChainId.from_dict(obj["rootRuleChainId"]) if obj.get("rootRuleChainId") is not None else None,
@@ -139,8 +140,7 @@ class Edge(BaseModel):
             "label": obj.get("label"),
             "routing_key": obj.get("routingKey"),
             "secret": obj.get("secret"),
-            "version": obj.get("version"),
-            "additional_info": obj.get("additionalInfo")
+            "version": obj.get("version")
         })
         return _obj
 

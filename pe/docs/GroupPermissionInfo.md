@@ -44,8 +44,8 @@
 | customer_id | CustomerId | JSON object with Customer Id. | [optional] [readonly] |
 | name | str | Role Name |  |
 | type | RoleType | Type of the role: generic or group |  |
-| permissions | object | JSON object with the set of permissions. Structure is specific for role type | [optional] [readonly] |
-| excluded_permissions | object | JSON object with the set of excluded permissions. Only applicable for generic roles. Structure is the same as permissions | [optional] [readonly] |
+| permissions | object | JSON object with the set of permissions. Structure is specific for role type |  |
+| excluded_permissions | object | JSON object with the set of excluded permissions. Only applicable for generic roles. Structure is the same as permissions | [optional] |
 | version | int |  | [optional] |
 | owner_id | EntityId | JSON object with Customer or Tenant Id | [optional] [readonly] |
 

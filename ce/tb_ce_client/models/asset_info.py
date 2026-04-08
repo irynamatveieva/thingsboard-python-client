@@ -36,6 +36,7 @@ class AssetInfo(BaseModel):
     """ # noqa: E501
     id: Optional[AssetId] = Field(default=None, description="JSON object with the asset Id. Specify this field to update the asset. Referencing non-existing asset Id will cause error. Omit this field to create new asset.")
     created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the asset creation, in milliseconds", serialization_alias="createdTime")
+    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the asset. May include: 'description' (string).", serialization_alias="additionalInfo")
     tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id.", serialization_alias="tenantId")
     customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id. Use 'assignAssetToCustomer' to change the Customer Id.", serialization_alias="customerId")
     name: StrictStr = Field(description="Unique Asset Name in scope of Tenant")
@@ -46,8 +47,7 @@ class AssetInfo(BaseModel):
     customer_title: Optional[StrictStr] = Field(default=None, description="Title of the Customer that owns the asset.", serialization_alias="customerTitle")
     customer_is_public: Optional[StrictBool] = Field(default=None, description="Indicates special 'Public' Customer that is auto-generated to use the assets on public dashboards.", serialization_alias="customerIsPublic")
     asset_profile_name: Optional[StrictStr] = Field(default=None, description="Name of the corresponding Asset Profile.", serialization_alias="assetProfileName")
-    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the asset. May include: 'description' (string).", serialization_alias="additionalInfo")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "customerId", "name", "type", "label", "assetProfileId", "version", "customerTitle", "customerIsPublic", "assetProfileName", "additionalInfo"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "additionalInfo", "tenantId", "customerId", "name", "type", "label", "assetProfileId", "version", "customerTitle", "customerIsPublic", "assetProfileName"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -136,6 +136,7 @@ class AssetInfo(BaseModel):
         _obj = cls.model_validate({
             "id": AssetId.from_dict(obj["id"]) if obj.get("id") is not None else None,
             "created_time": obj.get("createdTime"),
+            "additional_info": obj.get("additionalInfo"),
             "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
             "customer_id": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
             "name": obj.get("name"),
@@ -145,8 +146,7 @@ class AssetInfo(BaseModel):
             "version": obj.get("version"),
             "customer_title": obj.get("customerTitle"),
             "customer_is_public": obj.get("customerIsPublic"),
-            "asset_profile_name": obj.get("assetProfileName"),
-            "additional_info": obj.get("additionalInfo")
+            "asset_profile_name": obj.get("assetProfileName")
         })
         return _obj
 

@@ -23,6 +23,7 @@
 |------|------|-------------|-------|
 | id | EntityViewId | JSON object with the Entity View Id. Specify this field to update the Entity View. Referencing non-existing Entity View Id will cause error. Omit this field to create new Entity View. | [optional] |
 | created_time | int | Timestamp of the Entity View creation, in milliseconds | [optional] [readonly] |
+| additional_info | object | Additional parameters of the entity view. May include: 'description' (string). | [optional] |
 | entity_id | EntityId | JSON object with the referenced Entity Id (Device or Asset). |  |
 | tenant_id | TenantId | JSON object with Tenant Id. | [optional] [readonly] |
 | customer_id | CustomerId | JSON object with Customer Id. Use 'assignEntityViewToCustomer' to change the Customer Id. | [optional] [readonly] |
@@ -32,7 +33,6 @@
 | start_time_ms | int | Represents the start time of the interval that is used to limit access to target device telemetry. Customer will not be able to see entity telemetry that is outside the specified interval; | [optional] |
 | end_time_ms | int | Represents the end time of the interval that is used to limit access to target device telemetry. Customer will not be able to see entity telemetry that is outside the specified interval; | [optional] |
 | version | int |  | [optional] |
-| additional_info | object | Additional parameters of the entity view. May include: 'description' (string). | [optional] |
 
 #### TelemetryEntityView
 | Name | Type | Description | Notes |

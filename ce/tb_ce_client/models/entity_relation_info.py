@@ -38,10 +38,10 @@ class EntityRelationInfo(BaseModel):
     type: Annotated[str, Field(min_length=1, strict=True)] = Field(description="String value of relation type.")
     type_group: RelationTypeGroup = Field(description="Represents the type group of the relation.", serialization_alias="typeGroup")
     version: Optional[StrictInt] = None
+    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the relation.", serialization_alias="additionalInfo")
     from_name: Optional[StrictStr] = Field(default=None, description="Name of the entity for [from] direction.", serialization_alias="fromName")
     to_name: Optional[StrictStr] = Field(default=None, description="Name of the entity for [to] direction.", serialization_alias="toName")
-    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the relation.", serialization_alias="additionalInfo")
-    __properties: ClassVar[List[str]] = ["from", "to", "type", "typeGroup", "version", "fromName", "toName", "additionalInfo"]
+    __properties: ClassVar[List[str]] = ["from", "to", "type", "typeGroup", "version", "additionalInfo", "fromName", "toName"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -119,9 +119,9 @@ class EntityRelationInfo(BaseModel):
             "type": obj.get("type"),
             "type_group": obj.get("typeGroup"),
             "version": obj.get("version"),
+            "additional_info": obj.get("additionalInfo"),
             "from_name": obj.get("fromName"),
-            "to_name": obj.get("toName"),
-            "additional_info": obj.get("additionalInfo")
+            "to_name": obj.get("toName")
         })
         return _obj
 

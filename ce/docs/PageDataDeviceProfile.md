@@ -33,13 +33,13 @@
 | default_rule_chain_id | RuleChainId | Reference to the rule chain. If present, the specified rule chain will be used to process all messages related to device, including telemetry, attribute updates, etc. Otherwise, the root rule chain will be used to process those messages. | [optional] |
 | default_dashboard_id | DashboardId | Reference to the dashboard. Used in the mobile application to open the default dashboard when user navigates to device details. | [optional] |
 | default_queue_name | str | Rule engine queue name. If present, the specified queue will be used to store all unprocessed messages related to device, including telemetry, attribute updates, etc. Otherwise, the 'Main' queue will be used to store those messages. | [optional] |
+| profile_data | DeviceProfileData | Complex JSON object that includes addition device profile configuration (transport, alarm rules, etc). | [optional] |
 | provision_device_key | str | Unique provisioning key used by 'Device Provisioning' feature. | [optional] |
 | firmware_id | OtaPackageId | Reference to the firmware OTA package. If present, the specified package will be used as default device firmware. | [optional] |
 | software_id | OtaPackageId | Reference to the software OTA package. If present, the specified package will be used as default device software. | [optional] |
 | default_edge_rule_chain_id | RuleChainId | Reference to the edge rule chain. If present, the specified edge rule chain will be used on the edge to process all messages related to device, including telemetry, attribute updates, etc. Otherwise, the edge root rule chain will be used to process those messages. | [optional] |
 | version | int |  | [optional] |
 | default | bool | Used to mark the default profile. Default profile is used when the device profile is not specified during device creation. | [optional] |
-| profile_data | DeviceProfileData | Complex JSON object that includes addition device profile configuration (transport, alarm rules, etc). | [optional] |
 
 #### DeviceProfileType (enum)
 `DEFAULT`

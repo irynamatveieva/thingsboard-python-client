@@ -34,6 +34,7 @@ class Customer(BaseModel):
     """ # noqa: E501
     id: Optional[CustomerId] = Field(default=None, description="JSON object with the customer Id. Specify this field to update the customer. Referencing non-existing customer Id will cause error. Omit this field to create new customer.")
     created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the customer creation, in milliseconds", serialization_alias="createdTime")
+    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the customer. May include: 'description' (string), 'homeDashboardId' (string, UUID of the home dashboard), 'homeDashboardHideToolbar' (boolean, whether to hide the dashboard toolbar), 'isPublic' (boolean, whether this is a public customer).", serialization_alias="additionalInfo")
     country: Optional[StrictStr] = Field(default=None, description="Country")
     state: Optional[StrictStr] = Field(default=None, description="State")
     city: Optional[StrictStr] = Field(default=None, description="City")
@@ -45,9 +46,8 @@ class Customer(BaseModel):
     title: StrictStr = Field(description="Title of the customer")
     tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id", serialization_alias="tenantId")
     version: Optional[StrictInt] = None
-    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the customer. May include: 'description' (string), 'homeDashboardId' (string, UUID of the home dashboard), 'homeDashboardHideToolbar' (boolean, whether to hide the dashboard toolbar), 'isPublic' (boolean, whether this is a public customer).", serialization_alias="additionalInfo")
     name: Optional[StrictStr] = Field(default=None, description="Name of the customer. Read-only, duplicated from title for backward compatibility")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "country", "state", "city", "address", "address2", "zip", "phone", "email", "title", "tenantId", "version", "additionalInfo", "name"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "additionalInfo", "country", "state", "city", "address", "address2", "zip", "phone", "email", "title", "tenantId", "version", "name"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -122,6 +122,7 @@ class Customer(BaseModel):
         _obj = cls.model_validate({
             "id": CustomerId.from_dict(obj["id"]) if obj.get("id") is not None else None,
             "created_time": obj.get("createdTime"),
+            "additional_info": obj.get("additionalInfo"),
             "country": obj.get("country"),
             "state": obj.get("state"),
             "city": obj.get("city"),
@@ -133,7 +134,6 @@ class Customer(BaseModel):
             "title": obj.get("title"),
             "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
             "version": obj.get("version"),
-            "additional_info": obj.get("additionalInfo"),
             "name": obj.get("name")
         })
         return _obj
