@@ -23,8 +23,8 @@
 |------|------|-------------|-------|
 | id | AiModelId |  | [optional] |
 | created_time | int | Entity creation timestamp in milliseconds since Unix epoch | [optional] [readonly] |
-| tenant_id | TenantId | JSON object representing the ID of the tenant associated with this AI model | [readonly] |
-| version | int | Version of the AI model record; increments automatically whenever the record is changed | [readonly] |
+| tenant_id | TenantId | JSON object representing the ID of the tenant associated with this AI model | [optional] [readonly] |
+| version | int | Version of the AI model record; increments automatically whenever the record is changed | [optional] [readonly] |
 | name | str | Display name for this AI model configuration; not the technical model identifier |  |
 | configuration | AiModelConfig | Configuration of the AI model | [optional] |
 

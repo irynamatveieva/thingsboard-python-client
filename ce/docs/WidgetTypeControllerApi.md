@@ -70,7 +70,7 @@ Returns an array of Widget Type fqns that belong to specified Widget Bundle.  Av
 List[WidgetType] client.get_bundle_widget_types(widgets_bundle_id: str)
 ```
 
-**GET** `/api/widgetsBundles/{widgetsBundleId}/widgetTypes`
+**GET** `/api/widgetsBundle/{widgetsBundleId}/widgetTypes`
 
 Get all Widget types for specified Bundle (getBundleWidgetTypes)
 

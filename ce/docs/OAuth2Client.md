@@ -9,7 +9,7 @@
 |------------ | ------------- | ------------- | -------------|
 | **id** | [**OAuth2ClientId**](OAuth2ClientId.md) |  | [optional] |
 | **created_time** | **int** | Entity creation timestamp in milliseconds since Unix epoch | [optional] [readonly] |
-| **additional_info** | **object** | Additional info of OAuth2 client (e.g. providerName) | |
+| **additional_info** | **object** | Additional info of OAuth2 client. Must include: 'providerName' (string, name of the OAuth2 provider). | |
 | **tenant_id** | [**TenantId**](TenantId.md) | JSON object with Tenant Id | [optional] |
 | **title** | **str** | Oauth2 client title | |
 | **mapper_config** | [**OAuth2MapperConfig**](OAuth2MapperConfig.md) | Config for mapping OAuth2 log in response to platform entities | |

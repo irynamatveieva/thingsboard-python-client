@@ -11,10 +11,10 @@ str client.get_activation_link(user_id: str)  # Get activation link (getActivati
 UserActivationLink client.get_activation_link_info(user_id: str)  # Get activation link info (getActivationLinkInfo)
 PageDataUser client.get_customer_users(customer_id: str, page_size: int, page: int, text_search: Optional[str] = None, sort_property: Optional[str] = None, sort_order: Optional[str] = None)  # Get Customer Users (getCustomerUsers)
 object client.get_general_user_settings()  # Get user settings (getGeneralUserSettings)
+UserDashboardsInfo client.get_last_visited_dashboards()  # Get information about last visited and starred dashboards (getLastVisitedDashboards)
 MobileSessionInfo client.get_mobile_session(x_mobile_token: str)  # getMobileSession
 PageDataUser client.get_tenant_admins(tenant_id: str, page_size: int, page: int, text_search: Optional[str] = None, sort_property: Optional[str] = None, sort_order: Optional[str] = None)  # Get Tenant Users (getTenantAdmins)
 User client.get_user_by_id(user_id: str)  # Get User (getUserById)
-UserDashboardsInfo client.get_user_dashboards_info()  # Get information about last visited and starred dashboards (getUserDashboardsInfo)
 object client.get_user_settings(type: str)  # Get user settings (getUserSettings)
 JwtPair client.get_user_token(user_id: str)  # Get User Token (getUserToken)
 PageDataUser client.get_users(page_size: int, page: int, text_search: Optional[str] = None, sort_property: Optional[str] = None, sort_order: Optional[str] = None)  # Get Users (getUsers)
@@ -228,6 +228,23 @@ Fetch the User settings based on authorized user.
 **object**
 
 
+## get_last_visited_dashboards
+
+```python
+UserDashboardsInfo client.get_last_visited_dashboards()
+```
+
+**GET** `/api/user/lastVisitedDashboards`
+
+Get information about last visited and starred dashboards (getLastVisitedDashboards)
+
+Fetch the list of last visited and starred dashboards. Both lists are limited to 10 items.  Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
+
+### Return type
+
+**UserDashboardsInfo**
+
+
 ## get_mobile_session
 
 ```python
@@ -301,23 +318,6 @@ Fetch the User object based on the provided User Id. If the user has the authori
 ### Return type
 
 **User**
-
-
-## get_user_dashboards_info
-
-```python
-UserDashboardsInfo client.get_user_dashboards_info()
-```
-
-**GET** `/api/user/dashboards`
-
-Get information about last visited and starred dashboards (getUserDashboardsInfo)
-
-Fetch the list of last visited and starred dashboards. Both lists are limited to 10 items.  Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
-
-### Return type
-
-**UserDashboardsInfo**
 
 
 ## get_user_settings
