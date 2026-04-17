@@ -132,7 +132,7 @@ ls -lh "${UPLOAD_FILES[@]}"
 echo ""
 
 # Upload via twine (reads credentials from ~/.pypirc)
-twine upload --repository "${REPO}" "${UPLOAD_FILES[@]}"
+twine upload --verbose --repository "${REPO}" "${UPLOAD_FILES[@]}"
 
 echo ""
 echo "=== Upload complete ==="
