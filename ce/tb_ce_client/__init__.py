@@ -628,7 +628,6 @@ if TYPE_CHECKING:
     from tb_ce_client.models.rule_chain_id import RuleChainId
     from tb_ce_client.models.rule_chain_import_result import RuleChainImportResult
     from tb_ce_client.models.rule_chain_meta_data import RuleChainMetaData
-    from tb_ce_client.models.rule_chain_note import RuleChainNote
     from tb_ce_client.models.rule_chain_output_labels_usage import RuleChainOutputLabelsUsage
     from tb_ce_client.models.rule_chain_type import RuleChainType
     from tb_ce_client.models.rule_engine_component_lifecycle_event_notification_rule_trigger_config import RuleEngineComponentLifecycleEventNotificationRuleTriggerConfig
@@ -1367,7 +1366,6 @@ _LAZY_CLASSES = {
     "RuleChainId": "tb_ce_client.models.rule_chain_id",
     "RuleChainImportResult": "tb_ce_client.models.rule_chain_import_result",
     "RuleChainMetaData": "tb_ce_client.models.rule_chain_meta_data",
-    "RuleChainNote": "tb_ce_client.models.rule_chain_note",
     "RuleChainOutputLabelsUsage": "tb_ce_client.models.rule_chain_output_labels_usage",
     "RuleChainType": "tb_ce_client.models.rule_chain_type",
     "RuleEngineComponentLifecycleEventNotificationRuleTriggerConfig": "tb_ce_client.models.rule_engine_component_lifecycle_event_notification_rule_trigger_config",
