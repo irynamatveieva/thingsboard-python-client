@@ -44,7 +44,7 @@
 #   pypi         Upload to PyPI (production — permanent)
 #   --build N    Add build number N to wheel filenames (testpypi only).
 #                Lets you re-upload the same version: pip picks the highest
-#                build number.  e.g. tb_ce_client-4.4.0-2-py3-none-any.whl
+#                build number.  e.g. tb_ce_client-4.3.1.2-2-py3-none-any.whl
 #
 # Examples:
 #   ./scripts/publish-packages.sh                     # Upload to TestPyPI
