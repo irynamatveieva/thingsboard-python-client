@@ -39,6 +39,9 @@ jobs:
       - name: Install dev dependencies
         run: poetry install --no-root
 
+      - name: Install tb_ce_client runtime dependencies
+        run: poetry run pip install ./ce
+
       - name: Run pytest
         run: poetry run pytest
 
