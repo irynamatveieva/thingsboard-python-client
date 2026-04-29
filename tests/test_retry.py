@@ -7,9 +7,9 @@ Covers RESL-01 through RESL-04:
   RESL-03: Retry-After header respected (integer seconds), capped at max_delay
   RESL-04: After exhausting retries, last 429 response returned (no exception)
 """
-import time
+
 import unittest
-from unittest.mock import MagicMock, patch, call
+from unittest.mock import MagicMock, patch
 
 from tb_ce_client._retry import _RetryingRESTClient
 
@@ -97,12 +97,10 @@ class TestExponentialBackoffFormula(unittest.TestCase):
             low = base * 0.8
             high = base * 1.2
             self.assertGreaterEqual(
-                delay_ms, low,
-                f"attempt={attempt}: delay {delay_ms} < lower bound {low}"
+                delay_ms, low, f"attempt={attempt}: delay {delay_ms} < lower bound {low}"
             )
             self.assertLessEqual(
-                delay_ms, high,
-                f"attempt={attempt}: delay {delay_ms} > upper bound {high}"
+                delay_ms, high, f"attempt={attempt}: delay {delay_ms} > upper bound {high}"
             )
 
 

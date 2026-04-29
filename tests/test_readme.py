@@ -7,11 +7,10 @@ Validates:
 - ce/docs/tb-examples.md existence, required sections, code block syntax (DOC-04)
 - ce/docs/tb-examples.md uses keyword constructor form: username=... (DOC-04)
 """
+
 import ast
 import re
 from pathlib import Path
-
-import pytest
 
 REPO_ROOT = Path(__file__).parent.parent
 
@@ -62,18 +61,10 @@ def test_readme_has_quickstart():
     assert readme.is_file(), "README.md does not exist"
     content = readme.read_text(encoding="utf-8")
 
-    assert "## Quickstart" in content, (
-        "README.md missing '## Quickstart' section heading"
-    )
-    assert "pip install" in content, (
-        "README.md missing 'pip install' instruction"
-    )
-    assert "ThingsboardClient" in content, (
-        "README.md missing 'ThingsboardClient' class name"
-    )
-    assert "ApiException" in content, (
-        "README.md missing 'ApiException' error handling"
-    )
+    assert "## Quickstart" in content, "README.md missing '## Quickstart' section heading"
+    assert "pip install" in content, "README.md missing 'pip install' instruction"
+    assert "ThingsboardClient" in content, "README.md missing 'ThingsboardClient' class name"
+    assert "ApiException" in content, "README.md missing 'ApiException' error handling"
 
 
 def test_readme_code_blocks_valid_python():
@@ -86,9 +77,8 @@ def test_readme_code_blocks_valid_python():
     assert blocks, "README.md has no Python code blocks"
 
     errors = _validate_python_syntax(blocks)
-    assert not errors, (
-        "README.md has Python code blocks with syntax errors:\n"
-        + "\n".join(f"  Block {i}: {msg}" for i, msg in errors)
+    assert not errors, "README.md has Python code blocks with syntax errors:\n" + "\n".join(
+        f"  Block {i}: {msg}" for i, msg in errors
     )
 
 
@@ -132,18 +122,13 @@ def test_tb_examples_required_sections():
     assert "api key" in lower or "api_key" in lower, (
         "tb-examples.md missing API key login section (must contain 'api key' or 'api_key')"
     )
-    assert "device" in lower, (
-        "tb-examples.md missing device section (must contain 'device')"
-    )
+    assert "device" in lower, "tb-examples.md missing device section (must contain 'device')"
     assert "telemetry" in lower, (
         "tb-examples.md missing telemetry section (must contain 'telemetry')"
     )
-    assert "alarm" in lower, (
-        "tb-examples.md missing alarm section (must contain 'alarm')"
-    )
+    assert "alarm" in lower, "tb-examples.md missing alarm section (must contain 'alarm')"
     assert "with " in lower or "context manager" in lower, (
-        "tb-examples.md missing with-statement section "
-        "(must contain 'with ' or 'context manager')"
+        "tb-examples.md missing with-statement section (must contain 'with ' or 'context manager')"
     )
 
 

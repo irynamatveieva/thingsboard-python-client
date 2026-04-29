@@ -4,15 +4,14 @@ Unit tests for ThingsboardClient — WRAP-01 through WRAP-04.
 All tests import from tb_ce_client.client (after common/ is copied to ce/).
 conftest.py adds ce/ to sys.path so this works without packaging.
 """
-import sys
-import os
+
 import unittest
-from unittest.mock import patch, MagicMock, PropertyMock
+from unittest.mock import MagicMock, patch
+
+from tb_ce_client._retry import _RetryingRESTClient
 
 # conftest.py handles sys.path; this import will work once client.py is copied
 from tb_ce_client.client import ThingsboardClient
-from tb_ce_client.api.login_endpoint_api import LoginEndpointApi
-from tb_ce_client._retry import _RetryingRESTClient
 from tb_ce_client.rest import RESTClientObject
 
 URL = "http://tb-server:9090"
@@ -34,8 +33,9 @@ class TestThingsboardClientJWTLogin(unittest.TestCase):
         mock_resp = _mock_login_response()
         # Use module-path patch so the mock works even if the module was
         # evicted and re-imported by test_split.py lazy-load tests.
-        with patch("tb_ce_client.api.login_endpoint_api.LoginEndpointApi.login",
-                   return_value=mock_resp) as mock_login:
+        with patch(
+            "tb_ce_client.api.login_endpoint_api.LoginEndpointApi.login", return_value=mock_resp
+        ) as mock_login:
             client = ThingsboardClient(URL, "user@tb.io", "pass123")
         mock_login.assert_called_once()
         # Token stored in auth manager
@@ -53,7 +53,9 @@ class TestThingsboardClientJWTLogin(unittest.TestCase):
     def test_preexisting_token(self):
         """WRAP-01, AUTH-06: pre-existing token sets header without login()."""
         with patch("tb_ce_client.api.login_endpoint_api.LoginEndpointApi.login") as mock_login:
-            client = ThingsboardClient(URL, token="jwt.payload.sig", refresh_token="jwt.payload.sig")
+            client = ThingsboardClient(
+                URL, token="jwt.payload.sig", refresh_token="jwt.payload.sig"
+            )
         mock_login.assert_not_called()
         cfg = client.api_client.configuration
         self.assertEqual(cfg.api_key.get("ApiKeyForm"), "jwt.payload.sig")
@@ -142,16 +144,18 @@ class TestThingsboardClientTokenAccessors(unittest.TestCase):
     def test_get_token_jwt(self):
         """get_token() returns the JWT after successful login."""
         mock_resp = _mock_login_response(token="access.jwt.here")
-        with patch("tb_ce_client.api.login_endpoint_api.LoginEndpointApi.login",
-                   return_value=mock_resp):
+        with patch(
+            "tb_ce_client.api.login_endpoint_api.LoginEndpointApi.login", return_value=mock_resp
+        ):
             client = ThingsboardClient(URL, "u", "p")
         self.assertEqual(client.get_token(), "access.jwt.here")
 
     def test_get_refresh_token_jwt(self):
         """get_refresh_token() returns the refresh JWT after login."""
         mock_resp = _mock_login_response(refresh_token="refresh.jwt.here")
-        with patch("tb_ce_client.api.login_endpoint_api.LoginEndpointApi.login",
-                   return_value=mock_resp):
+        with patch(
+            "tb_ce_client.api.login_endpoint_api.LoginEndpointApi.login", return_value=mock_resp
+        ):
             client = ThingsboardClient(URL, "u", "p")
         self.assertEqual(client.get_refresh_token(), "refresh.jwt.here")
 

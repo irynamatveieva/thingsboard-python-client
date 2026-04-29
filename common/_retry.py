@@ -1,3 +1,18 @@
+#
+# Copyright © 2026-2026 ThingsBoard, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
 """
 _RetryingRESTClient — wraps RESTClientObject with HTTP 429 retry logic.
 
@@ -9,6 +24,7 @@ Mirrors Java client's RetryingHttpClient.java:
   - After exhausting retries, returns the last 429 response (no exception raised)
   - Drains response body before each retry to avoid connection pool exhaustion
 """
+
 import logging
 import random
 import time
@@ -21,7 +37,9 @@ logger = logging.getLogger(__name__)
 class _RetryingRESTClient(RESTClientObject):
     """RESTClientObject subclass that transparently retries HTTP 429 responses."""
 
-    def __init__(self, configuration, max_retries: int, initial_delay_ms: int, max_delay_ms: int) -> None:
+    def __init__(
+        self, configuration, max_retries: int, initial_delay_ms: int, max_delay_ms: int
+    ) -> None:
         """
         Initialise the retrying REST client.
 
@@ -39,7 +57,9 @@ class _RetryingRESTClient(RESTClientObject):
     # Public API
     # ------------------------------------------------------------------
 
-    def request(self, method, url, headers=None, body=None, post_params=None, _request_timeout=None):
+    def request(
+        self, method, url, headers=None, body=None, post_params=None, _request_timeout=None
+    ):
         """Make an HTTP request, retrying up to max_retries times on 429.
 
         All arguments are forwarded verbatim to RESTClientObject.request().
@@ -49,7 +69,8 @@ class _RetryingRESTClient(RESTClientObject):
         returned — callers are responsible for inspecting the status code.
         """
         response = super().request(
-            method, url,
+            method,
+            url,
             headers=headers,
             body=body,
             post_params=post_params,
@@ -74,7 +95,8 @@ class _RetryingRESTClient(RESTClientObject):
             time.sleep(delay_s)
 
             response = super().request(
-                method, url,
+                method,
+                url,
                 headers=headers,
                 body=body,
                 post_params=post_params,

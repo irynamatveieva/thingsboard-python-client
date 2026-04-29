@@ -1,4 +1,19 @@
 #!/usr/bin/env python3
+#
+# Copyright © 2026-2026 ThingsBoard, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
 """Post-process generated OpenAPI client code.
 
 Usage: python3 scripts/post_process.py <package_dir> <package_name>
@@ -15,11 +30,9 @@ Steps performed:
   5. Clean up unwanted generated files (README, setup.py, etc.)
 """
 
-import importlib
 import re
 import sys
 from pathlib import Path
-from typing import Dict, List, Tuple
 
 # ---------------------------------------------------------------------------
 # License header template
@@ -59,7 +72,7 @@ _CODING_HEADER_RE = re.compile(
 )
 
 
-def strip_generated_comment_blocks(py_files: List[Path]) -> int:
+def strip_generated_comment_blocks(py_files: list[Path]) -> int:
     """Remove the '# coding: utf-8' + docstring header from generated files.
 
     Returns the number of files modified.
@@ -78,6 +91,7 @@ def strip_generated_comment_blocks(py_files: List[Path]) -> int:
 # Step 2: Fix JsonNode/object references
 # ---------------------------------------------------------------------------
 
+
 # 2a: Remove broken import line
 def _make_broken_import_pattern(package_name: str) -> re.Pattern:
     return re.compile(
@@ -91,7 +105,7 @@ def _make_broken_import_pattern(package_name: str) -> re.Pattern:
 #   object.from_dict(obj['field']) if obj.get('field') is not None else None
 _FROM_DICT_WITH_NONE_CHECK_RE = re.compile(
     r'object\.from_dict\(obj\[(["\'])(\w+)\1\]\)'
-    r'\s*if\s+obj\.get\(\1\2\1\)\s+is\s+not\s+None\s+else\s+None',
+    r"\s*if\s+obj\.get\(\1\2\1\)\s+is\s+not\s+None\s+else\s+None",
     re.MULTILINE,
 )
 
@@ -102,18 +116,18 @@ _FROM_DICT_SIMPLE_RE = re.compile(
 )
 
 
-def _fix_from_dict(content: str) -> Tuple[str, int]:
+def _fix_from_dict(content: str) -> tuple[str, int]:
     """Replace object.from_dict(...) patterns with obj.get(...)."""
     count = 0
 
     new_content, n = _FROM_DICT_WITH_NONE_CHECK_RE.subn(
-        lambda m: f'obj.get({m.group(1)}{m.group(2)}{m.group(1)})',
+        lambda m: f"obj.get({m.group(1)}{m.group(2)}{m.group(1)})",
         content,
     )
     count += n
 
     new_content, n = _FROM_DICT_SIMPLE_RE.subn(
-        lambda m: f'obj.get({m.group(1)}{m.group(2)}{m.group(1)})',
+        lambda m: f"obj.get({m.group(1)}{m.group(2)}{m.group(1)})",
         new_content,
     )
     count += n
@@ -139,7 +153,7 @@ def _fix_from_dict(content: str) -> Tuple[str, int]:
 _TO_DICT_CALL_RE_TEMPLATE = r"(_dict\[['\"][^'\"]+['\"]\]\s*=\s*self\.{snake_field})\.to_dict\(\)"
 
 
-def _fix_to_dict_for_fields(content: str, object_fields: list) -> Tuple[str, int]:
+def _fix_to_dict_for_fields(content: str, object_fields: list) -> tuple[str, int]:
     """Remove .to_dict() suffix only for known object-typed fields."""
     count = 0
     for snake_field in object_fields:
@@ -147,7 +161,7 @@ def _fix_to_dict_for_fields(content: str, object_fields: list) -> Tuple[str, int
             _TO_DICT_CALL_RE_TEMPLATE.format(snake_field=re.escape(snake_field)),
             re.MULTILINE,
         )
-        new_content, n = pattern.subn(r'\1', content)
+        new_content, n = pattern.subn(r"\1", content)
         content = new_content
         count += n
     return content, count
@@ -156,7 +170,7 @@ def _fix_to_dict_for_fields(content: str, object_fields: list) -> Tuple[str, int
 def fix_jsonnode_references(
     models_dir: Path,
     package_name: str,
-) -> Tuple[int, int, int]:
+) -> tuple[int, int, int]:
     """Apply all three JsonNode/object fixes to model files.
 
     Returns (import_removals, from_dict_fixes, to_dict_fixes).
@@ -182,7 +196,7 @@ def fix_jsonnode_references(
 
         # Clean up any resulting double blank lines
         if n:
-            new_content = re.sub(r'\n{3,}', '\n\n', new_content)
+            new_content = re.sub(r"\n{3,}", "\n\n", new_content)
 
         # 2b: fix from_dict calls — collect which field names were fixed
         #     so step 2c can target only those fields
@@ -191,10 +205,10 @@ def fix_jsonnode_references(
         _simple = _FROM_DICT_SIMPLE_RE.findall(new_content)
         for _, field_name in _with_none:
             # Convert camelCase field name to snake_case for to_dict lookup
-            snake = re.sub(r'(?<!^)(?=[A-Z])', '_', field_name).lower()
+            snake = re.sub(r"(?<!^)(?=[A-Z])", "_", field_name).lower()
             fixed_field_names.append(snake)
         for _, field_name in _simple:
-            snake = re.sub(r'(?<!^)(?=[A-Z])', '_', field_name).lower()
+            snake = re.sub(r"(?<!^)(?=[A-Z])", "_", field_name).lower()
             if snake not in fixed_field_names:
                 fixed_field_names.append(snake)
 
@@ -220,33 +234,31 @@ def fix_jsonnode_references(
 _FIELD_ALIAS_RE = re.compile(r'(?<![a-z_])alias="([^"]+)"')
 
 # Fix to_json(): replace json.dumps(self.to_dict()) with model_dump_json()
-_TO_JSON_OLD = '        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead\n        return json.dumps(self.to_dict())'
-_TO_JSON_NEW = '        return self.model_dump_json(by_alias=True, exclude_unset=True)'
+_TO_JSON_OLD = "        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead\n        return json.dumps(self.to_dict())"  # noqa: E501
+_TO_JSON_NEW = "        return self.model_dump_json(by_alias=True, exclude_unset=True)"
 
 
 def _camel_to_snake(name: str) -> str:
     """Convert camelCase to snake_case."""
-    return re.sub(r'(?<!^)(?=[A-Z])', '_', name).lower()
+    return re.sub(r"(?<!^)(?=[A-Z])", "_", name).lower()
 
 
-def _build_alias_map(content: str) -> Dict[str, str]:
+def _build_alias_map(content: str) -> dict[str, str]:
     """Build a mapping from serialization_alias value to Python field name.
 
     Scans field declarations like:
         var_from: ... = Field(..., serialization_alias="from")
     and returns {"from": "var_from"}.
     """
-    alias_map: Dict[str, str] = {}
-    for m in re.finditer(
-        r'^\s+(\w+)\s*:.*serialization_alias="([^"]+)"', content, re.MULTILINE
-    ):
+    alias_map: dict[str, str] = {}
+    for m in re.finditer(r'^\s+(\w+)\s*:.*serialization_alias="([^"]+)"', content, re.MULTILINE):
         field_name, alias = m.group(1), m.group(2)
         if field_name != alias:
             alias_map[alias] = field_name
     return alias_map
 
 
-def _convert_model_validate_keys(content: str) -> Tuple[str, int]:
+def _convert_model_validate_keys(content: str) -> tuple[str, int]:
     """Convert camelCase dict keys to snake_case inside model_validate({...}) blocks.
 
     Also handles reserved-word renames (e.g. "from" → "var_from") by reading
@@ -281,7 +293,7 @@ def _convert_model_validate_keys(content: str) -> Tuple[str, int]:
         return re.sub(r'(\n\s+)"(\w+)"(\s*:)', _convert_key, block)
 
     new_content = re.sub(
-        r'cls\.model_validate\(\{.*?\}\)',
+        r"cls\.model_validate\(\{.*?\}\)",
         _process_block,
         content,
         flags=re.DOTALL,
@@ -289,7 +301,7 @@ def _convert_model_validate_keys(content: str) -> Tuple[str, int]:
     return new_content, count
 
 
-def convert_field_aliases(models_dir: Path) -> Tuple[int, int]:
+def convert_field_aliases(models_dir: Path) -> tuple[int, int]:
     """Convert alias= to serialization_alias= and fix from_dict() keys.
 
     This makes model __init__ signatures use snake_case parameter names
@@ -314,7 +326,7 @@ def convert_field_aliases(models_dir: Path) -> Tuple[int, int]:
         content = content.replace(_TO_JSON_OLD, _TO_JSON_NEW)
 
         # Convert alias= to serialization_alias= (skip if already done)
-        if 'serialization_alias=' not in content:
+        if "serialization_alias=" not in content:
             new_content, n = _FIELD_ALIAS_RE.subn(r'serialization_alias="\1"', content)
             alias_conversions += n
             content = new_content
@@ -341,13 +353,13 @@ _TO_STR_DOC_NEW = '"""Returns the string representation of the model"""'
 _TO_STR_ONEOF_OLD = "        return pprint.pformat(self.model_dump())"
 _TO_STR_ONEOF_NEW = "        return pprint.pformat(self.model_dump(mode='json'))"
 
-_MODEL_STR_METHODS = '''
+_MODEL_STR_METHODS = """
     def __str__(self) -> str:
         return self.to_str()
 
     def __repr__(self) -> str:
         return self.to_str()
-'''
+"""
 
 _ENTITY_ID_METHODS = '''
     def get_id(self) -> str:
@@ -378,15 +390,15 @@ _BASEMODEL_ID_METHODS = '''
 
 def _is_entity_id_subclass(content: str) -> bool:
     """Check if a model file defines a class that extends EntityId."""
-    return bool(re.search(r'^class \w+\(EntityId\):', content, re.MULTILINE))
+    return bool(re.search(r"^class \w+\(EntityId\):", content, re.MULTILINE))
 
 
 def _is_basemodel_id_class(content: str) -> bool:
     """Check if a model file defines an Id class that extends BaseModel directly."""
-    return bool(re.search(r'^class \w+Id\(BaseModel\):', content, re.MULTILINE))
+    return bool(re.search(r"^class \w+Id\(BaseModel\):", content, re.MULTILINE))
 
 
-def add_model_str_methods(models_dir: Path) -> Tuple[int, int, int]:
+def add_model_str_methods(models_dir: Path) -> tuple[int, int, int]:
     """Add __str__/__repr__ to models and get_id() to EntityId.
 
     - Changes to_str() output from camelCase to snake_case with JSON-safe
@@ -414,7 +426,7 @@ def add_model_str_methods(models_dir: Path) -> Tuple[int, int, int]:
         original = content
 
         # Skip if already patched
-        if 'def __str__(self)' in content:
+        if "def __str__(self)" in content:
             continue
 
         # Fix to_str(): by_alias=True -> by_alias=False, mode='json'
@@ -427,15 +439,15 @@ def add_model_str_methods(models_dir: Path) -> Tuple[int, int, int]:
             content = content.replace(_TO_STR_ONEOF_OLD, _TO_STR_ONEOF_NEW, 1)
             to_str_fixes += 1
 
-        is_entity_id_file = f.name == 'entity_id.py'
+        is_entity_id_file = f.name == "entity_id.py"
         is_entity_id_sub = _is_entity_id_subclass(content)
         is_basemodel_id = _is_basemodel_id_class(content)
 
         if is_entity_id_file:
             # Inject get_id(), __str__, __repr__ for EntityId base class
             content = content.replace(
-                _TO_STR_RETURN_NEW + '\n',
-                _TO_STR_RETURN_NEW + '\n' + _ENTITY_ID_METHODS,
+                _TO_STR_RETURN_NEW + "\n",
+                _TO_STR_RETURN_NEW + "\n" + _ENTITY_ID_METHODS,
                 1,
             )
             entity_id_patched = 1
@@ -446,8 +458,8 @@ def add_model_str_methods(models_dir: Path) -> Tuple[int, int, int]:
         elif is_basemodel_id:
             # BaseModel ID classes (EventId, AuditLogId, etc.)
             content = content.replace(
-                _TO_STR_RETURN_NEW + '\n',
-                _TO_STR_RETURN_NEW + '\n' + _BASEMODEL_ID_METHODS,
+                _TO_STR_RETURN_NEW + "\n",
+                _TO_STR_RETURN_NEW + "\n" + _BASEMODEL_ID_METHODS,
                 1,
             )
             str_injections += 1
@@ -456,8 +468,8 @@ def add_model_str_methods(models_dir: Path) -> Tuple[int, int, int]:
             for anchor in (_TO_STR_RETURN_NEW, _TO_STR_ONEOF_NEW):
                 if anchor in content:
                     content = content.replace(
-                        anchor + '\n',
-                        anchor + '\n' + _MODEL_STR_METHODS,
+                        anchor + "\n",
+                        anchor + "\n" + _MODEL_STR_METHODS,
                         1,
                     )
                     str_injections += 1
@@ -473,9 +485,10 @@ def add_model_str_methods(models_dir: Path) -> Tuple[int, int, int]:
 # Step 3: Rewrite __init__.py files for lazy imports
 # ---------------------------------------------------------------------------
 
-def _collect_model_classes(models_dir: Path, package_name: str) -> Dict[str, str]:
+
+def _collect_model_classes(models_dir: Path, package_name: str) -> dict[str, str]:
     """Scan model .py files and build {ClassName: "package.models.module"} mapping."""
-    model_map: Dict[str, str] = {}
+    model_map: dict[str, str] = {}
 
     for py_file in sorted(models_dir.glob("*.py")):
         if py_file.name == "__init__.py":
@@ -498,13 +511,13 @@ def _collect_model_classes(models_dir: Path, package_name: str) -> Dict[str, str
     return model_map
 
 
-def _collect_api_classes(api_dir: Path, package_name: str) -> Dict[str, str]:
+def _collect_api_classes(api_dir: Path, package_name: str) -> dict[str, str]:
     """Scan api/*.py files and build {ClassName: "package.api.module"} mapping.
 
     Matches both ``class Foo(Bar):`` and ``class Foo:`` definitions because
     the OpenAPI generator emits API classes without a base class (no parentheses).
     """
-    api_map: Dict[str, str] = {}
+    api_map: dict[str, str] = {}
 
     for py_file in sorted(api_dir.glob("*.py")):
         if py_file.name == "__init__.py":
@@ -520,7 +533,7 @@ def _collect_api_classes(api_dir: Path, package_name: str) -> Dict[str, str]:
     return api_map
 
 
-def _generate_models_init(package_name: str, model_map: Dict[str, str]) -> str:
+def _generate_models_init(package_name: str, model_map: dict[str, str]) -> str:
     """Generate lazy-loading models/__init__.py content."""
     sorted_items = sorted(model_map.items())
 
@@ -528,7 +541,7 @@ def _generate_models_init(package_name: str, model_map: Dict[str, str]) -> str:
         "import importlib",
         "from typing import TYPE_CHECKING",
         "",
-        f"__all__ = [",
+        "__all__ = [",
     ]
     for cls_name, _ in sorted_items:
         lines.append(f'    "{cls_name}",')
@@ -549,24 +562,26 @@ def _generate_models_init(package_name: str, model_map: Dict[str, str]) -> str:
     lines.append("")
 
     # __getattr__ for lazy loading
-    lines.extend([
-        "def __getattr__(name: str):",
-        "    if name in _MODEL_CLASSES:",
-        "        module = importlib.import_module(_MODEL_CLASSES[name])",
-        "        cls = getattr(module, name)",
-        "        globals()[name] = cls  # Cache for subsequent access",
-        "        return cls",
-        '    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")',
-        "",
-        "def __dir__():",
-        "    return list(_MODEL_CLASSES.keys())",
-        "",
-    ])
+    lines.extend(
+        [
+            "def __getattr__(name: str):",
+            "    if name in _MODEL_CLASSES:",
+            "        module = importlib.import_module(_MODEL_CLASSES[name])",
+            "        cls = getattr(module, name)",
+            "        globals()[name] = cls  # Cache for subsequent access",
+            "        return cls",
+            '    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")',
+            "",
+            "def __dir__():",
+            "    return list(_MODEL_CLASSES.keys())",
+            "",
+        ]
+    )
 
     return "\n".join(lines)
 
 
-def _generate_api_init(package_name: str, api_map: Dict[str, str]) -> str:
+def _generate_api_init(package_name: str, api_map: dict[str, str]) -> str:
     """Generate lazy-loading api/__init__.py content."""
     sorted_items = sorted(api_map.items())
 
@@ -595,27 +610,29 @@ def _generate_api_init(package_name: str, api_map: Dict[str, str]) -> str:
     lines.append("")
 
     # __getattr__ for lazy loading
-    lines.extend([
-        "def __getattr__(name: str):",
-        "    if name in _API_CLASSES:",
-        "        module = importlib.import_module(_API_CLASSES[name])",
-        "        cls = getattr(module, name)",
-        "        globals()[name] = cls  # Cache for subsequent access",
-        "        return cls",
-        '    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")',
-        "",
-        "def __dir__():",
-        "    return list(_API_CLASSES.keys())",
-        "",
-    ])
+    lines.extend(
+        [
+            "def __getattr__(name: str):",
+            "    if name in _API_CLASSES:",
+            "        module = importlib.import_module(_API_CLASSES[name])",
+            "        cls = getattr(module, name)",
+            "        globals()[name] = cls  # Cache for subsequent access",
+            "        return cls",
+            '    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")',
+            "",
+            "def __dir__():",
+            "    return list(_API_CLASSES.keys())",
+            "",
+        ]
+    )
 
     return "\n".join(lines)
 
 
 def _generate_root_init(
     package_name: str,
-    model_map: Dict[str, str],
-    api_map: Dict[str, str],
+    model_map: dict[str, str],
+    api_map: dict[str, str],
 ) -> str:
     """Generate lazy-loading root __init__.py content.
 
@@ -671,24 +688,26 @@ def _generate_root_init(
     lines.append("}")
     lines.append("")
 
-    lines.extend([
-        "def __getattr__(name: str):",
-        "    if name in _LAZY_CLASSES:",
-        "        module = importlib.import_module(_LAZY_CLASSES[name])",
-        "        obj = getattr(module, name)",
-        "        globals()[name] = obj  # Cache for subsequent access",
-        "        return obj",
-        '    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")',
-        "",
-        "def __dir__():",
-        "    return list(_LAZY_CLASSES.keys()) + [",
-        '        "ApiClient", "Configuration", "ApiResponse",',
-        '        "OpenApiException", "ApiAttributeError", "ApiTypeError",',
-        '        "ApiValueError", "ApiKeyError", "ApiException",',
-        '        "ThingsboardClient",',
-        "    ]",
-        "",
-    ])
+    lines.extend(
+        [
+            "def __getattr__(name: str):",
+            "    if name in _LAZY_CLASSES:",
+            "        module = importlib.import_module(_LAZY_CLASSES[name])",
+            "        obj = getattr(module, name)",
+            "        globals()[name] = obj  # Cache for subsequent access",
+            "        return obj",
+            '    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")',
+            "",
+            "def __dir__():",
+            "    return list(_LAZY_CLASSES.keys()) + [",
+            '        "ApiClient", "Configuration", "ApiResponse",',
+            '        "OpenApiException", "ApiAttributeError", "ApiTypeError",',
+            '        "ApiValueError", "ApiKeyError", "ApiException",',
+            '        "ThingsboardClient",',
+            "    ]",
+            "",
+        ]
+    )
 
     return "\n".join(lines)
 
@@ -697,7 +716,8 @@ def _generate_root_init(
 # Step 6: Generate _controller_map.py
 # ---------------------------------------------------------------------------
 
-def _generate_controller_map(api_dir: Path, package_name: str) -> "Tuple[str, int, int]":
+
+def _generate_controller_map(api_dir: Path, package_name: str) -> "tuple[str, int, int]":
     """Scan api/*.py files and generate _controller_map.py content.
 
     Builds two dicts:
@@ -709,8 +729,8 @@ def _generate_controller_map(api_dir: Path, package_name: str) -> "Tuple[str, in
 
     Returns (file_content, method_count, controller_count).
     """
-    method_map: "Dict[str, Tuple[str, str]]" = {}
-    attr_map: "Dict[str, Tuple[str, str]]" = {}
+    method_map: dict[str, tuple[str, str]] = {}
+    attr_map: dict[str, tuple[str, str]] = {}
 
     for py_file in sorted(api_dir.glob("*.py")):
         if py_file.name == "__init__.py":
@@ -762,7 +782,8 @@ def _generate_controller_map(api_dir: Path, package_name: str) -> "Tuple[str, in
 # Step 7: Generate client.pyi type stub
 # ---------------------------------------------------------------------------
 
-def _extract_method_signatures(content: str) -> "List[Tuple[str, str, str]]":
+
+def _extract_method_signatures(content: str) -> "list[tuple[str, str, str]]":
     """Extract all public instance method signatures from a Python source file.
 
     Returns a list of (method_name, params_str, return_type_str) tuples.
@@ -798,7 +819,7 @@ def _extract_method_signatures(content: str) -> "List[Tuple[str, str, str]]":
             pos += 1
 
         # pos is now just past the closing ")"
-        params_inner = content[paren_start + 1:pos - 1]
+        params_inner = content[paren_start + 1 : pos - 1]
 
         # Now look for return type annotation "-> RetType" up to ":"
         rest = content[pos:]
@@ -844,7 +865,7 @@ def _clean_params_for_stub(params: str) -> str:
     return ", ".join(result_params)
 
 
-def _split_at_depth_zero(s: str) -> "List[str]":
+def _split_at_depth_zero(s: str) -> "list[str]":
     """Split string by commas at bracket depth 0."""
     parts = []
     depth = 0
@@ -894,7 +915,7 @@ def _replace_default_value(param: str) -> str:
 
 def _generate_client_pyi(
     api_dir: Path, package_name: str, client_py_path: Path
-) -> "Tuple[str, int]":
+) -> "tuple[str, int]":
     """Generate client.pyi type stub content.
 
     Extracts method signatures from all controller files and builds a .pyi
@@ -903,7 +924,7 @@ def _generate_client_pyi(
     Returns (pyi_content, stub_count).
     """
     # Collect all controller classes and their methods
-    controller_classes: "List[Tuple[str, str, str, List[Tuple[str, str, str]]]]" = []
+    controller_classes: list[tuple[str, str, str, list[tuple[str, str, str]]]] = []
     # (short_name, cls_name, module_path, [(method_name, params, return_type), ...])
 
     for py_file in sorted(api_dir.glob("*.py")):
@@ -937,42 +958,44 @@ def _generate_client_pyi(
         "",
         "# Controller class imports",
     ]
-    for short_name, cls_name, module_path, _methods in controller_classes:
+    for _short_name, cls_name, module_path, _methods in controller_classes:
         lines.append(f"from {module_path} import {cls_name}")
 
-    lines.extend([
-        "",
-        f"from {package_name}.models import *  # noqa: F401, F403",
-        "",
-        "class ThingsboardClient:",
-        "    api_client: ApiClient",
-        "    _controllers: dict",
-        "    _auth_manager: Any",
-        "",
-        "    def __init__(",
-        "        self,",
-        "        url: str,",
-        "        username: Optional[str] = ...,",
-        "        password: Optional[str] = ...,",
-        "        api_key: Optional[str] = ...,",
-        "        token: Optional[str] = ...,",
-        "        refresh_token: Optional[str] = ...,",
-        "        max_retries: int = ...,",
-        "        initial_retry_delay_ms: int = ...,",
-        "        max_retry_delay_ms: int = ...,",
-        "        retry_on_rate_limit: bool = ...,",
-        "    ) -> None: ...",
-        "    def _get_or_create_controller(self, cls_name: str, module_path: str) -> Any: ...",
-        "    def get_token(self) -> Optional[str]: ...",
-        "    def get_refresh_token(self) -> Optional[str]: ...",
-        "    def close(self) -> None: ...",
-        "    def __enter__(self) -> ThingsboardClient: ...",
-        "    def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> bool: ...",
-    ])
+    lines.extend(
+        [
+            "",
+            f"from {package_name}.models import *  # noqa: F401, F403",
+            "",
+            "class ThingsboardClient:",
+            "    api_client: ApiClient",
+            "    _controllers: dict",
+            "    _auth_manager: Any",
+            "",
+            "    def __init__(",
+            "        self,",
+            "        url: str,",
+            "        username: Optional[str] = ...,",
+            "        password: Optional[str] = ...,",
+            "        api_key: Optional[str] = ...,",
+            "        token: Optional[str] = ...,",
+            "        refresh_token: Optional[str] = ...,",
+            "        max_retries: int = ...,",
+            "        initial_retry_delay_ms: int = ...,",
+            "        max_retry_delay_ms: int = ...,",
+            "        retry_on_rate_limit: bool = ...,",
+            "    ) -> None: ...",
+            "    def _get_or_create_controller(self, cls_name: str, module_path: str) -> Any: ...",
+            "    def get_token(self) -> Optional[str]: ...",
+            "    def get_refresh_token(self) -> Optional[str]: ...",
+            "    def close(self) -> None: ...",
+            "    def __enter__(self) -> ThingsboardClient: ...",
+            "    def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> bool: ...",
+        ]
+    )
 
     # Add controller property stubs and method stubs grouped by controller
     stub_count = 0
-    for short_name, cls_name, module_path, methods in controller_classes:
+    for short_name, cls_name, _module_path, methods in controller_classes:
         lines.append("")
         lines.append(f"    # --- {cls_name} ---")
         lines.append("    @property")
@@ -982,7 +1005,7 @@ def _generate_client_pyi(
             # from the source but we emit it explicitly as the method receiver)
             params_no_self = params_clean
             if params_no_self.startswith("self, "):
-                params_no_self = params_no_self[len("self, "):]
+                params_no_self = params_no_self[len("self, ") :]
             elif params_no_self == "self":
                 params_no_self = ""
             # Build stub line
@@ -998,7 +1021,7 @@ def _generate_client_pyi(
     return "\n".join(lines), stub_count
 
 
-def rewrite_init_files(package_dir: Path, package_name: str) -> "Tuple[int, int, int]":
+def rewrite_init_files(package_dir: Path, package_name: str) -> "tuple[int, int, int]":
     """Rewrite __init__.py files for lazy loading.
 
     Returns (model_count, api_count, method_count) tuple.
@@ -1007,7 +1030,9 @@ def rewrite_init_files(package_dir: Path, package_name: str) -> "Tuple[int, int,
     api_dir = package_dir / "api"
 
     if not models_dir.exists():
-        print(f"  Warning: models/ directory not found in {package_dir}, skipping lazy import rewrite")
+        print(
+            f"  Warning: models/ directory not found in {package_dir}, skipping lazy import rewrite"
+        )
         return 0, 0, 0
 
     model_map = _collect_model_classes(models_dir, package_name)
@@ -1047,7 +1072,8 @@ def rewrite_init_files(package_dir: Path, package_name: str) -> "Tuple[int, int,
 # Step 4: Apply Apache 2.0 license headers
 # ---------------------------------------------------------------------------
 
-def apply_license_headers(py_files: List[Path]) -> int:
+
+def apply_license_headers(py_files: list[Path]) -> int:
     """Prepend LICENSE_HEADER to each .py file that doesn't already have it.
 
     Returns the number of files modified.
@@ -1068,12 +1094,13 @@ def apply_license_headers(py_files: List[Path]) -> int:
 # Step 5: Clean up unwanted generated files
 # ---------------------------------------------------------------------------
 
-def cleanup_generated_files(package_dir: Path) -> List[str]:
+
+def cleanup_generated_files(package_dir: Path) -> list[str]:
     """Remove files that the generator creates but we don't want.
 
     Returns list of removed file paths.
     """
-    removed: List[str] = []
+    removed: list[str] = []
     parent = package_dir.parent
 
     # {package_dir}_README.md (e.g., tb_ce_client_README.md one level up)
@@ -1105,6 +1132,7 @@ def cleanup_generated_files(package_dir: Path) -> List[str]:
 # Main entry point
 # ---------------------------------------------------------------------------
 
+
 def main(package_dir: Path, package_name: str) -> None:
     """Run all post-processing steps on the generated package."""
     if not package_dir.exists():
@@ -1116,7 +1144,6 @@ def main(package_dir: Path, package_name: str) -> None:
     # Collect all .py files recursively
     all_py_files = sorted(package_dir.rglob("*.py"))
     models_dir = package_dir / "models"
-    model_py_files = sorted(models_dir.glob("*.py")) if models_dir.exists() else []
 
     print(f"  Found {len(all_py_files)} .py files total")
 
@@ -1206,7 +1233,7 @@ def main(package_dir: Path, package_name: str) -> None:
     print(f"  === Post-processing summary for {package_name} ===")
     print(f"  Total .py files:       {total_py}")
     print(f"  Comment blocks stripped: {stripped}")
-    print(f"  JsonNode fixes:")
+    print("  JsonNode fixes:")
     print(f"    Broken imports removed: {import_removals}")
     print(f"    from_dict() fixed:      {from_dict_fixes}")
     print(f"    to_dict() fixed:        {to_dict_fixes}")
