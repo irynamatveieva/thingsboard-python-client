@@ -129,4 +129,5 @@ class _RetryingRESTClient(RESTClientObject):
         base_ms = min(base_ms, self._max_delay_ms)
         jitter = (random.random() * 0.4) - 0.2  # range [-0.2, +0.2)
         delay_ms = int(base_ms * (1.0 + jitter))
-        return delay_ms
+        # Re-apply cap: positive jitter on a maxed-out base could exceed max_delay_ms.
+        return min(delay_ms, self._max_delay_ms)
