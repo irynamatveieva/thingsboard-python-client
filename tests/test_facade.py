@@ -7,9 +7,8 @@ The tests import from tb_ce_client which is made importable via conftest.py
 inserting ce/ into sys.path. Before importing ThingsboardClient, we ensure
 that _controller_map.py exists in ce/tb_ce_client/.
 """
-import importlib
+
 import sys
-import os
 from pathlib import Path
 
 import pytest
@@ -28,10 +27,10 @@ if not _CONTROLLER_MAP_PATH.exists():
     if _SCRIPTS_DIR not in sys.path:
         sys.path.insert(0, _SCRIPTS_DIR)
     import post_process
-    content, _mc, _cc = post_process._generate_controller_map(
-        _CE_PKG_DIR / "api", "tb_ce_client"
-    )
+
+    content, _mc, _cc = post_process._generate_controller_map(_CE_PKG_DIR / "api", "tb_ce_client")
     from post_process import LICENSE_HEADER
+
     _CONTROLLER_MAP_PATH.write_text(LICENSE_HEADER + content, encoding="utf-8")
 
 # Ensure ce/ is in sys.path (conftest.py does this, but be defensive)
@@ -42,6 +41,7 @@ if _CE_DIR not in sys.path:
 # Also copy common/client.py to ce/tb_ce_client/client.py if it's missing __getattr__
 # (after implementation the copy happens at test time to avoid stale state)
 import shutil
+
 _COMMON_CLIENT = _REPO_ROOT / "common" / "client.py"
 _CE_CLIENT = _CE_PKG_DIR / "client.py"
 if _COMMON_CLIENT.exists():
@@ -52,24 +52,23 @@ for mod_name in list(sys.modules.keys()):
     if mod_name == "tb_ce_client" or mod_name.startswith("tb_ce_client."):
         del sys.modules[mod_name]
 
+from tb_ce_client._controller_map import _CONTROLLER_ATTR_MAP, _CONTROLLER_MAP
 from tb_ce_client.client import ThingsboardClient
-from tb_ce_client._controller_map import _CONTROLLER_MAP, _CONTROLLER_ATTR_MAP
-from tb_ce_client.api_client import ApiClient
-
 
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
 
+
 def _make_client() -> ThingsboardClient:
     """Construct a ThingsboardClient with api_key (no network calls)."""
-    return ThingsboardClient("http://localhost:9090", api_key="test-key",
-                              retry_on_rate_limit=False)
+    return ThingsboardClient("http://localhost:9090", api_key="test-key", retry_on_rate_limit=False)
 
 
 # ---------------------------------------------------------------------------
 # FAC-01 / FAC-02: Facade delegation
 # ---------------------------------------------------------------------------
+
 
 class TestFacadeDelegation:
     """FAC-01: __getattr__ delegates method calls to the correct controller.
@@ -85,6 +84,7 @@ class TestFacadeDelegation:
     def test_method_bound_to_device_controller(self):
         """client.get_tenant_devices is bound to a DeviceControllerApi instance."""
         from tb_ce_client.api.device_controller_api import DeviceControllerApi
+
         client = _make_client()
         method = client.get_tenant_devices
         # The bound method's __self__ should be a DeviceControllerApi
@@ -96,11 +96,11 @@ class TestFacadeDelegation:
         """A sampling of methods from different controllers are all accessible (FAC-02)."""
         client = _make_client()
         sample_methods = [
-            "get_tenant_devices",       # DeviceControllerApi
-            "get_alarm_by_id",          # AlarmControllerApi
-            "get_customers",            # CustomerControllerApi
-            "delete_dashboard",         # DashboardControllerApi
-            "find_assets_by_query",     # AssetControllerApi
+            "get_tenant_devices",  # DeviceControllerApi
+            "get_alarm_by_id",  # AlarmControllerApi
+            "get_customers",  # CustomerControllerApi
+            "delete_dashboard",  # DashboardControllerApi
+            "find_assets_by_query",  # AssetControllerApi
         ]
         for method_name in sample_methods:
             method = getattr(client, method_name)
@@ -124,17 +124,20 @@ class TestFacadeDelegation:
 # FAC-05: Direct controller import
 # ---------------------------------------------------------------------------
 
+
 class TestDirectImport:
     """FAC-05: from tb_ce_client.api.device_controller_api import DeviceControllerApi works."""
 
     def test_direct_import_device_controller(self):
         """Direct import of DeviceControllerApi from its module succeeds."""
         from tb_ce_client.api.device_controller_api import DeviceControllerApi
+
         assert DeviceControllerApi is not None
 
     def test_direct_import_can_instantiate(self):
         """DeviceControllerApi can be instantiated with an ApiClient."""
         from tb_ce_client.api.device_controller_api import DeviceControllerApi
+
         client = _make_client()
         api = DeviceControllerApi(client.api_client)
         assert isinstance(api, DeviceControllerApi)
@@ -143,6 +146,7 @@ class TestDirectImport:
 # ---------------------------------------------------------------------------
 # FAC-06: Auth routing — login maps to LoginEndpointApi
 # ---------------------------------------------------------------------------
+
 
 class TestAuthRouting:
     """FAC-06: client.login resolves to LoginEndpointApi.login."""
@@ -154,14 +158,13 @@ class TestAuthRouting:
     def test_login_maps_to_login_endpoint_api(self):
         """_CONTROLLER_MAP['login'] maps to LoginEndpointApi (not AuthControllerApi)."""
         module_path, cls_name = _CONTROLLER_MAP["login"]
-        assert cls_name == "LoginEndpointApi", (
-            f"Expected LoginEndpointApi, got {cls_name}"
-        )
+        assert cls_name == "LoginEndpointApi", f"Expected LoginEndpointApi, got {cls_name}"
         assert "login_endpoint_api" in module_path
 
     def test_client_login_bound_to_login_endpoint_api(self):
         """client.login is bound to a LoginEndpointApi instance."""
         from tb_ce_client.api.login_endpoint_api import LoginEndpointApi
+
         client = _make_client()
         method = client.login
         assert callable(method)
@@ -174,16 +177,18 @@ class TestAuthRouting:
 # FAC-07: Lazy instantiation and caching
 # ---------------------------------------------------------------------------
 
+
 class TestLazyInstantiation:
     """FAC-07: Controller instances are cached; all share the same api_client."""
 
     def test_controller_cached_on_repeated_access(self):
         """Accessing the same method twice returns the same controller instance."""
         client = _make_client()
-        _ = client.get_tenant_devices   # first access
-        _ = client.get_tenant_devices   # second access
+        _ = client.get_tenant_devices  # first access
+        _ = client.get_tenant_devices  # second access
         # Both should come from the same cached controller
         from tb_ce_client.api.device_controller_api import DeviceControllerApi
+
         module_path, cls_name = _CONTROLLER_MAP["get_tenant_devices"]
         cached = client._controllers[cls_name]
         assert isinstance(cached, DeviceControllerApi)
@@ -208,12 +213,14 @@ class TestLazyInstantiation:
 # FAC-08: Named controller attributes
 # ---------------------------------------------------------------------------
 
+
 class TestNamedControllerAttrs:
     """FAC-08: client.device_controller and client.asset_controller return correct types."""
 
     def test_device_controller_attr(self):
         """client.device_controller returns a DeviceControllerApi instance."""
         from tb_ce_client.api.device_controller_api import DeviceControllerApi
+
         client = _make_client()
         ctrl = client.device_controller
         assert isinstance(ctrl, DeviceControllerApi), (
@@ -223,6 +230,7 @@ class TestNamedControllerAttrs:
     def test_asset_controller_attr(self):
         """client.asset_controller returns an AssetControllerApi instance."""
         from tb_ce_client.api.asset_controller_api import AssetControllerApi
+
         client = _make_client()
         ctrl = client.asset_controller
         assert isinstance(ctrl, AssetControllerApi), (
@@ -246,6 +254,7 @@ class TestNamedControllerAttrs:
 # ---------------------------------------------------------------------------
 # Edge cases
 # ---------------------------------------------------------------------------
+
 
 class TestGetAttrEdgeCases:
     """Error handling and recursion guard."""
@@ -275,6 +284,7 @@ class TestGetAttrEdgeCases:
 # FAC-04: Type stubs (.pyi validation)
 # ---------------------------------------------------------------------------
 
+
 class TestTypeStub:
     """FAC-04: client.pyi provides IDE autocompletion and mypy compatibility."""
 
@@ -290,9 +300,7 @@ class TestTypeStub:
     def test_client_pyi_has_method_stubs(self):
         """client.pyi contains def get_device_by_id method stub."""
         content = self._PYI_PATH.read_text(encoding="utf-8")
-        assert "def get_device_by_id" in content, (
-            "Expected 'def get_device_by_id' in client.pyi"
-        )
+        assert "def get_device_by_id" in content, "Expected 'def get_device_by_id' in client.pyi"
 
     def test_client_pyi_has_controller_properties(self):
         """client.pyi contains @property and def device_controller."""

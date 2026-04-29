@@ -2,25 +2,30 @@
 Unit tests for common._auth module.
 Covers AUTH-01 through AUTH-06 requirements.
 """
+
 import base64
 import json
 import time
 import unittest
-from unittest.mock import MagicMock, patch, call
+from unittest.mock import MagicMock, patch
 
-from common._auth import _AuthManager, _parse_jwt_claim_ms, _TokenInfo
-
+from common._auth import _AuthManager, _parse_jwt_claim_ms
 
 # ---------------------------------------------------------------------------
 # Test helpers
 # ---------------------------------------------------------------------------
+
 
 def _make_jwt(claims: dict) -> str:
     """Create a minimal 3-part JWT (header.payload.signature) for testing.
 
     The header and signature are stubs — only the payload is meaningful.
     """
-    header = base64.urlsafe_b64encode(json.dumps({"alg": "HS256", "typ": "JWT"}).encode()).rstrip(b"=").decode()
+    header = (
+        base64.urlsafe_b64encode(json.dumps({"alg": "HS256", "typ": "JWT"}).encode())
+        .rstrip(b"=")
+        .decode()
+    )
     payload = base64.urlsafe_b64encode(json.dumps(claims).encode()).rstrip(b"=").decode()
     signature = "fakesig"
     return f"{header}.{payload}.{signature}"
@@ -29,20 +34,24 @@ def _make_jwt(claims: dict) -> str:
 def _make_token(exp_offset_s: int, iat_offset_s: int = 0) -> str:
     """Create a JWT with exp = now + exp_offset_s and iat = now + iat_offset_s."""
     now = int(time.time())
-    return _make_jwt({
-        "exp": now + exp_offset_s,
-        "iat": now + iat_offset_s,
-        "sub": "user@example.com",
-    })
+    return _make_jwt(
+        {
+            "exp": now + exp_offset_s,
+            "iat": now + iat_offset_s,
+            "sub": "user@example.com",
+        }
+    )
 
 
 def _make_refresh_token(exp_offset_s: int) -> str:
     """Create a JWT with exp = now + exp_offset_s (for refresh tokens)."""
     now = int(time.time())
-    return _make_jwt({
-        "exp": now + exp_offset_s,
-        "sub": "user@example.com",
-    })
+    return _make_jwt(
+        {
+            "exp": now + exp_offset_s,
+            "sub": "user@example.com",
+        }
+    )
 
 
 def _mock_configuration():
@@ -57,8 +66,8 @@ def _mock_configuration():
 # Tests for _parse_jwt_claim_ms
 # ---------------------------------------------------------------------------
 
-class TestParseJwtClaimMs(unittest.TestCase):
 
+class TestParseJwtClaimMs(unittest.TestCase):
     def test_parse_exp_claim(self):
         """_parse_jwt_claim_ms returns exp * 1000 for a valid JWT."""
         exp_seconds = int(time.time()) + 3600
@@ -93,8 +102,8 @@ class TestParseJwtClaimMs(unittest.TestCase):
 # AUTH-01: JWT Login
 # ---------------------------------------------------------------------------
 
-class TestJwtLogin(unittest.TestCase):
 
+class TestJwtLogin(unittest.TestCase):
     def test_jwt_login(self):
         """on_login stores credentials and builds _TokenInfo from provided JWTs."""
         auth = _AuthManager("http://tb:9090", "jwt", None)
@@ -117,8 +126,8 @@ class TestJwtLogin(unittest.TestCase):
 # AUTH-02: Auto-refresh
 # ---------------------------------------------------------------------------
 
-class TestHookRefreshesExpiredToken(unittest.TestCase):
 
+class TestHookRefreshesExpiredToken(unittest.TestCase):
     def test_hook_refreshes_expired_token(self):
         """hook() calls /api/auth/token when access token is expired but refresh is valid."""
         auth = _AuthManager("http://tb:9090", "jwt", None)
@@ -161,8 +170,8 @@ class TestHookRefreshesExpiredToken(unittest.TestCase):
 # AUTH-03: Clock-skew compensation
 # ---------------------------------------------------------------------------
 
-class TestClockSkewCompensation(unittest.TestCase):
 
+class TestClockSkewCompensation(unittest.TestCase):
     def test_clock_skew_compensation(self):
         """clock_diff is computed from iat; a 5s server-ahead skew is absorbed into estimates."""
         auth = _AuthManager("http://tb:9090", "jwt", None)
@@ -190,8 +199,8 @@ class TestClockSkewCompensation(unittest.TestCase):
 # AUTH-04: Re-login fallback
 # ---------------------------------------------------------------------------
 
-class TestReloginOnRefreshExpiry(unittest.TestCase):
 
+class TestReloginOnRefreshExpiry(unittest.TestCase):
     def test_relogin_on_refresh_expiry(self):
         """hook() calls /api/auth/login when both access and refresh tokens are expired."""
         auth = _AuthManager("http://tb:9090", "jwt", None)
@@ -246,8 +255,8 @@ class TestReloginOnRefreshExpiry(unittest.TestCase):
 # AUTH-05: API key passthrough
 # ---------------------------------------------------------------------------
 
-class TestApiKeyAuthNoRefresh(unittest.TestCase):
 
+class TestApiKeyAuthNoRefresh(unittest.TestCase):
     def test_api_key_auth_no_refresh(self):
         """hook() returns immediately for api_key auth without making HTTP calls."""
         auth = _AuthManager("http://tb:9090", "api_key", "test-key-12345")
@@ -265,8 +274,8 @@ class TestApiKeyAuthNoRefresh(unittest.TestCase):
 # AUTH-06: Pre-existing token
 # ---------------------------------------------------------------------------
 
-class TestPreexistingToken(unittest.TestCase):
 
+class TestPreexistingToken(unittest.TestCase):
     def test_preexisting_token(self):
         """set_external_token parses exp times correctly from provided JWTs."""
         auth = _AuthManager("http://tb:9090", "jwt", None)

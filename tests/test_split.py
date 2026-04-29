@@ -5,8 +5,9 @@ These tests verify the per-controller split output. They import from tb_ce_clien
 (via conftest.py sys.path to ce/). They will FAIL (RED) until Plan 03 regenerates
 the editions with per-controller files.
 """
-import sys
+
 import importlib
+import sys
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).parent.parent
@@ -19,6 +20,7 @@ PAAS_API_DIR = PROJECT_ROOT / "paas" / "tb_paas_client" / "api"
 # ---------------------------------------------------------------------------
 # SPLIT-01 / SPLIT-05: File count tests
 # ---------------------------------------------------------------------------
+
 
 def test_ce_controller_file_count():
     """CE edition must have at least 55 per-controller API files (not __init__.py)."""
@@ -60,6 +62,7 @@ def test_no_monolith_file():
 # SPLIT-04: Lazy import tests
 # ---------------------------------------------------------------------------
 
+
 def test_lazy_api_init_does_not_load_controllers():
     """Importing tb_ce_client.api should not eagerly load any controller modules."""
     # Evict the api package and all api submodules for a clean import.
@@ -69,14 +72,14 @@ def test_lazy_api_init_does_not_load_controllers():
     # After the Task 1 fix, client.py has no top-level LoginEndpointApi import,
     # so evicting only the api tree is sufficient to guarantee lazy-load behaviour.
     mods_to_remove = [
-        k for k in sys.modules
-        if k == "tb_ce_client.api" or k.startswith("tb_ce_client.api.")
+        k for k in sys.modules if k == "tb_ce_client.api" or k.startswith("tb_ce_client.api.")
     ]
     for m in mods_to_remove:
         del sys.modules[m]
 
     # Import only the api package
     import tb_ce_client.api  # noqa: F401
+
     loaded = [k for k in sys.modules if k.startswith("tb_ce_client.api.")]
     assert loaded == [], (
         f"Unexpected controller modules loaded on 'import tb_ce_client.api': {loaded}"
@@ -92,6 +95,7 @@ def test_lazy_api_loads_on_access():
     sys.modules.pop("tb_ce_client.api", None)
 
     from tb_ce_client.api import DeviceControllerApi
+
     assert DeviceControllerApi.__module__ == "tb_ce_client.api.device_controller_api", (
         f"DeviceControllerApi.__module__ = {DeviceControllerApi.__module__!r}, "
         f"expected 'tb_ce_client.api.device_controller_api'"
@@ -102,6 +106,7 @@ def test_lazy_api_loads_on_access():
 # SPLIT-06: Root __init__.py tests
 # ---------------------------------------------------------------------------
 
+
 def test_root_import_does_not_load_controllers():
     """Importing tb_ce_client should not load any api.* controller submodules."""
     # Evict the api package and all api submodules for a clean import.
@@ -110,8 +115,7 @@ def test_root_import_does_not_load_controllers():
     # After the Task 1 fix, importing tb_ce_client root no longer pulls in
     # login_endpoint_api, so this targeted eviction is sufficient.
     mods_to_remove = [
-        k for k in sys.modules
-        if k == "tb_ce_client.api" or k.startswith("tb_ce_client.api.")
+        k for k in sys.modules if k == "tb_ce_client.api" or k.startswith("tb_ce_client.api.")
     ]
     for m in mods_to_remove:
         del sys.modules[m]
@@ -143,15 +147,18 @@ def test_no_thingsboard_api_in_lazy_classes():
 # SPLIT-02: Dynamic discovery (structural — requires generated files)
 # ---------------------------------------------------------------------------
 
+
 def test_collect_api_classes_dynamic():
     """_collect_api_classes discovers classes without hard-coding names."""
     # This tests that the function is callable and returns sensible results
     # on the actual CE api/ directory (after regeneration).
     import sys as _sys
+
     scripts_dir = str(PROJECT_ROOT / "scripts")
     if scripts_dir not in _sys.path:
         _sys.path.insert(0, scripts_dir)
     import post_process
+
     result = post_process._collect_api_classes(CE_API_DIR, "tb_ce_client")
     assert len(result) >= 55, (
         f"_collect_api_classes found only {len(result)} classes from CE api/ "

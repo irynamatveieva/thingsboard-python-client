@@ -4,10 +4,10 @@ Unit tests for _collect_api_classes and _generate_api_init in scripts/post_proce
 These tests use temporary directories with mock *_api.py files and are runnable
 immediately (no regeneration needed). They will PASS after Task 2 adds the functions.
 """
+
 import sys
-import tempfile
-import os
 from pathlib import Path
+
 import pytest
 
 # Add scripts/ to sys.path so we can import post_process directly
@@ -17,10 +17,10 @@ if _SCRIPTS_DIR not in sys.path:
 
 import post_process
 
-
 # ---------------------------------------------------------------------------
 # Fixtures
 # ---------------------------------------------------------------------------
+
 
 @pytest.fixture
 def mock_api_dir(tmp_path):
@@ -50,6 +50,7 @@ def mock_api_dir(tmp_path):
 # ---------------------------------------------------------------------------
 # Tests for _collect_api_classes
 # ---------------------------------------------------------------------------
+
 
 def test_collect_api_classes_dynamic(mock_api_dir):
     """_collect_api_classes discovers classes from files without hard-coding."""
@@ -101,6 +102,7 @@ def test_collect_api_classes_multiple_classes_per_file(tmp_path):
 # Tests for _generate_api_init
 # ---------------------------------------------------------------------------
 
+
 def test_generate_api_init_lazy_pattern():
     """_generate_api_init output contains __getattr__, _API_CLASSES, TYPE_CHECKING."""
     api_map = {
@@ -139,14 +141,13 @@ def test_generate_api_init_sorted_output():
     alpha_pos = content.index("AlphaControllerApi")
     mid_pos = content.index("MidControllerApi")
     zebra_pos = content.index("ZebraControllerApi")
-    assert alpha_pos < mid_pos < zebra_pos, (
-        "Classes should appear in sorted (alphabetical) order"
-    )
+    assert alpha_pos < mid_pos < zebra_pos, "Classes should appear in sorted (alphabetical) order"
 
 
 # ---------------------------------------------------------------------------
 # Tests for updated _generate_root_init (api_map parameter)
 # ---------------------------------------------------------------------------
+
 
 def test_generate_root_init_no_thingsboard_api():
     """Updated _generate_root_init with empty api_map must not emit ThingsboardApi."""
@@ -169,6 +170,7 @@ def test_generate_root_init_with_api_map():
 # ---------------------------------------------------------------------------
 # Tests for updated rewrite_init_files (Tuple[int, int, int] return)
 # ---------------------------------------------------------------------------
+
 
 def test_rewrite_init_files_returns_tuple(tmp_path):
     """rewrite_init_files returns (model_count, api_count, method_count) tuple."""
@@ -223,11 +225,11 @@ def test_generate_controller_map_method_count():
 
 
 def test_generate_controller_map_attr_count():
-    """_generate_controller_map produces exactly 57 controller attr entries for CE."""
+    """_generate_controller_map produces exactly 58 controller attr entries for CE."""
     content, method_count, controller_count = post_process._generate_controller_map(
         _CE_API_DIR, "tb_ce_client"
     )
-    assert controller_count == 57, f"Expected 57 controllers, got {controller_count}"
+    assert controller_count == 58, f"Expected 58 controllers, got {controller_count}"
 
 
 def test_generate_controller_map_login_routing():
@@ -284,6 +286,7 @@ def test_rewrite_init_files_writes_controller_map(tmp_path):
 # ---------------------------------------------------------------------------
 # Fixtures for _generate_client_pyi tests
 # ---------------------------------------------------------------------------
+
 
 @pytest.fixture
 def mock_api_dir_with_methods(tmp_path):
@@ -351,6 +354,7 @@ def mock_client_py(tmp_path):
 # ---------------------------------------------------------------------------
 # Tests for _generate_client_pyi
 # ---------------------------------------------------------------------------
+
 
 def test_generate_client_pyi_class(mock_api_dir_with_methods, mock_client_py):
     """_generate_client_pyi output contains 'class ThingsboardClient:'."""
@@ -420,16 +424,12 @@ def test_rewrite_init_files_writes_pyi(tmp_path):
     pkg_dir = tmp_path / "tb_test_client"
     pkg_dir.mkdir()
     (pkg_dir / "__init__.py").write_text("", encoding="utf-8")
-    (pkg_dir / "client.py").write_text(
-        "class ThingsboardClient:\n    pass\n", encoding="utf-8"
-    )
+    (pkg_dir / "client.py").write_text("class ThingsboardClient:\n    pass\n", encoding="utf-8")
 
     models_dir = pkg_dir / "models"
     models_dir.mkdir()
     (models_dir / "__init__.py").write_text("", encoding="utf-8")
-    (models_dir / "device.py").write_text(
-        "class Device(BaseModel):\n    pass\n", encoding="utf-8"
-    )
+    (models_dir / "device.py").write_text("class Device(BaseModel):\n    pass\n", encoding="utf-8")
 
     api_dir = pkg_dir / "api"
     api_dir.mkdir()
